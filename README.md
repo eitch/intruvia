@@ -1,6 +1,6 @@
 # Intruvia
 
-Intruvia is a planned self-hosted security-event viewer. See the
+Intruvia is a self-hosted security-event viewer under development. See the
 [specification](docs/INTRUVIA_SPECIFICATION.md), [backlog](docs/INTRUVIA_BACKLOG.md),
 and [status ledger](docs/INTRUVIA_BACKLOG_STATUS.md) for scope and implementation progress.
 
@@ -51,7 +51,7 @@ JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH \
 
 The probe starts Strolch/Jetty on loopback, verifies REST and WebSocket exchange,
 and shuts both down. It needs Maven dependency access but no PostgreSQL server.
-Application modules and the deployable viewer are still pending.
+The application skeleton is available below; the event viewer remains pending.
 
 To retry a blocked task after fixing its environment:
 
@@ -63,3 +63,29 @@ The runner enables outbound network access for dependency downloads and permits
 writes to `~/.m2/repository` while retaining the workspace filesystem sandbox.
 If Maven uses a custom local repository, set `MAVEN_REPOSITORY` to that absolute path.
 The retry checks the blocker again and preserves previous failure evidence.
+
+## Build and run the application skeleton
+
+Use Java 25 and Maven (verified with Maven 3.9.16). From the repository root:
+
+```bash
+JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH mvn -B clean verify
+cd intruvia-app/target/intruvia
+/path/to/jdk-25/bin/java -jar intruvia-app-0.0.1.jar runtime 8080
+```
+
+Open `http://127.0.0.1:8080/` for the packaged local landing page.
+`http://127.0.0.1:8080/health/live` returns `{"status":"UP"}`.
+Stop with Ctrl+C or SIGTERM; Jetty stops before Strolch is stopped and destroyed.
+The port is optional (default 8080); `0` selects an ephemeral port printed in the log.
+The runtime path is required and can be absolute. Keep the application JAR, `lib/`
+and `runtime/` together when copying the assembled directory.
+
+This skeleton binds only to loopback and has no event ingestion, viewer authentication,
+database, or readiness endpoint yet. The supplied `skeleton` Strolch environment
+contains no credentials or event store. It must not be used as a production event
+service. Later backlog tasks implement persistence, authentication and the viewer.
+
+`mvn verify` runs the packaged-process HTTP/start/stop smoke test and an in-process
+lifecycle test; it needs no database, browser, Node, frontend framework or bundler.
+See [skeleton architecture and verification](docs/architecture/002-application-skeleton.md).

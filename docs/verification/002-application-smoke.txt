@@ -1,0 +1,25 @@
+2026-09-28 13:01:46,051 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:skeleton
+2026-09-28 13:01:46,154 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Initializing 1 Strolch Components...
+2026-09-28 13:01:46,156 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been initialized. Took 253us
+2026-09-28 13:01:46,158 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Starting 1 Strolch Components...
+2026-09-28 13:01:46,167 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.2.7-arch1-1 Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 32
+2026-09-28 13:01:46,169 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.6 GB,  Total: 167.8 MB,  Used: 8.1 MB,  Free: 159.6 MB
+2026-09-28 13:01:46,169 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-09-28 13:01:46,169 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-09-28 13:01:46,170 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components started for version 0.0.1. Took 10ms. Strolch is now ready to be used. Have fun =))
+2026-09-28 13:01:46,172 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-09-28 13:01:46,185 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@6c284af{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@5890e879{STARTED}}
+2026-09-28 13:01:46,333 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@6c284af{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@5890e879{STARTED}}
+2026-09-28 13:01:46,338 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@41beb473{HTTP/1.1, (http/1.1)}{127.0.0.1:38129}
+2026-09-28 13:01:46,342 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@13fd2ccd{STARTING}[12.0.16,sto=5000] @450ms
+2026-09-28 13:01:46,342 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:38129 (Strolch STARTED)
+2026-09-28 13:01:46,557 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@13fd2ccd{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:01:46,557 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@13fd2ccd{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:01:46,559 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@41beb473{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-09-28 13:01:46,564 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@6c284af{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@5890e879{STOPPED}}
+2026-09-28 13:01:46,565 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Stopping 1 Strolch Components...
+2026-09-28 13:01:46,566 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been stopped. Took 177us
+2026-09-28 13:01:46,566 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-09-28 13:01:46,566 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Destroying 1 Strolch Components...
+2026-09-28 13:01:46,566 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been destroyed! Took 36us
+2026-09-28 13:01:46,566 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED

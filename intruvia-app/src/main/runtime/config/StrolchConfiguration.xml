@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: AGPL-3.0-only -->
+<StrolchConfiguration>
+	<env id="skeleton">
+		<Runtime><applicationName>Intruvia</applicationName></Runtime>
+		<Component>
+			<name>Intruvia</name>
+			<api>li.intruvia.core.IntruviaComponent</api>
+			<impl>li.intruvia.core.IntruviaComponent</impl>
+		</Component>
+	</env>
+</StrolchConfiguration>

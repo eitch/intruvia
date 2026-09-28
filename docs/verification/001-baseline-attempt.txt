@@ -1,0 +1,41 @@
+Task 001 verification attempt — 2026-09-28 UTC
+
+Command: git status --short
+Initial result: exit 0, empty output (clean workspace).
+
+Command: java -version
+Result: exit 0; Zulu OpenJDK 27, build 27+35.
+
+Command: mvn -version
+Result: exit 0; Apache Maven 3.9.16, default Java 27.
+
+Command: /home/eitch/.sdkman/candidates/java/25.0.4-tem/bin/java -version
+Result: exit 0; Temurin 25.0.4+7-LTS.
+
+Command: git -C /home/eitch/src/git/Chronivaro rev-parse HEAD
+Result: exit 0; 860facd75f8abab4405e3adfd01060ee932121cb.
+
+Command: git -C /home/eitch/src/git/atx-dev/strolch describe --tags --always
+Result: exit 0; 1.2.0-2889-g072f959aa.
+
+Command: git -C /home/eitch/src/git/atx-dev/strolch status --short
+Result: exit 0, empty output.
+
+Command: rg --files /home/eitch/.m2/repository/org/eclipse/jetty | rg 'websocket.*jar$' | head -20
+Result: no matching JAR paths; pipeline exit 0 reflects head, not a positive match.
+
+Command: curl -I --connect-timeout 10 --max-time 15 https://repo.maven.apache.org/maven2/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-server/12.0.16/jetty-ee10-websocket-jakarta-server-12.0.16.pom
+Result: curl exit 6; Could not resolve host: repo.maven.apache.org.
+The containing shell invocation continued with cache/JDK inspection and returned 0;
+that shell status does not mean the network check passed.
+
+Incidental inspection misses (not build failures): strolch-core cache directory and
+strolch-rest source directory do not exist; actual modules are strolch-agent and
+strolch-web-rest. Subsequent inspection used those existing paths.
+
+Unrun: compatibility probe compilation, Strolch/Jetty startup and shutdown,
+HTTP/WebSocket smoke checks, resolved dependency/API namespace verification.
+No passing compatibility claim or final dependency pin was produced.
+
+Command: git diff --check
+Result: exit 0, no whitespace errors in tracked changes.

@@ -1,0 +1,200 @@
+Task 001 continuation, 2026-09-28 UTC
+Command (workspace root):
+JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -f probes/runtime-baseline/pom.xml clean verify dependency:tree dependency:build-classpath -Dmdep.outputFile=target/classpath.txt
+Result: exit 0. Full output follows.
+
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------< li.intruvia:runtime-baseline-probe >-----------------
+[INFO] Building runtime-baseline-probe 0.0.1
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ runtime-baseline-probe ---
+[INFO] Deleting /home/eitch/src/git/intruvia/probes/runtime-baseline/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ runtime-baseline-probe ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/probes/runtime-baseline/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ runtime-baseline-probe ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ runtime-baseline-probe ---
+[INFO] Copying 5 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ runtime-baseline-probe ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ runtime-baseline-probe ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.probe.RuntimeBaselineTest
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE API jakarta.ws.rs.core.Application from file:/home/eitch/.m2/repository/jakarta/ws/rs/jakarta.ws.rs-api/3.1.0/jakarta.ws.rs-api-3.1.0.jar
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE API jakarta.servlet.Servlet from file:/home/eitch/.m2/repository/jakarta/servlet/jakarta.servlet-api/6.0.0/jakarta.servlet-api-6.0.0.jar
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE API jakarta.websocket.Session from file:/home/eitch/.m2/repository/jakarta/websocket/jakarta.websocket-client-api/2.1.1/jakarta.websocket-client-api-2.1.1.jar
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE API jakarta.websocket.server.ServerContainer from file:/home/eitch/.m2/repository/jakarta/websocket/jakarta.websocket-api/2.1.1/jakarta.websocket-api-2.1.1.jar
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE no legacy web APIs; Strolch REST/persistence classes and PostgreSQL driver load
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE Strolch STARTED; Jetty STARTED on loopback ephemeral port
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE JAX-RS HTTP 200 and expected body
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE WebSocket upgrade, text exchange and normal close passed
+INFO li.intruvia.probe.RuntimeBaselineTest - PROBE Jetty STOPPED and Strolch DESTROYED
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.768 s -- in li.intruvia.probe.RuntimeBaselineTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ runtime-baseline-probe ---
+[WARNING] JAR will be empty - no content was marked for inclusion!
+[INFO] Building jar: /home/eitch/src/git/intruvia/probes/runtime-baseline/target/runtime-baseline-probe-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ runtime-baseline-probe ---
+[INFO] li.intruvia:runtime-baseline-probe:jar:0.0.1
+[INFO] +- li.strolch:strolch-agent:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  +- org.slf4j:slf4j-api:jar:2.0.17:compile
+[INFO] |  +- ch.qos.logback:logback-classic:jar:1.5.32:compile
+[INFO] |  |  \- ch.qos.logback:logback-core:jar:1.5.32:compile
+[INFO] |  +- li.strolch:strolch-model:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  |  \- li.strolch:strolch-utils:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  |     +- jakarta.mail:jakarta.mail-api:jar:2.1.3:compile
+[INFO] |  |     +- org.eclipse.angus:angus-mail:jar:2.0.4:compile
+[INFO] |  |     +- org.eclipse.angus:angus-activation:jar:2.0.2:compile
+[INFO] |  |     +- org.bouncycastle:bcprov-jdk18on:jar:1.86:compile
+[INFO] |  |     +- org.bouncycastle:bcutil-jdk18on:jar:1.86:compile
+[INFO] |  |     +- org.bouncycastle:bcjmail-jdk18on:jar:1.86:compile
+[INFO] |  |     |  \- org.bouncycastle:bcpkix-jdk18on:jar:1.86:compile
+[INFO] |  |     +- org.bouncycastle:bcpg-jdk18on:jar:1.86:compile
+[INFO] |  |     \- org.pgpainless:pgpainless-core:jar:1.7.4:compile
+[INFO] |  |        +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.8.10:compile
+[INFO] |  |        |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.8.10:compile
+[INFO] |  |        |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.8.10:compile
+[INFO] |  |        |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |        |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.8.10:compile
+[INFO] |  |        \- com.google.code.findbugs:jsr305:jar:3.0.2:runtime
+[INFO] |  +- li.strolch:strolch-privilege:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  +- ch.eitchnet:cron:jar:1.6.2:compile
+[INFO] |  \- org.eclipse.store:storage-embedded:jar:2.1.3:compile
+[INFO] |     \- org.eclipse.store:storage:jar:2.1.3:compile
+[INFO] |        +- org.eclipse.store:afs-nio:jar:2.1.3:compile
+[INFO] |        |  \- org.eclipse.serializer:afs:jar:2.1.3:compile
+[INFO] |        |     \- org.eclipse.serializer:base:jar:2.1.3:compile
+[INFO] |        \- org.eclipse.serializer:persistence-binary:jar:2.1.3:compile
+[INFO] |           \- org.eclipse.serializer:persistence:jar:2.1.3:compile
+[INFO] +- li.strolch:strolch-web-rest:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  +- li.strolch:strolch-service:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  +- li.strolch:strolch-soql:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  |  \- org.antlr:antlr4:jar:4.9.3:compile
+[INFO] |  |     +- org.antlr:antlr4-runtime:jar:4.9.3:compile
+[INFO] |  |     +- org.antlr:antlr-runtime:jar:3.5.2:compile
+[INFO] |  |     +- org.antlr:ST4:jar:4.3.1:compile
+[INFO] |  |     +- org.abego.treelayout:org.abego.treelayout.core:jar:1.0.3:compile
+[INFO] |  |     +- org.glassfish:javax.json:jar:1.0.4:compile
+[INFO] |  |     \- com.ibm.icu:icu4j:jar:69.1:compile
+[INFO] |  +- com.google.code.gson:gson:jar:2.12.1:compile
+[INFO] |  |  \- com.google.errorprone:error_prone_annotations:jar:2.36.0:compile
+[INFO] |  +- org.apache.commons:commons-csv:jar:1.14.0:compile
+[INFO] |  |  +- commons-io:commons-io:jar:2.18.0:compile
+[INFO] |  |  \- commons-codec:commons-codec:jar:1.18.0:compile
+[INFO] |  +- jakarta.annotation:jakarta.annotation-api:jar:2.1.1:compile
+[INFO] |  +- jakarta.activation:jakarta.activation-api:jar:2.1.4:compile
+[INFO] |  +- jakarta.servlet:jakarta.servlet-api:jar:6.0.0:compile
+[INFO] |  +- jakarta.xml.bind:jakarta.xml.bind-api:jar:4.0.4:compile
+[INFO] |  +- jakarta.ws.rs:jakarta.ws.rs-api:jar:3.1.0:compile
+[INFO] |  +- org.glassfish.jersey.containers:jersey-container-servlet:jar:3.1.11:compile
+[INFO] |  +- org.glassfish.jersey.containers:jersey-container-grizzly2-servlet:jar:3.1.11:compile
+[INFO] |  |  +- org.glassfish.jersey.containers:jersey-container-grizzly2-http:jar:3.1.11:compile
+[INFO] |  |  |  \- org.glassfish.grizzly:grizzly-http-server:jar:4.0.2:compile
+[INFO] |  |  |     \- org.glassfish.grizzly:grizzly-http:jar:4.0.2:compile
+[INFO] |  |  |        \- org.glassfish.grizzly:grizzly-framework:jar:4.0.2:compile
+[INFO] |  |  \- org.glassfish.grizzly:grizzly-http-servlet:jar:4.0.2:compile
+[INFO] |  \- io.swagger.core.v3:swagger-jaxrs2-jakarta:jar:2.2.49:compile
+[INFO] |     +- io.github.classgraph:classgraph:jar:4.8.184:compile
+[INFO] |     +- io.swagger.core.v3:swagger-models-jakarta:jar:2.2.49:compile
+[INFO] |     |  \- com.fasterxml.jackson.core:jackson-annotations:jar:2.21:compile
+[INFO] |     +- io.swagger.core.v3:swagger-annotations-jakarta:jar:2.2.49:compile
+[INFO] |     +- io.swagger.core.v3:swagger-integration-jakarta:jar:2.2.49:compile
+[INFO] |     |  \- io.swagger.core.v3:swagger-core-jakarta:jar:2.2.49:compile
+[INFO] |     |     +- org.apache.commons:commons-lang3:jar:3.20.0:compile
+[INFO] |     |     +- com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:jar:2.21.1:compile
+[INFO] |     |     \- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.21.1:compile
+[INFO] |     +- org.yaml:snakeyaml:jar:2.6:compile
+[INFO] |     +- com.fasterxml.jackson.core:jackson-databind:jar:2.21.1:compile
+[INFO] |     |  \- com.fasterxml.jackson.core:jackson-core:jar:2.21.1:compile
+[INFO] |     \- com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-json-provider:jar:2.21.1:compile
+[INFO] |        +- com.fasterxml.jackson.jakarta.rs:jackson-jakarta-rs-base:jar:2.21.1:compile
+[INFO] |        \- com.fasterxml.jackson.module:jackson-module-jakarta-xmlbind-annotations:jar:2.21.1:compile
+[INFO] +- li.strolch:strolch-persistence-postgresql:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  +- com.zaxxer:HikariCP:jar:6.2.1:compile
+[INFO] |  \- org.postgresql:postgresql:jar:42.7.12:compile
+[INFO] +- org.eclipse.jetty:jetty-server:jar:12.0.16:compile
+[INFO] |  +- org.eclipse.jetty:jetty-http:jar:12.0.16:compile
+[INFO] |  |  \- org.eclipse.jetty:jetty-util:jar:12.0.16:compile
+[INFO] |  \- org.eclipse.jetty:jetty-io:jar:12.0.16:compile
+[INFO] +- org.eclipse.jetty.ee10:jetty-ee10-servlet:jar:12.0.16:compile
+[INFO] |  +- org.eclipse.jetty:jetty-security:jar:12.0.16:compile
+[INFO] |  \- org.eclipse.jetty:jetty-session:jar:12.0.16:compile
+[INFO] +- org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-server:jar:12.0.16:compile
+[INFO] |  +- jakarta.websocket:jakarta.websocket-api:jar:2.1.1:compile
+[INFO] |  +- org.eclipse.jetty.ee10:jetty-ee10-annotations:jar:12.0.16:compile
+[INFO] |  |  +- org.eclipse.jetty.ee10:jetty-ee10-plus:jar:12.0.16:compile
+[INFO] |  |  |  +- jakarta.enterprise:jakarta.enterprise.cdi-api:jar:4.0.1:compile
+[INFO] |  |  |  |  \- jakarta.el:jakarta.el-api:jar:5.0.0:compile
+[INFO] |  |  |  +- jakarta.enterprise:jakarta.enterprise.lang-model:jar:4.0.1:compile
+[INFO] |  |  |  +- jakarta.interceptor:jakarta.interceptor-api:jar:2.1.0:compile
+[INFO] |  |  |  +- jakarta.transaction:jakarta.transaction-api:jar:2.0.1:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-jndi:jar:12.0.16:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-plus:jar:12.0.16:compile
+[INFO] |  |  +- org.eclipse.jetty.ee10:jetty-ee10-webapp:jar:12.0.16:compile
+[INFO] |  |  |  +- org.eclipse.jetty:jetty-ee:jar:12.0.16:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-xml:jar:12.0.16:compile
+[INFO] |  |  +- org.ow2.asm:asm:jar:9.7.1:compile
+[INFO] |  |  \- org.ow2.asm:asm-commons:jar:9.7.1:compile
+[INFO] |  |     \- org.ow2.asm:asm-tree:jar:9.7.1:compile
+[INFO] |  +- org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-client:jar:12.0.16:compile
+[INFO] |  |  +- jakarta.websocket:jakarta.websocket-client-api:jar:2.1.1:compile
+[INFO] |  |  +- org.eclipse.jetty:jetty-client:jar:12.0.16:compile
+[INFO] |  |  |  \- org.eclipse.jetty:jetty-alpn-client:jar:12.0.16:compile
+[INFO] |  |  +- org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-common:jar:12.0.16:compile
+[INFO] |  |  \- org.eclipse.jetty.websocket:jetty-websocket-core-client:jar:12.0.16:compile
+[INFO] |  |     \- org.eclipse.jetty.websocket:jetty-websocket-core-common:jar:12.0.16:compile
+[INFO] |  \- org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-servlet:jar:12.0.16:compile
+[INFO] |     \- org.eclipse.jetty.websocket:jetty-websocket-core-server:jar:12.0.16:compile
+[INFO] +- org.glassfish.jersey.containers:jersey-container-servlet-core:jar:3.1.11:compile
+[INFO] |  +- jakarta.inject:jakarta.inject-api:jar:2.0.1:compile
+[INFO] |  +- org.glassfish.jersey.core:jersey-common:jar:3.1.11:compile
+[INFO] |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:compile
+[INFO] |  \- org.glassfish.jersey.core:jersey-server:jar:3.1.11:compile
+[INFO] |     +- org.glassfish.jersey.core:jersey-client:jar:3.1.11:compile
+[INFO] |     \- jakarta.validation:jakarta.validation-api:jar:3.0.2:compile
+[INFO] +- org.glassfish.jersey.inject:jersey-hk2:jar:3.1.11:compile
+[INFO] |  +- org.glassfish.hk2:hk2-locator:jar:3.0.6:compile
+[INFO] |  |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:3.0.6:compile
+[INFO] |  |  +- org.glassfish.hk2:hk2-api:jar:3.0.6:compile
+[INFO] |  |  \- org.glassfish.hk2:hk2-utils:jar:3.0.6:compile
+[INFO] |  \- org.javassist:javassist:jar:3.30.2-GA:compile
+[INFO] \- junit:junit:jar:4.13.2:test
+[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] 
+[INFO] --- dependency:3.8.1:build-classpath (default-cli) @ runtime-baseline-probe ---
+[INFO] Wrote classpath file '/home/eitch/src/git/intruvia/probes/runtime-baseline/target/classpath.txt'.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.292 s
+[INFO] Finished at: 2026-09-28T12:53:01+02:00
+[INFO] ------------------------------------------------------------------------
+
+Command (cwd /home/eitch/.m2/repository):
+sha256sum -c /home/eitch/src/git/intruvia/docs/verification/001-dependencies.sha256
+Result: exit 0; all 150 entries OK.
+A relative-path classpath inspection initially failed from that cwd (cat: no such file).
+Corrected command from workspace root:
+tr ':' '\n' < probes/runtime-baseline/target/classpath.txt | rg strolch
+Result: exit 0; eight resolved Strolch modules use the checksummed SNAPSHOT cache aliases.
+Web metadata fetch returned an internal error; it was not used as compatibility evidence.
+No database, browser or production authentication tests run (later tasks).

@@ -1,0 +1,220 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-core ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-core ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-core/target/intruvia-core-0.0.1.jar
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-rest >----------------------
+[INFO] Building intruvia-rest 0.0.1                                       [3/5]
+[INFO]   from intruvia-rest/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-rest ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-rest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-rest ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-rest ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-rest/target/intruvia-rest-0.0.1.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-web >----------------------
+[INFO] Building intruvia-web 0.0.1                                        [4/5]
+[INFO]   from intruvia-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-web ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-web ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-web ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-web/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-web ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-web ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-web/target/intruvia-web-0.0.1.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-app >----------------------
+[INFO] Building intruvia-app 0.0.1                                        [5/5]
+[INFO]   from intruvia-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/plugins/maven-failsafe-plugin/3.5.2/maven-failsafe-plugin-3.5.2.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/plugins/maven-failsafe-plugin/3.5.2/maven-failsafe-plugin-3.5.2.pom (11 kB at 36 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/plugins/maven-failsafe-plugin/3.5.2/maven-failsafe-plugin-3.5.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/plugins/maven-failsafe-plugin/3.5.2/maven-failsafe-plugin-3.5.2.jar (57 kB at 678 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/slf4j/slf4j-api/2.0.16/slf4j-api-2.0.16.jar (69 kB at 3.7 MB/s)
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-app ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-app ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-app ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-app/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-app ---
+[INFO] 
+[INFO] --- resources:3.3.1:copy-resources (runtime) @ intruvia-app ---
+[INFO] Copying 3 resources from src/main/runtime to target/intruvia/runtime
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-app ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:copy-dependencies (distribution-libraries) @ intruvia-app ---
+[INFO] 
+[INFO] --- failsafe:3.5.2:integration-test (default) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.ApplicationIT
+2026-09-28 13:01:10,481 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:skeleton
+2026-09-28 13:01:10,596 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Initializing 1 Strolch Components...
+2026-09-28 13:01:10,599 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been initialized. Took 233us
+2026-09-28 13:01:10,600 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Starting 1 Strolch Components...
+2026-09-28 13:01:10,609 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.2.7-arch1-1 Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 32
+2026-09-28 13:01:10,610 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.6 GB,  Total: 117.4 MB,  Used: 15.0 MB,  Free: 102.4 MB
+2026-09-28 13:01:10,610 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-09-28 13:01:10,610 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-09-28 13:01:10,612 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components started for version 0.0.1. Took 10ms. Strolch is now ready to be used. Have fun =))
+2026-09-28 13:01:10,613 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-09-28 13:01:10,627 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@5e06e3b5{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@1dde7d2d{STARTED}}
+2026-09-28 13:01:10,784 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@5e06e3b5{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@1dde7d2d{STARTED}}
+2026-09-28 13:01:10,789 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@2ef0a74{HTTP/1.1, (http/1.1)}{127.0.0.1:37497}
+2026-09-28 13:01:10,790 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@1754ad9c{STARTING}[12.0.16,sto=5000] @590ms
+2026-09-28 13:01:10,790 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:37497 (Strolch STARTED)
+2026-09-28 13:01:10,790 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@1754ad9c{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:01:10,790 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@1754ad9c{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:01:10,793 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@2ef0a74{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-09-28 13:01:10,796 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@5e06e3b5{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@1dde7d2d{STOPPED}}
+2026-09-28 13:01:10,797 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Stopping 1 Strolch Components...
+2026-09-28 13:01:10,797 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been stopped. Took 91us
+2026-09-28 13:01:10,797 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-09-28 13:01:10,797 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Destroying 1 Strolch Components...
+2026-09-28 13:01:10,797 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been destroyed! Took 48us
+2026-09-28 13:01:10,797 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 1.139 s <<< FAILURE! -- in li.intruvia.app.ApplicationIT
+[ERROR] li.intruvia.app.ApplicationIT.closesBothLifecyclesAndAllowsRepeatedClose -- Time elapsed: 0.437 s <<< FAILURE!
+java.lang.AssertionError: expected:<-1> but was:<-2>
+	at org.junit.Assert.fail(Assert.java:89)
+	at org.junit.Assert.failNotEquals(Assert.java:835)
+	at org.junit.Assert.assertEquals(Assert.java:647)
+	at org.junit.Assert.assertEquals(Assert.java:633)
+	at li.intruvia.app.ApplicationIT.closesBothLifecyclesAndAllowsRepeatedClose(ApplicationIT.java:61)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   ApplicationIT.closesBothLifecyclesAndAllowsRepeatedClose:61 expected:<-1> but was:<-2>
+[INFO] 
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.2:verify (default) @ intruvia-app ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  0.058 s]
+[INFO] intruvia-core ...................................... SUCCESS [  0.595 s]
+[INFO] intruvia-rest ...................................... SUCCESS [  0.124 s]
+[INFO] intruvia-web ....................................... SUCCESS [  0.015 s]
+[INFO] intruvia-app ....................................... FAILURE [  2.426 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.271 s
+[INFO] Finished at: 2026-09-28T13:01:11+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-failsafe-plugin:3.5.2:verify (default) on project intruvia-app: There are test failures.
+[ERROR] 
+[ERROR] See /home/eitch/src/git/intruvia/intruvia-app/target/failsafe-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :intruvia-app

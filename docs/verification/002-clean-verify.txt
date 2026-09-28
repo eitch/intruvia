@@ -1,0 +1,344 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ intruvia ---
+[INFO] li.intruvia:intruvia:pom:0.0.1
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-core ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-core/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-core ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-core/target/intruvia-core-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ intruvia-core ---
+[INFO] li.intruvia:intruvia-core:jar:0.0.1
+[INFO] \- li.strolch:strolch-agent:jar:2.8.0-SNAPSHOT:compile
+[INFO]    +- org.slf4j:slf4j-api:jar:2.0.17:compile
+[INFO]    +- ch.qos.logback:logback-classic:jar:1.5.32:compile
+[INFO]    |  \- ch.qos.logback:logback-core:jar:1.5.32:compile
+[INFO]    +- li.strolch:strolch-model:jar:2.8.0-SNAPSHOT:compile
+[INFO]    |  +- com.google.code.gson:gson:jar:2.12.1:compile
+[INFO]    |  |  \- com.google.errorprone:error_prone_annotations:jar:2.36.0:compile
+[INFO]    |  \- li.strolch:strolch-utils:jar:2.8.0-SNAPSHOT:compile
+[INFO]    |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:4.0.4:compile
+[INFO]    |     |  \- jakarta.activation:jakarta.activation-api:jar:2.1.4:compile
+[INFO]    |     +- jakarta.mail:jakarta.mail-api:jar:2.1.3:compile
+[INFO]    |     +- org.eclipse.angus:angus-mail:jar:2.0.4:compile
+[INFO]    |     +- org.eclipse.angus:angus-activation:jar:2.0.2:compile
+[INFO]    |     +- org.bouncycastle:bcprov-jdk18on:jar:1.86:compile
+[INFO]    |     +- org.bouncycastle:bcutil-jdk18on:jar:1.86:compile
+[INFO]    |     +- org.bouncycastle:bcjmail-jdk18on:jar:1.86:compile
+[INFO]    |     |  \- org.bouncycastle:bcpkix-jdk18on:jar:1.86:compile
+[INFO]    |     +- org.bouncycastle:bcpg-jdk18on:jar:1.86:compile
+[INFO]    |     \- org.pgpainless:pgpainless-core:jar:1.7.4:compile
+[INFO]    |        +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.8.10:compile
+[INFO]    |        |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.8.10:compile
+[INFO]    |        |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.8.10:compile
+[INFO]    |        |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO]    |        |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.8.10:compile
+[INFO]    |        \- com.google.code.findbugs:jsr305:jar:3.0.2:runtime
+[INFO]    +- li.strolch:strolch-privilege:jar:2.8.0-SNAPSHOT:compile
+[INFO]    +- ch.eitchnet:cron:jar:1.6.2:compile
+[INFO]    \- org.eclipse.store:storage-embedded:jar:2.1.3:compile
+[INFO]       \- org.eclipse.store:storage:jar:2.1.3:compile
+[INFO]          +- org.eclipse.store:afs-nio:jar:2.1.3:compile
+[INFO]          |  \- org.eclipse.serializer:afs:jar:2.1.3:compile
+[INFO]          |     \- org.eclipse.serializer:base:jar:2.1.3:compile
+[INFO]          \- org.eclipse.serializer:persistence-binary:jar:2.1.3:compile
+[INFO]             \- org.eclipse.serializer:persistence:jar:2.1.3:compile
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-rest >----------------------
+[INFO] Building intruvia-rest 0.0.1                                       [3/5]
+[INFO]   from intruvia-rest/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-rest ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-rest/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-rest ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-rest ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-rest ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-rest/target/intruvia-rest-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ intruvia-rest ---
+[INFO] li.intruvia:intruvia-rest:jar:0.0.1
+[INFO] +- li.intruvia:intruvia-core:jar:0.0.1:compile
+[INFO] |  \- li.strolch:strolch-agent:jar:2.8.0-SNAPSHOT:compile
+[INFO] |     +- org.slf4j:slf4j-api:jar:2.0.17:compile
+[INFO] |     +- ch.qos.logback:logback-classic:jar:1.5.32:compile
+[INFO] |     |  \- ch.qos.logback:logback-core:jar:1.5.32:compile
+[INFO] |     +- li.strolch:strolch-model:jar:2.8.0-SNAPSHOT:compile
+[INFO] |     |  +- com.google.code.gson:gson:jar:2.12.1:compile
+[INFO] |     |  |  \- com.google.errorprone:error_prone_annotations:jar:2.36.0:compile
+[INFO] |     |  \- li.strolch:strolch-utils:jar:2.8.0-SNAPSHOT:compile
+[INFO] |     |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:4.0.4:compile
+[INFO] |     |     |  \- jakarta.activation:jakarta.activation-api:jar:2.1.4:compile
+[INFO] |     |     +- jakarta.mail:jakarta.mail-api:jar:2.1.3:compile
+[INFO] |     |     +- org.eclipse.angus:angus-mail:jar:2.0.4:compile
+[INFO] |     |     +- org.eclipse.angus:angus-activation:jar:2.0.2:compile
+[INFO] |     |     +- org.bouncycastle:bcprov-jdk18on:jar:1.86:compile
+[INFO] |     |     +- org.bouncycastle:bcutil-jdk18on:jar:1.86:compile
+[INFO] |     |     +- org.bouncycastle:bcjmail-jdk18on:jar:1.86:compile
+[INFO] |     |     |  \- org.bouncycastle:bcpkix-jdk18on:jar:1.86:compile
+[INFO] |     |     +- org.bouncycastle:bcpg-jdk18on:jar:1.86:compile
+[INFO] |     |     \- org.pgpainless:pgpainless-core:jar:1.7.4:compile
+[INFO] |     |        +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.8.10:compile
+[INFO] |     |        |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.8.10:compile
+[INFO] |     |        |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.8.10:compile
+[INFO] |     |        |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |     |        |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.8.10:compile
+[INFO] |     |        \- com.google.code.findbugs:jsr305:jar:3.0.2:runtime
+[INFO] |     +- li.strolch:strolch-privilege:jar:2.8.0-SNAPSHOT:compile
+[INFO] |     +- ch.eitchnet:cron:jar:1.6.2:compile
+[INFO] |     \- org.eclipse.store:storage-embedded:jar:2.1.3:compile
+[INFO] |        \- org.eclipse.store:storage:jar:2.1.3:compile
+[INFO] |           +- org.eclipse.store:afs-nio:jar:2.1.3:compile
+[INFO] |           |  \- org.eclipse.serializer:afs:jar:2.1.3:compile
+[INFO] |           |     \- org.eclipse.serializer:base:jar:2.1.3:compile
+[INFO] |           \- org.eclipse.serializer:persistence-binary:jar:2.1.3:compile
+[INFO] |              \- org.eclipse.serializer:persistence:jar:2.1.3:compile
+[INFO] +- org.glassfish.jersey.containers:jersey-container-servlet-core:jar:3.1.11:compile
+[INFO] |  +- jakarta.inject:jakarta.inject-api:jar:2.0.1:compile
+[INFO] |  +- org.glassfish.jersey.core:jersey-common:jar:3.1.11:compile
+[INFO] |  |  +- jakarta.annotation:jakarta.annotation-api:jar:2.1.1:compile
+[INFO] |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:compile
+[INFO] |  +- org.glassfish.jersey.core:jersey-server:jar:3.1.11:compile
+[INFO] |  |  +- org.glassfish.jersey.core:jersey-client:jar:3.1.11:compile
+[INFO] |  |  \- jakarta.validation:jakarta.validation-api:jar:3.0.2:compile
+[INFO] |  \- jakarta.ws.rs:jakarta.ws.rs-api:jar:3.1.0:compile
+[INFO] \- org.glassfish.jersey.inject:jersey-hk2:jar:3.1.11:compile
+[INFO]    +- org.glassfish.hk2:hk2-locator:jar:3.0.6:compile
+[INFO]    |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:3.0.6:compile
+[INFO]    |  +- org.glassfish.hk2:hk2-api:jar:3.0.6:compile
+[INFO]    |  \- org.glassfish.hk2:hk2-utils:jar:3.0.6:compile
+[INFO]    \- org.javassist:javassist:jar:3.30.2-GA:compile
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-web >----------------------
+[INFO] Building intruvia-web 0.0.1                                        [4/5]
+[INFO]   from intruvia-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-web ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-web/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-web ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-web ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-web/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-web ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-web ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-web/target/intruvia-web-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ intruvia-web ---
+[INFO] li.intruvia:intruvia-web:jar:0.0.1
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-app >----------------------
+[INFO] Building intruvia-app 0.0.1                                        [5/5]
+[INFO]   from intruvia-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-app ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-app/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-app ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-app ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-app/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-app ---
+[INFO] 
+[INFO] --- resources:3.3.1:copy-resources (runtime) @ intruvia-app ---
+[INFO] Copying 3 resources from src/main/runtime to target/intruvia/runtime
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-app ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:copy-dependencies (distribution-libraries) @ intruvia-app ---
+[INFO] 
+[INFO] --- failsafe:3.5.2:integration-test (default) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.ApplicationIT
+2026-09-28 13:01:45,569 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:skeleton
+2026-09-28 13:01:45,681 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Initializing 1 Strolch Components...
+2026-09-28 13:01:45,683 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been initialized. Took 302us
+2026-09-28 13:01:45,685 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Starting 1 Strolch Components...
+2026-09-28 13:01:45,694 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.2.7-arch1-1 Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 32
+2026-09-28 13:01:45,695 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.6 GB,  Total: 117.4 MB,  Used: 15.0 MB,  Free: 102.4 MB
+2026-09-28 13:01:45,695 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-09-28 13:01:45,695 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-09-28 13:01:45,697 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components started for version 0.0.1. Took 10ms. Strolch is now ready to be used. Have fun =))
+2026-09-28 13:01:45,698 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-09-28 13:01:45,711 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@6b4f6597{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2eb70127{STARTED}}
+2026-09-28 13:01:45,873 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@6b4f6597{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2eb70127{STARTED}}
+2026-09-28 13:01:45,877 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@bbe956{HTTP/1.1, (http/1.1)}{127.0.0.1:46715}
+2026-09-28 13:01:45,879 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@4a3eee85{STARTING}[12.0.16,sto=5000] @556ms
+2026-09-28 13:01:45,879 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:46715 (Strolch STARTED)
+2026-09-28 13:01:45,880 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@4a3eee85{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:01:45,880 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@4a3eee85{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:01:45,882 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@bbe956{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-09-28 13:01:45,886 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@6b4f6597{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2eb70127{STOPPED}}
+2026-09-28 13:01:45,887 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Stopping 1 Strolch Components...
+2026-09-28 13:01:45,887 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been stopped. Took 118us
+2026-09-28 13:01:45,887 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-09-28 13:01:45,887 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Destroying 1 Strolch Components...
+2026-09-28 13:01:45,888 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been destroyed! Took 49us
+2026-09-28 13:01:45,888 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.125 s -- in li.intruvia.app.ApplicationIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.2:verify (default) @ intruvia-app ---
+[INFO] 
+[INFO] --- dependency:3.8.1:tree (default-cli) @ intruvia-app ---
+[INFO] li.intruvia:intruvia-app:jar:0.0.1
+[INFO] +- li.intruvia:intruvia-rest:jar:0.0.1:compile
+[INFO] |  +- li.intruvia:intruvia-core:jar:0.0.1:compile
+[INFO] |  |  \- li.strolch:strolch-agent:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  |     +- ch.qos.logback:logback-classic:jar:1.5.32:compile
+[INFO] |  |     |  \- ch.qos.logback:logback-core:jar:1.5.32:compile
+[INFO] |  |     +- li.strolch:strolch-model:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  |     |  +- com.google.code.gson:gson:jar:2.12.1:compile
+[INFO] |  |     |  |  \- com.google.errorprone:error_prone_annotations:jar:2.36.0:compile
+[INFO] |  |     |  \- li.strolch:strolch-utils:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  |     |     +- jakarta.xml.bind:jakarta.xml.bind-api:jar:4.0.4:compile
+[INFO] |  |     |     |  \- jakarta.activation:jakarta.activation-api:jar:2.1.4:compile
+[INFO] |  |     |     +- jakarta.mail:jakarta.mail-api:jar:2.1.3:compile
+[INFO] |  |     |     +- org.eclipse.angus:angus-mail:jar:2.0.4:compile
+[INFO] |  |     |     +- org.eclipse.angus:angus-activation:jar:2.0.2:compile
+[INFO] |  |     |     +- org.bouncycastle:bcprov-jdk18on:jar:1.86:compile
+[INFO] |  |     |     +- org.bouncycastle:bcutil-jdk18on:jar:1.86:compile
+[INFO] |  |     |     +- org.bouncycastle:bcjmail-jdk18on:jar:1.86:compile
+[INFO] |  |     |     |  \- org.bouncycastle:bcpkix-jdk18on:jar:1.86:compile
+[INFO] |  |     |     +- org.bouncycastle:bcpg-jdk18on:jar:1.86:compile
+[INFO] |  |     |     \- org.pgpainless:pgpainless-core:jar:1.7.4:compile
+[INFO] |  |     |        +- org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.8.10:compile
+[INFO] |  |     |        |  +- org.jetbrains.kotlin:kotlin-stdlib:jar:1.8.10:compile
+[INFO] |  |     |        |  |  +- org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.8.10:compile
+[INFO] |  |     |        |  |  \- org.jetbrains:annotations:jar:13.0:compile
+[INFO] |  |     |        |  \- org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.8.10:compile
+[INFO] |  |     |        \- com.google.code.findbugs:jsr305:jar:3.0.2:runtime
+[INFO] |  |     +- li.strolch:strolch-privilege:jar:2.8.0-SNAPSHOT:compile
+[INFO] |  |     +- ch.eitchnet:cron:jar:1.6.2:compile
+[INFO] |  |     \- org.eclipse.store:storage-embedded:jar:2.1.3:compile
+[INFO] |  |        \- org.eclipse.store:storage:jar:2.1.3:compile
+[INFO] |  |           +- org.eclipse.store:afs-nio:jar:2.1.3:compile
+[INFO] |  |           |  \- org.eclipse.serializer:afs:jar:2.1.3:compile
+[INFO] |  |           |     \- org.eclipse.serializer:base:jar:2.1.3:compile
+[INFO] |  |           \- org.eclipse.serializer:persistence-binary:jar:2.1.3:compile
+[INFO] |  |              \- org.eclipse.serializer:persistence:jar:2.1.3:compile
+[INFO] |  +- org.glassfish.jersey.containers:jersey-container-servlet-core:jar:3.1.11:compile
+[INFO] |  |  +- jakarta.inject:jakarta.inject-api:jar:2.0.1:compile
+[INFO] |  |  +- org.glassfish.jersey.core:jersey-common:jar:3.1.11:compile
+[INFO] |  |  |  +- jakarta.annotation:jakarta.annotation-api:jar:2.1.1:compile
+[INFO] |  |  |  \- org.glassfish.hk2:osgi-resource-locator:jar:1.0.3:compile
+[INFO] |  |  +- org.glassfish.jersey.core:jersey-server:jar:3.1.11:compile
+[INFO] |  |  |  +- org.glassfish.jersey.core:jersey-client:jar:3.1.11:compile
+[INFO] |  |  |  \- jakarta.validation:jakarta.validation-api:jar:3.0.2:compile
+[INFO] |  |  \- jakarta.ws.rs:jakarta.ws.rs-api:jar:3.1.0:compile
+[INFO] |  \- org.glassfish.jersey.inject:jersey-hk2:jar:3.1.11:compile
+[INFO] |     +- org.glassfish.hk2:hk2-locator:jar:3.0.6:compile
+[INFO] |     |  +- org.glassfish.hk2.external:aopalliance-repackaged:jar:3.0.6:compile
+[INFO] |     |  +- org.glassfish.hk2:hk2-api:jar:3.0.6:compile
+[INFO] |     |  \- org.glassfish.hk2:hk2-utils:jar:3.0.6:compile
+[INFO] |     \- org.javassist:javassist:jar:3.30.2-GA:compile
+[INFO] +- li.intruvia:intruvia-web:jar:0.0.1:compile
+[INFO] +- org.eclipse.jetty:jetty-server:jar:12.0.16:compile
+[INFO] |  +- org.eclipse.jetty:jetty-http:jar:12.0.16:compile
+[INFO] |  |  \- org.eclipse.jetty:jetty-util:jar:12.0.16:compile
+[INFO] |  +- org.eclipse.jetty:jetty-io:jar:12.0.16:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:2.0.16:compile
+[INFO] +- org.eclipse.jetty.ee10:jetty-ee10-servlet:jar:12.0.16:compile
+[INFO] |  +- jakarta.servlet:jakarta.servlet-api:jar:6.0.0:compile
+[INFO] |  +- org.eclipse.jetty:jetty-security:jar:12.0.16:compile
+[INFO] |  \- org.eclipse.jetty:jetty-session:jar:12.0.16:compile
+[INFO] \- junit:junit:jar:4.13.2:test
+[INFO]    \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  0.300 s]
+[INFO] intruvia-core ...................................... SUCCESS [  0.563 s]
+[INFO] intruvia-rest ...................................... SUCCESS [  0.129 s]
+[INFO] intruvia-web ....................................... SUCCESS [  0.015 s]
+[INFO] intruvia-app ....................................... SUCCESS [  1.706 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  2.800 s
+[INFO] Finished at: 2026-09-28T13:01:46+02:00
+[INFO] ------------------------------------------------------------------------
