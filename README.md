@@ -31,3 +31,9 @@ another session. The script lock prevents overlapping invocations of this script
 
 See [runner details](docs/TASK_RUNNER.md) and the official
 [Codex non-interactive documentation](https://developers.openai.com/codex/noninteractive).
+
+## License
+
+Intruvia is licensed under the GNU Affero General Public License, version 3.0
+(SPDX: `AGPL-3.0-only`). See [LICENSE](LICENSE) for the full terms.
+Third-party components retain their respective licenses.

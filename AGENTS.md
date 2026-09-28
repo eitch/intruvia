@@ -11,6 +11,14 @@ Read the AGENTS.md file from Strolch Framework Source Code
 
 **If you cannot find the guidelines, then STOP work and inform the user!**
 
+## Project Ownership and License
+
+Intruvia is the project owner's personal code. Company copyright-header requirements
+in the shared guidelines do not apply to Intruvia. Do not add company attribution
+or invent a copyright holder name.
+The project is licensed under `AGPL-3.0-only`; see [LICENSE](LICENSE). Preserve
+existing third-party copyright and license notices when incorporating external code.
+
 ## Intruvia Specification and Open Work
 
 Before starting implementation, read these project documents:

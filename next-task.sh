@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Copyright (c) 2026 atexxi Systems AG
+# SPDX-License-Identifier: AGPL-3.0-only
 set -euo pipefail
 
 project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
