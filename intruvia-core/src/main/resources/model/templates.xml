@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StrolchModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://strolch.li/schema/StrolchModel.xsd"
+              xsi:schemaLocation="https://strolch.li/schema/StrolchModel.xsd https://strolch.li/schema/StrolchModel.xsd">
+    <Resource Id="SecurityEvent" Name="SecurityEvent" Type="SecurityEvent">
+        <ParameterBag Id="envelope" Name="envelope" Type="envelope">
+            <Parameter Id="schemaVersion" Name="schemaVersion" Type="Integer" Value="0"/>
+            <Parameter Id="sequence" Name="sequence" Type="Long" Value="0"/>
+            <Parameter Id="category" Name="category" Type="String" Value=""/>
+            <Parameter Id="action" Name="action" Type="String" Value=""/>
+            <Parameter Id="occurredAt" Name="occurredAt" Type="String" Value=""/>
+            <Parameter Id="receivedAt" Name="receivedAt" Type="String" Value=""/>
+        </ParameterBag>
+        <ParameterBag Id="source" Name="source" Type="source">
+            <Parameter Id="type" Name="type" Type="String" Value=""/>
+            <Parameter Id="instanceId" Name="instanceId" Type="String" Value=""/>
+            <Parameter Id="eventId" Name="eventId" Type="String" Value=""/>
+        </ParameterBag>
+        <ParameterBag Id="subject" Name="subject" Type="subject">
+            <Parameter Id="ip" Name="ip" Type="String" Value=""/>
+        </ParameterBag>
+        <ParameterBag Id="observer" Name="observer" Type="observer">
+            <Parameter Id="id" Name="id" Type="String" Value=""/>
+        </ParameterBag>
+        <ParameterBag Id="attributes.fail2ban" Name="attributes.fail2ban" Type="attributes.fail2ban">
+            <Parameter Id="jail" Name="jail" Type="String" Value=""/>
+            <Parameter Id="failures" Name="failures" Type="Integer" Value="0"/>
+        </ParameterBag>
+        <ParameterBag Id="geo" Name="geo" Type="geo">
+            <Parameter Id="status" Name="status" Type="String" Value=""/>
+            <Parameter Id="countryCode" Name="countryCode" Type="String" Value=""/>
+            <Parameter Id="countryName" Name="countryName" Type="String" Value=""/>
+            <Parameter Id="region" Name="region" Type="String" Value=""/>
+            <Parameter Id="city" Name="city" Type="String" Value=""/>
+            <Parameter Id="latitude" Name="latitude" Type="Float" Value="0"/>
+            <Parameter Id="longitude" Name="longitude" Type="Float" Value="0"/>
+            <Parameter Id="accuracyRadiusKm" Name="accuracyRadiusKm" Type="Float" Value="0"/>
+            <Parameter Id="provider" Name="provider" Type="String" Value=""/>
+            <Parameter Id="databaseEdition" Name="databaseEdition" Type="String" Value=""/>
+            <Parameter Id="databaseBuildAt" Name="databaseBuildAt" Type="String" Value=""/>
+            <Parameter Id="lookedUpAt" Name="lookedUpAt" Type="String" Value=""/>
+        </ParameterBag>
+    </Resource>
+    <Resource Id="IngestReceipt" Name="IngestReceipt" Type="IngestReceipt">
+        <ParameterBag Id="parameters" Name="parameters" Type="parameters">
+            <Parameter Id="instanceId" Name="instanceId" Type="String" Value=""/>
+            <Parameter Id="sourceEventId" Name="sourceEventId" Type="String" Value=""/>
+            <Parameter Id="payloadDigest" Name="payloadDigest" Type="String" Value=""/>
+            <Parameter Id="eventId" Name="eventId" Type="String" Value=""/>
+            <Parameter Id="sequence" Name="sequence" Type="Long" Value="0"/>
+            <Parameter Id="expiresAt" Name="expiresAt" Type="String" Value=""/>
+        </ParameterBag>
+    </Resource>
+    <Resource Id="EventStreamState" Name="EventStreamState" Type="EventStreamState">
+        <ParameterBag Id="parameters" Name="parameters" Type="parameters">
+            <Parameter Id="lastCommittedSequence" Name="lastCommittedSequence" Type="Long" Value="0"/>
+            <Parameter Id="minAfter" Name="minAfter" Type="Long" Value="0"/>
+        </ParameterBag>
+    </Resource>
+</StrolchModel>

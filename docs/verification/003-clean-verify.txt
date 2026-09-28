@@ -1,0 +1,222 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-core ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-core/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 9 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.core.model.EventModelTest
+13:17:07.163 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 15ms
+13:17:07.199 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 756us
+13:17:07.205 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 627us
+13:17:07.207 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 523us
+13:17:07.209 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 512us
+13:17:07.211 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 441us
+13:17:07.212 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 717us
+13:17:07.214 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 778us
+13:17:07.216 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 763us
+13:17:07.223 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 509us
+13:17:07.224 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 281us
+13:17:07.225 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 280us
+13:17:07.226 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 507us
+13:17:07.236 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 464us
+13:17:07.237 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 584us
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.145 s -- in li.intruvia.core.model.EventModelTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-core ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-core/target/intruvia-core-0.0.1.jar
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-rest >----------------------
+[INFO] Building intruvia-rest 0.0.1                                       [3/5]
+[INFO]   from intruvia-rest/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-rest ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-rest/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-rest ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.rest.dto.Fail2banDtoTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.060 s -- in li.intruvia.rest.dto.Fail2banDtoTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-rest ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-rest/target/intruvia-rest-0.0.1.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-web >----------------------
+[INFO] Building intruvia-web 0.0.1                                        [4/5]
+[INFO]   from intruvia-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-web ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-web/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-web ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-web ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-web/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-web ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-web ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-web/target/intruvia-web-0.0.1.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-app >----------------------
+[INFO] Building intruvia-app 0.0.1                                        [5/5]
+[INFO]   from intruvia-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-app ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-app/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-app ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-app ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-app/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-app ---
+[INFO] 
+[INFO] --- resources:3.3.1:copy-resources (runtime) @ intruvia-app ---
+[INFO] Copying 3 resources from src/main/runtime to target/intruvia/runtime
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-app ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:copy-dependencies (distribution-libraries) @ intruvia-app ---
+[INFO] 
+[INFO] --- failsafe:3.5.2:integration-test (default) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.ApplicationIT
+2026-09-28 13:17:08,503 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:skeleton
+2026-09-28 13:17:08,622 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Initializing 1 Strolch Components...
+2026-09-28 13:17:08,624 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been initialized. Took 272us
+2026-09-28 13:17:08,625 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Starting 1 Strolch Components...
+2026-09-28 13:17:08,635 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.2.7-arch1-1 Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 32
+2026-09-28 13:17:08,637 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.6 GB,  Total: 117.4 MB,  Used: 15.1 MB,  Free: 102.4 MB
+2026-09-28 13:17:08,637 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-09-28 13:17:08,637 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-09-28 13:17:08,638 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components started for version 0.0.1. Took 12ms. Strolch is now ready to be used. Have fun =))
+2026-09-28 13:17:08,639 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-09-28 13:17:08,652 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@c2e9feb{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@74d95697{STARTED}}
+2026-09-28 13:17:08,821 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@c2e9feb{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@74d95697{STARTED}}
+2026-09-28 13:17:08,825 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@576ea2e1{HTTP/1.1, (http/1.1)}{127.0.0.1:35709}
+2026-09-28 13:17:08,827 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@197f4ae1{STARTING}[12.0.16,sto=5000] @579ms
+2026-09-28 13:17:08,827 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:35709 (Strolch STARTED)
+2026-09-28 13:17:08,827 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@197f4ae1{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:17:08,827 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@197f4ae1{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:17:08,830 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@576ea2e1{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-09-28 13:17:08,833 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@c2e9feb{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@74d95697{STOPPED}}
+2026-09-28 13:17:08,834 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Stopping 1 Strolch Components...
+2026-09-28 13:17:08,834 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been stopped. Took 97us
+2026-09-28 13:17:08,834 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-09-28 13:17:08,834 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton Destroying 1 Strolch Components...
+2026-09-28 13:17:08,835 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:skeleton All 1 Strolch Components have been destroyed! Took 48us
+2026-09-28 13:17:08,835 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.144 s -- in li.intruvia.app.ApplicationIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.2:verify (default) @ intruvia-app ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  0.059 s]
+[INFO] intruvia-core ...................................... SUCCESS [  1.212 s]
+[INFO] intruvia-rest ...................................... SUCCESS [  0.354 s]
+[INFO] intruvia-web ....................................... SUCCESS [  0.010 s]
+[INFO] intruvia-app ....................................... SUCCESS [  1.831 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.518 s
+[INFO] Finished at: 2026-09-28T13:17:09+02:00
+[INFO] ------------------------------------------------------------------------

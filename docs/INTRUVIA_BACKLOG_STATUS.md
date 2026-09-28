@@ -1,16 +1,16 @@
 # Intruvia — backlog status
 
-Updated: 2026-09-28 · Implementation state: task 002 complete
+Updated: 2026-09-28 · Implementation state: task 003 complete
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **None; task 002 completed (DONE)**.
-- Next task: **003 — Define event DTOs and Strolch model mapping (TODO)**; dependency 002 is DONE.
-- Completed: **2 / 22**. TODO: **20**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Current task: **None; task 003 completed (DONE)**.
+- Next task: **004 — Configure durable Strolch persistence (TODO)**; dependency 003 is DONE.
+- Completed: **3 / 22**. TODO: **19**. IN_PROGRESS: **0**. BLOCKED: **0**.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
-- Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton is verified; event features and deployment remain pending.
+- Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton is verified; task 003 model contracts are verified; ingestion, persistence, viewer and deployment remain pending.
 
 ## Status conventions
 
@@ -22,7 +22,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 |---|---|---|---|---|
 | 001 | Verify and pin the Strolch runtime baseline | — | DONE | [Decision](architecture/001-runtime-baseline.md), [probe](../probes/runtime-baseline/pom.xml), [verification](verification/001-resume-verification.txt), [checksums](verification/001-dependencies.sha256). Clean verify: 2 tests passed; REST/WebSocket/lifecycle and Jakarta namespace verified. |
 | 002 | Create the Maven modules and application skeleton | 001 | DONE | [Architecture](architecture/002-application-skeleton.md), [clean verify](verification/002-clean-verify.txt), [process smoke](verification/002-application-smoke.txt). Four modules; 2 integration tests passed; packaged page/health and Strolch/Jetty shutdown verified. |
-| 003 | Define event DTOs and Strolch model mapping | 002 | TODO | — |
+| 003 | Define event DTOs and Strolch model mapping | 002 | DONE | [Mapping](architecture/003-event-model.md), [schema](api/v1.schema.json), [fixture](api/event-v1.json), [clean verify](verification/003-clean-verify.txt). 7 contract tests and 2 existing integration tests passed. |
 | 004 | Configure durable Strolch persistence | 003 | TODO | — |
 | 005 | Implement machine credential authentication | 002 | TODO | — |
 | 006 | Implement Fail2ban validation and normalization | 003 | TODO | — |
@@ -129,3 +129,21 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Final review: `git diff --check` passed; changed source/XML/HTML line lengths under 160 columns. No credentials, realm or event storage bundled. Database/authentication/WebSocket/browser-capacity checks unrun and outside task 002.
 - No blocker. Specification and backlog requirements unchanged. No commit, push or deployment.
 - Counts: DONE 2, TODO 20, IN_PROGRESS 0, BLOCKED 0. Next eligible task: **003**; remains TODO.
+
+### 2026-09-28 — task 003 started
+
+- Agent: Codex. Transition: TODO → IN_PROGRESS. Ledger verified: no active tasks; lowest eligible TODO is 003, dependency 002 DONE. Initial `git status --short` clean.
+- Read project/framework guidelines, Vanilla JavaScript rules, linked framework specification and all three project planning documents. Scope limited to task 003. No commit, push or deployment.
+- Counts: DONE 2, TODO 19, IN_PROGRESS 1, BLOCKED 0. Next task 004 awaits 003.
+
+### 2026-09-28 — task 003 completed
+
+- Agent: Codex. Transition: IN_PROGRESS → DONE. Implemented only task 003; no commit, push or deployment.
+- Changes: immutable event/GeoIP/receipt/stream records; browser-safe decimal string sequences; typed Strolch XML templates and detached bidirectional mapper; Fail2ban request/response and error DTOs; shared Gson codec using the existing dependency; v1 JSON Schema and complete synthetic IPv6 event fixture. All section 3 storage types/nullability documented. README updated.
+- Sources/artifacts: `intruvia-core/src/main/java/li/intruvia/core/model/`, `intruvia-core/src/main/resources/model/templates.xml`, `intruvia-rest/src/main/java/li/intruvia/rest/dto/`, [mapping](architecture/003-event-model.md), [schema](api/v1.schema.json), [fixture](api/event-v1.json), [JAR hashes](verification/003-artifacts.sha256).
+- Acceptance command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B clean verify` — exit 0. Initial run: 6 contract tests plus 2 integration tests passed ([output](verification/003-initial-verify.txt)). Final run after partial-location/text coverage and response invariant: 7 contract tests plus 2 integration tests, zero failures/errors/skips; all reactor modules SUCCESS ([output](verification/003-clean-verify.txt)).
+- Round trips exercise actual pinned Strolch XML serialization/reload and JSON: IPv6, namespaced attributes and escaped text, missing/null optional values, all five GeoIP statuses, partial FOUND records, real zero coordinates, timestamp nanoseconds and UTC conversion, receipt/state Long.MAX_VALUE and sequence above JavaScript safe integer range. Unsupported schema versions and invalid coordinates/cursors fail.
+- Artifact sanity command: `python3 docs/verification/003-contract-check.py` — exit 0 ([output](verification/003-contract-check.txt)); JSON parses, local schema references resolve, complete envelope keys and decimal sequence boundaries pass, Java lines remain under 160 characters. This is not a general JSON Schema validation run. Optional Python `jsonschema` module inspection found it unavailable; no dependency was added and no full schema-validator result is claimed.
+- Artifact command: `sha256sum intruvia-core/target/intruvia-core-0.0.1.jar intruvia-rest/target/intruvia-rest-0.0.1.jar` — exit 0. `git diff --check` — exit 0.
+- Unrun/out of scope: PostgreSQL persistence/restart, strict inbound validation/normalization, HTTP ingestion and browser checks; assigned to subsequent tasks. No failed builds or remaining task 003 blockers. Specification/backlog requirements unchanged.
+- Counts: DONE 3, TODO 19, IN_PROGRESS 0, BLOCKED 0. Next eligible task **004**; remains TODO. Task 005 is also dependency-eligible but follows 004 in ascending order.

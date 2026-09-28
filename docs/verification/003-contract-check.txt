@@ -1,0 +1,3 @@
+PASS: JSON parsing, local schema references, complete envelope keys,
+decimal sequence boundaries and Java line-length review.
+Not run: full JSON Schema validator (Python jsonschema is unavailable).

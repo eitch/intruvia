@@ -89,3 +89,14 @@ service. Later backlog tasks implement persistence, authentication and the viewe
 `mvn verify` runs the packaged-process HTTP/start/stop smoke test and an in-process
 lifecycle test; it needs no database, browser, Node, frontend framework or bundler.
 See [skeleton architecture and verification](docs/architecture/002-application-skeleton.md).
+
+## Event contracts (v1)
+
+The core module now provides immutable event, GeoIP, receipt and stream-state contracts
+and a typed Strolch Resource mapper. See the [field mapping](docs/architecture/003-event-model.md),
+[v1 API schema](docs/api/v1.schema.json) and [complete synthetic fixture](docs/api/event-v1.json).
+Sequences are decimal strings on the wire; absent coordinates remain null. The fixture
+uses a documentation IPv6 address with invented geography solely for serialization tests;
+real ingestion must classify that address as NON_PUBLIC. These contracts do not enable
+ingestion or persistence yet. Run `mvn clean verify` with Java 25 to verify JSON and
+Strolch XML round trips, including IPv6, partial locations and 64-bit sequence precision.

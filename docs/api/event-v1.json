@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "14f5c36e-b1ed-4c73-8b5e-90d25f5decd8",
+  "sequence": "9007199254740993",
+  "source": {
+    "type": "fail2ban",
+    "instanceId": "fixture-server",
+    "eventId": "55c42ae2-865b-47b8-bc4b-c166c0344c5c"
+  },
+  "category": "network.security",
+  "action": "ban",
+  "occurredAt": "2026-09-28T12:00:00.123456789Z",
+  "receivedAt": "2026-09-28T12:00:01Z",
+  "subject": {
+    "ip": "2001:db8::42"
+  },
+  "observer": {
+    "id": "fixture-server"
+  },
+  "attributes": {
+    "fail2ban": {
+      "jail": "sshd",
+      "failures": 7
+    }
+  },
+  "geo": {
+    "status": "FOUND",
+    "countryCode": "ZZ",
+    "countryName": "Synthetic test country",
+    "region": "Synthetic region",
+    "city": "Synthetic city",
+    "latitude": 0.0,
+    "longitude": 0.0,
+    "accuracyRadiusKm": 25.0,
+    "provider": "maxmind",
+    "databaseEdition": "Synthetic-City-Fixture",
+    "databaseBuildAt": "2026-09-01T00:00:00Z",
+    "lookedUpAt": "2026-09-28T12:00:00.5Z"
+  }
+}
