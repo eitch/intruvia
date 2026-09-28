@@ -10,7 +10,9 @@ The runner uses `workspace-write` and permits a workspace without Git through
 `--skip-git-repo-check`. It inherits the configured Codex model and authentication.
 Executable resolution uses an explicit `CODEX_BIN` first, then PATH, then the Linux
 desktop bundle at `/usr/lib/chatgpt/resources/codex`. An invalid override fails.
-It does not bypass sandboxing or grant extra writable directories. The shell
+It enables outbound network access inside the sandbox and grants write access to
+`~/.m2/repository` for Maven downloads (override with an absolute `MAVEN_REPOSITORY`
+path matching your Maven settings). It does not bypass filesystem sandboxing. The shell
 propagates CLI failures using `pipefail`; task completion remains a ledger outcome,
 not an interpretation of the process exit code.
 
@@ -22,4 +24,6 @@ Codex or taking a lock.
 
 After an interrupted run, inspect the changes and ledger before invoking the
 script again. It requests resumption of the single IN_PROGRESS task; BLOCKED tasks
-require the blocker to be resolved and their status deliberately updated before retry.
+can be retried explicitly with `--retry-blocked`. This selects the lowest-numbered
+eligible BLOCKED task, rechecks its blocker, and resumes only if it is resolved.
+The previous failure evidence is preserved. Combine with `--dry-run` to preview.
