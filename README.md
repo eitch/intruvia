@@ -38,13 +38,20 @@ Intruvia is licensed under the GNU Affero General Public License, version 3.0
 (SPDX: `AGPL-3.0-only`). See [LICENSE](LICENSE) for the full terms.
 Third-party components retain their respective licenses.
 
-## Runtime baseline investigation
+## Verified runtime baseline
 
-Task 001 is blocked on build dependency access. See the
-[baseline findings](docs/architecture/001-runtime-baseline.md) and
-[verification record](docs/verification/001-baseline-attempt.txt) for observed
-versions, source references and the requirements for resuming verification.
-No application build or verified runtime baseline is available yet.
+Task 001 pins Java 25, Strolch, Jersey and Jetty in an isolated compatibility probe.
+See the [baseline decision](docs/architecture/001-runtime-baseline.md) for exact
+versions, integration conventions and verification limits. Run it with Java 25:
+
+```bash
+JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH \
+  mvn -B -f probes/runtime-baseline/pom.xml clean verify
+```
+
+The probe starts Strolch/Jetty on loopback, verifies REST and WebSocket exchange,
+and shuts both down. It needs Maven dependency access but no PostgreSQL server.
+Application modules and the deployable viewer are still pending.
 
 To retry a blocked task after fixing its environment:
 
