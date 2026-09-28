@@ -37,3 +37,22 @@ See [runner details](docs/TASK_RUNNER.md) and the official
 Intruvia is licensed under the GNU Affero General Public License, version 3.0
 (SPDX: `AGPL-3.0-only`). See [LICENSE](LICENSE) for the full terms.
 Third-party components retain their respective licenses.
+
+## Runtime baseline investigation
+
+Task 001 is blocked on build dependency access. See the
+[baseline findings](docs/architecture/001-runtime-baseline.md) and
+[verification record](docs/verification/001-baseline-attempt.txt) for observed
+versions, source references and the requirements for resuming verification.
+No application build or verified runtime baseline is available yet.
+
+To retry a blocked task after fixing its environment:
+
+```bash
+./next-task.sh --retry-blocked
+```
+
+The runner enables outbound network access for dependency downloads and permits
+writes to `~/.m2/repository` while retaining the workspace filesystem sandbox.
+If Maven uses a custom local repository, set `MAVEN_REPOSITORY` to that absolute path.
+The retry checks the blocker again and preserves previous failure evidence.

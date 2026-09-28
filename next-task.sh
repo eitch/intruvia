@@ -4,18 +4,17 @@ set -euo pipefail
 
 project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 dry_run=false
-case "${1:-}" in
-	--dry-run) dry_run=true ;;
-	-h|--help)
-		printf 'Usage: %s [--dry-run]\nRun one Intruvia backlog task using Codex CLI.\n' "$0"
-		exit 0 ;;
-	'') ;;
-	*) printf 'Unknown argument: %s\n' "$1" >&2; exit 2 ;;
-esac
-if (( $# > 1 )); then
-	printf 'Expected at most one argument.\n' >&2
-	exit 2
-fi
+retry_blocked=false
+for argument in "$@"; do
+	case "$argument" in
+		--dry-run) dry_run=true ;;
+		--retry-blocked) retry_blocked=true ;;
+		-h|--help)
+			printf 'Usage: %s [--dry-run] [--retry-blocked]\nRun one Intruvia backlog task using Codex CLI.\n' "$0"
+			exit 0 ;;
+		*) printf 'Unknown argument: %s\n' "$argument" >&2; exit 2 ;;
+	esac
+done
 
 for document in AGENTS.md docs/INTRUVIA_SPECIFICATION.md docs/INTRUVIA_BACKLOG.md docs/INTRUVIA_BACKLOG_STATUS.md; do
 	if [[ ! -r "$project_dir/$document" ]]; then
@@ -53,6 +52,16 @@ Finish with the task number, changes, verification results, status, and next tas
 PROMPT
 )
 
+if "$retry_blocked"; then
+	prompt+=$'\n\nExplicit retry authorization: instead of selecting a TODO task, select the lowest-numbered BLOCKED task with all dependencies DONE. Stop if another task is IN_PROGRESS. Recheck its recorded blocker; if resolved, set it IN_PROGRESS and complete that task only. If unresolved, record the new evidence and leave it BLOCKED. If no blocked task is eligible, report that and stop.'
+fi
+
+maven_repository="${MAVEN_REPOSITORY:-$HOME/.m2/repository}"
+if [[ "$maven_repository" != /* ]]; then
+	printf 'MAVEN_REPOSITORY must be an absolute path.\n' >&2
+	exit 2
+fi
+
 if [[ -n "${CODEX_BIN:-}" ]]; then
 	codex_bin=$(command -v -- "$CODEX_BIN") || {
 		printf 'CODEX_BIN is not an executable: %s\n' "$CODEX_BIN" >&2
@@ -69,6 +78,7 @@ fi
 
 if "$dry_run"; then
 	printf 'Workspace: %s\nCodex executable: %s\n\n%s\n' "$project_dir" "$codex_bin" "$prompt"
+	printf 'Network access: enabled\nWritable Maven repository: %s\n' "$maven_repository"
 	exit 0
 fi
 
@@ -86,5 +96,7 @@ if ! flock -n 9; then
 	exit 1
 fi
 
+mkdir -p -- "$maven_repository"
 cd -- "$project_dir"
-printf '%s\n' "$prompt" | "$codex_bin" exec --cd "$project_dir" --sandbox workspace-write --skip-git-repo-check -
+printf '%s\n' "$prompt" | "$codex_bin" exec --cd "$project_dir" --sandbox workspace-write \
+	-c sandbox_workspace_write.network_access=true --add-dir "$maven_repository" --skip-git-repo-check -
