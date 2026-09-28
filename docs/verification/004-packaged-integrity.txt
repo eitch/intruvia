@@ -1,0 +1,7 @@
+strolch-agent-2.8.0-SNAPSHOT.jar: OK b49c9a0f8a9b203577df79febfe6b98db68981baf21eea7ccc322f65763847a0 li/strolch/strolch-agent/2.8.0-SNAPSHOT/strolch-agent-2.8.0-20260927.120822-2.jar
+strolch-model-2.8.0-SNAPSHOT.jar: OK e015b2af69ce66336fc8293a1cf8c6abfad2be621e9681ec3fe0e88513f5867b li/strolch/strolch-model/2.8.0-SNAPSHOT/strolch-model-2.8.0-20260927.120822-2.jar
+strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar: OK c47862adff14a1f91fb15766fb1f8f790ac0cd3033dc3bfdd2f8851ac5952525 li/strolch/strolch-persistence-postgresql/2.8.0-SNAPSHOT/strolch-persistence-postgresql-2.8.0-20260927.120822-2.jar
+strolch-privilege-2.8.0-SNAPSHOT.jar: OK 112bb6c1d5899ce1261abed6994e62be8c78c1095ad2bd872c658f4dc50b4fd3 li/strolch/strolch-privilege/2.8.0-SNAPSHOT/strolch-privilege-2.8.0-20260927.120822-2.jar
+strolch-service-2.8.0-SNAPSHOT.jar: OK 6a46abd61e706109f5b0db911dfb5633254e95a7013ac193658bdcc133422002 li/strolch/strolch-service/2.8.0-SNAPSHOT/strolch-service-2.8.0-20260927.120822-2.jar
+strolch-utils-2.8.0-SNAPSHOT.jar: OK 569250b210514174916bed00542271c30bc208f46e499e4e7f81b4e22e9cdb0b li/strolch/strolch-utils/2.8.0-SNAPSHOT/strolch-utils-2.8.0-20260927.120822-2.jar
+All packaged Strolch JARs match the pinned timestamped baseline. Unused mutable soql/web-rest SNAPSHOT cache aliases differ; cache left unchanged.

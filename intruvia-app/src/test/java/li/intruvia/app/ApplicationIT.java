@@ -2,6 +2,8 @@
 package li.intruvia.app;
 
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,13 +18,28 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.*;
 
 public class ApplicationIT {
+	private DatabaseFixture database;
+
+	@Before
+	public void createDatabase() throws Exception {
+		this.database = new DatabaseFixture();
+	}
+
+	@After
+	public void dropDatabase() throws Exception {
+		if (this.database != null)
+			this.database.close();
+	}
+
 	@Test(timeout = 60000)
 	public void assembledApplicationServesPageAndHealthThenTerminates() throws Exception {
 		Path distribution = Path.of("target/intruvia").toAbsolutePath();
 		Path log = Path.of("target/application-smoke.log").toAbsolutePath();
-		Process process = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin/java").toString(),
-				"-jar", distribution.resolve("intruvia-app-0.0.1.jar").toString(), "runtime", "0")
-				.directory(distribution.toFile()).redirectErrorStream(true).redirectOutput(log.toFile()).start();
+		ProcessBuilder builder = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin/java").toString(),
+				"-jar", distribution.resolve("intruvia-app-0.0.1.jar").toString(), this.database.runtime.toString(), "0")
+				.directory(distribution.toFile()).redirectErrorStream(true).redirectOutput(log.toFile());
+		builder.environment().putAll(this.database.productionEnvironment());
+		Process process = builder.start();
 		try {
 			int port = awaitPort(process, log);
 			try (HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(5)).build()) {
@@ -52,7 +69,7 @@ public class ApplicationIT {
 
 	@Test(timeout = 30000)
 	public void closesBothLifecyclesAndAllowsRepeatedClose() throws Exception {
-		IntruviaApplication application = new IntruviaApplication(Path.of("target/intruvia/runtime"), 0);
+		IntruviaApplication application = new IntruviaApplication(this.database.runtime, 0);
 		try (application) {
 			application.start();
 			assertTrue(application.port() > 0);

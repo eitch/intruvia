@@ -1,12 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SPDX-License-Identifier: AGPL-3.0-only -->
 <StrolchConfiguration>
-	<env id="skeleton">
+	<env id="production">
 		<Runtime><applicationName>Intruvia</applicationName></Runtime>
+		<Component>
+			<name>PrivilegeHandler</name>
+			<api>li.strolch.runtime.privilege.PrivilegeHandler</api>
+			<impl>li.strolch.runtime.privilege.DefaultStrolchPrivilegeHandler</impl>
+			<Properties><privilegeConfigFile>PrivilegeConfig.xml</privilegeConfigFile></Properties>
+		</Component>
+		<Component>
+			<name>PersistenceHandler</name>
+			<api>li.strolch.persistence.api.PersistenceHandler</api>
+			<impl>li.strolch.persistence.postgresql.PostgreSqlPersistenceHandler</impl>
+			<Properties>
+				<db.useEnv>true</db.useEnv>
+				<allowSchemaCreation>false</allowSchemaCreation>
+				<allowSchemaMigration>false</allowSchemaMigration>
+				<allowSchemaDrop>false</allowSchemaDrop>
+				<allowDataInitOnSchemaCreate>false</allowDataInitOnSchemaCreate>
+			</Properties>
+		</Component>
+		<Component>
+			<name>RealmHandler</name>
+			<api>li.strolch.agent.api.RealmHandler</api>
+			<impl>li.strolch.agent.impl.DefaultRealmHandler</impl>
+			<depends>PrivilegeHandler</depends>
+			<depends>PersistenceHandler</depends>
+			<Properties>
+				<realms>defaultRealm</realms>
+				<dataStoreMode>CACHED</dataStoreMode>
+				<enableAuditTrail>true</enableAuditTrail>
+			</Properties>
+		</Component>
+		<Component>
+			<name>MigrationsHandler</name>
+			<api>li.strolch.migrations.MigrationsHandler</api>
+			<impl>li.strolch.migrations.MigrationsHandler</impl>
+			<depends>RealmHandler</depends>
+			<Properties><runMigrationsOnStart>false</runMigrationsOnStart><pollMigrations>false</pollMigrations></Properties>
+		</Component>
 		<Component>
 			<name>Intruvia</name>
 			<api>li.intruvia.core.IntruviaComponent</api>
 			<impl>li.intruvia.core.IntruviaComponent</impl>
+			<depends>MigrationsHandler</depends>
 		</Component>
 	</env>
 </StrolchConfiguration>

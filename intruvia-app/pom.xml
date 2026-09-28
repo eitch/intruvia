@@ -10,6 +10,10 @@
 	<artifactId>intruvia-app</artifactId>
 	<dependencies>
 		<dependency>
+			<groupId>li.strolch</groupId>
+			<artifactId>strolch-persistence-postgresql</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>li.intruvia</groupId>
 			<artifactId>intruvia-rest</artifactId>
 			<version>${project.version}</version>

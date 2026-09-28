@@ -1,14 +1,14 @@
 # Intruvia — backlog status
 
-Updated: 2026-09-28 · Implementation state: task 003 complete
+Updated: 2026-09-28 · Implementation state: task 004 in progress
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **None; task 003 completed (DONE)**.
-- Next task: **004 — Configure durable Strolch persistence (TODO)**; dependency 003 is DONE.
-- Completed: **3 / 22**. TODO: **19**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Current task: **004 — Configure durable Strolch persistence (IN_PROGRESS)**.
+- Next task: **005 — Implement machine credential authentication (TODO)**; dependency 002 is DONE; do not start during task 004.
+- Completed: **3 / 22**. TODO: **18**. IN_PROGRESS: **1**. BLOCKED: **0**.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton is verified; task 003 model contracts are verified; ingestion, persistence, viewer and deployment remain pending.
 
@@ -23,7 +23,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 001 | Verify and pin the Strolch runtime baseline | — | DONE | [Decision](architecture/001-runtime-baseline.md), [probe](../probes/runtime-baseline/pom.xml), [verification](verification/001-resume-verification.txt), [checksums](verification/001-dependencies.sha256). Clean verify: 2 tests passed; REST/WebSocket/lifecycle and Jakarta namespace verified. |
 | 002 | Create the Maven modules and application skeleton | 001 | DONE | [Architecture](architecture/002-application-skeleton.md), [clean verify](verification/002-clean-verify.txt), [process smoke](verification/002-application-smoke.txt). Four modules; 2 integration tests passed; packaged page/health and Strolch/Jetty shutdown verified. |
 | 003 | Define event DTOs and Strolch model mapping | 002 | DONE | [Mapping](architecture/003-event-model.md), [schema](api/v1.schema.json), [fixture](api/event-v1.json), [clean verify](verification/003-clean-verify.txt). 7 contract tests and 2 existing integration tests passed. |
-| 004 | Configure durable Strolch persistence | 003 | TODO | — |
+| 004 | Configure durable Strolch persistence | 003 | IN_PROGRESS | Database prerequisite check underway. |
 | 005 | Implement machine credential authentication | 002 | TODO | — |
 | 006 | Implement Fail2ban validation and normalization | 003 | TODO | — |
 | 007 | Implement local GeoIP enrichment | 003 | TODO | — |
@@ -147,3 +147,9 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Artifact command: `sha256sum intruvia-core/target/intruvia-core-0.0.1.jar intruvia-rest/target/intruvia-rest-0.0.1.jar` — exit 0. `git diff --check` — exit 0.
 - Unrun/out of scope: PostgreSQL persistence/restart, strict inbound validation/normalization, HTTP ingestion and browser checks; assigned to subsequent tasks. No failed builds or remaining task 003 blockers. Specification/backlog requirements unchanged.
 - Counts: DONE 3, TODO 19, IN_PROGRESS 0, BLOCKED 0. Next eligible task **004**; remains TODO. Task 005 is also dependency-eligible but follows 004 in ascending order.
+
+### 2026-09-28 — task 004 started
+
+- Agent: Codex. Transition: TODO → IN_PROGRESS. No active task; task 004 is the lowest eligible TODO, dependency 003 DONE. Current/next summary verified against all 22 ledger rows. Initial `git status --short` clean.
+- Read project/framework guidelines, including Vanilla JavaScript and linked framework specification, and all three project planning documents. Scope limited to task 004; no commit, push or deployment.
+- Checking availability of real PostgreSQL before implementation. Counts: DONE 3, TODO 18, IN_PROGRESS 1, BLOCKED 0. Next eligible task after this attempt: 005.

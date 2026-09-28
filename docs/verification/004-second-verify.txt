@@ -1,0 +1,400 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO]
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO]
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-core ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-core/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 11 source files with javac [debug release 25] to target/classes
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.core.model.EventModelTest
+13:33:27.022 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 16ms
+13:33:27.060 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 900us
+13:33:27.066 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 851us
+13:33:27.069 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 551us
+13:33:27.071 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 494us
+13:33:27.073 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 441us
+13:33:27.074 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 683us
+13:33:27.076 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 643us
+13:33:27.078 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 687us
+13:33:27.086 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 782us
+13:33:27.087 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 313us
+13:33:27.089 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 378us
+13:33:27.090 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 587us
+13:33:27.099 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 452us
+13:33:27.101 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 602us
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.150 s -- in li.intruvia.core.model.EventModelTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-core ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-core/target/intruvia-core-0.0.1.jar
+[INFO]
+[INFO] ---------------------< li.intruvia:intruvia-rest >----------------------
+[INFO] Building intruvia-rest 0.0.1                                       [3/5]
+[INFO]   from intruvia-rest/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-rest ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-rest/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/main/resources
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 25] to target/classes
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/test/resources
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-rest ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.rest.dto.Fail2banDtoTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in li.intruvia.rest.dto.Fail2banDtoTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-rest ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-rest/target/intruvia-rest-0.0.1.jar
+[INFO]
+[INFO] ----------------------< li.intruvia:intruvia-web >----------------------
+[INFO] Building intruvia-web 0.0.1                                        [4/5]
+[INFO]   from intruvia-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-web ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-web/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-web ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-web ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-web/src/test/resources
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-web ---
+[INFO] No tests to run.
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-web ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-web/target/intruvia-web-0.0.1.jar
+[INFO]
+[INFO] ----------------------< li.intruvia:intruvia-app >----------------------
+[INFO] Building intruvia-app 0.0.1                                        [5/5]
+[INFO]   from intruvia-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-app ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-app/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-app ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug release 25] to target/classes
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-app ---
+[INFO] Copying 3 resources from src/test/resources to target/test-classes
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug release 25] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-app ---
+[INFO]
+[INFO] --- resources:3.3.1:copy-resources (runtime) @ intruvia-app ---
+[INFO] Copying 3 resources from src/main/runtime to target/intruvia/runtime
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-app ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+[INFO]
+[INFO] --- dependency:3.8.1:copy-dependencies (distribution-libraries) @ intruvia-app ---
+[INFO]
+[INFO] --- failsafe:3.5.2:integration-test (default) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.ApplicationIT
+2026-09-28 13:33:28,471 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-09-28 13:33:28,572 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Initializing 5 Strolch Components...
+2026-09-28 13:33:28,576 INFO  l.s.r.c.DbConnectionBuilder - Not configuring custom XmlFactorFactory on datasource for realm: defaultRealm
+2026-09-28 13:33:28,577 INFO  l.s.r.c.DbConnectionBuilder - Preparing HikariDataSource with a fail timeout of 1ms for realm defaultRealm to jdbc:postgresql://127.0.0.1:32768/intruvia_test_79645a6f8c814fe0807d0693ea68b3dd
+2026-09-28 13:33:28,580 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Starting...
+2026-09-28 13:33:28,595 INFO  com.zaxxer.hikari.pool.HikariPool - defaultRealm - Added connection org.postgresql.jdbc.PgConnection@248f2345
+2026-09-28 13:33:28,595 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Start completed.
+2026-09-28 13:33:28,595 INFO  l.s.r.c.DbConnectionBuilder - [defaultRealm] PostgreSQL Connection pool to jdbc:postgresql://127.0.0.1:32768/intruvia_test_79645a6f8c814fe0807d0693ea68b3dd has a maximum pool size of 2 connections
+2026-09-28 13:33:28,648 INFO  l.s.p.h.DefaultEncryptionHandler - Hashing password took 49ms. This is too short. Consider increasing iterations.
+2026-09-28 13:33:28,654 INFO  l.s.p.handler.XmlPersistenceHandler - Read 1 Users, 0 Groups, 2 Roles, 0 Tokens
+2026-09-28 13:33:28,662 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-09-28 13:33:28,663 INFO  l.s.agent.impl.InternalStrolchRealm - Initializing Realm defaultRealm...
+2026-09-28 13:33:28,667 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 5 Strolch Components have been initialized. Took 95ms
+2026-09-28 13:33:28,668 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Starting 5 Strolch Components...
+2026-09-28 13:33:28,669 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Checking Schema version for: HikariDataSource for realm defaultRealm for intruvia_test at jdbc:postgresql://127.0.0.1:32768/intruvia_test_79645a6f8c814fe0807d0693ea68b3dd
+2026-09-28 13:33:28,673 INFO  li.strolch.db.DbSchemaVersionCheck - Connected to PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2)
+2026-09-28 13:33:28,683 ERROR li.strolch.db.DbSchemaVersionCheck - Failed to query version for app strolch: PSQLException: ERROR: relation "db_version" does not exist
+  Position: 25
+2026-09-28 13:33:28,684 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Creating initial schema version 0.9.10...
+2026-09-28 13:33:28,695 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Successfully created schema with version 0.9.10
+2026-09-28 13:33:28,698 INFO  l.strolch.agent.api.StrolchComponent - Data Initialization not enabled as 'allowDataInitOnSchemaCreate' is false!
+2026-09-28 13:33:28,704 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm...
+2026-09-28 13:33:28,716 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 11ms
+2026-09-28 13:33:28,718 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Resources using paging from DB...
+2026-09-28 13:33:28,718 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps from DB in parallel...
+2026-09-28 13:33:28,720 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps took 2ms
+2026-09-28 13:33:28,721 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Resources asynchronously took 16ms.
+2026-09-28 13:33:28,723 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 2ms
+2026-09-28 13:33:28,723 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Orders using paging from DB...
+2026-09-28 13:33:28,723 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps from DB in parallel...
+2026-09-28 13:33:28,723 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps took 36us
+2026-09-28 13:33:28,723 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Orders asynchronously took 2ms.
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 712us
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Activities using paging from DB...
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps from DB in parallel...
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps took 11us
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Activities asynchronously took 968us.
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm took 20ms.
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Orders
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Resources
+2026-09-28 13:33:28,724 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Activities
+2026-09-28 13:33:28,726 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=211us, action=li.strolch.migrations.CurrentMigrationVersionQuery
+2026-09-28 13:33:28,727 INFO  li.strolch.migrations.Migrations - [defaultRealm] Running code migration 0.0.1 li.intruvia.core.persistence.InitialModelMigration
+2026-09-28 13:33:28,732 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 3ms
+2026-09-28 13:33:28,769 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=42ms, action=li.intruvia.core.persistence.InitialModelMigration
+2026-09-28 13:33:28,769 INFO  li.strolch.migrations.Migrations - Performed 1 migrations on 1 realms.
+2026-09-28 13:33:28,771 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-09-28 13:33:28,772 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=2ms, action=VerifyModel
+2026-09-28 13:33:28,785 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.2.7-arch1-1 Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 32
+2026-09-28 13:33:28,786 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.6 GB,  Total: 201.3 MB,  Used: 17.3 MB,  Free: 184.0 MB
+2026-09-28 13:33:28,786 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-09-28 13:33:28,786 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-09-28 13:33:28,787 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 5 Strolch Components started for version 0.0.1. Took 118ms. Strolch is now ready to be used. Have fun =))
+2026-09-28 13:33:28,788 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-09-28 13:33:28,797 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@86e39d2{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@76e8a00f{STARTED}}
+2026-09-28 13:33:28,950 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@86e39d2{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@76e8a00f{STARTED}}
+2026-09-28 13:33:28,955 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@1a7c96c4{HTTP/1.1, (http/1.1)}{127.0.0.1:32971}
+2026-09-28 13:33:28,956 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@4f69faf3{STARTING}[12.0.16,sto=5000] @914ms
+2026-09-28 13:33:28,956 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:32971 (Strolch STARTED)
+2026-09-28 13:33:28,956 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@4f69faf3{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:33:28,956 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@4f69faf3{STOPPING}[12.0.16,sto=5000]
+2026-09-28 13:33:28,958 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@1a7c96c4{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-09-28 13:33:28,962 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@86e39d2{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@76e8a00f{STOPPED}}
+2026-09-28 13:33:28,963 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Stopping 5 Strolch Components...
+2026-09-28 13:33:28,964 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 5 Strolch Components have been stopped. Took 321us
+2026-09-28 13:33:28,964 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-09-28 13:33:28,964 INFO  li.strolch.utils.ExecutorPool - Shutting down executor LockingHandler with 1 tasks
+2026-09-28 13:33:28,964 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Destroying 5 Strolch Components...
+2026-09-28 13:33:28,964 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown initiated...
+2026-09-28 13:33:28,965 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown completed.
+2026-09-28 13:33:28,966 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 5 Strolch Components have been destroyed! Took 1ms
+2026-09-28 13:33:28,966 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.789 s <<< FAILURE! -- in li.intruvia.app.ApplicationIT
+[ERROR] li.intruvia.app.ApplicationIT.closesBothLifecyclesAndAllowsRepeatedClose -- Time elapsed: 0.772 s <<< ERROR!
+java.sql.SQLException: No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:638)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at li.intruvia.app.DatabaseFixture.admin(DatabaseFixture.java:53)
+	at li.intruvia.app.DatabaseFixture.close(DatabaseFixture.java:58)
+	at li.intruvia.app.ApplicationIT.dropDatabase(ApplicationIT.java:31)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.RunAfters.invokeMethod(RunAfters.java:46)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] li.intruvia.app.ApplicationIT.assembledApplicationServesPageAndHealthThenTerminates -- Time elapsed: 0 s <<< ERROR!
+java.sql.SQLException: No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:638)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at li.intruvia.app.DatabaseFixture.admin(DatabaseFixture.java:53)
+	at li.intruvia.app.DatabaseFixture.<init>(DatabaseFixture.java:36)
+	at li.intruvia.app.ApplicationIT.createDatabase(ApplicationIT.java:25)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.RunBefores.invokeMethod(RunBefores.java:33)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] Running li.intruvia.app.PersistenceIT
+2026-09-28 13:33:28,971 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-09-28 13:33:28,975 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 647us
+[ERROR] Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 0.001 s <<< FAILURE! -- in li.intruvia.app.PersistenceIT
+[ERROR] li.intruvia.app.PersistenceIT.rejectsTransientAndDestructiveConfigurationBeforeStartup -- Time elapsed: 0 s <<< ERROR!
+java.sql.SQLException: No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:638)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at li.intruvia.app.DatabaseFixture.admin(DatabaseFixture.java:53)
+	at li.intruvia.app.DatabaseFixture.<init>(DatabaseFixture.java:36)
+	at li.intruvia.app.PersistenceIT.rejectsTransientAndDestructiveConfigurationBeforeStartup(PersistenceIT.java:80)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+[ERROR] li.intruvia.app.PersistenceIT.persistsAllModelsAcrossRestartAndRollsBackFailedTransaction -- Time elapsed: 0 s <<< ERROR!
+java.sql.SQLException: No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:638)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:199)
+	at li.intruvia.app.DatabaseFixture.admin(DatabaseFixture.java:53)
+	at li.intruvia.app.DatabaseFixture.<init>(DatabaseFixture.java:36)
+	at li.intruvia.app.PersistenceIT.persistsAllModelsAcrossRestartAndRollsBackFailedTransaction(PersistenceIT.java:23)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:299)
+	at org.junit.internal.runners.statements.FailOnTimeout$CallableStatement.call(FailOnTimeout.java:293)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:328)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+
+[INFO]
+[INFO] Results:
+[INFO]
+[ERROR] Errors:
+[ERROR]   ApplicationIT.createDatabase:25 » SQL No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+[ERROR]   ApplicationIT.dropDatabase:31 » SQL No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+[ERROR]   PersistenceIT.persistsAllModelsAcrossRestartAndRollsBackFailedTransaction:23 » SQL No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+[ERROR]   PersistenceIT.rejectsTransientAndDestructiveConfigurationBeforeStartup:80 » SQL No suitable driver found for jdbc:postgresql://127.0.0.1:32768/intruvia_test
+[INFO]
+[ERROR] Tests run: 4, Failures: 0, Errors: 4, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- failsafe:3.5.2:verify (default) @ intruvia-app ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO]
+[INFO] intruvia ........................................... SUCCESS [  0.065 s]
+[INFO] intruvia-core ...................................... SUCCESS [  1.260 s]
+[INFO] intruvia-rest ...................................... SUCCESS [  0.349 s]
+[INFO] intruvia-web ....................................... SUCCESS [  0.010 s]
+[INFO] intruvia-app ....................................... FAILURE [  1.429 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.172 s
+[INFO] Finished at: 2026-09-28T13:33:29+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-failsafe-plugin:3.5.2:verify (default) on project intruvia-app:
+[ERROR]
+[ERROR] See /home/eitch/src/git/intruvia/intruvia-app/target/failsafe-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :intruvia-app

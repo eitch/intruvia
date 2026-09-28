@@ -64,14 +64,14 @@ writes to `~/.m2/repository` while retaining the workspace filesystem sandbox.
 If Maven uses a custom local repository, set `MAVEN_REPOSITORY` to that absolute path.
 The retry checks the blocker again and preserves previous failure evidence.
 
-## Build and run the application skeleton
+## Build and run the application
 
 Use Java 25 and Maven (verified with Maven 3.9.16). From the repository root:
 
 ```bash
-JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH mvn -B clean verify
-cd intruvia-app/target/intruvia
-/path/to/jdk-25/bin/java -jar intruvia-app-0.0.1.jar runtime 8080
+JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH scripts/verify-postgresql.sh
+# Configure an external runtime and PostgreSQL as described below, then:
+/path/to/jdk-25/bin/java -jar intruvia-app/target/intruvia/intruvia-app-0.0.1.jar /path/to/runtime 8080
 ```
 
 Open `http://127.0.0.1:8080/` for the packaged local landing page.
@@ -81,14 +81,35 @@ The port is optional (default 8080); `0` selects an ephemeral port printed in th
 The runtime path is required and can be absolute. Keep the application JAR, `lib/`
 and `runtime/` together when copying the assembled directory.
 
-This skeleton binds only to loopback and has no event ingestion, viewer authentication,
-database, or readiness endpoint yet. The supplied `skeleton` Strolch environment
-contains no credentials or event store. It must not be used as a production event
-service. Later backlog tasks implement persistence, authentication and the viewer.
+The application binds only to loopback and now requires durable PostgreSQL storage.
+Ingestion, viewer authentication and readiness endpoints remain pending. The packaged
+`production` environment rejects transient stores; there is no memory-only fallback.
 
-`mvn verify` runs the packaged-process HTTP/start/stop smoke test and an in-process
-lifecycle test; it needs no database, browser, Node, frontend framework or bundler.
-See [skeleton architecture and verification](docs/architecture/002-application-skeleton.md).
+`mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
+starts a loopback Docker PostgreSQL container, runs `mvn -B clean verify`, and removes
+the container on exit. Each test provisions and drops a unique database. Docker and
+Java 25 must already be installed. The default image is `postgres:18-bookworm`; set
+`INTRUVIA_TEST_POSTGRES_IMAGE` to a local image or immutable digest when needed.
+Alternatively, supply `INTRUVIA_TEST_DB_URL`, `INTRUVIA_TEST_DB_USERNAME` and
+`INTRUVIA_TEST_DB_PASSWORD` for a dedicated test PostgreSQL role with CREATEDB and
+run `mvn -B clean verify`. Never point tests at production. No browser/Node build is required.
+
+For a persistent runtime, copy the packaged `runtime/` outside `target/`, copy its
+`config/Privilege*.xml.example` files to the corresponding `.xml` names, and replace
+both `CHANGE-ME` values in `PrivilegeConfig.xml` with independently generated secrets.
+Keep runtime configuration and the process environment protected; example roles contain
+only a system agent and provide no viewer login. Set `DB_URL` (a PostgreSQL JDBC URL),
+`DB_USERNAME` and `DB_PASSWORD` through protected service configuration, not command-line
+arguments. Use a dedicated empty database owned by the application role.
+
+On the first start only, set `allowSchemaCreation` to `true` in
+`config/StrolchConfiguration.xml`; after successful startup, stop the application and
+restore it to `false`. Strolch installs its pinned schema and the application runs model
+migration `0.0.1`. Keep `allowSchemaDrop` and `allowDataInitOnSchemaCreate` false.
+Schema upgrades require a backup and an explicit maintenance change to
+`allowSchemaMigration`; it defaults to false. Startup fails on an absent/incompatible
+schema when creation/migration is disabled. Model migration versions, events, receipts
+and stream state survive restart. See [persistence design and checks](docs/architecture/004-persistence.md).
 
 ## Event contracts (v1)
 
@@ -97,6 +118,5 @@ and a typed Strolch Resource mapper. See the [field mapping](docs/architecture/0
 [v1 API schema](docs/api/v1.schema.json) and [complete synthetic fixture](docs/api/event-v1.json).
 Sequences are decimal strings on the wire; absent coordinates remain null. The fixture
 uses a documentation IPv6 address with invented geography solely for serialization tests;
-real ingestion must classify that address as NON_PUBLIC. These contracts do not enable
-ingestion or persistence yet. Run `mvn clean verify` with Java 25 to verify JSON and
+real ingestion must classify that address as NON_PUBLIC. Ingestion remains pending. Run `scripts/verify-postgresql.sh` with Java 25 to verify JSON and
 Strolch XML round trips, including IPv6, partial locations and 64-bit sequence precision.

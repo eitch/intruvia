@@ -32,7 +32,8 @@ public final class IntruviaApplication implements AutoCloseable {
 		version.setProperty("groupId", "li.intruvia");
 		version.setProperty("artifactId", "intruvia-app");
 		version.setProperty("artifactVersion", "0.0.1");
-		this.agent = new StrolchBootstrapper(new StrolchVersion(version)).setupByRoot("skeleton", runtime.toFile());
+		this.agent = new StrolchBootstrapper(new StrolchVersion(version)).setupByRoot("production", runtime.toFile());
+		PersistenceConfiguration.validate(this.agent.getStrolchConfiguration());
 		this.server = new Server();
 		this.server.setStopTimeout(5000);
 		this.connector = new ServerConnector(this.server);
@@ -53,6 +54,10 @@ public final class IntruviaApplication implements AutoCloseable {
 			throw new IllegalStateException("Strolch did not start");
 		this.server.start();
 		logger.info("Intruvia started: http://127.0.0.1:{} (Strolch STARTED)", port());
+	}
+
+	StrolchAgent agent() {
+		return this.agent;
 	}
 
 	public int port() {
