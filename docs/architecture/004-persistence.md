@@ -35,6 +35,12 @@ atomic ingestion logic belongs to task 009.
 
 ## Verification
 
+The 2026-09-29 acceptance run uses locally installed `2.8.0-SNAPSHOT` via
+`-Dstrolch.version=2.8.0-SNAPSHOT -o`. The default timestamped agent/service artifacts
+were unavailable from the configured mirror. This run verifies the local snapshot,
+not binary equivalence with the task 001 pin. See `../verification/004-local-verify.txt`
+and `../verification/004-local-strolch.sha256` for results and the actual packaged binaries.
+
 Run `JAVA_HOME=/path/to/java25 PATH=/path/to/java25/bin:$PATH scripts/verify-postgresql.sh`.
 The script uses Docker only to provide PostgreSQL; no test framework dependency was
 added. It binds an ephemeral port to loopback and removes its own container on exit.

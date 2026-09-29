@@ -1,16 +1,16 @@
 # Intruvia — backlog status
 
-Updated: 2026-09-28 · Implementation state: task 004 in progress
+Updated: 2026-09-29 · Implementation state: task 004 complete
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **004 — Configure durable Strolch persistence (IN_PROGRESS)**.
-- Next task: **005 — Implement machine credential authentication (TODO)**; dependency 002 is DONE; do not start during task 004.
-- Completed: **3 / 22**. TODO: **18**. IN_PROGRESS: **1**. BLOCKED: **0**.
+- Current task: **004 — Configure durable Strolch persistence (DONE)**.
+- Next task: **005 — Implement machine credential authentication (TODO)**; dependency 002 is DONE.
+- Completed: **4 / 22**. TODO: **18**. IN_PROGRESS: **0**. BLOCKED: **0**.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
-- Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton is verified; task 003 model contracts are verified; ingestion, persistence, viewer and deployment remain pending.
+- Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence is verified with the local snapshot override; ingestion, viewer and deployment remain pending.
 
 ## Status conventions
 
@@ -23,7 +23,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 001 | Verify and pin the Strolch runtime baseline | — | DONE | [Decision](architecture/001-runtime-baseline.md), [probe](../probes/runtime-baseline/pom.xml), [verification](verification/001-resume-verification.txt), [checksums](verification/001-dependencies.sha256). Clean verify: 2 tests passed; REST/WebSocket/lifecycle and Jakarta namespace verified. |
 | 002 | Create the Maven modules and application skeleton | 001 | DONE | [Architecture](architecture/002-application-skeleton.md), [clean verify](verification/002-clean-verify.txt), [process smoke](verification/002-application-smoke.txt). Four modules; 2 integration tests passed; packaged page/health and Strolch/Jetty shutdown verified. |
 | 003 | Define event DTOs and Strolch model mapping | 002 | DONE | [Mapping](architecture/003-event-model.md), [schema](api/v1.schema.json), [fixture](api/event-v1.json), [clean verify](verification/003-clean-verify.txt). 7 contract tests and 2 existing integration tests passed. |
-| 004 | Configure durable Strolch persistence | 003 | IN_PROGRESS | Database prerequisite check underway. |
+| 004 | Configure durable Strolch persistence | 003 | DONE | [Local snapshot verification](verification/004-local-verify.txt), [binary checksums](verification/004-local-strolch.sha256), [design](architecture/004-persistence.md). 7 contract tests and 4 PostgreSQL integration tests passed; restart, rollback, migration, isolation and configuration guards verified. |
 | 005 | Implement machine credential authentication | 002 | TODO | — |
 | 006 | Implement Fail2ban validation and normalization | 003 | TODO | — |
 | 007 | Implement local GeoIP enrichment | 003 | TODO | — |
@@ -153,3 +153,54 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Agent: Codex. Transition: TODO → IN_PROGRESS. No active task; task 004 is the lowest eligible TODO, dependency 003 DONE. Current/next summary verified against all 22 ledger rows. Initial `git status --short` clean.
 - Read project/framework guidelines, including Vanilla JavaScript and linked framework specification, and all three project planning documents. Scope limited to task 004; no commit, push or deployment.
 - Checking availability of real PostgreSQL before implementation. Counts: DONE 3, TODO 18, IN_PROGRESS 1, BLOCKED 0. Next eligible task after this attempt: 005.
+
+### 2026-09-28 — task 004 resume blocked by missing guidelines
+
+- Agent: Codex. Transition: IN_PROGRESS → BLOCKED. Verified all 22 ledger rows: 004 was the sole active task and dependency 003 is DONE. No other task started.
+- Read project AGENTS.md, `/home/eitch/src/git/atx-dev/strolch/AGENTS.md`, its six referenced guidelines and linked STROLCH_SPECIFICATION.md, plus all three Intruvia planning documents.
+- Required Vanilla JavaScript guidelines could not be found. The referenced directory is `/home/eitch/src/git/atx-dev/strolch/guidelines/`; no exact Vanilla JavaScript filename is supplied by the available AGENTS.md. Required next action: provide or restore the guidelines and explicitly resume task 004.
+- Checks: `git status --short` — exit 0, clean before this attempt. `rg` discovery failed with exit 127 (`rg: command not found`); used `find` instead. `find /home/eitch/src/git/atx-dev/strolch/guidelines -type f` listed seven Markdown files, none for JavaScript. `find /home/eitch/src/git -iname '*vanilla*' -o -iname '*javascript*guid*'` — exit 0, no matches. `find . -name AGENTS.md` found only the root AGENTS.md.
+- Preliminary environment inspection: `command -v postgres initdb psql pg_isready docker podman` found only `/usr/bin/docker`; `/usr/lib/postgresql` was absent. Database availability is not established; no database was started or modified.
+- Changes/artifact: this status ledger only. No implementation changes, commit, push or deployment. Specification/backlog requirements unchanged.
+- Unrun: Maven verification and all task 004 real-database restart, rollback, migration, isolation and production-configuration acceptance checks. Task remains incomplete.
+- Counts: DONE 3, TODO 18, IN_PROGRESS 0, BLOCKED 1. Next eligible TODO: **005**, dependency 002 DONE; not started because this invocation is limited to one task.
+
+### 2026-09-28T18:55:39+00:00 — task 004 authorized blocker recheck
+
+- Agent: Codex. Status: BLOCKED → BLOCKED. Explicit retry authorization selects 004, the lowest eligible blocked task; dependency 003 is DONE and no task is IN_PROGRESS. Summary and all 22 ledger rows agree.
+- Rechecked the missing-guidelines blocker after reading both AGENTS.md files, available framework guidelines and linked specification, and all three Intruvia planning documents. Vanilla JavaScript guidelines remain unavailable; no exact filename is specified. Missing required document location: `/home/eitch/src/git/atx-dev/strolch/guidelines/` (Vanilla JavaScript guidelines).
+- Commands/results: `command -v rg` produced no path (unavailable); fallback `find /home/eitch/src/git/atx-dev/strolch/guidelines -type f` — exit 0, seven Markdown files, none for JavaScript. `find /home/eitch/src/git -iname '*vanilla*' -o -iname '*javascript*guid*'` — exit 0, no matches. `git status --short` — exit 0, existing modification only to this ledger; preserved. `git diff -- docs/INTRUVIA_BACKLOG_STATUS.md` — exit 0, reviewed existing changes before appending this entry.
+- Changes/artifact: this ledger only; existing history preserved. No implementation, commit, push, deployment or other task started. Specification/backlog unchanged.
+- Unrun: Maven and all task 004 real-database restart, rollback, migration, isolation and production-configuration acceptance checks. Database availability was not rechecked because required guidelines remain missing.
+- Required next action: restore the Vanilla JavaScript guidelines or supply their actual path, then resume task 004. Current task remains 004 BLOCKED; next eligible TODO is 005, not started under this retry-only authorization.
+- Counts unchanged: DONE 3, TODO 18, IN_PROGRESS 0, BLOCKED 1. Python ledger assertions passed: 22 rows, no active task, only eligible blocked task 004, expected status counts.
+
+### 2026-09-28 — task 004 authorized retry; guidelines located
+
+- Agent: Codex. Transition: BLOCKED → IN_PROGRESS. Only eligible blocked task is 004, dependency 003 DONE; no active task. Read both AGENTS.md files, all seven framework guideline documents (including Vanilla JavaScript within CODE_STYLE.md), and all three project planning documents. Earlier missing-file reports are superseded by this content inspection.
+- Existing ledger changes preserved. `rg` unavailable (exit 127); used `find` and direct reads. `find . -name AGENTS.md` found only root guidelines. `docker info --format '{{.ServerVersion}}'` — exit 0, server 29.8.1. PostgreSQL prerequisite check continues.
+- Counts: DONE 3, TODO 18, IN_PROGRESS 1, BLOCKED 0. Next TODO 005; no other task started.
+
+### 2026-09-28T19:00:16.418123+00:00 — task 004 blocked by dependency resolution
+
+- Agent: Codex. Transition: IN_PROGRESS → BLOCKED. Existing persistence implementation, migration, repository, configuration guard, database fixtures and verification script were already present; reviewed without modifying them. Prior ledger changes and history preserved.
+- Resolved prerequisite: Vanilla JavaScript guidelines read in `/home/eitch/src/git/atx-dev/strolch/guidelines/CODE_STYLE.md`. Docker PostgreSQL 18 started and passed `pg_isready` and `SELECT version()` in both attempts; each script removed its own disposable container. Existing user containers were not modified.
+- Exact acceptance command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH INTRUVIA_TEST_POSTGRES_IMAGE=postgres:18-trixie scripts/verify-postgresql.sh` — exit 1 before compilation; cached missing dependencies. [Output](verification/004-retry-verify.txt).
+- Forced recheck: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH INTRUVIA_TEST_POSTGRES_IMAGE=postgres:18-trixie scripts/verify-postgresql.sh -U` — exit 1; mirror `https://repo.atexxi.ch/repository/atx-all/` could not find `li.strolch:strolch-agent` and `li.strolch:strolch-service`, version `2.8.0-20260927.120822-2`. [Output and image digest](verification/004-retry-refresh-verify.txt).
+- Unrun: compilation, model migration, real-database restart/rollback, isolation, production configuration rejection and packaged application acceptance tests. PostgreSQL startup alone does not satisfy task 004.
+- Inspection failures: initially guessed runtime configuration and framework ComponentConfiguration source paths were absent; correct runtime file was located and read. No required guidelines remain missing.
+- Blocker/next action: make the pinned Strolch artifacts available through the configured Maven repository/cache, then retry task 004. No dependency versions or toolchains changed.
+- Changes: this ledger and two verification logs only. No implementation edits, commit, push, deployment or other task started. Specification/backlog unchanged. Counts: DONE 3, TODO 18, IN_PROGRESS 0, BLOCKED 1. Current task 004 BLOCKED; next eligible TODO 005 (not started).
+- Final checks: `git diff --check` — exit 0; Python ledger assertions — 22 rows, DONE 3/TODO 18/BLOCKED 1 and no active task, passed. `docker ps --filter name=intruvia-verify --format '{{.Names}}'` — exit 0, no test containers remain. `git status --short` confirms only the ledger and two new evidence logs changed.
+
+### 2026-09-29 — task 004 local-artifact recovery and completion
+
+- Agent: Codex. Transitions: BLOCKED -> IN_PROGRESS -> DONE. User explicitly requested resolving the Maven blocker using available local artifacts/source. Dependency 003 DONE; no other active task. Existing ledger edits and retry logs preserved.
+- Cause: the requested `2.8.0-20260927.120822-2` agent/service JARs are absent, while locally installed `2.8.0-SNAPSHOT` JARs exist. Maven does not substitute these coordinates. The framework source also declares `2.8.0-SNAPSHOT`; no rebuild was needed.
+- Recovery: used the existing `strolch.version` property override and offline Maven resolution. Default timestamped POM pin retained. README and task-runner instructions now document local inspection, explicit override and source-install recovery before declaring a dependency blocker.
+- Exact acceptance command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH INTRUVIA_TEST_POSTGRES_IMAGE=postgres:18-trixie scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT` — exit 0, all five reactor projects SUCCESS; 7 contract tests and 4 integration tests, zero failures/errors/skips.
+- Initial sandbox execution failed before Maven because Docker socket access was denied. Reran with approved elevated execution; disposable PostgreSQL container was removed by the script on exit. Full output/image identity: [verification](verification/004-local-verify.txt).
+- Acceptance evidence: PersistenceIT verifies event/receipt/stream state and migration across restart, injected PostgreSQL commit failure with no partial state both live and after restart, and rejection of transient/destructive/wrong-realm configuration. DatabaseFixture isolates tests in randomly named databases and drops them. ApplicationIT verifies packaged HTTP and lifecycle/shutdown against PostgreSQL.
+- Actual packaged Strolch JAR identities: `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar` — exit 0; [checksums](verification/004-local-strolch.sha256). This verifies local snapshot behavior, not equivalence with the original timestamped baseline.
+- Unrun: framework source rebuild/tests (installed artifacts sufficient), DB crash recovery, backup/restore and later ingestion/browser requirements. No application implementation changes needed; no commit, push or deployment. Specification/backlog requirements unchanged.
+- Counts: DONE 4, TODO 18, IN_PROGRESS 0, BLOCKED 0. Next task: 005; not started.

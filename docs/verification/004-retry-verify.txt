@@ -1,0 +1,59 @@
+127.0.0.1:5432 - accepting connections
+PostgreSQL test image: sha256:a6638641707cdf047e5d5c2781f437e2e809323cab22c70b280be8389fbb7878 ["postgres@sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280"]
+                                                      version                                                       
+--------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[WARNING] The POM for li.strolch:strolch-agent:jar:2.8.0-20260927.120822-2 is missing, no dependency information available
+[WARNING] The POM for li.strolch:strolch-service:jar:2.8.0-20260927.120822-2 is missing, no dependency information available
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  0.133 s]
+[INFO] intruvia-core ...................................... FAILURE [  0.074 s]
+[INFO] intruvia-rest ...................................... SKIPPED
+[INFO] intruvia-web ....................................... SKIPPED
+[INFO] intruvia-app ....................................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.334 s
+[INFO] Finished at: 2026-09-28T20:59:22+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal on project intruvia-core: Could not resolve dependencies for project li.intruvia:intruvia-core:jar:0.0.1
+[ERROR] dependency: li.strolch:strolch-agent:jar:2.8.0-20260927.120822-2 (compile)
+[ERROR] 	li.strolch:strolch-agent:jar:2.8.0-20260927.120822-2 was not found in https://repo.atexxi.ch/repository/atx-all/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of repo.atexxi.ch has elapsed or updates are forced
+[ERROR] dependency: li.strolch:strolch-service:jar:2.8.0-20260927.120822-2 (compile)
+[ERROR] 	li.strolch:strolch-service:jar:2.8.0-20260927.120822-2 was not found in https://repo.atexxi.ch/repository/atx-all/ during a previous attempt. This failure was cached in the local repository and resolution is not reattempted until the update interval of repo.atexxi.ch has elapsed or updates are forced
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :intruvia-core
