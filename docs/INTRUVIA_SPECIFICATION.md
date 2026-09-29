@@ -1,6 +1,6 @@
 # Intruvia — implementation specification
 
-Version: 1.0 · Date: 2026-09-28 · State: implementation-ready design; software not implemented.
+Version: 1.1 · Date: 2026-09-29 · State: implementation contract; progress tracked in INTRUVIA_BACKLOG_STATUS.md. Strolch PAT integration pending (task 005 reopened).
 
 ## 1. Purpose and MVP boundary
 
@@ -88,7 +88,7 @@ The WebSocket dispatcher reads committed events in sequence order from storage. 
 
 ## 4. Fail2ban API
 
-`POST /api/v1/fail2ban/events`, `Content-Type: application/json`, `Authorization: Bearer <server-token>`.
+`POST /api/v1/fail2ban/events`, `Content-Type: application/json`, `Authorization: Bearer <tokenId>:<tokenValue>`.
 
 ```json
 {
@@ -102,13 +102,17 @@ The WebSocket dispatcher reads committed events in sequence order from storage. 
 }
 ```
 
-This documentation IP is deliberately non-public and must not become a real map location. No caller-supplied server identity or GeoIP data is accepted. A credential binds to exactly one configured instance ID and `event:ingest` privilege; credential rotation retains that instance ID.
+This documentation IP is deliberately non-public and must not become a real map location. No caller-supplied server identity or GeoIP data is accepted. Use Strolch Personal Access Tokens (PATs) for machine authentication. Provision one dedicated Strolch technical user per reporting server and an explicit, protected mapping from that user to exactly one stable instance ID (the username may serve as that ID). Resolve identity from the authenticated Strolch certificate and this mapping, never from request data, a token display name, or the token ID. Restrict each PAT to the ingestion privileges required by Strolch services and `event:ingest`; grant no viewer or administration privileges. Rotation issues a replacement PAT for the same technical user and preserves the instance ID.
 
 Validation: body at most 16 KiB; exactly supported version/action; eventId UUID; IP literal only (no DNS lookup, hostname, zone ID or CIDR); nonempty jail at most 128 characters without control characters; failures optional integer 0–2,147,483,647. Reject unknown input fields. Require timezone-aware timestamp, reject more than five minutes in the future or more than seven days old. Perform authentication before expensive work. Limits are configurable with documented defaults.
 
 New commit returns `201` with `{id, sequence, duplicate:false, geoStatus}`. Identical retry returns `200` with the original id and sequence and `duplicate:true`, without new enrichment or publication. Receipt deduplication is evaluated before timestamp-age rejection for a previously accepted event. Malformed JSON/values: `400`; missing/invalid credential: `401`; insufficient privilege: `403`; changed payload for same key: `409`; body too large: `413`; wrong media type: `415`; configured capacity/rate limit: `429` with `Retry-After`; persistence unavailable: `503`. All failures return `{error:{code,message,requestId}}`; omit tokens, stack traces and sensitive details.
 
-Default per-instance token-bucket limit: 10 events/second, burst 100; tune during capacity verification. Tokens are cryptographically random, at least 256 bits, provisioned through protected configuration with hashed verifiers, never committed or logged. Rate limits and body bounds also apply to unauthenticated traffic via global connection/request limits.
+Authenticate through Strolch's existing PAT/session infrastructure and authorize using its resulting certificate and privilege checks. Reuse framework token generation, hashed storage, validity periods, revocation and technical-user state checks. Do not maintain an Intruvia token-verifier registry, custom token cryptography, TSV credential file or parallel token lifecycle. Missing, malformed, invalid, expired, not-yet-valid or revoked PATs and disabled owners must fail authentication; authenticated callers lacking ingestion permission or a configured server identity must be denied. Viewer sessions must not authenticate ingestion requests. A thin Intruvia HTTP adapter may enforce PAT-only access, map identities and produce the specified errors, but must delegate credential verification to Strolch.
+
+Provision and rotate PATs using supported Strolch management APIs/services or tooling; no public token-administration endpoint or administrative UI is required. Protect framework privilege storage and producer token files. Honor revocation and expiry even after a token has been cached, according to the verified framework lifecycle; do not require an Intruvia restart to reload a separate credential snapshot. Verify the actual resolved Strolch artifacts against the source API before implementation. Record any framework security or compatibility gap explicitly and resolve it through supported framework integration or an upstream fix, not a replacement verifier.
+
+Default per-instance token-bucket limit: 10 events/second, burst 100; tune during capacity verification. PAT secrets are framework-generated with at least 256 bits of randomness, never committed or logged. Rate limits and body bounds also apply to unauthenticated traffic via global connection/request limits.
 
 ### Fail2ban integration
 
@@ -126,7 +130,7 @@ Store the enrichment snapshot and database build metadata on each event. Missing
 
 ## 6. Browser authentication and read API
 
-Use Strolch-backed viewer sessions and privileges, isolated from machine tokens. Implement same-origin session login/logout using the pinned project's session convention; expose it through `/api/v1/session` if no existing project route is available. Require `event:read` for history and WebSocket connections. Cookies: HttpOnly, Secure in production, SameSite=Strict, restricted path. Use CSRF protection for session-changing requests and Origin checks. No token in localStorage or WebSocket URLs. Provision viewer users through protected Strolch configuration; no signup or user-management UI. Session expiry/logout closes active sockets and returns the UI to login.
+Use Strolch-backed viewer sessions and privileges. Machine PATs and viewer sessions share Strolch infrastructure but remain separated by credential usage, privileges and endpoint enforcement: machine PATs must not authenticate viewer REST routes or WebSocket connections. Implement same-origin session login/logout using the pinned project's session convention; expose it through `/api/v1/session` if no existing project route is available. Require `event:read` for history and WebSocket connections. Cookies: HttpOnly, Secure in production, SameSite=Strict, restricted path. Use CSRF protection for session-changing requests and Origin checks. No token in localStorage or WebSocket URLs. Provision viewer users through protected Strolch configuration; no signup or user-management UI. Session expiry/logout closes active sockets and returns the UI to login.
 
 `GET /api/v1/events/snapshot?limit=1000` returns latest events ascending by sequence, `cursor` (last committed sequence at snapshot), `minAfter`, and `truncated`. Default/max limit 1000; bounds and capture are consistent under the ingestion/retention lock. Each event uses the canonical DTO above. Snapshot cursor is a high-water mark even when older events were omitted. `minAfter` is the lowest accepted exclusive replay cursor; it is `0` before anything is removed. This endpoint is the initial map bootstrap, not a full-history download.
 
@@ -162,7 +166,7 @@ Unmapped events enter the list immediately with a reason and increment the unmap
 
 Default event retention: 30 days and maximum 100,000 events, whichever bound is reached first. A scheduled daily age sweep and admission-time capacity pruning remove only the oldest contiguous sequence prefix. Advance `minAfter` atomically with removal. Receipts survive at least 30 days from ingestion, independently of event capacity pruning; a duplicate whose event was pruned still returns the original id/sequence. After receipt expiry, the old producer timestamp is outside the seven-day acceptance window and is rejected. Bound receipt storage at 1,000,000 records; if full after expired-receipt cleanup, reject new ingestion with `429` rather than evicting unexpired receipts. Reassess defaults during capacity testing.
 
-Configure DB connection, realm, bind/proxy/TLS settings, server credential mappings, viewer users, GeoIP path, time/size/rate/retention/queue limits through documented external configuration. Reject unsafe/malformed settings at startup. Never bundle production credentials. Production schema/model changes have versioned Strolch migrations and a documented backup/restore procedure.
+Configure DB connection, realm, bind/proxy/TLS settings, Strolch technical users/PAT provisioning and stable server-identity mappings, viewer users, GeoIP path, time/size/rate/retention/queue limits through documented external configuration. Reject unsafe/malformed settings at startup. Never bundle production credentials. Production schema/model changes have versioned Strolch migrations and a documented backup/restore procedure.
 
 `/health/live` exposes only process liveness; `/health/ready` reports readiness without sensitive data. DB failure makes readiness fail; unavailable GeoIP is degraded but ingestion-ready. Authenticated operator diagnostics show last successful GeoIP load, build age, ingest failures/duplicates, stream connections and queue disconnects. Use structured request IDs and bounded logs, excluding tokens and raw payloads. IPs appear only in protected event data and explicitly enabled restricted diagnostics. Do not expose generic Strolch write/management endpoints to viewers.
 
