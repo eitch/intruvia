@@ -81,6 +81,30 @@ The port is optional (default 8080); `0` selects an ephemeral port printed in th
 The runtime path is required and can be absolute. Keep the application JAR, `lib/`
 and `runtime/` together when copying the assembled directory.
 
+### Locally installed Strolch artifacts
+
+The default POM pins a timestamped Strolch snapshot. Maven cannot satisfy that exact
+coordinate with an installed `2.8.0-SNAPSHOT`, even when its JARs are present.
+For development with the local framework referenced by AGENTS.md, use the existing
+version property override (offline mode uses the installed artifacts without a mirror):
+
+```bash
+scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+```
+
+Use Java 25 as above. If the local artifacts need rebuilding, install the required
+framework modules and their reactor dependencies first:
+
+```bash
+mvn -f /home/eitch/src/git/atx-dev/strolch/pom.xml \
+    -pl strolch-service,strolch-persistence-postgresql -am install -DskipTests
+```
+
+The bootstrap command skips framework tests; Intruvia's full verification still runs.
+Omit `-o` when other dependencies need downloading. Record the override and artifact
+checksums with verification evidence: local snapshot results do not verify the original
+timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
+
 The application binds only to loopback and now requires durable PostgreSQL storage.
 Ingestion, viewer authentication and readiness endpoints remain pending. The packaged
 `production` environment rejects transient stores; there is no memory-only fallback.

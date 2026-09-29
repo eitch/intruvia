@@ -5,6 +5,10 @@ four required project documents, and sends a fixed prompt to `codex exec` via st
 Task selection is performed by the agent from the current Markdown ledger, not by
 a separate parser. The prompt limits each invocation to one task and requires
 dependency checks, acceptance evidence, and ledger maintenance.
+For Maven resolution failures, the prompt requires checking locally installed Strolch
+artifacts and the referenced framework source before declaring a blocker. README.md
+documents the explicit snapshot override and source-install command. Verification must
+record the version actually used rather than claiming timestamped-baseline equivalence.
 
 The runner uses `workspace-write` and permits a workspace without Git through
 `--skip-git-repo-check`. It inherits the configured Codex model and authentication.
