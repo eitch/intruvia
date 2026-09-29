@@ -44,6 +44,14 @@ unrelated user changes. Do not commit, push, deploy, or start another backlog ta
 Do not expand scope or introduce unapproved dependencies/toolchains. If a required
 decision, permission, or dependency is unavailable, record the blocker and stop.
 
+Before declaring Maven artifact resolution blocked, inspect the local Maven repository
+and the framework source referenced by AGENTS.md. An installed 2.8.0-SNAPSHOT does not
+satisfy an exact timestamped snapshot coordinate. Follow README.md's local Strolch
+build instructions: use -Dstrolch.version=2.8.0-SNAPSHOT and offline mode when cached
+dependencies suffice, or build/install the required framework reactor modules. Record
+the actual version, checksums and verification results; never relabel local artifacts
+as the timestamped baseline. Exhaust these local recovery paths before recording a blocker.
+
 Update the status ledger, counts, current/next task, date, and execution log.
 Record exact verification commands/results and file/artifact references. Mark
 DONE only if all acceptance criteria passed; never claim unrun checks succeeded.
