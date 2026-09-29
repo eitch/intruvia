@@ -144,3 +144,37 @@ Sequences are decimal strings on the wire; absent coordinates remain null. The f
 uses a documentation IPv6 address with invented geography solely for serialization tests;
 real ingestion must classify that address as NON_PUBLIC. Ingestion remains pending. Run `scripts/verify-postgresql.sh` with Java 25 to verify JSON and
 Strolch XML round trips, including IPv6, partial locations and 64-bit sequence precision.
+
+## Machine ingestion credentials
+
+**Design revision (2026-09-29):** Task 005 is reopened to replace the custom credentials
+below with Strolch PATs for per-server technical users. These instructions describe
+the current, superseded implementation; PAT integration is not yet implemented.
+The next task execution must follow [revised task 005](docs/INTRUVIA_BACKLOG.md)
+and update this section with verified Strolch provisioning instructions.
+
+Task 005 provides the machine authentication boundary; the ingestion endpoint itself
+is still pending. Use HTTPS through your TLS proxy. Protect the external runtime and
+its parent directories from other users. The optional `config/machine-credentials.tsv`
+file must be a regular, non-symlink POSIX file with mode `0600` (or `0400`). Without
+it, all machine credentials are disabled. Invalid or insecure configuration fails startup.
+
+Provision each server with 32 cryptographically random bytes encoded as unpadded
+base64url (43 characters). Keep the token only in that server's protected token file.
+Compute SHA-256 over the ASCII token, without a trailing newline. Store only the
+lowercase hex digest in Intruvia's verifier file. Each line has three TAB-separated
+fields (the notation below describes fields, not a usable credential):
+
+```text
+stable-server-id<TAB>event:ingest<TAB>64-character-lowercase-sha256-verifier
+```
+
+Use a trusted provisioning process with owner-only output files; never put tokens in
+command arguments, shell history, logs or source control. Human-chosen passwords are
+not valid substitutes for generated tokens. `none` is the only other accepted privilege
+and deliberately yields 403. Blank lines and lines beginning with `#` are allowed.
+
+For rotation, add a new verifier with the **same stable server ID**, atomically replace
+the file while preserving owner-only permissions, and restart Intruvia. Switch the
+producer token, then remove the old verifier and restart to revoke it. Other machine
+IDs and viewer accounts remain separate. See [authentication design](docs/architecture/005-machine-authentication.md).
