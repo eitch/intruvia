@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 package li.intruvia.app;
 
+import li.intruvia.core.auth.MachineIdentities;
 import li.intruvia.rest.IntruviaRestApplication;
 import li.strolch.agent.api.ComponentState;
 import li.strolch.agent.api.StrolchAgent;
@@ -14,6 +15,7 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Properties;
 
@@ -28,6 +30,13 @@ public final class IntruviaApplication implements AutoCloseable {
 	public IntruviaApplication(Path runtime, int port) {
 		if (port < 0 || port > 65535)
 			throw new IllegalArgumentException("Port must be between 0 and 65535");
+		MachineIdentities identities;
+		Path identityFile = runtime.resolve("config/machine-identities.conf");
+		try {
+			identities = MachineIdentities.load(identityFile);
+		} catch (IOException e) {
+			throw new IllegalArgumentException("Cannot load protected machine identities");
+		}
 		Properties version = new Properties();
 		version.setProperty("groupId", "li.intruvia");
 		version.setProperty("artifactId", "intruvia-app");
@@ -44,6 +53,8 @@ public final class IntruviaApplication implements AutoCloseable {
 		context.setContextPath("/");
 		context.addServlet(new ServletHolder(new StaticPageServlet()), "/");
 		context.addServlet(new ServletHolder(new ServletContainer(new IntruviaRestApplication())), "/health/*");
+		var api = new IntruviaRestApplication(() -> this.agent.getPrivilegeHandler().getPrivilegeHandler(), identities);
+		context.addServlet(new ServletHolder(new ServletContainer(api)), "/api/v1/*");
 		this.server.setHandler(context);
 	}
 
