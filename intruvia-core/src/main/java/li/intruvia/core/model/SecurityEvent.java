@@ -47,7 +47,7 @@ public record SecurityEvent(int schemaVersion, UUID id, String sequence, Source 
 	public record Fail2ban(String jail, Integer failures) {
 		public Fail2ban {
 			Objects.requireNonNull(jail);
-			if (jail.isEmpty() || jail.length() > 128 || jail.codePoints().anyMatch(Character::isISOControl))
+			if (jail.isEmpty() || jail.codePointCount(0, jail.length()) > 128 || jail.codePoints().anyMatch(Character::isISOControl))
 				throw new IllegalArgumentException("Invalid jail");
 			if (failures != null && failures < 0)
 				throw new IllegalArgumentException("Negative failures");
