@@ -36,6 +36,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.maxmind.geoip2</groupId>
+				<artifactId>geoip2</artifactId>
+				<version>5.2.0</version>
+			</dependency>
+			<dependency>
 				<groupId>li.strolch</groupId>
 				<artifactId>strolch-agent</artifactId>
 				<version>${strolch.version}</version>
