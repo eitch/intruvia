@@ -1,0 +1,16 @@
+Framework source version: 2.8.0-SNAPSHOT
+Framework source HEAD: e34b772f9d58f053a0272457708658d0dceadf76
+Packaged JAR equals installed local snapshot: /home/eitch/.m2/repository/li/strolch/strolch-agent/2.8.0-SNAPSHOT/strolch-agent-2.8.0-SNAPSHOT.jar
+Packaged JAR equals installed local snapshot: /home/eitch/.m2/repository/li/strolch/strolch-model/2.8.0-SNAPSHOT/strolch-model-2.8.0-SNAPSHOT.jar
+Packaged JAR equals installed local snapshot: /home/eitch/.m2/repository/li/strolch/strolch-persistence-postgresql/2.8.0-SNAPSHOT/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar
+Packaged JAR equals installed local snapshot: /home/eitch/.m2/repository/li/strolch/strolch-privilege/2.8.0-SNAPSHOT/strolch-privilege-2.8.0-SNAPSHOT.jar
+Packaged JAR equals installed local snapshot: /home/eitch/.m2/repository/li/strolch/strolch-service/2.8.0-SNAPSHOT/strolch-service-2.8.0-SNAPSHOT.jar
+Packaged JAR equals installed local snapshot: /home/eitch/.m2/repository/li/strolch/strolch-utils/2.8.0-SNAPSHOT/strolch-utils-2.8.0-SNAPSHOT.jar
+Java length/tab review passed: intruvia-core/src/main/java/li/intruvia/core/ingest/EventAgePolicy.java 24 lines
+Java length/tab review passed: intruvia-core/src/main/java/li/intruvia/core/ingest/InvalidEventException.java 14 lines
+Java length/tab review passed: intruvia-core/src/main/java/li/intruvia/core/ingest/Fail2banEvent.java 68 lines
+Java length/tab review passed: intruvia-core/src/main/java/li/intruvia/core/ingest/IpLiteral.java 69 lines
+Java length/tab review passed: intruvia-rest/src/main/java/li/intruvia/rest/ingest/Fail2banRequestParser.java 84 lines
+Java length/tab review passed: intruvia-rest/src/test/java/li/intruvia/rest/ingest/Fail2banValidationTest.java 200 lines
+Existing MachineCredentials.java deletion preserved; index not modified by this task.
+New validation code has no logging, DNS resolver calls or persistence operations; manual review passed.
