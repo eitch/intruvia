@@ -41,6 +41,13 @@
 			<Properties><runMigrationsOnStart>false</runMigrationsOnStart><pollMigrations>false</pollMigrations></Properties>
 		</Component>
 		<Component>
+			<name>GeoIp</name>
+			<api>li.intruvia.core.geo.GeoIpComponent</api>
+			<impl>li.intruvia.core.geo.GeoIpComponent</impl>
+			<!-- Optional absolute City MMDB path. Empty/missing file means degraded enrichment. -->
+			<Properties><databasePath></databasePath></Properties>
+		</Component>
+		<Component>
 			<name>Intruvia</name>
 			<api>li.intruvia.core.IntruviaComponent</api>
 			<impl>li.intruvia.core.IntruviaComponent</impl>

@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 package li.intruvia.app;
 
+import li.intruvia.core.geo.GeoIpComponent;
+import li.intruvia.core.model.GeoStatus;
+import li.strolch.agent.api.ComponentState;
 import org.junit.Test;
 import org.junit.Before;
 import org.junit.After;
@@ -70,11 +73,17 @@ public class ApplicationIT {
 	@Test(timeout = 30000)
 	public void closesBothLifecyclesAndAllowsRepeatedClose() throws Exception {
 		IntruviaApplication application = new IntruviaApplication(this.database.runtime, 0);
+		GeoIpComponent geo;
 		try (application) {
 			application.start();
 			assertTrue(application.port() > 0);
+			geo = application.agent().getContainer().getComponent(GeoIpComponent.class);
+			assertEquals(ComponentState.STARTED, geo.getState());
+			assertEquals(GeoStatus.UNAVAILABLE, geo.enrich("8.8.8.8").status());
+			assertEquals(GeoStatus.NON_PUBLIC, geo.enrich("2001:db8::1").status());
 		}
 		application.close();
+		assertEquals(ComponentState.DESTROYED, geo.getState());
 		assertTrue("Closed connector has no listening port", application.port() < 0);
 	}
 
