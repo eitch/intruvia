@@ -1,0 +1,118 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/2]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.8.1:resolve (default-cli) @ intruvia ---
+[INFO] 
+[INFO] The following files have been resolved:
+[INFO]    none
+[INFO] 
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/2]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/geoip2/geoip2/5.2.0/geoip2-5.2.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/geoip2/geoip2/5.2.0/geoip2-5.2.0.pom (15 kB at 44 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/db/maxmind-db/4.1.0/maxmind-db-4.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/db/maxmind-db/4.1.0/maxmind-db-4.1.0.pom (12 kB at 145 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-databind/2.22.1/jackson-databind-2.22.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-databind/2.22.1/jackson-databind-2.22.1.pom (23 kB at 311 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/jackson-base/2.22.1/jackson-base-2.22.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/jackson-base/2.22.1/jackson-base-2.22.1.pom (13 kB at 183 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/jackson-bom/2.22.1/jackson-bom-2.22.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/jackson-bom/2.22.1/jackson-bom-2.22.1.pom (20 kB at 273 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/jackson-parent/2.22/jackson-parent-2.22.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/jackson-parent/2.22/jackson-parent-2.22.pom (6.9 kB at 107 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-annotations/2.22/jackson-annotations-2.22.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-annotations/2.22/jackson-annotations-2.22.pom (7.2 kB at 104 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-core/2.22.1/jackson-core-2.22.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-core/2.22.1/jackson-core-2.22.1.pom (9.7 kB at 114 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.22.1/jackson-datatype-jsr310-2.22.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.22.1/jackson-datatype-jsr310-2.22.1.pom (5.3 kB at 51 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/module/jackson-modules-java8/2.22.1/jackson-modules-java8-2.22.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/module/jackson-modules-java8/2.22.1/jackson-modules-java8-2.22.1.pom (3.1 kB at 43 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml (965 B at 732 B/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/geoip2/geoip2/5.2.0/geoip2-5.2.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/geoip2/geoip2/5.2.0/geoip2-5.2.0.jar (80 kB at 834 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/db/maxmind-db/4.1.0/maxmind-db-4.1.0.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-databind/2.22.1/jackson-databind-2.22.1.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.22.1/jackson-datatype-jsr310-2.22.1.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-core/2.22.1/jackson-core-2.22.1.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-annotations/2.22/jackson-annotations-2.22.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/maxmind/db/maxmind-db/4.1.0/maxmind-db-4.1.0.jar (60 kB at 533 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-annotations/2.22/jackson-annotations-2.22.jar (84 kB at 726 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/datatype/jackson-datatype-jsr310/2.22.1/jackson-datatype-jsr310-2.22.1.jar (137 kB at 983 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-core/2.22.1/jackson-core-2.22.1.jar (594 kB at 2.9 MB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/fasterxml/jackson/core/jackson-databind/2.22.1/jackson-databind-2.22.1.jar (1.7 MB at 6.6 MB/s)
+[INFO] 
+[INFO] --- dependency:3.8.1:resolve (default-cli) @ intruvia-core ---
+[INFO] 
+[INFO] The following files have been resolved:
+[INFO]    com.maxmind.geoip2:geoip2:jar:5.2.0:compile -- module com.maxmind.geoip2
+[INFO]    com.maxmind.db:maxmind-db:jar:4.1.0:compile -- module com.maxmind.db
+[INFO]    com.fasterxml.jackson.core:jackson-databind:jar:2.22.1:compile -- module com.fasterxml.jackson.databind
+[INFO]    com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.22.1:compile -- module com.fasterxml.jackson.datatype.jsr310
+[INFO]    com.fasterxml.jackson.core:jackson-core:jar:2.22.1:compile -- module com.fasterxml.jackson.core
+[INFO]    com.fasterxml.jackson.core:jackson-annotations:jar:2.22:compile -- module com.fasterxml.jackson.annotation
+[INFO]    li.strolch:strolch-agent:jar:2.8.0-SNAPSHOT:compile -- module strolch.agent (auto)
+[INFO]    org.slf4j:slf4j-api:jar:2.0.17:compile -- module org.slf4j
+[INFO]    ch.qos.logback:logback-classic:jar:1.5.32:compile -- module ch.qos.logback.classic
+[INFO]    ch.qos.logback:logback-core:jar:1.5.32:compile -- module ch.qos.logback.core
+[INFO]    li.strolch:strolch-model:jar:2.8.0-SNAPSHOT:compile -- module strolch.model (auto)
+[INFO]    com.google.code.gson:gson:jar:2.12.1:compile -- module com.google.gson
+[INFO]    com.google.errorprone:error_prone_annotations:jar:2.36.0:compile -- module com.google.errorprone.annotations
+[INFO]    li.strolch:strolch-utils:jar:2.8.0-SNAPSHOT:compile -- module strolch.utils (auto)
+[INFO]    jakarta.xml.bind:jakarta.xml.bind-api:jar:4.0.4:compile -- module jakarta.xml.bind
+[INFO]    jakarta.activation:jakarta.activation-api:jar:2.1.4:compile -- module jakarta.activation
+[INFO]    jakarta.mail:jakarta.mail-api:jar:2.1.3:compile -- module jakarta.mail
+[INFO]    org.eclipse.angus:angus-mail:jar:2.0.4:compile -- module org.eclipse.angus.mail
+[INFO]    org.eclipse.angus:angus-activation:jar:2.0.2:compile -- module org.eclipse.angus.activation
+[INFO]    org.bouncycastle:bcprov-jdk18on:jar:1.86:compile -- module org.bouncycastle.provider
+[INFO]    org.bouncycastle:bcutil-jdk18on:jar:1.86:compile -- module org.bouncycastle.util
+[INFO]    org.bouncycastle:bcjmail-jdk18on:jar:1.86:compile -- module org.bouncycastle.mail
+[INFO]    org.bouncycastle:bcpkix-jdk18on:jar:1.86:compile -- module org.bouncycastle.pkix
+[INFO]    org.bouncycastle:bcpg-jdk18on:jar:1.86:compile -- module org.bouncycastle.pg
+[INFO]    org.pgpainless:pgpainless-core:jar:1.7.4:compile -- module org.pgpainless.core [auto]
+[INFO]    org.jetbrains.kotlin:kotlin-stdlib-jdk8:jar:1.8.10:compile -- module kotlin.stdlib.jdk8
+[INFO]    org.jetbrains.kotlin:kotlin-stdlib:jar:1.8.10:compile -- module kotlin.stdlib
+[INFO]    org.jetbrains.kotlin:kotlin-stdlib-common:jar:1.8.10:compile -- module kotlin.stdlib.common (auto)
+[INFO]    org.jetbrains:annotations:jar:13.0:compile -- module annotations (auto)
+[INFO]    org.jetbrains.kotlin:kotlin-stdlib-jdk7:jar:1.8.10:compile -- module kotlin.stdlib.jdk7
+[INFO]    com.google.code.findbugs:jsr305:jar:3.0.2:runtime -- module jsr305 (auto)
+[INFO]    li.strolch:strolch-privilege:jar:2.8.0-SNAPSHOT:compile -- module strolch.privilege (auto)
+[INFO]    ch.eitchnet:cron:jar:1.6.2:compile -- module cron (auto)
+[INFO]    org.eclipse.store:storage-embedded:jar:2.1.3:compile -- module org.eclipse.store.storage.embedded
+[INFO]    org.eclipse.store:storage:jar:2.1.3:compile -- module org.eclipse.store.storage
+[INFO]    org.eclipse.store:afs-nio:jar:2.1.3:compile -- module org.eclipse.store.afs.nio
+[INFO]    org.eclipse.serializer:afs:jar:2.1.3:compile -- module org.eclipse.serializer.afs
+[INFO]    org.eclipse.serializer:base:jar:2.1.3:compile -- module org.eclipse.serializer.base
+[INFO]    org.eclipse.serializer:persistence-binary:jar:2.1.3:compile -- module org.eclipse.serializer.persistence.binary
+[INFO]    org.eclipse.serializer:persistence:jar:2.1.3:compile -- module org.eclipse.serializer.persistence
+[INFO]    li.strolch:strolch-service:jar:2.8.0-SNAPSHOT:compile -- module strolch.service (auto)
+[INFO]    org.apache.commons:commons-csv:jar:1.14.0:compile -- module org.apache.commons.csv
+[INFO]    commons-io:commons-io:jar:2.18.0:compile -- module org.apache.commons.io
+[INFO]    commons-codec:commons-codec:jar:1.18.0:compile -- module org.apache.commons.codec
+[INFO]    junit:junit:jar:4.13.2:test -- module junit [auto]
+[INFO]    org.hamcrest:hamcrest-core:jar:1.3:test -- module hamcrest.core (auto)
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  0.547 s]
+[INFO] intruvia-core ...................................... SUCCESS [  3.152 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.840 s
+[INFO] Finished at: 2026-10-04T17:50:08+02:00
+[INFO] ------------------------------------------------------------------------
