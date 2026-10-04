@@ -83,8 +83,9 @@ and `runtime/` together when copying the assembled directory.
 
 ### Locally installed Strolch artifacts
 
-The default POM pins a timestamped Strolch snapshot. Maven cannot satisfy that exact
-coordinate with an installed `2.8.0-SNAPSHOT`, even when its JARs are present.
+The historical baseline uses a timestamped Strolch snapshot; the current POM selects
+`2.8.0-SNAPSHOT` for the required PAT lifecycle fix. Maven cannot satisfy an exact
+timestamped coordinate with an installed `2.8.0-SNAPSHOT`, even when its JARs are present.
 For development with the local framework referenced by AGENTS.md, use the existing
 version property override (offline mode uses the installed artifacts without a mirror):
 
@@ -147,34 +148,37 @@ Strolch XML round trips, including IPv6, partial locations and 64-bit sequence p
 
 ## Machine ingestion credentials
 
-**Design revision (2026-09-29):** Task 005 is reopened to replace the custom credentials
-below with Strolch PATs for per-server technical users. These instructions describe
-the current, superseded implementation; PAT integration is not yet implemented.
-The next task execution must follow [revised task 005](docs/INTRUVIA_BACKLOG.md)
-and update this section with verified Strolch provisioning instructions.
+Machine authentication uses Strolch Personal Access Tokens (PATs). The ingestion
+endpoint remains task 010. Send `Authorization: Bearer <tokenId>:<tokenValue>` over
+HTTPS. Tokens must have exactly the `event:ingest` privilege; viewer/session credentials
+and broad PATs are rejected.
 
-Task 005 provides the machine authentication boundary; the ingestion endpoint itself
-is still pending. Use HTTPS through your TLS proxy. Protect the external runtime and
-its parent directories from other users. The optional `config/machine-credentials.tsv`
-file must be a regular, non-symlink POSIX file with mode `0600` (or `0400`). Without
-it, all machine credentials are disabled. Invalid or insecure configuration fails startup.
+Provision one ENABLED Strolch technical user per server, with an ingestion-only role.
+Use supported Strolch management APIs to issue a scoped PAT and persist it. Store the
+returned secret directly in a protected producer file; never put it in arguments,
+logs or source control. See the [verified APIs, role configuration and rotation
+procedure](docs/architecture/005-machine-authentication.md).
 
-Provision each server with 32 cryptographically random bytes encoded as unpadded
-base64url (43 characters). Keep the token only in that server's protected token file.
-Compute SHA-256 over the ASCII token, without a trailing newline. Store only the
-lowercase hex digest in Intruvia's verifier file. Each line has three TAB-separated
-fields (the notation below describes fields, not a usable credential):
+Create the optional external `runtime/config/machine-identities.conf` with mode `0600`
+(or `0400`), containing one username-to-stable-instance mapping per line:
 
 ```text
-stable-server-id<TAB>event:ingest<TAB>64-character-lowercase-sha256-verifier
+producer-a=server-a
+producer-b=server-b
 ```
 
-Use a trusted provisioning process with owner-only output files; never put tokens in
-command arguments, shell history, logs or source control. Human-chosen passwords are
-not valid substitutes for generated tokens. `none` is the only other accepted privilege
-and deliberately yields 403. Blank lines and lines beginning with `#` are allowed.
+It contains identities only, no credentials. Both names must match
+`[A-Za-z0-9][A-Za-z0-9._-]{0,127}`; duplicate users or instance IDs are rejected.
+Blank lines and `#` comments are allowed. Protect the runtime and parent directories.
+Missing mapping disables machine access; malformed/insecure files fail startup.
+Restart to change mappings.
 
-For rotation, add a new verifier with the **same stable server ID**, atomically replace
-the file while preserving owner-only permissions, and restart Intruvia. Switch the
-producer token, then remove the old verifier and restart to revoke it. Other machine
-IDs and viewer accounts remain separate. See [authentication design](docs/architecture/005-machine-authentication.md).
+Rotate by issuing a replacement PAT for the same technical user, persisting it,
+switching the producer file, then revoking and persisting removal of the old PAT.
+The stable server ID is unchanged. Revocation, expiry and disabled owners are checked
+even for cached PATs, without an Intruvia restart. The obsolete custom TSV verifier
+is no longer loaded. No public token-administration endpoint is exposed.
+
+Task 005 was verified using local Strolch `2.8.0-SNAPSHOT` with the upstream revocation
+fix; see [source/binary identities](docs/verification/005-resume-source-review.txt)
+and [full regression results](docs/verification/005-resume-acceptance.txt).
