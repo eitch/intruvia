@@ -1,0 +1,236 @@
+  public li.strolch.privilege.model.Certificate authenticatePersonalAccessToken(java.lang.String, java.lang.String) throws li.strolch.privilege.base.AccessDeniedException;
+    Code:
+         0: getstatic     #268                // Field li/strolch/utils/dbc/DBC.PRE:Lli/strolch/utils/dbc/DBC;
+         3: ldc_w         #385                // String token
+         6: aload_1
+         7: invokevirtual #276                // Method li/strolch/utils/dbc/DBC.assertNotEmpty:(Ljava/lang/String;Ljava/lang/String;)V
+        10: getstatic     #268                // Field li/strolch/utils/dbc/DBC.PRE:Lli/strolch/utils/dbc/DBC;
+        13: ldc_w         #387                // String source
+        16: aload_2
+        17: invokevirtual #276                // Method li/strolch/utils/dbc/DBC.assertNotEmpty:(Ljava/lang/String;Ljava/lang/String;)V
+        20: aload_1
+        21: ldc_w         #389                // String :
+        24: iconst_2
+        25: invokevirtual #391                // Method java/lang/String.split:(Ljava/lang/String;I)[Ljava/lang/String;
+        28: astore_3
+        29: aload_3
+        30: arraylength
+        31: iconst_2
+        32: if_icmpeq     46
+        35: new           #308                // class li/strolch/privilege/base/AccessDeniedException
+        38: dup
+        39: ldc_w         #395                // String Invalid personal access token format!
+        42: invokespecial #312                // Method li/strolch/privilege/base/AccessDeniedException."<init>":(Ljava/lang/String;)V
+        45: athrow
+        46: aload_3
+        47: iconst_0
+        48: aaload
+        49: astore        4
+        51: aload_3
+        52: iconst_1
+        53: aaload
+        54: astore        5
+        56: aload_0
+        57: getfield      #397                // Field personalAccessTokenCache:Ljava/util/Map;
+        60: aload         4
+        62: invokeinterface #400,  2          // InterfaceMethod java/util/Map.get:(Ljava/lang/Object;)Ljava/lang/Object;
+        67: checkcast     #403                // class li/strolch/privilege/handler/DefaultPrivilegeHandler$PersonalAccessTokenCacheEntry
+        70: astore        6
+        72: aload         6
+        74: ifnull        202
+        77: aload_0
+        78: getfield      #19                 // Field persistenceHandler:Lli/strolch/privilege/handler/PersistenceHandler;
+        81: aload         4
+        83: invokeinterface #405,  2          // InterfaceMethod li/strolch/privilege/handler/PersistenceHandler.getAccessToken:(Ljava/lang/String;)Lli/strolch/privilege/model/internal/PersonalAccessToken;
+        88: astore        7
+        90: aload         7
+        92: ifnull        190
+        95: aload         7
+        97: invokevirtual #409                // Method li/strolch/privilege/model/internal/PersonalAccessToken.validFrom:()Ljava/time/ZonedDateTime;
+       100: invokestatic  #341                // Method java/time/ZonedDateTime.now:()Ljava/time/ZonedDateTime;
+       103: invokevirtual #414                // Method java/time/ZonedDateTime.isBefore:(Ljava/time/chrono/ChronoZonedDateTime;)Z
+       106: ifeq          190
+       109: aload         7
+       111: invokevirtual #418                // Method li/strolch/privilege/model/internal/PersonalAccessToken.validTo:()Ljava/time/ZonedDateTime;
+       114: invokestatic  #341                // Method java/time/ZonedDateTime.now:()Ljava/time/ZonedDateTime;
+       117: invokevirtual #421                // Method java/time/ZonedDateTime.isAfter:(Ljava/time/chrono/ChronoZonedDateTime;)Z
+       120: ifeq          190
+       123: aload_0
+       124: getfield      #19                 // Field persistenceHandler:Lli/strolch/privilege/handler/PersistenceHandler;
+       127: aload         7
+       129: invokevirtual #424                // Method li/strolch/privilege/model/internal/PersonalAccessToken.username:()Ljava/lang/String;
+       132: invokeinterface #280,  2          // InterfaceMethod li/strolch/privilege/handler/PersistenceHandler.getUser:(Ljava/lang/String;)Lli/strolch/privilege/model/internal/User;
+       137: astore        8
+       139: aload         8
+       141: ifnull        190
+       144: aload         8
+       146: invokevirtual #427                // Method li/strolch/privilege/model/internal/User.getUserState:()Lli/strolch/privilege/model/UserState;
+       149: getstatic     #433                // Field li/strolch/privilege/model/UserState.ENABLED:Lli/strolch/privilege/model/UserState;
+       152: if_acmpne     190
+       155: aload         6
+       157: aload         5
+       159: aload         7
+       161: invokevirtual #439                // Method li/strolch/privilege/model/internal/PersonalAccessToken.passwordCrypt:()Lli/strolch/privilege/model/internal/PasswordCrypt;
+       164: invokevirtual #443                // Method li/strolch/privilege/model/internal/PasswordCrypt.salt:()[B
+       167: invokevirtual #449                // Method li/strolch/privilege/handler/DefaultPrivilegeHandler$PersonalAccessTokenCacheEntry.matches:(Ljava/lang/String;[B)Z
+       170: ifeq          190
+       173: aload         6
+       175: invokestatic  #453                // Method java/lang/System.currentTimeMillis:()J
+       178: putfield      #459                // Field li/strolch/privilege/handler/DefaultPrivilegeHandler$PersonalAccessTokenCacheEntry.lastAccess:J
+       181: aload         6
+       183: getfield      #463                // Field li/strolch/privilege/handler/DefaultPrivilegeHandler$PersonalAccessTokenCacheEntry.context:Lli/strolch/privilege/model/PrivilegeContext;
+       186: invokevirtual #351                // Method li/strolch/privilege/model/PrivilegeContext.getCertificate:()Lli/strolch/privilege/model/Certificate;
+       189: areturn
+       190: aload_0
+       191: getfield      #397                // Field personalAccessTokenCache:Ljava/util/Map;
+       194: aload         4
+       196: invokeinterface #467,  2          // InterfaceMethod java/util/Map.remove:(Ljava/lang/Object;)Ljava/lang/Object;
+       201: pop
+       202: aload_0
+       203: getfield      #19                 // Field persistenceHandler:Lli/strolch/privilege/handler/PersistenceHandler;
+       206: aload         4
+       208: invokeinterface #405,  2          // InterfaceMethod li/strolch/privilege/handler/PersistenceHandler.getAccessToken:(Ljava/lang/String;)Lli/strolch/privilege/model/internal/PersonalAccessToken;
+       213: astore        7
+       215: aload         7
+       217: ifnonnull     231
+       220: new           #308                // class li/strolch/privilege/base/AccessDeniedException
+       223: dup
+       224: ldc_w         #470                // String Invalid personal access token!
+       227: invokespecial #312                // Method li/strolch/privilege/base/AccessDeniedException."<init>":(Ljava/lang/String;)V
+       230: athrow
+       231: aload         7
+       233: invokevirtual #439                // Method li/strolch/privilege/model/internal/PersonalAccessToken.passwordCrypt:()Lli/strolch/privilege/model/internal/PasswordCrypt;
+       236: astore        8
+       238: aload_0
+       239: getfield      #37                 // Field encryptionHandler:Lli/strolch/privilege/handler/EncryptionHandler;
+       242: aload         5
+       244: invokevirtual #472                // Method java/lang/String.toCharArray:()[C
+       247: aload         8
+       249: invokevirtual #443                // Method li/strolch/privilege/model/internal/PasswordCrypt.salt:()[B
+       252: aload         8
+       254: invokevirtual #476                // Method li/strolch/privilege/model/internal/PasswordCrypt.hashAlgorithm:()Ljava/lang/String;
+       257: aload         8
+       259: invokevirtual #479                // Method li/strolch/privilege/model/internal/PasswordCrypt.hashIterations:()I
+       262: aload         8
+       264: invokevirtual #483                // Method li/strolch/privilege/model/internal/PasswordCrypt.hashKeyLength:()I
+       267: invokeinterface #486,  6          // InterfaceMethod li/strolch/privilege/handler/EncryptionHandler.hashPassword:([C[BLjava/lang/String;II)Lli/strolch/privilege/model/internal/PasswordCrypt;
+       272: astore        9
+       274: aload         8
+       276: invokevirtual #492                // Method li/strolch/privilege/model/internal/PasswordCrypt.password:()[B
+       279: aload         9
+       281: invokevirtual #492                // Method li/strolch/privilege/model/internal/PasswordCrypt.password:()[B
+       284: invokestatic  #495                // Method java/util/Arrays.equals:([B[B)Z
+       287: ifne          301
+       290: new           #308                // class li/strolch/privilege/base/AccessDeniedException
+       293: dup
+       294: ldc_w         #470                // String Invalid personal access token!
+       297: invokespecial #312                // Method li/strolch/privilege/base/AccessDeniedException."<init>":(Ljava/lang/String;)V
+       300: athrow
+       301: goto          335
+       304: astore        9
+       306: aload         9
+       308: athrow
+       309: astore        9
+       311: getstatic     #290                // Field logger:Lorg/slf4j/Logger;
+       314: ldc_w         #502                // String Failed to hash token for comparison
+       317: aload         9
+       319: invokeinterface #504,  3          // InterfaceMethod org/slf4j/Logger.error:(Ljava/lang/String;Ljava/lang/Throwable;)V
+       324: new           #308                // class li/strolch/privilege/base/AccessDeniedException
+       327: dup
+       328: ldc_w         #508                // String Failed to authenticate personal access token!
+       331: invokespecial #312                // Method li/strolch/privilege/base/AccessDeniedException."<init>":(Ljava/lang/String;)V
+       334: athrow
+       335: aload         7
+       337: invokevirtual #409                // Method li/strolch/privilege/model/internal/PersonalAccessToken.validFrom:()Ljava/time/ZonedDateTime;
+       340: invokestatic  #341                // Method java/time/ZonedDateTime.now:()Ljava/time/ZonedDateTime;
+       343: invokevirtual #421                // Method java/time/ZonedDateTime.isAfter:(Ljava/time/chrono/ChronoZonedDateTime;)Z
+       346: ifne          363
+       349: aload         7
+       351: invokevirtual #418                // Method li/strolch/privilege/model/internal/PersonalAccessToken.validTo:()Ljava/time/ZonedDateTime;
+       354: invokestatic  #341                // Method java/time/ZonedDateTime.now:()Ljava/time/ZonedDateTime;
+       357: invokevirtual #414                // Method java/time/ZonedDateTime.isBefore:(Ljava/time/chrono/ChronoZonedDateTime;)Z
+       360: ifeq          374
+       363: new           #308                // class li/strolch/privilege/base/AccessDeniedException
+       366: dup
+       367: ldc_w         #510                // String Personal access token is expired or not yet valid!
+       370: invokespecial #312                // Method li/strolch/privilege/base/AccessDeniedException."<init>":(Ljava/lang/String;)V
+       373: athrow
+       374: aload_0
+       375: getfield      #19                 // Field persistenceHandler:Lli/strolch/privilege/handler/PersistenceHandler;
+       378: aload         7
+       380: invokevirtual #424                // Method li/strolch/privilege/model/internal/PersonalAccessToken.username:()Ljava/lang/String;
+       383: invokeinterface #280,  2          // InterfaceMethod li/strolch/privilege/handler/PersistenceHandler.getUser:(Ljava/lang/String;)Lli/strolch/privilege/model/internal/User;
+       388: astore        9
+       390: aload         9
+       392: ifnonnull     413
+       395: new           #308                // class li/strolch/privilege/base/AccessDeniedException
+       398: dup
+       399: aload         7
+       401: invokevirtual #424                // Method li/strolch/privilege/model/internal/PersonalAccessToken.username:()Ljava/lang/String;
+       404: invokedynamic #512,  0            // InvokeDynamic #22:makeConcatWithConstants:(Ljava/lang/String;)Ljava/lang/String;
+       409: invokespecial #312                // Method li/strolch/privilege/base/AccessDeniedException."<init>":(Ljava/lang/String;)V
+       412: athrow
+       413: aload         9
+       415: invokevirtual #427                // Method li/strolch/privilege/model/internal/User.getUserState:()Lli/strolch/privilege/model/UserState;
+       418: getstatic     #433                // Field li/strolch/privilege/model/UserState.ENABLED:Lli/strolch/privilege/model/UserState;
+       421: if_acmpeq     450
+       424: new           #308                // class li/strolch/privilege/base/AccessDeniedException
+       427: dup
+       428: aload         7
+       430: invokevirtual #424                // Method li/strolch/privilege/model/internal/PersonalAccessToken.username:()Ljava/lang/String;
+       433: aload         9
+       435: invokevirtual #427                // Method li/strolch/privilege/model/internal/User.getUserState:()Lli/strolch/privilege/model/UserState;
+       438: invokestatic  #515                // Method java/lang/String.valueOf:(Ljava/lang/Object;)Ljava/lang/String;
+       441: invokedynamic #519,  0            // InvokeDynamic #23:makeConcatWithConstants:(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+       446: invokespecial #312                // Method li/strolch/privilege/base/AccessDeniedException."<init>":(Ljava/lang/String;)V
+       449: athrow
+       450: aload         7
+       452: invokestatic  #341                // Method java/time/ZonedDateTime.now:()Ljava/time/ZonedDateTime;
+       455: invokevirtual #522                // Method li/strolch/privilege/model/internal/PersonalAccessToken.withLastUsed:(Ljava/time/ZonedDateTime;)Lli/strolch/privilege/model/internal/PersonalAccessToken;
+       458: astore        10
+       460: aload_0
+       461: getfield      #19                 // Field persistenceHandler:Lli/strolch/privilege/handler/PersistenceHandler;
+       464: aload         7
+       466: invokevirtual #526                // Method li/strolch/privilege/model/internal/PersonalAccessToken.tokenId:()Ljava/lang/String;
+       469: invokeinterface #529,  2          // InterfaceMethod li/strolch/privilege/handler/PersistenceHandler.removeAccessToken:(Ljava/lang/String;)Lli/strolch/privilege/model/internal/PersonalAccessToken;
+       474: pop
+       475: aload_0
+       476: getfield      #19                 // Field persistenceHandler:Lli/strolch/privilege/handler/PersistenceHandler;
+       479: aload         10
+       481: invokeinterface #532,  2          // InterfaceMethod li/strolch/privilege/handler/PersistenceHandler.addAccessToken:(Lli/strolch/privilege/model/internal/PersonalAccessToken;)V
+       486: aload_0
+       487: invokevirtual #92                 // Method getPrivilegeContextBuilder:()Lli/strolch/privilege/handler/PrivilegeContextBuilder;
+       490: aload         10
+       492: aload         9
+       494: aload_2
+       495: invokestatic  #341                // Method java/time/ZonedDateTime.now:()Ljava/time/ZonedDateTime;
+       498: invokevirtual #536                // Method li/strolch/privilege/handler/PrivilegeContextBuilder.buildPrivilegeContext:(Lli/strolch/privilege/model/internal/PersonalAccessToken;Lli/strolch/privilege/model/internal/User;Ljava/lang/String;Ljava/time/ZonedDateTime;)Lli/strolch/privilege/model/PrivilegeContext;
+       501: astore        11
+       503: aload_0
+       504: getfield      #132                // Field privilegeContextMap:Ljava/util/Map;
+       507: aload         11
+       509: invokevirtual #351                // Method li/strolch/privilege/model/PrivilegeContext.getCertificate:()Lli/strolch/privilege/model/Certificate;
+       512: invokevirtual #539                // Method li/strolch/privilege/model/Certificate.getSessionId:()Ljava/lang/String;
+       515: aload         11
+       517: invokeinterface #542,  3          // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+       522: pop
+       523: aload_0
+       524: getfield      #397                // Field personalAccessTokenCache:Ljava/util/Map;
+       527: aload         4
+       529: new           #403                // class li/strolch/privilege/handler/DefaultPrivilegeHandler$PersonalAccessTokenCacheEntry
+       532: dup
+       533: aload         11
+       535: aload         5
+       537: aload         8
+       539: invokevirtual #443                // Method li/strolch/privilege/model/internal/PasswordCrypt.salt:()[B
+       542: invokespecial #546                // Method li/strolch/privilege/handler/DefaultPrivilegeHandler$PersonalAccessTokenCacheEntry."<init>":(Lli/strolch/privilege/model/PrivilegeContext;Ljava/lang/String;[B)V
+       545: invokeinterface #542,  3          // InterfaceMethod java/util/Map.put:(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+       550: pop
+       551: aload         11
+       553: invokevirtual #351                // Method li/strolch/privilege/model/PrivilegeContext.getCertificate:()Lli/strolch/privilege/model/Certificate;
+       556: areturn
+      Exception table:
+         from    to  target type
+           238   301   304   Class li/strolch/privilege/base/AccessDeniedException
+           238   301   309   Class java/lang/Exception
+

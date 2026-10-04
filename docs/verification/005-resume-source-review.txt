@@ -1,0 +1,11 @@
+Framework HEAD: 4d2a4b8d8db4fbd2c254910431e8284edc15c7d8
+Version: 2.8.0-SNAPSHOT (not timestamped baseline)
+Installed privilege JAR SHA-256: 7dbc1d3d5853ac84dc3c9ff3337555339ed598603c78b57345da56ee191df306
+DefaultPrivilegeHandler: installed class equals framework target; SHA-256 3c60d70f3491e064db7d6f55354cd4dc06234b395ccaa481c76c957fb5d8b0cb
+/home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/handler/DefaultPrivilegeHandler.java SHA-256 3fae5c54f3733657b93fe4e3929186576fa2dc2210cf8b1b4a61b73d9ecc6996
+PrivilegeCrudHandler: installed class equals framework target; SHA-256 8e9a1bfdb031afd425c21538109939ef34a1ed7a0766a644087b9bf070c5568f
+/home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/handler/PrivilegeCrudHandler.java SHA-256 2a8ca2f45a01e6b5c6841521f02e595771dba1058c6283cd45d223995d1839df
+DefaultEncryptionHandler: installed class equals framework target; SHA-256 be68e2971c121ad9ee62b2b485725d225fc7e8dfa5b739d91145aef4be6f02d0
+/home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/handler/DefaultEncryptionHandler.java SHA-256 6e6171368f7518b649bf41496df6b18a34b9896f07b08be6f11704d76d3a4a8e
+XmlPersistenceHandler: installed class equals framework target; SHA-256 2e80f0586692dd7b55f674b9b9d1df1a8402ac449d84945cce4ed9a95f0ed1d9
+/home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/handler/XmlPersistenceHandler.java SHA-256 2ca61259d31643eeaa4db1df58dc0ab8f286324988eaa26254677e94ef0ead2a

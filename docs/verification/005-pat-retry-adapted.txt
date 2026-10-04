@@ -1,0 +1,70 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------< li.intruvia:intruvia-pat-security-probe >---------------
+[INFO] Building intruvia-pat-security-probe 0.0.1
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-pat-security-probe ---
+[INFO] Deleting /home/eitch/src/git/intruvia/probes/pat-security/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-pat-security-probe ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/probes/pat-security/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-pat-security-probe ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-pat-security-probe ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/probes/pat-security/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-pat-security-probe ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-pat-security-probe ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.probe.PatRevocationTest
+09:14:11.489 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 50ms. This is too short. Consider increasing iterations.
+09:14:11.505 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 12ms. This is too short. Consider increasing iterations.
+09:14:11.539 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 9ms. This is too short. Consider increasing iterations.
+09:14:11.541 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter usersXmlFile is not defined, using default PrivilegeUsers.xml!
+09:14:11.543 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter groupsXmlFile is not defined, using default PrivilegeGroups.xml!
+09:14:11.543 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter rolesXmlFile is not defined, using default PrivilegeRoles.xml!
+09:14:11.543 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter tokensXmlFile is not defined, using default PrivilegeTokens.xml!
+09:14:11.552 [main] INFO li.strolch.privilege.handler.XmlPersistenceHandler -- Read 1 Users, 0 Groups, 1 Roles, 0 Tokens
+09:14:11.556 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- No privilegeConflictResolution parameter defined. Using MERGE
+09:14:11.613 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- Persisting of sessions not enabled, so not loading!.
+09:14:11.625 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 9ms. This is too short. Consider increasing iterations.
+09:14:11.633 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- User producer authenticated with password: Certificate [sessionId=1daf1e6a-9de2-4da2-a7e8-8616b2bcd373, username=producer, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+09:14:11.643 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 9ms. This is too short. Consider increasing iterations.
+09:14:11.652 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 8ms. This is too short. Consider increasing iterations.
+09:14:11.665 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+09:14:11.672 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+09:14:11.680 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 6ms. This is too short. Consider increasing iterations.
+09:14:11.680 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter usersXmlFile is not defined, using default PrivilegeUsers.xml!
+09:14:11.680 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter groupsXmlFile is not defined, using default PrivilegeGroups.xml!
+09:14:11.681 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter rolesXmlFile is not defined, using default PrivilegeRoles.xml!
+09:14:11.681 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter tokensXmlFile is not defined, using default PrivilegeTokens.xml!
+09:14:11.683 [main] INFO li.strolch.privilege.handler.XmlPersistenceHandler -- Read 1 Users, 0 Groups, 1 Roles, 0 Tokens
+09:14:11.683 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- No privilegeConflictResolution parameter defined. Using MERGE
+09:14:11.687 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- Persisting of sessions not enabled, so not loading!.
+09:14:11.694 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 6ms. This is too short. Consider increasing iterations.
+09:14:11.695 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- User producer authenticated with password: Certificate [sessionId=e1a67d5a-c6fc-4828-9ff4-337124c86d23, username=producer, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+09:14:11.702 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+09:14:11.711 [pool-4-thread-1] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.346 s -- in li.intruvia.probe.PatRevocationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.693 s
+[INFO] Finished at: 2026-09-29T09:14:11+02:00
+[INFO] ------------------------------------------------------------------------

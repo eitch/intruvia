@@ -1,0 +1,117 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] --------------< li.intruvia:intruvia-pat-security-probe >---------------
+[INFO] Building intruvia-pat-security-probe 0.0.1
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-pat-security-probe ---
+[INFO] Deleting /home/eitch/src/git/intruvia/probes/pat-security/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-pat-security-probe ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/probes/pat-security/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-pat-security-probe ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-pat-security-probe ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/probes/pat-security/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-pat-security-probe ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 1 source file with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-pat-security-probe ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.probe.PatRevocationTest
+08:50:32.398 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 55ms. This is too short. Consider increasing iterations.
+08:50:32.418 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 14ms. This is too short. Consider increasing iterations.
+08:50:32.450 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 11ms. This is too short. Consider increasing iterations.
+08:50:32.452 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter usersXmlFile is not defined, using default PrivilegeUsers.xml!
+08:50:32.454 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter groupsXmlFile is not defined, using default PrivilegeGroups.xml!
+08:50:32.454 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter rolesXmlFile is not defined, using default PrivilegeRoles.xml!
+08:50:32.454 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter tokensXmlFile is not defined, using default PrivilegeTokens.xml!
+08:50:32.463 [main] INFO li.strolch.privilege.handler.XmlPersistenceHandler -- Read 1 Users, 0 Groups, 1 Roles, 0 Tokens
+08:50:32.468 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- No privilegeConflictResolution parameter defined. Using MERGE
+08:50:32.536 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- Persisting of sessions not enabled, so not loading!.
+08:50:32.547 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 8ms. This is too short. Consider increasing iterations.
+08:50:32.556 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- User producer authenticated with password: Certificate [sessionId=bfdad8ca-a457-4380-88fe-a6bf5814542c, username=producer, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+08:50:32.565 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 8ms. This is too short. Consider increasing iterations.
+08:50:32.573 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+08:50:32.585 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+08:50:32.592 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+08:50:32.600 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 6ms. This is too short. Consider increasing iterations.
+08:50:32.601 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter usersXmlFile is not defined, using default PrivilegeUsers.xml!
+08:50:32.601 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter groupsXmlFile is not defined, using default PrivilegeGroups.xml!
+08:50:32.601 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter rolesXmlFile is not defined, using default PrivilegeRoles.xml!
+08:50:32.601 [main] DEBUG li.strolch.privilege.handler.XmlPersistenceHandler -- [li.strolch.privilege.handler.PersistenceHandler] Parameter tokensXmlFile is not defined, using default PrivilegeTokens.xml!
+08:50:32.603 [main] INFO li.strolch.privilege.handler.XmlPersistenceHandler -- Read 1 Users, 0 Groups, 1 Roles, 0 Tokens
+08:50:32.603 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- No privilegeConflictResolution parameter defined. Using MERGE
+08:50:32.608 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- Persisting of sessions not enabled, so not loading!.
+08:50:32.617 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 8ms. This is too short. Consider increasing iterations.
+08:50:32.618 [main] INFO li.strolch.privilege.handler.DefaultPrivilegeHandler -- User producer authenticated with password: Certificate [sessionId=fda5601f-b776-41fd-b190-579c50ceb6d2, username=producer, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+08:50:32.625 [main] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+08:50:32.635 [pool-4-thread-1] INFO li.strolch.privilege.handler.DefaultEncryptionHandler -- Hashing password took 7ms. This is too short. Consider increasing iterations.
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.367 s <<< FAILURE! -- in li.intruvia.probe.PatRevocationTest
+[ERROR] li.intruvia.probe.PatRevocationTest.concurrentAuthenticationMustNotRestoreRevokedToken -- Time elapsed: 0.059 s <<< FAILURE!
+java.lang.AssertionError: A fresh request accepted a token after completed revocation and in-flight authentication: expected li.strolch.privilege.base.AccessDeniedException to be thrown, but nothing was thrown
+	at org.junit.Assert.assertThrows(Assert.java:1028)
+	at li.intruvia.probe.PatRevocationTest.concurrentAuthenticationMustNotRestoreRevokedToken(PatRevocationTest.java:123)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   PatRevocationTest.concurrentAuthenticationMustNotRestoreRevokedToken:123 A fresh request accepted a token after completed revocation and in-flight authentication: expected li.strolch.privilege.base.AccessDeniedException to be thrown, but nothing was thrown
+[INFO] 
+[ERROR] Tests run: 2, Failures: 1, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.695 s
+[INFO] Finished at: 2026-09-29T08:50:32+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project intruvia-pat-security-probe: There are test failures.
+[ERROR] 
+[ERROR] See /home/eitch/src/git/intruvia/probes/pat-security/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
