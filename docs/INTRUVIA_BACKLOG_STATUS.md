@@ -1,15 +1,15 @@
 # Intruvia — backlog status
 
-Updated: 2026-10-01 · Implementation state: tasks 001–005 complete; task 006 next
+Updated: 2026-10-04 · Implementation state: tasks 001–006 complete; task 007 next
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **005 — Integrate Strolch PAT machine authentication (DONE)**.
-- Next task: **006 — Implement Fail2ban validation and normalization (TODO)**; dependency 003 is DONE.
-- Completed: **5 / 22**. TODO: **17**. IN_PROGRESS: **0**. BLOCKED: **0**.
-- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Tasks 006–022 remain TODO.
+- Current task: **006 — Implement Fail2ban validation and normalization (DONE)**.
+- Next task: **007 — Implement local GeoIP enrichment (TODO)**; dependency 003 is DONE.
+- Completed: **6 / 22**. TODO: **16**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; tasks 007–022 remain TODO.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence is verified with the local snapshot override; ingestion, viewer and deployment remain pending.
 
@@ -26,7 +26,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 003 | Define event DTOs and Strolch model mapping | 002 | DONE | [Mapping](architecture/003-event-model.md), [schema](api/v1.schema.json), [fixture](api/event-v1.json), [clean verify](verification/003-clean-verify.txt). 7 contract tests and 2 existing integration tests passed. |
 | 004 | Configure durable Strolch persistence | 003 | DONE | [Local snapshot verification](verification/004-local-verify.txt), [binary checksums](verification/004-local-strolch.sha256), [design](architecture/004-persistence.md). 7 contract tests and 4 PostgreSQL integration tests passed; restart, rollback, migration, isolation and configuration guards verified. |
 | 005 | Integrate Strolch PAT machine authentication | 002 | DONE | [Design/provisioning](architecture/005-machine-authentication.md), [real-PAT and full regression](verification/005-resume-acceptance.txt), [lifecycle probe](verification/005-resume-pat-probe.txt), [source review](verification/005-resume-source-review.txt), [hashes](verification/005-resume-strolch.sha256). 9 unit/HTTP + 4 integration + 2 probe tests pass; historical race resolved upstream. |
-| 006 | Implement Fail2ban validation and normalization | 003 | TODO | — |
+| 006 | Implement Fail2ban validation and normalization | 003 | DONE | [Validation table/design](architecture/006-fail2ban-validation.md), [full verify](verification/006-clean-verify.txt), [framework hashes](verification/006-strolch.sha256). Strict bounded parsing, canonical IP/time/digest, trusted envelope mapping and separate age policy; 15 unit/HTTP + 4 PostgreSQL integration tests pass. |
 | 007 | Implement local GeoIP enrichment | 003 | TODO | — |
 | 008 | Add safe GeoIP database replacement | 007 | TODO | — |
 | 009 | Implement atomic ingestion and deduplication | 004, 006, 007 | TODO | — |
@@ -282,3 +282,22 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Integrity commands: `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/005-resume-strolch.sha256`; `sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar > docs/verification/005-resume-artifacts.sha256`; both `sha256sum -c` commands exit 0, all files OK. [Application hashes](verification/005-resume-artifacts.sha256).
 - Final checks: `git diff --check` exit 0; Python changed-Java line-length and custom-verifier-removal assertions pass. Script cleanup ran for this invocation's disposable databases/containers. A separately existing container `intruvia-verify-3-10496` was left untouched. Initial guessed resource path was absent; actual `src/main/runtime/config/PrivilegeConfig.xml.example` located and read. `rg` unavailable; fallback reads used.
 - Unrun/out of scope: upstream framework test suite/rebuild, production user/token provisioning, TLS proxy rehearsal, browser/viewer routes and actual ingestion endpoint. No constant-time cryptographic audit claimed. Specification/backlog requirements unchanged; all revised 005 acceptance criteria pass using local snapshot artifacts.
+
+### 2026-10-04 — task 006 started
+
+- Agent: Codex. TODO → IN_PROGRESS. Verified all 22 ledger rows: no active task; lowest eligible TODO 006, dependency 003 DONE. Summary agrees.
+- Read both AGENTS.md files, all referenced framework guidelines including Vanilla JavaScript in CODE_STYLE.md and STROLCH_SPECIFICATION.md, specification, backlog and ledger. `rg` unavailable (exit 127); using find/direct reads.
+- Existing staged/deleted `intruvia-core/src/main/java/li/intruvia/core/auth/MachineCredentials.java` preserved. Scope is validation, canonical payload digest and envelope mapping only; no endpoint, persistence or GeoIP implementation.
+- Counts: DONE 5, TODO 16, IN_PROGRESS 1, BLOCKED 0. Next task 007 remains TODO. No commit, push or deployment.
+
+### 2026-10-04 — task 006 completed
+
+- Agent: Codex. IN_PROGRESS → DONE. Executed exactly task 006; dependency 003 DONE. Counts: DONE 6, TODO 16, IN_PROGRESS 0, BLOCKED 0. Next eligible task **007**, dependency 003 DONE; remains TODO.
+- Changes: strict streaming JSON shape/type validation with bounded UTF-8 input and safe errors; literal-only IPv4/IPv6 normalization (mapped IPv6 becomes IPv4); UUID/time normalization; stable versioned SHA-256 payload digest; trusted generic envelope mapping; separately callable configurable timestamp-age policy. Jail length now counts Unicode code points consistently with the schema. No persistence/ingestion endpoint or GeoIP implementation added.
+- Sources: `intruvia-core/src/main/java/li/intruvia/core/ingest/`, `intruvia-rest/src/main/java/li/intruvia/rest/ingest/`, `intruvia-rest/src/test/java/li/intruvia/rest/ingest/Fail2banValidationTest.java`, small model/DTO updates. [Validation table and design](architecture/006-fail2ban-validation.md), README usage, [application hashes](verification/006-artifacts.sha256). Existing staged/deleted MachineCredentials.java state preserved. No commit, push, deployment, dependency or toolchain changes. Specification/backlog requirements unchanged.
+- Initial command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-rest -am clean test` — exit 1; 13 tests, one failure. [Output](verification/006-unit-tests.txt). Invalid-surrogate fixture was reserialized and UTF-8 encoded as `?`, so it no longer contained the invalid input. Corrected the test to send the raw JSON escape directly; production code unchanged by that correction.
+- Full acceptance/regression command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH INTRUVIA_TEST_POSTGRES_IMAGE=postgres:18-trixie scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT` — exit 0; all five reactor projects SUCCESS, 15 unit/HTTP tests and 4 PostgreSQL/application integration tests, zero failures/errors/skips. [Output and database image identity](verification/006-clean-verify.txt). Script cleaned up its disposable container/databases.
+- Acceptance coverage: strict/duplicate/unknown fields and types, exact byte bound/one-byte overflow/endless stream bound, malformed UTF-8 and JSON, UUID/jail/failures boundaries, invalid surrogate, IPv4/IPv6 canonical forms and invalid names/zones/CIDR, timezone normalization, exact age/skew bounds and one-nanosecond violations. Parsing old accepted payloads/digest computation is independent of age rejection. Equivalent ordering/escaping/number/UUID/IP/time forms produce equal digests; each changed producer field differs; missing/null failures agree and zero differs. Envelope identity comes only from the separate authenticated mapping argument. No name-service API or raw-payload logging in validation code.
+- Framework/artifact verification: actual installed and packaged version `2.8.0-SNAPSHOT`; offline Maven succeeded. Python XML/hashlib inspection verified framework source version and each packaged Strolch JAR equals its local Maven-cache JAR; [review](verification/006-review.txt). No rebuild needed; no artifact relabeled or claim of timestamped-baseline equivalence. `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/006-strolch.sha256` and `sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar > docs/verification/006-artifacts.sha256` succeeded; both corresponding `sha256sum -c` commands exited 0, all entries OK.
+- Minor inspection failure: checksum commands first ran before the in-flight clean build assembled JARs, failing with missing files/empty checksum list (exit 1). Reran successfully after build completion; final checksum files contain verified artifacts. `rg` unavailable; direct reads/find used.
+- Final checks: `git diff --check` exit 0; Python Java length/tab review passed; ledger assertions verify 22 rows, DONE 6/TODO 16/IN_PROGRESS 0/BLOCKED 0 and next eligible 007. Unrun/out of scope: actual ingestion HTTP status/media/rate wiring (010), deduplication persistence (009), GeoIP (007), runtime setting wiring (019), browser checks, framework rebuild/tests. No remaining task 006 blocker.
