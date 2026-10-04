@@ -1,14 +1,15 @@
 # Intruvia — backlog status
 
-Updated: 2026-09-29 · Implementation state: task 004 complete
+Updated: 2026-10-01 · Implementation state: tasks 001–005 complete; task 006 next
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **004 — Configure durable Strolch persistence (DONE)**.
-- Next task: **005 — Implement machine credential authentication (TODO)**; dependency 002 is DONE.
-- Completed: **4 / 22**. TODO: **18**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Current task: **005 — Integrate Strolch PAT machine authentication (DONE)**.
+- Next task: **006 — Implement Fail2ban validation and normalization (TODO)**; dependency 003 is DONE.
+- Completed: **5 / 22**. TODO: **17**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Tasks 006–022 remain TODO.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence is verified with the local snapshot override; ingestion, viewer and deployment remain pending.
 
@@ -24,7 +25,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 002 | Create the Maven modules and application skeleton | 001 | DONE | [Architecture](architecture/002-application-skeleton.md), [clean verify](verification/002-clean-verify.txt), [process smoke](verification/002-application-smoke.txt). Four modules; 2 integration tests passed; packaged page/health and Strolch/Jetty shutdown verified. |
 | 003 | Define event DTOs and Strolch model mapping | 002 | DONE | [Mapping](architecture/003-event-model.md), [schema](api/v1.schema.json), [fixture](api/event-v1.json), [clean verify](verification/003-clean-verify.txt). 7 contract tests and 2 existing integration tests passed. |
 | 004 | Configure durable Strolch persistence | 003 | DONE | [Local snapshot verification](verification/004-local-verify.txt), [binary checksums](verification/004-local-strolch.sha256), [design](architecture/004-persistence.md). 7 contract tests and 4 PostgreSQL integration tests passed; restart, rollback, migration, isolation and configuration guards verified. |
-| 005 | Implement machine credential authentication | 002 | TODO | — |
+| 005 | Integrate Strolch PAT machine authentication | 002 | DONE | [Design/provisioning](architecture/005-machine-authentication.md), [real-PAT and full regression](verification/005-resume-acceptance.txt), [lifecycle probe](verification/005-resume-pat-probe.txt), [source review](verification/005-resume-source-review.txt), [hashes](verification/005-resume-strolch.sha256). 9 unit/HTTP + 4 integration + 2 probe tests pass; historical race resolved upstream. |
 | 006 | Implement Fail2ban validation and normalization | 003 | TODO | — |
 | 007 | Implement local GeoIP enrichment | 003 | TODO | — |
 | 008 | Add safe GeoIP database replacement | 007 | TODO | — |
@@ -204,3 +205,80 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Actual packaged Strolch JAR identities: `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar` — exit 0; [checksums](verification/004-local-strolch.sha256). This verifies local snapshot behavior, not equivalence with the original timestamped baseline.
 - Unrun: framework source rebuild/tests (installed artifacts sufficient), DB crash recovery, backup/restore and later ingestion/browser requirements. No application implementation changes needed; no commit, push or deployment. Specification/backlog requirements unchanged.
 - Counts: DONE 4, TODO 18, IN_PROGRESS 0, BLOCKED 0. Next task: 005; not started.
+
+### 2026-09-29 — task 005 started
+
+- Agent: Codex. TODO → IN_PROGRESS. Verified 22 ledger rows, no active task, dependency 002 DONE; selected lowest eligible TODO 005. Initial working tree clean. Read all required guidelines (Vanilla JavaScript in CODE_STYLE.md), specification, backlog and ledger. Scope limited to machine authentication; no other task started.
+- Counts: DONE 4, TODO 17, IN_PROGRESS 1, BLOCKED 0. Next task 006.
+
+### 2026-09-29 — task 005 completed
+
+- Agent: Codex. IN_PROGRESS → DONE. Implemented exactly task 005; no commit, push, deployment or subsequent task started. Specification/backlog unchanged.
+- Changes: immutable protected TSV verifier loader, stable machine principals and ingestion privilege, name-bound JAX-RS authentication filter, API servlet wiring, rotation/revocation and failure tests. README documents provisioning and restart-based rotation. Missing file disables credentials; invalid existing file fails startup. No active token or verifier bundled.
+- Sources: `intruvia-core/src/main/java/li/intruvia/core/auth/MachineCredentials.java`, `intruvia-rest/src/main/java/li/intruvia/rest/auth/`, `intruvia-app/src/test/java/li/intruvia/app/MachineAuthenticationTest.java`; [design](architecture/005-machine-authentication.md), [application hashes](verification/005-artifacts.sha256).
+- Command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT clean test` — exit 0, 9 tests passed; [output](verification/005-unit-http.txt).
+- Full acceptance/regression command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH INTRUVIA_TEST_POSTGRES_IMAGE=postgres:18-trixie scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT` — exit 0 twice, before and after import cleanup. 9 unit/HTTP tests plus 4 PostgreSQL/application integration tests; zero failures/errors/skips, all five reactor projects SUCCESS. [First full output](verification/005-clean-verify.txt), [final output](verification/005-final-verify.txt). Disposable database cleanup performed by script.
+- Authentication evidence: missing/invalid/malformed/duplicate credentials return 401 with challenge; valid credential without ingestion privilege returns 403; both rotation tokens resolve server-a despite spoofed query identity; removed token fails after reload. Principal has no event:read role. Unsafe file permissions, malformed rows, unknown privileges and duplicate verifiers fail. Error bodies do not echo credentials. Code review confirms no authentication logging and all fixed-size SHA-256 verifiers compared with MessageDigest.isEqual without early match exit; no wall-clock constant-time claim.
+- Actual framework version: locally installed `2.8.0-SNAPSHOT`, also declared by `/home/eitch/src/git/atx-dev/strolch/pom.xml`; local agent JAR inspected. Default timestamped pin unchanged. `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar` — exit 0, [hashes](verification/005-local-strolch.sha256). These results do not establish timestamped-baseline equivalence. Framework rebuild unnecessary.
+- Inspection failure: `rg` unavailable (exit 127); used grep/Python/find. No failed tests. `git diff --check` and new Java line-length inspection passed. Unrun/out of scope: real ingestion endpoint (010), viewer sessions (011), browser checks, TLS proxy rehearsal and production credential provisioning. No new dependencies/toolchains.
+- Counts: DONE 5, TODO 17, IN_PROGRESS 0, BLOCKED 0. Next eligible task **006**, dependency 003 DONE; remains TODO.
+
+### 2026-09-29 — task 005 reopened for Strolch PAT infrastructure
+
+- Agent: Codex. Transition: 005 DONE → TODO, explicitly requested by the user. Documentation/planning change only; no implementation task started. Existing staged and unstaged implementation changes and all historical evidence preserved.
+- Specification/backlog advanced to v1.1: Strolch owns PAT generation, verification, storage and lifecycle; dedicated technical users map to stable server identities; scoped certificates authorize ingestion; endpoint enforcement separates PATs and viewer sessions. Remove the custom verifier/TSV mechanism during revised task 005, verify actual framework APIs/artifacts and record any framework security gap instead of introducing custom cryptography.
+- Updated task 005 replacement scope and acceptance criteria, plus downstream contracts in 010, 011, 014, 018 and 021. These downstream tasks were already TODO and remain so. Tasks 001–004 remain DONE; their acceptance evidence is unaffected. Tasks depending on 005 cannot start until its revised acceptance criteria pass.
+- Artifacts: [specification](INTRUVIA_SPECIFICATION.md), [backlog](INTRUVIA_BACKLOG.md), this ledger, superseded notice in [prior design](architecture/005-machine-authentication.md) and README. Prior task 005 logs/hashes remain historical evidence for the custom implementation only, not evidence of PAT integration.
+- Checks: `python3 /tmp/intruvia-pat-docs.py` — exit 0; guarded documentation replacements succeeded. `git diff --check` — exit 0. Inline `python3` ledger/version assertions — exit 0: 22 task rows; DONE 4, TODO 18, IN_PROGRESS 0, BLOCKED 0; 005 TODO with dependency 002 DONE; specification and backlog both v1.1. Manual review confirmed existing implementation files were not edited by this revision.
+- Unrun: Maven, runtime, PAT authentication/lifecycle, PostgreSQL and browser tests; documentation-only revision, all revised task 005 implementation checks remain pending. No failed checks or blocker. No commit, push or deployment.
+- Next execution: select **005**, set it IN_PROGRESS, inspect Strolch PAT infrastructure and replace the superseded implementation according to the revised backlog; do not skip to 006 based on old completion evidence.
+
+### 2026-09-29 — task 005 PAT integration started
+
+- Agent: Codex. TODO → IN_PROGRESS. Verified all 22 rows: no active task; 005 is lowest eligible TODO, dependency 002 DONE. Summary agrees with ledger.
+- Read both AGENTS.md files, all referenced framework guidelines including Vanilla JavaScript in CODE_STYLE.md and STROLCH_SPECIFICATION.md, and all three project planning documents. `rg` unavailable (exit 127); using find/grep/direct reads.
+- Existing staged and unstaged task 005 implementation and documentation changes preserved. Scope limited to revised 005; no commit, push, deployment or other task.
+- Counts: DONE 4, TODO 17, IN_PROGRESS 1, BLOCKED 0. Next task 006 remains TODO.
+
+### 2026-09-29 — task 005 blocked by reproduced framework PAT revocation race
+
+- Agent: Codex. IN_PROGRESS → BLOCKED. Exactly one task attempted; no other task started. Counts: DONE 4, TODO 17, IN_PROGRESS 0, BLOCKED 1. Next eligible TODO: **006**, dependency 003 DONE. Tasks 010/011 still await 005.
+- Changes: isolated real-framework PAT security probe, source/binary audit, checksums, blocker report and documentation/status updates. Existing staged/unstaged implementation and planning changes preserved; no application implementation, POM, upstream source, commit, push or deployment changes in this attempt.
+- Artifacts: [probe POM](../probes/pat-security/pom.xml), [test](../probes/pat-security/src/test/java/li/intruvia/probe/PatRevocationTest.java), [blocker and API/source review](architecture/005-pat-security-blocker.md). Framework clean HEAD `888f0880321ca9bba4274765d55cf85c4e07a96a`.
+- Exact probe command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -f probes/pat-security/pom.xml -Dstrolch.version=2.8.0-SNAPSHOT clean test` — exit 1; 2 tests, 1 failure, 0 errors/skips. Sequential cached revocation and scoped API certificate passed; concurrent authentication restored a revoked token, and a subsequent fresh authentication was wrongly accepted. [Output](verification/005-pat-revocation-probe.txt). Initial same-command run had 2 fixture errors for missing user names; corrected before the meaningful run, [initial failure preserved](verification/005-pat-probe-fixture-failure.txt).
+- Exact resolution command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -f probes/pat-security/pom.xml -Dstrolch.version=2.8.0-SNAPSHOT dependency:tree` — exit 0, [tree](verification/005-pat-dependencies.txt). Local repository and framework source inspected; installed artifacts suffice. Actual version is `2.8.0-SNAPSHOT`, not the historical timestamped baseline. Existing workspace POM already has this version; preserved.
+- Binary inspection: `/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin/javap -c -p -classpath /home/eitch/.m2/repository/li/strolch/strolch-privilege/2.8.0-SNAPSHOT/strolch-privilege-2.8.0-SNAPSHOT.jar li.strolch.privilege.handler.DefaultPrivilegeHandler` — exit 0; [PAT method bytecode](verification/005-pat-authentication-bytecode.txt). Python zipfile/hashlib comparison verified four relevant installed classes equal framework target classes and recorded source SHA-256 values in [review](verification/005-pat-binary-source-review.txt).
+- Integrity: `sha256sum -c docs/verification/005-pat-strolch.sha256` — exit 0, privilege/utils JARs OK. No relabeling or source rebuild; rebuilding unchanged source cannot fix the reproduced lifecycle defect. This is not an artifact-resolution blocker.
+- Blocker/required action: upstream framework lifecycle fix and rebuilt artifact, then explicitly resume 005. Framework source `/home/eitch/src/git/atx-dev/strolch/` is outside writable roots; approval unavailable. No supported existing PAT configuration lock found; an HTTP-only lock cannot coordinate framework revocation. No replacement verifier or private lifecycle added.
+- Unrun: revised real-PAT HTTP suite, identity/rotation/expiry/disabled-owner cases, full Maven/PostgreSQL regression, production provisioning and browser checks. Existing custom-token code was not replaced and task 005 remains incomplete. Specification/backlog requirements unchanged.
+- Inspection failures: `rg` unavailable; one guessed CRUD source filename and one guessed test configuration path did not exist, then actual paths located. Required guidelines all available.
+- Final checks: `git diff --check` — exit 0; Python ledger assertions — 22 rows, DONE 4/TODO 17/BLOCKED 1/IN_PROGRESS 0, next eligible 006; new probe Java lines below 160 characters, passed.
+
+### 2026-09-29 — task 005 authorized retry after upstream fix
+
+- Agent: Codex. BLOCKED → IN_PROGRESS. Only eligible blocked task 005, dependency 002 DONE; no active task. Required guidelines including Vanilla JavaScript and all planning documents read. Existing staged/unstaged changes preserved.
+- Framework clean HEAD now `b5e5ef3fe19f538d73a94a6c39aa9fc1039b39ac` adds PAT locking and atomic last-used updates; installed snapshot hashes changed. Historical checksum verification failed as expected for rebuilt artifacts.
+- Original probe rerun: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -f probes/pat-security/pom.xml -Dstrolch.version=2.8.0-SNAPSHOT clean test` — exit 1, 2 tests, 0 failures, 1 lock-timeout error. [Output](verification/005-pat-retry-probe.txt). Its scheduling assumes revocation completes before releasing authentication; adapting it for serialization before integration.
+- Counts: DONE 4, TODO 17, IN_PROGRESS 1, BLOCKED 0. Next task 006 remains TODO.
+
+### 2026-10-01 — task 005 resumed
+
+- Agent: Codex. IN_PROGRESS → IN_PROGRESS. Verified all 22 ledger rows: 005 is the only active task, dependency 002 DONE; resume without starting 006. Counts remain DONE 4, TODO 17, IN_PROGRESS 1, BLOCKED 0.
+- Read project/framework AGENTS.md, all seven referenced guidelines including Vanilla JavaScript in CODE_STYLE.md, specification, backlog and ledger. Existing staged/unstaged implementation and evidence preserved. `rg` unavailable; used direct reads/find/grep.
+- Reviewing the existing partial PAT implementation against current local framework and rerunning acceptance checks. No commit, push or deployment authorized or performed.
+
+### 2026-10-01 — task 005 PAT integration completed
+
+- Agent: Codex. IN_PROGRESS → DONE. Resumed exactly the single active task; dependency 002 DONE. Counts: DONE 5, TODO 17, IN_PROGRESS 0, BLOCKED 0. Next eligible task **006**, dependency 003 DONE; not started.
+- Completed existing partial replacement: Strolch PAT verification/certificate wiring, protected non-secret technical-user mapping, narrow ingestion authorization and real-PAT HTTP tests. Fixed two existing test fixture defects and added wrong-secret rejection after caching. Updated README and architecture/provisioning instructions; historical blocker report marked resolved without erasing its evidence. Existing unrelated/staged changes preserved; no commit, push, deployment, new dependency/toolchain or upstream modification.
+- Sources: `intruvia-core/src/main/java/li/intruvia/core/auth/MachineIdentities.java`, `intruvia-rest/src/main/java/li/intruvia/rest/auth/`, `intruvia-rest/src/main/java/li/intruvia/rest/IntruviaRestApplication.java`, application wiring and `intruvia-app/src/test/java/li/intruvia/app/MachineAuthenticationTest.java`; [design](architecture/005-machine-authentication.md). Custom `MachineCredentials.java` remains deleted; no production custom verifier references remain.
+- Framework inspection: clean source HEAD `4d2a4b8d8db4fbd2c254910431e8284edc15c7d8`; installed version `2.8.0-SNAPSHOT`. Read actual authentication, issuance, subsetting, revocation, persistence and upstream PAT test sources. Python zipfile/hashlib comparison passed for four installed handler classes against framework target classes; [source/class identities](verification/005-resume-source-review.txt). Installed dependencies suffice offline; no rebuild needed, no artifacts relabeled as the timestamped baseline. Existing POM version preserved.
+- Exact probe command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -f probes/pat-security/pom.xml -Dstrolch.version=2.8.0-SNAPSHOT clean test` — exit 0, 2 tests, zero failures/errors/skips; [output](verification/005-resume-pat-probe.txt). Adapted scheduling accommodates upstream locking; new authentication after completed revocation fails.
+- Exact full acceptance command (three attempts): `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH INTRUVIA_TEST_POSTGRES_IMAGE=postgres:18-trixie scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+  - Attempt 1 exit 1: 7 contract tests passed; HTTP suite 2 tests/1 failure because the leak assertion searched for malformed input `:` in JSON punctuation. [Output](verification/005-resume-full-verify.txt). Corrected by checking exact safe error fields/messages and checking realistic secret strings separately.
+  - Attempt 2 exit 1: HTTP suite 2 tests/1 error; disabled-owner fixture used DefaultPrivilege for a tuple-valued user-state operation. [Output](verification/005-resume-final-verify.txt). Corrected to framework UserAccessPrivilege.
+  - Final exit 0: all five reactor projects SUCCESS; 9 unit/HTTP and 4 PostgreSQL/application integration tests, zero failures/errors/skips. [Output and PostgreSQL image identity](verification/005-resume-acceptance.txt). Verifies persisted model restart/rollback and packaged application lifecycle as regression coverage.
+- Acceptance: real issued PATs return API certificates; missing/malformed/invalid/expired/future/revoked tokens and disabled owners yield 401; missing scope/mapping and broad certificates yield 403; duplicate headers, session Bearer/cookie credentials rejected; two mapped users have distinct identities despite spoofed query; rotation retains identity; cached revocation/expiry rejected without reload. Framework certificate privilege set is exactly ingestion-only. No application secret logging; fixed HTTP errors do not echo credentials. Viewer route/WebSocket isolation remains explicitly in 011/014.
+- Integrity commands: `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/005-resume-strolch.sha256`; `sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar > docs/verification/005-resume-artifacts.sha256`; both `sha256sum -c` commands exit 0, all files OK. [Application hashes](verification/005-resume-artifacts.sha256).
+- Final checks: `git diff --check` exit 0; Python changed-Java line-length and custom-verifier-removal assertions pass. Script cleanup ran for this invocation's disposable databases/containers. A separately existing container `intruvia-verify-3-10496` was left untouched. Initial guessed resource path was absent; actual `src/main/runtime/config/PrivilegeConfig.xml.example` located and read. `rg` unavailable; fallback reads used.
+- Unrun/out of scope: upstream framework test suite/rebuild, production user/token provisioning, TLS proxy rehearsal, browser/viewer routes and actual ingestion endpoint. No constant-time cryptographic audit claimed. Specification/backlog requirements unchanged; all revised 005 acceptance criteria pass using local snapshot artifacts.

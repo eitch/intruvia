@@ -1,6 +1,6 @@
 # Intruvia — numbered implementation backlog
 
-Version: 1.0 · Date: 2026-09-28
+Version: 1.1 · Date: 2026-09-29
 
 Authoritative contract: [implementation specification](INTRUVIA_SPECIFICATION.md). Execution ledger: [backlog status](INTRUVIA_BACKLOG_STATUS.md).
 
@@ -55,15 +55,15 @@ The foundational product and stack decisions are already captured in the specifi
 
 **Completion evidence:** Migration and restart/rollback results.
 
-## 005 — Implement machine credential authentication
+## 005 — Integrate Strolch PAT machine authentication
 
 **Dependencies:** 002
 
-**Scope:** Load protected per-server token verifiers, bind identities and ingestion privilege, and add the JAX-RS authentication boundary.
+**Scope:** Reopened by the 2026-09-29 design revision. Replace the custom `MachineCredentials` verifier store and authentication wiring with Strolch's PAT infrastructure. Inspect the actual resolved framework APIs and existing PAT tests; use one technical user per reporting server, a protected stable instance-ID mapping and narrowly scoped ingestion privileges. Delegate verification and token lifecycle to Strolch; adapt only HTTP errors, PAT-only endpoint enforcement and application identity mapping. Remove obsolete TSV loading/provisioning and custom verification code/tests, update the architecture decision and README, and preserve historical verification evidence as superseded. Do not implement the ingestion endpoint (010) or viewer sessions (011) in this task.
 
-**Acceptance criteria:** Missing/invalid token is 401; wrong privilege is 403; valid token resolves the configured stable instance ID; rotation preserves identity; token comparison is timing-safe and no secret is emitted in logs or errors.
+**Acceptance criteria:** Real Strolch-issued PATs authenticate through the framework and yield its certificate. Missing/malformed/invalid/expired/not-yet-valid/revoked PATs and disabled owners yield 401; valid PATs without ingestion privilege or a server mapping yield 403. Duplicate Authorization headers and viewer-session credentials cannot bypass the PAT-only boundary. Two technical users resolve distinct configured identities; caller data cannot spoof identity. Overlapping rotation PATs for one technical user preserve identity; revocation and expiry reject a previously cached PAT without an Intruvia credential-file reload/restart. Certificates have only intended ingestion privileges and no viewer/admin access; actual viewer-route isolation is verified in 011/014. No custom verifier store or token cryptography remains and no secret is logged or returned. Review framework verification/security behavior against the resolved version and record/resolve any gap rather than silently weakening requirements or adding a parallel verifier.
 
-**Completion evidence:** Authentication and rotation tests.
+**Completion evidence:** Framework API/version references, real-PAT HTTP/privilege/lifecycle tests, provisioning/rotation instructions and fresh full regression results. Earlier custom-token results do not satisfy this revised task.
 
 ## 006 — Implement Fail2ban validation and normalization
 
@@ -111,7 +111,7 @@ The foundational product and stack decisions are already captured in the specifi
 
 **Scope:** Wire POST /api/v1/fail2ban/events, body/media limits, rate limits and consistent error/response DTOs.
 
-**Acceptance criteria:** HTTP tests demonstrate 201/200/400/401/403/409/413/415/429/503 as specified; a DB failure is never acknowledged as success; Retry-After is present for limits; identity is derived from credentials and errors contain no secrets.
+**Acceptance criteria:** HTTP tests demonstrate 201/200/400/401/403/409/413/415/429/503 as specified; a DB failure is never acknowledged as success; Retry-After is present for limits; identity is derived from the Strolch PAT certificate and configured technical-user mapping, the service uses that certificate for authorization, and errors contain no secrets.
 
 **Completion evidence:** HTTP contract test results.
 
@@ -121,7 +121,7 @@ The foundational product and stack decisions are already captured in the specifi
 
 **Scope:** Integrate Strolch viewer authentication, cookie sessions, login/logout, CSRF protection and event:read authorization using the verified project convention.
 
-**Acceptance criteria:** Session cookie flags and same-origin rules are verified; machine token cannot read history; unauthorized users cannot view events; logout/expiry invalidates the shared session validation used by future sockets; no credential is stored in browser localStorage.
+**Acceptance criteria:** Session cookie flags and same-origin rules are verified; machine PATs cannot authenticate viewer routes even via Bearer headers; unauthorized users cannot view events; logout/expiry invalidates the shared session validation used by future sockets; no credential is stored in browser localStorage.
 
 **Completion evidence:** Session, CSRF and authorization test results.
 
@@ -151,7 +151,7 @@ The foundational product and stack decisions are already captured in the specifi
 
 **Scope:** Add authenticated Origin-checked stream endpoint, durable replay/tailing, commit wakeup plus catch-up polling, bounded outbound queues and session invalidation.
 
-**Acceptance criteria:** Protocol tests prove ascending replay then live delivery across the snapshot connection gap; commit without wakeup still delivers; expired cursors request resync; slow-client overflow disconnects without blocking ingestion; invalid Origin and expired sessions are rejected/closed; no client command changes server state.
+**Acceptance criteria:** Protocol tests prove ascending replay then live delivery across the snapshot connection gap; commit without wakeup still delivers; expired cursors request resync; slow-client overflow disconnects without blocking ingestion; invalid Origin and expired sessions are rejected/closed; machine PATs cannot authenticate a WebSocket connection; no client command changes server state.
 
 **Completion evidence:** Protocol, crash-window and backpressure results.
 
@@ -189,7 +189,7 @@ The foundational product and stack decisions are already captured in the specifi
 
 **Dependencies:** 010
 
-**Scope:** Create the additive action template and Python helper with protected token-file loading, stable UUID/timestamp per invocation, JSON encoding, verified HTTPS and bounded retries.
+**Scope:** Create the additive action template and Python helper with protected Strolch PAT-file loading and Bearer tokenId:tokenValue transmission, stable UUID/timestamp per invocation, JSON encoding, verified HTTPS and bounded retries.
 
 **Acceptance criteria:** Mock-server tests prove same payload across retries, 429/5xx/network retry policy, no retry for other 4xx, overall deadline and safe argument encoding; action installation preserves existing ban action and only actionban notifies; long-outage loss limitation is explicit.
 
@@ -219,7 +219,7 @@ The foundational product and stack decisions are already captured in the specifi
 
 **Dependencies:** 018, 019
 
-**Scope:** Write installation, TLS proxy/WSS, PostgreSQL, viewer/token provisioning, GeoIP updates, Fail2ban setup, retention, backup/restore and troubleshooting instructions.
+**Scope:** Write installation, TLS proxy/WSS, PostgreSQL, viewer and technical-user provisioning, scoped Strolch PAT issuance/expiry/rotation/revocation and stable instance-ID mappings, GeoIP updates, Fail2ban setup, retention, backup/restore and troubleshooting instructions.
 
 **Acceptance criteria:** A clean-environment rehearsal follows the guide without hidden steps; secrets are placeholders; backup/restore preserves events/receipts/stream state; older-backup cursor recovery works; data-loss limits and deferred features are stated.
 
