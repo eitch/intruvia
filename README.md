@@ -182,3 +182,20 @@ is no longer loaded. No public token-administration endpoint is exposed.
 Task 005 was verified using local Strolch `2.8.0-SNAPSHOT` with the upstream revocation
 fix; see [source/binary identities](docs/verification/005-resume-source-review.txt)
 and [full regression results](docs/verification/005-resume-acceptance.txt).
+
+## Fail2ban input validation
+
+Task 006 adds a strict, bounded JSON parser and canonical Fail2ban adapter. The
+public ingestion endpoint is still pending (task 010). Inputs are limited to
+16 KiB by default; unknown/duplicate fields, invalid literals and malformed values
+are rejected. IPv4-mapped IPv6 becomes IPv4, timestamps become UTC, and equivalent
+payloads share a stable digest. Jail text remains plain data, with a 128-character
+Unicode limit. Accepted retries can be checked before the separate seven-day age /
+five-minute future policy. See the [validation table and integration contract](docs/architecture/006-fail2ban-validation.md)
+for limits, constructor configuration, digest format and trusted envelope mapping.
+
+Run focused validation and contract tests without PostgreSQL using Java 25:
+
+```bash
+mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-rest -am clean test
+```
