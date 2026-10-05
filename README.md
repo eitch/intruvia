@@ -218,7 +218,13 @@ statuses. Partial locations remain unmapped, and legitimate zero coordinates are
 preserved. GeoIP is approximate network location, not a person's physical location.
 
 The reader keeps a reusable in-memory snapshot; budget heap for the database size.
-For now, stop the application before replacing the database and start it afterward.
-Live replacement and update configuration belong to task 008. Enrichment is ready
-for the ingestion service; the public ingestion endpoint remains pending.
+For live replacement, publish a complete file by atomic rename to
+`<databasePath>.staged`. Intruvia checks it every 60 seconds, validates every record,
+and atomically replaces the working database and reader. Failed updates retain the
+working reader; lookups continue during validation. Build/load time, age and the
+default 14-day stale flag are available through the component diagnostics API.
+Budget roughly three database sizes of heap during validation. See the
+[update procedure and external geoipupdate example](docs/architecture/008-geoip-replacement.md)
+for directory permissions, configuration, recovery and shutdown behavior.
+Enrichment is ready for the ingestion service; the public ingestion endpoint remains pending.
 See [policy, configuration, provenance and synthetic test fixtures](docs/architecture/007-geoip-enrichment.md).
