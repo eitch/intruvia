@@ -1,0 +1,7 @@
+# External geoipupdate configuration only. Copy outside the repository and protect with mode 0600.
+# Replace placeholders locally; never commit the resulting file.
+AccountID YOUR_ACCOUNT_ID
+LicenseKey YOUR_LICENSE_KEY
+EditionIDs GeoLite2-City
+# Isolated download directory, NOT the application's live GeoIP directory.
+DatabaseDirectory /srv/intruvia/geoip-download

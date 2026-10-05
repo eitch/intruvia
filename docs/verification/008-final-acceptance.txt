@@ -1,0 +1,635 @@
+127.0.0.1:5432 - accepting connections
+PostgreSQL test image: sha256:a6638641707cdf047e5d5c2781f437e2e809323cab22c70b280be8389fbb7878 ["postgres@sha256:4ef4dbc939d61acea57712655ddb4b4ab27419c913f94cca0cd57cb3ea3c2280"]
+                                                      version                                                       
+--------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-core ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-core/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 18 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.core.model.EventModelTest
+20:43:20.835 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 22ms
+20:43:20.888 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+20:43:20.898 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+20:43:20.901 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 906us
+20:43:20.906 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 975us
+20:43:20.909 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 707us
+20:43:20.912 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+20:43:20.915 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 984us
+20:43:20.917 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 875us
+20:43:20.926 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 637us
+20:43:20.927 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 498us
+20:43:20.929 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 420us
+20:43:20.930 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 815us
+20:43:20.942 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+20:43:20.945 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 934us
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.214 s -- in li.intruvia.core.model.EventModelTest
+[INFO] Running li.intruvia.core.geo.GeoIpComponentTest
+20:43:20.978 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:20.978 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:20.980 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:20.981 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:20.981 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:20.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:20.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:20.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:20.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:20.987 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+20:43:20.989 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:20.990 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:20.990 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:20.990 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:20.990 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+20:43:20.991 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:20.991 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:20.991 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:20.991 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:20.999 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+20:43:21.003 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.003 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.003 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:21.003 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:21.005 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP update rejected; retaining previous database (further warnings suppressed until successful update)
+20:43:21.058 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.058 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.058 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:21.058 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:21.065 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+20:43:21.070 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.070 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.070 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.070 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.070 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:21.070 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:21.070 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:21.071 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.071 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.071 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:21.071 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:21.084 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.084 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.084 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:21.084 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:21.099 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.099 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.099 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:21.099 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:21.100 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.100 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.100 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:21.100 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:21.100 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:21.100 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:21.100 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.124 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.125 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.125 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.125 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.129 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.129 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.129 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.129 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.397 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.397 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.397 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.397 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.402 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP update rejected; retaining previous database (further warnings suppressed until successful update)
+20:43:22.404 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.404 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.404 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:22.404 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.405 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+20:43:22.406 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.407 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.408 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.408 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.408 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.411 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.412 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.412 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.412 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.416 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+20:43:22.416 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+20:43:22.416 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+20:43:22.416 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+20:43:22.417 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP lookup failed; enrichment returns ERROR (further warnings suppressed until restart)
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.450 s -- in li.intruvia.core.geo.GeoIpComponentTest
+[INFO] Running li.intruvia.core.geo.PublicAddressPolicyTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in li.intruvia.core.geo.PublicAddressPolicyTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 20, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-core ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-core/target/intruvia-core-0.0.1.jar
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-rest >----------------------
+[INFO] Building intruvia-rest 0.0.1                                       [3/5]
+[INFO]   from intruvia-rest/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-rest ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-rest/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/main/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 8 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 2 source files with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-rest ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.rest.ingest.Fail2banValidationTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.114 s -- in li.intruvia.rest.ingest.Fail2banValidationTest
+[INFO] Running li.intruvia.rest.dto.Fail2banDtoTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.023 s -- in li.intruvia.rest.dto.Fail2banDtoTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-rest ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-rest/target/intruvia-rest-0.0.1.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-web >----------------------
+[INFO] Building intruvia-web 0.0.1                                        [4/5]
+[INFO]   from intruvia-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-web ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-web/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-web ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-web ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-web/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-web ---
+[INFO] No tests to run.
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-web ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-web/target/intruvia-web-0.0.1.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-app >----------------------
+[INFO] Building intruvia-app 0.0.1                                        [5/5]
+[INFO]   from intruvia-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-app ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-app/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-app ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 3 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-app ---
+[INFO] Copying 4 resources from src/test/resources to target/test-classes
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 4 source files with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.MachineAuthenticationTest
+2026-10-05 20:43:24,109 INFO  l.s.p.handler.XmlPersistenceHandler - Read 3 Users, 0 Groups, 1 Roles, 0 Tokens, 0 Sessions
+2026-10-05 20:43:24,116 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-10-05 20:43:24,143 INFO  l.s.p.h.DefaultPrivilegeHandler - User producer authenticated with password: Certificate [sessionId=3baeb8c4-c6ec-4cf7-a282-d5de9e8bdc0a, username=producer, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+2026-10-05 20:43:24,183 INFO  l.s.p.handler.XmlPersistenceHandler - Read 3 Users, 0 Groups, 1 Roles, 0 Tokens, 0 Sessions
+2026-10-05 20:43:24,183 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-10-05 20:43:24,200 INFO  l.s.p.h.DefaultPrivilegeHandler - User producer authenticated with password: Certificate [sessionId=caf4135b-8375-4946-b132-1622d8ea2a7d, username=producer, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+2026-10-05 20:43:24,286 INFO  l.s.p.h.DefaultPrivilegeHandler - User second authenticated with password: Certificate [sessionId=5393aede-a121-4b07-9b14-d33ab44558ba, username=second, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+2026-10-05 20:43:24,301 INFO  l.s.p.h.DefaultPrivilegeHandler - User unmapped authenticated with password: Certificate [sessionId=9c3698dc-179b-4229-9743-5da230ee5328, username=unmapped, firstname=Probe, lastname=Producer, source=unknown, locale=en_GB]
+2026-10-05 20:43:24,491 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-10-05 20:43:24,508 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@7d1cfb8b{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@48e92c5c{STARTED}}
+2026-10-05 20:43:24,724 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@7d1cfb8b{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@48e92c5c{STARTED}}
+2026-10-05 20:43:24,730 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@4642b71d{HTTP/1.1, (http/1.1)}{127.0.0.1:46609}
+2026-10-05 20:43:24,732 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@7a55af6b{STARTING}[12.0.16,sto=0] @1023ms
+2026-10-05 20:43:27,186 INFO  l.s.p.h.DefaultPrivilegeHandler - User second logged out.
+2026-10-05 20:43:27,187 INFO  l.s.p.h.DefaultPrivilegeHandler - Set state of user second to DISABLED
+2026-10-05 20:43:27,200 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@7a55af6b{STOPPING}[12.0.16,sto=0]
+2026-10-05 20:43:27,204 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@4642b71d{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-10-05 20:43:27,208 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@7d1cfb8b{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@48e92c5c{STOPPED}}
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.349 s -- in li.intruvia.app.MachineAuthenticationTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- resources:3.3.1:copy-resources (runtime) @ intruvia-app ---
+[INFO] Copying 7 resources from src/main/runtime to target/intruvia/runtime
+[INFO] 
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-app ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+[INFO] 
+[INFO] --- dependency:3.8.1:copy-dependencies (distribution-libraries) @ intruvia-app ---
+[INFO] 
+[INFO] --- failsafe:3.5.2:integration-test (default) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.PersistenceIT
+2026-10-05 20:43:27,943 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 9ms
+2026-10-05 20:43:28,158 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-10-05 20:43:28,160 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-10-05 20:43:28,163 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-10-05 20:43:28,243 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-10-05 20:43:28,297 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-10-05 20:43:28,429 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Initializing 6 Strolch Components...
+2026-10-05 20:43:28,435 INFO  l.s.r.c.DbConnectionBuilder - Not configuring custom XmlFactorFactory on datasource for realm: defaultRealm
+2026-10-05 20:43:28,435 INFO  l.s.r.c.DbConnectionBuilder - Preparing HikariDataSource with a fail timeout of 1ms for realm defaultRealm to jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85
+2026-10-05 20:43:28,440 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Starting...
+2026-10-05 20:43:28,458 INFO  com.zaxxer.hikari.pool.HikariPool - defaultRealm - Added connection org.postgresql.jdbc.PgConnection@5e446170
+2026-10-05 20:43:28,458 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Start completed.
+2026-10-05 20:43:28,458 INFO  l.s.r.c.DbConnectionBuilder - [defaultRealm] PostgreSQL Connection pool to jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85 has a maximum pool size of 2 connections
+2026-10-05 20:43:28,513 INFO  l.s.p.handler.XmlPersistenceHandler - Read 1 Users, 0 Groups, 2 Roles, 0 Tokens, 0 Sessions
+2026-10-05 20:43:28,516 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-10-05 20:43:28,517 INFO  l.s.agent.impl.InternalStrolchRealm - Initializing Realm defaultRealm...
+2026-10-05 20:43:28,520 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been initialized. Took 92ms
+2026-10-05 20:43:28,522 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Starting 6 Strolch Components...
+2026-10-05 20:43:28,524 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-10-05 20:43:28,526 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Checking Schema version for: HikariDataSource for realm defaultRealm for intruvia_test at jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85
+2026-10-05 20:43:28,530 INFO  li.strolch.db.DbSchemaVersionCheck - Connected to PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)
+2026-10-05 20:43:28,543 ERROR li.strolch.db.DbSchemaVersionCheck - Failed to query version for app strolch: PSQLException: ERROR: relation "db_version" does not exist
+  Position: 25
+2026-10-05 20:43:28,544 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Creating initial schema version 0.9.10...
+2026-10-05 20:43:28,557 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Successfully created schema with version 0.9.10
+2026-10-05 20:43:28,561 INFO  l.strolch.agent.api.StrolchComponent - Data Initialization not enabled as 'allowDataInitOnSchemaCreate' is false!
+2026-10-05 20:43:28,577 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm...
+2026-10-05 20:43:28,588 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 10ms
+2026-10-05 20:43:28,590 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Resources using paging from DB...
+2026-10-05 20:43:28,590 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps from DB in parallel...
+2026-10-05 20:43:28,592 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps took 2ms
+2026-10-05 20:43:28,593 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Resources asynchronously took 15ms.
+2026-10-05 20:43:28,596 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 2ms
+2026-10-05 20:43:28,596 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Orders using paging from DB...
+2026-10-05 20:43:28,596 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps from DB in parallel...
+2026-10-05 20:43:28,596 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps took 33us
+2026-10-05 20:43:28,596 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Orders asynchronously took 3ms.
+2026-10-05 20:43:28,599 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 2ms
+2026-10-05 20:43:28,600 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Activities using paging from DB...
+2026-10-05 20:43:28,600 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps from DB in parallel...
+2026-10-05 20:43:28,600 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps took 47us
+2026-10-05 20:43:28,600 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Activities asynchronously took 3ms.
+2026-10-05 20:43:28,600 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm took 23ms.
+2026-10-05 20:43:28,600 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Orders
+2026-10-05 20:43:28,601 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Resources
+2026-10-05 20:43:28,601 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Activities
+2026-10-05 20:43:28,611 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=236us, action=li.strolch.migrations.CurrentMigrationVersionQuery
+2026-10-05 20:43:28,613 INFO  li.strolch.migrations.Migrations - [defaultRealm] Running code migration 0.0.1 li.intruvia.core.persistence.InitialModelMigration
+2026-10-05 20:43:28,615 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 926us
+2026-10-05 20:43:28,653 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=39ms, action=li.intruvia.core.persistence.InitialModelMigration
+2026-10-05 20:43:28,653 INFO  li.strolch.migrations.Migrations - Performed 1 migrations on 1 realms.
+2026-10-05 20:43:28,655 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-10-05 20:43:28,656 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=2ms, action=VerifyModel
+2026-10-05 20:43:28,670 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.0.0-111031-tuxedo Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 16
+2026-10-05 20:43:28,671 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.3 GB,  Total: 226.5 MB,  Used: 15.5 MB,  Free: 211.0 MB
+2026-10-05 20:43:28,671 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-10-05 20:43:28,671 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-10-05 20:43:28,673 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components started for version 0.0.1. Took 149ms. Strolch is now ready to be used. Have fun =))
+2026-10-05 20:43:28,675 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-10-05 20:43:28,687 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@25f7678d{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@64efb17{STARTED}}
+2026-10-05 20:43:28,912 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@25f7678d{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@64efb17{STARTED}}
+2026-10-05 20:43:28,918 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@5685300d{HTTP/1.1, (http/1.1)}{127.0.0.1:46471}
+2026-10-05 20:43:28,920 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@75e3d3ce{STARTING}[12.0.16,sto=5000] @1310ms
+2026-10-05 20:43:28,920 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:46471 (Strolch STARTED)
+2026-10-05 20:43:28,943 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=14ms, action=Fixture
+2026-10-05 20:43:28,944 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@75e3d3ce{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:28,944 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@75e3d3ce{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:28,947 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@5685300d{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-10-05 20:43:28,955 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@25f7678d{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@64efb17{STOPPED}}
+2026-10-05 20:43:28,956 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Stopping 6 Strolch Components...
+2026-10-05 20:43:28,956 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been stopped. Took 409us
+2026-10-05 20:43:28,957 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-10-05 20:43:28,957 INFO  li.strolch.utils.ExecutorPool - Shutting down executor LockingHandler with 1 tasks
+2026-10-05 20:43:28,957 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Destroying 6 Strolch Components...
+2026-10-05 20:43:28,957 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown initiated...
+2026-10-05 20:43:28,959 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown completed.
+2026-10-05 20:43:28,959 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been destroyed! Took 2ms
+2026-10-05 20:43:28,959 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-10-05 20:43:28,962 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-10-05 20:43:28,963 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Initializing 6 Strolch Components...
+2026-10-05 20:43:28,975 INFO  l.s.p.handler.XmlPersistenceHandler - Read 1 Users, 0 Groups, 2 Roles, 0 Tokens, 0 Sessions
+2026-10-05 20:43:28,975 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-10-05 20:43:28,975 INFO  l.s.r.c.DbConnectionBuilder - Not configuring custom XmlFactorFactory on datasource for realm: defaultRealm
+2026-10-05 20:43:28,975 INFO  l.s.r.c.DbConnectionBuilder - Preparing HikariDataSource with a fail timeout of 1ms for realm defaultRealm to jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85
+2026-10-05 20:43:28,975 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Starting...
+2026-10-05 20:43:28,983 INFO  com.zaxxer.hikari.pool.HikariPool - defaultRealm - Added connection org.postgresql.jdbc.PgConnection@7bd0d054
+2026-10-05 20:43:28,983 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Start completed.
+2026-10-05 20:43:28,984 INFO  l.s.r.c.DbConnectionBuilder - [defaultRealm] PostgreSQL Connection pool to jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85 has a maximum pool size of 2 connections
+2026-10-05 20:43:28,984 INFO  l.s.agent.impl.InternalStrolchRealm - Initializing Realm defaultRealm...
+2026-10-05 20:43:28,984 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been initialized. Took 20ms
+2026-10-05 20:43:28,984 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Starting 6 Strolch Components...
+2026-10-05 20:43:28,984 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-10-05 20:43:28,984 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Checking Schema version for: HikariDataSource for realm defaultRealm for intruvia_test at jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85
+2026-10-05 20:43:28,985 INFO  li.strolch.db.DbSchemaVersionCheck - Connected to PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)
+2026-10-05 20:43:28,987 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Schema version 0.9.10 is the current version. No changes needed.
+2026-10-05 20:43:28,987 INFO  l.strolch.agent.api.StrolchComponent - Data Initialization not enabled as 'allowDataInitOnSchemaCreate' is false!
+2026-10-05 20:43:28,995 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm...
+2026-10-05 20:43:29,002 INFO  l.s.agent.impl.CachedRealmLoader - Queried 4 types from DB took 6ms
+2026-10-05 20:43:29,002 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 Resources using paging from DB...
+2026-10-05 20:43:29,002 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 small Resources maps from DB...
+2026-10-05 20:43:29,008 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 small Resources maps took 6ms
+2026-10-05 20:43:29,008 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps from DB in parallel...
+2026-10-05 20:43:29,008 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 large Resources maps took 47us
+2026-10-05 20:43:29,008 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 4 Resources asynchronously took 13ms.
+2026-10-05 20:43:29,009 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 786us
+2026-10-05 20:43:29,009 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Orders using paging from DB...
+2026-10-05 20:43:29,009 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps from DB in parallel...
+2026-10-05 20:43:29,009 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps took 24us
+2026-10-05 20:43:29,010 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Orders asynchronously took 1ms.
+2026-10-05 20:43:29,010 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 742us
+2026-10-05 20:43:29,010 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Activities using paging from DB...
+2026-10-05 20:43:29,010 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps from DB in parallel...
+2026-10-05 20:43:29,011 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps took 23us
+2026-10-05 20:43:29,011 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Activities asynchronously took 991us.
+2026-10-05 20:43:29,011 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm took 16ms.
+2026-10-05 20:43:29,011 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Orders
+2026-10-05 20:43:29,011 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 4 Resources
+2026-10-05 20:43:29,011 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Activities
+2026-10-05 20:43:29,023 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=115us, action=li.strolch.migrations.CurrentMigrationVersionQuery
+2026-10-05 20:43:29,024 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 900us
+2026-10-05 20:43:29,025 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=1ms, action=VerifyModel
+2026-10-05 20:43:29,042 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.0.0-111031-tuxedo Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 16
+2026-10-05 20:43:29,042 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.3 GB,  Total: 83.9 MB,  Used: 16.7 MB,  Free: 67.1 MB
+2026-10-05 20:43:29,042 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-10-05 20:43:29,043 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-10-05 20:43:29,043 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components started for version 0.0.1. Took 59ms. Strolch is now ready to be used. Have fun =))
+2026-10-05 20:43:29,044 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-10-05 20:43:29,045 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@611cba71{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@151cc4f8{STARTED}}
+2026-10-05 20:43:29,079 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@611cba71{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@151cc4f8{STARTED}}
+2026-10-05 20:43:29,080 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@51aa9a75{HTTP/1.1, (http/1.1)}{127.0.0.1:36119}
+2026-10-05 20:43:29,081 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@220a7dd6{STARTING}[12.0.16,sto=5000] @1471ms
+2026-10-05 20:43:29,081 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:36119 (Strolch STARTED)
+2026-10-05 20:43:29,096 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=7ms, action=ReadFixture
+2026-10-05 20:43:29,117 WARN  l.s.p.api.AbstractTransaction - TX ROLLBACK user=agent, realm=defaultRealm failed=5ms, action=FailedFixture
+2026-10-05 20:43:29,126 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=917us, action=ReadFixture
+2026-10-05 20:43:29,126 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@220a7dd6{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:29,126 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@220a7dd6{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:29,127 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@51aa9a75{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-10-05 20:43:29,128 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@611cba71{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@151cc4f8{STOPPED}}
+2026-10-05 20:43:29,129 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Stopping 6 Strolch Components...
+2026-10-05 20:43:29,129 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been stopped. Took 166us
+2026-10-05 20:43:29,129 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-10-05 20:43:29,129 INFO  li.strolch.utils.ExecutorPool - Shutting down executor LockingHandler with 1 tasks
+2026-10-05 20:43:29,129 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Destroying 6 Strolch Components...
+2026-10-05 20:43:29,129 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown initiated...
+2026-10-05 20:43:29,130 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown completed.
+2026-10-05 20:43:29,130 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been destroyed! Took 977us
+2026-10-05 20:43:29,130 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-10-05 20:43:29,132 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-10-05 20:43:29,132 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Initializing 6 Strolch Components...
+2026-10-05 20:43:29,133 INFO  l.s.r.c.DbConnectionBuilder - Not configuring custom XmlFactorFactory on datasource for realm: defaultRealm
+2026-10-05 20:43:29,133 INFO  l.s.r.c.DbConnectionBuilder - Preparing HikariDataSource with a fail timeout of 1ms for realm defaultRealm to jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85
+2026-10-05 20:43:29,133 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Starting...
+2026-10-05 20:43:29,139 INFO  com.zaxxer.hikari.pool.HikariPool - defaultRealm - Added connection org.postgresql.jdbc.PgConnection@5988b777
+2026-10-05 20:43:29,140 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Start completed.
+2026-10-05 20:43:29,140 INFO  l.s.r.c.DbConnectionBuilder - [defaultRealm] PostgreSQL Connection pool to jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85 has a maximum pool size of 2 connections
+2026-10-05 20:43:29,151 INFO  l.s.p.handler.XmlPersistenceHandler - Read 1 Users, 0 Groups, 2 Roles, 0 Tokens, 0 Sessions
+2026-10-05 20:43:29,151 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-10-05 20:43:29,151 INFO  l.s.agent.impl.InternalStrolchRealm - Initializing Realm defaultRealm...
+2026-10-05 20:43:29,151 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been initialized. Took 19ms
+2026-10-05 20:43:29,151 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Starting 6 Strolch Components...
+2026-10-05 20:43:29,152 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-10-05 20:43:29,152 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Checking Schema version for: HikariDataSource for realm defaultRealm for intruvia_test at jdbc:postgresql://127.0.0.1:32781/intruvia_test_72dcd00eef5c41e9a20a33840b3b6d85
+2026-10-05 20:43:29,152 INFO  li.strolch.db.DbSchemaVersionCheck - Connected to PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)
+2026-10-05 20:43:29,154 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Schema version 0.9.10 is the current version. No changes needed.
+2026-10-05 20:43:29,155 INFO  l.strolch.agent.api.StrolchComponent - Data Initialization not enabled as 'allowDataInitOnSchemaCreate' is false!
+2026-10-05 20:43:29,162 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm...
+2026-10-05 20:43:29,165 INFO  l.s.agent.impl.CachedRealmLoader - Queried 4 types from DB took 3ms
+2026-10-05 20:43:29,165 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 Resources using paging from DB...
+2026-10-05 20:43:29,165 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 small Resources maps from DB...
+2026-10-05 20:43:29,169 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 small Resources maps took 4ms
+2026-10-05 20:43:29,169 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps from DB in parallel...
+2026-10-05 20:43:29,169 INFO  l.s.agent.impl.CachedRealmLoader - Loading 4 large Resources maps took 29us
+2026-10-05 20:43:29,169 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 4 Resources asynchronously took 7ms.
+2026-10-05 20:43:29,170 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 540us
+2026-10-05 20:43:29,170 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Orders using paging from DB...
+2026-10-05 20:43:29,170 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps from DB in parallel...
+2026-10-05 20:43:29,170 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps took 11us
+2026-10-05 20:43:29,170 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Orders asynchronously took 715us.
+2026-10-05 20:43:29,170 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 577us
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Activities using paging from DB...
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps from DB in parallel...
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps took 10us
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Activities asynchronously took 761us.
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm took 9ms.
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Orders
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 4 Resources
+2026-10-05 20:43:29,171 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Activities
+2026-10-05 20:43:29,178 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=68us, action=li.strolch.migrations.CurrentMigrationVersionQuery
+2026-10-05 20:43:29,179 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 735us
+2026-10-05 20:43:29,180 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=1ms, action=VerifyModel
+2026-10-05 20:43:29,205 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.0.0-111031-tuxedo Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 16
+2026-10-05 20:43:29,206 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.3 GB,  Total: 58.7 MB,  Used: 15.2 MB,  Free: 43.5 MB
+2026-10-05 20:43:29,206 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-10-05 20:43:29,206 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-10-05 20:43:29,207 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components started for version 0.0.1. Took 55ms. Strolch is now ready to be used. Have fun =))
+2026-10-05 20:43:29,207 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-10-05 20:43:29,208 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@7c3b00e1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@19b6b145{STARTED}}
+2026-10-05 20:43:29,234 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@7c3b00e1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@19b6b145{STARTED}}
+2026-10-05 20:43:29,235 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@5749790c{HTTP/1.1, (http/1.1)}{127.0.0.1:44487}
+2026-10-05 20:43:29,235 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@78715c6a{STARTING}[12.0.16,sto=5000] @1626ms
+2026-10-05 20:43:29,235 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:44487 (Strolch STARTED)
+2026-10-05 20:43:29,244 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=1ms, action=ReadFixture
+2026-10-05 20:43:29,244 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@78715c6a{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:29,244 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@78715c6a{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:29,245 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@5749790c{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-10-05 20:43:29,246 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@7c3b00e1{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@19b6b145{STOPPED}}
+2026-10-05 20:43:29,247 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Stopping 6 Strolch Components...
+2026-10-05 20:43:29,247 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been stopped. Took 148us
+2026-10-05 20:43:29,247 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-10-05 20:43:29,247 INFO  li.strolch.utils.ExecutorPool - Shutting down executor LockingHandler with 1 tasks
+2026-10-05 20:43:29,247 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Destroying 6 Strolch Components...
+2026-10-05 20:43:29,247 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown initiated...
+2026-10-05 20:43:29,277 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown completed.
+2026-10-05 20:43:29,277 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been destroyed! Took 30ms
+2026-10-05 20:43:29,277 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.546 s -- in li.intruvia.app.PersistenceIT
+[INFO] Running li.intruvia.app.ApplicationIT
+2026-10-05 20:43:29,388 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-10-05 20:43:29,389 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Initializing 6 Strolch Components...
+2026-10-05 20:43:29,389 INFO  l.s.r.c.DbConnectionBuilder - Not configuring custom XmlFactorFactory on datasource for realm: defaultRealm
+2026-10-05 20:43:29,389 INFO  l.s.r.c.DbConnectionBuilder - Preparing HikariDataSource with a fail timeout of 1ms for realm defaultRealm to jdbc:postgresql://127.0.0.1:32781/intruvia_test_b54582dd6b3e44c49b36dac34f0b00c4
+2026-10-05 20:43:29,389 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Starting...
+2026-10-05 20:43:29,397 INFO  com.zaxxer.hikari.pool.HikariPool - defaultRealm - Added connection org.postgresql.jdbc.PgConnection@ddae054
+2026-10-05 20:43:29,397 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Start completed.
+2026-10-05 20:43:29,397 INFO  l.s.r.c.DbConnectionBuilder - [defaultRealm] PostgreSQL Connection pool to jdbc:postgresql://127.0.0.1:32781/intruvia_test_b54582dd6b3e44c49b36dac34f0b00c4 has a maximum pool size of 2 connections
+2026-10-05 20:43:29,406 INFO  l.s.p.handler.XmlPersistenceHandler - Read 1 Users, 0 Groups, 2 Roles, 0 Tokens, 0 Sessions
+2026-10-05 20:43:29,406 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-10-05 20:43:29,406 INFO  l.s.agent.impl.InternalStrolchRealm - Initializing Realm defaultRealm...
+2026-10-05 20:43:29,406 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been initialized. Took 17ms
+2026-10-05 20:43:29,406 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Starting 6 Strolch Components...
+2026-10-05 20:43:29,406 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Checking Schema version for: HikariDataSource for realm defaultRealm for intruvia_test at jdbc:postgresql://127.0.0.1:32781/intruvia_test_b54582dd6b3e44c49b36dac34f0b00c4
+2026-10-05 20:43:29,407 INFO  li.strolch.db.DbSchemaVersionCheck - Connected to PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2)
+2026-10-05 20:43:29,407 ERROR li.strolch.db.DbSchemaVersionCheck - Failed to query version for app strolch: PSQLException: ERROR: relation "db_version" does not exist
+  Position: 25
+2026-10-05 20:43:29,408 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Creating initial schema version 0.9.10...
+2026-10-05 20:43:29,417 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Successfully created schema with version 0.9.10
+2026-10-05 20:43:29,418 INFO  l.strolch.agent.api.StrolchComponent - Data Initialization not enabled as 'allowDataInitOnSchemaCreate' is false!
+2026-10-05 20:43:29,418 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-10-05 20:43:29,427 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm...
+2026-10-05 20:43:29,429 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 2ms
+2026-10-05 20:43:29,429 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Resources using paging from DB...
+2026-10-05 20:43:29,429 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps from DB in parallel...
+2026-10-05 20:43:29,429 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Resources maps took 27us
+2026-10-05 20:43:29,429 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Resources asynchronously took 2ms.
+2026-10-05 20:43:29,430 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 627us
+2026-10-05 20:43:29,430 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Orders using paging from DB...
+2026-10-05 20:43:29,430 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps from DB in parallel...
+2026-10-05 20:43:29,430 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Orders maps took 22us
+2026-10-05 20:43:29,430 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Orders asynchronously took 813us.
+2026-10-05 20:43:29,430 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 485us
+2026-10-05 20:43:29,430 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Activities using paging from DB...
+2026-10-05 20:43:29,431 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps from DB in parallel...
+2026-10-05 20:43:29,431 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 large Activities maps took 19us
+2026-10-05 20:43:29,431 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Activities asynchronously took 707us.
+2026-10-05 20:43:29,431 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm took 4ms.
+2026-10-05 20:43:29,431 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Orders
+2026-10-05 20:43:29,431 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Resources
+2026-10-05 20:43:29,431 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Activities
+2026-10-05 20:43:29,439 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=50us, action=li.strolch.migrations.CurrentMigrationVersionQuery
+2026-10-05 20:43:29,439 INFO  li.strolch.migrations.Migrations - [defaultRealm] Running code migration 0.0.1 li.intruvia.core.persistence.InitialModelMigration
+2026-10-05 20:43:29,440 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 812us
+2026-10-05 20:43:29,445 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=5ms, action=li.intruvia.core.persistence.InitialModelMigration
+2026-10-05 20:43:29,445 INFO  li.strolch.migrations.Migrations - Performed 1 migrations on 1 realms.
+2026-10-05 20:43:29,446 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 812us
+2026-10-05 20:43:29,446 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=1ms, action=VerifyModel
+2026-10-05 20:43:29,469 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.0.0-111031-tuxedo Arch: amd64 on Java Eclipse Adoptium 25.0.4 CPU Cores: 16
+2026-10-05 20:43:29,470 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.3 GB,  Total: 58.7 MB,  Used: 15.0 MB,  Free: 43.7 MB
+2026-10-05 20:43:29,470 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-10-05 20:43:29,470 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-10-05 20:43:29,470 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components started for version 0.0.1. Took 63ms. Strolch is now ready to be used. Have fun =))
+2026-10-05 20:43:29,470 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.4+7-LTS
+2026-10-05 20:43:29,471 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@69427155{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2ae2202{STARTED}}
+2026-10-05 20:43:29,489 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@69427155{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2ae2202{STARTED}}
+2026-10-05 20:43:29,490 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@28d6cc1d{HTTP/1.1, (http/1.1)}{127.0.0.1:41941}
+2026-10-05 20:43:29,491 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@22153081{STARTING}[12.0.16,sto=5000] @1881ms
+2026-10-05 20:43:29,491 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:41941 (Strolch STARTED)
+2026-10-05 20:43:29,495 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@22153081{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:29,495 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@22153081{STOPPING}[12.0.16,sto=5000]
+2026-10-05 20:43:29,496 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@28d6cc1d{HTTP/1.1, (http/1.1)}{127.0.0.1:0}
+2026-10-05 20:43:29,497 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@69427155{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@2ae2202{STOPPED}}
+2026-10-05 20:43:29,497 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Stopping 6 Strolch Components...
+2026-10-05 20:43:29,497 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been stopped. Took 130us
+2026-10-05 20:43:29,497 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-10-05 20:43:29,497 INFO  li.strolch.utils.ExecutorPool - Shutting down executor LockingHandler with 1 tasks
+2026-10-05 20:43:29,497 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Destroying 6 Strolch Components...
+2026-10-05 20:43:29,498 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown initiated...
+2026-10-05 20:43:29,534 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown completed.
+2026-10-05 20:43:29,534 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 6 Strolch Components have been destroyed! Took 37ms
+2026-10-05 20:43:29,534 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.579 s -- in li.intruvia.app.ApplicationIT
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- failsafe:3.5.2:verify (default) @ intruvia-app ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  0.089 s]
+[INFO] intruvia-core ...................................... SUCCESS [  3.657 s]
+[INFO] intruvia-rest ...................................... SUCCESS [  0.645 s]
+[INFO] intruvia-web ....................................... SUCCESS [  0.012 s]
+[INFO] intruvia-app ....................................... SUCCESS [  7.684 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12.168 s
+[INFO] Finished at: 2026-10-05T20:43:30+02:00
+[INFO] ------------------------------------------------------------------------
