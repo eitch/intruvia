@@ -45,7 +45,7 @@
 			<api>li.intruvia.core.geo.GeoIpComponent</api>
 			<impl>li.intruvia.core.geo.GeoIpComponent</impl>
 			<!-- Optional absolute City MMDB path. Empty/missing file means degraded enrichment. -->
-			<Properties><databasePath></databasePath></Properties>
+			<Properties><databasePath>/home/eitch/SynologyDrive/scripts/iptables/geoip_blocking/GeoLite2-City_20261002/GeoLite2-City.mmdb</databasePath></Properties>
 		</Component>
 		<Component>
 			<name>Intruvia</name>

@@ -199,3 +199,26 @@ Run focused validation and contract tests without PostgreSQL using Java 25:
 ```bash
 mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-rest -am clean test
 ```
+
+## Local GeoIP enrichment
+
+Task 007 provides a lifecycle-managed local MaxMind City reader. In your external
+`runtime/config/StrolchConfiguration.xml`, set the `GeoIp` component property:
+
+```xml
+<Properties><databasePath>/srv/intruvia/geoip/GeoLite2-City.mmdb</databasePath></Properties>
+```
+
+Supply your own licensed GeoLite2 City or GeoIP2 City database and keep it readable
+by the service account. No database, license key, download or per-event network
+lookup is bundled. The default empty path, missing file or failed load leaves
+GeoIP degraded (`UNAVAILABLE`) while the application starts. Private/reserved
+addresses yield `NON_PUBLIC`; missing records and lookup failures have distinct
+statuses. Partial locations remain unmapped, and legitimate zero coordinates are
+preserved. GeoIP is approximate network location, not a person's physical location.
+
+The reader keeps a reusable in-memory snapshot; budget heap for the database size.
+For now, stop the application before replacing the database and start it afterward.
+Live replacement and update configuration belong to task 008. Enrichment is ready
+for the ingestion service; the public ingestion endpoint remains pending.
+See [policy, configuration, provenance and synthetic test fixtures](docs/architecture/007-geoip-enrichment.md).
