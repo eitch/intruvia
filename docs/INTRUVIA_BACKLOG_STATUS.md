@@ -1,15 +1,15 @@
 # Intruvia — backlog status
 
-Updated: 2026-10-04 · Implementation state: tasks 001–007 complete; task 008 next
+Updated: 2026-10-05 · Implementation state: tasks 001–008 complete; task 009 next
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **007 — Implement local GeoIP enrichment (DONE)**.
-- Next task: **008 — Add safe GeoIP database replacement (TODO)**; dependency 007 is DONE.
-- Completed: **7 / 22**. TODO: **15**. IN_PROGRESS: **0**. BLOCKED: **0**.
-- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; task 007 enrichment is complete; tasks 008–022 remain TODO.
+- Current task: **008 — Add safe GeoIP database replacement (DONE)**.
+- Next task: **009 — Implement atomic ingestion and deduplication (TODO)**; dependencies 004, 006 and 007 are DONE.
+- Completed: **8 / 22**. TODO: **14**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; task 007 enrichment is complete; task 008 replacement is complete; tasks 009–022 remain TODO.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence is verified with the local snapshot override; ingestion, viewer and deployment remain pending.
 
@@ -28,7 +28,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 005 | Integrate Strolch PAT machine authentication | 002 | DONE | [Design/provisioning](architecture/005-machine-authentication.md), [real-PAT and full regression](verification/005-resume-acceptance.txt), [lifecycle probe](verification/005-resume-pat-probe.txt), [source review](verification/005-resume-source-review.txt), [hashes](verification/005-resume-strolch.sha256). 9 unit/HTTP + 4 integration + 2 probe tests pass; historical race resolved upstream. |
 | 006 | Implement Fail2ban validation and normalization | 003 | DONE | [Validation table/design](architecture/006-fail2ban-validation.md), [full verify](verification/006-clean-verify.txt), [framework hashes](verification/006-strolch.sha256). Strict bounded parsing, canonical IP/time/digest, trusted envelope mapping and separate age policy; 15 unit/HTTP + 4 PostgreSQL integration tests pass. |
 | 007 | Implement local GeoIP enrichment | 003 | DONE | [Design/fixture provenance](architecture/007-geoip-enrichment.md), [full acceptance](verification/007-acceptance.txt), [review](verification/007-review.txt), [artifact hashes](verification/007-artifacts.sha256). Real MaxMind reader, lifecycle/configuration, address policy and safe result mapping; 24 unit/HTTP + 4 PostgreSQL/application tests passed. |
-| 008 | Add safe GeoIP database replacement | 007 | TODO | — |
+| 008 | Add safe GeoIP database replacement | 007 | DONE | [Design/update procedure](architecture/008-geoip-replacement.md), [full verification](verification/008-final-review-acceptance.txt), [review](verification/008-review.txt), [hashes](verification/008-artifacts.sha256). Validated staged atomic replacement, concurrent lookup safety, diagnostics and external update example; 30 unit/HTTP + 4 integration tests passed. |
 | 009 | Implement atomic ingestion and deduplication | 004, 006, 007 | TODO | — |
 | 010 | Expose the authenticated ingestion endpoint | 005, 009 | TODO | — |
 | 011 | Add authenticated viewer sessions | 002, 005 | TODO | — |
@@ -327,3 +327,28 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Integrity commands: `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/007-strolch.sha256`; `sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar intruvia-app/target/intruvia/lib/geoip2-*.jar intruvia-app/target/intruvia/lib/maxmind-db-*.jar > docs/verification/007-artifacts.sha256` — exit 0. Both corresponding `sha256sum -c` commands exited 0, all entries OK.
 - Inspection issues: `rg` unavailable; guessed framework Configuration.java path absent, actual ComponentConfiguration source read. An inspection accidentally printed Maven settings credentials into the tool transcript; no values copied into repository files. Owner informed that those credentials should be rotated. No credential changes made.
 - Final checks: `git diff --check` exit 0; Python ledger assertions verify 22 rows, DONE 7/TODO 15/IN_PROGRESS 0/BLOCKED 0 and next eligible 008. Unrun/out of scope: production licensed-dataset accuracy, framework rebuild/tests, live DB replacement and concurrent replacement (008), ingestion endpoint/service (009/010), geoipupdate deployment, diagnostics/staleness and browser checks. No remaining task 007 blocker.
+
+### 2026-10-05 — task 008 started
+
+- Agent: Codex. TODO → IN_PROGRESS. Verified all 22 rows: no active task; lowest eligible TODO 008, dependency 007 DONE. Counts: DONE 7, TODO 14, IN_PROGRESS 1, BLOCKED 0. Next eligible 009; not started.
+- Read project/framework guidelines including Vanilla JavaScript and planning documents. Required guidelines available. Preserve pre-existing staged/deleted MachineCredentials.java. No commit, push or deployment.
+
+### 2026-10-05 — task 008 completed
+
+- Agent: Codex. IN_PROGRESS → DONE. Executed exactly task 008; dependency 007 DONE. Counts: DONE 8, TODO 14, IN_PROGRESS 0, BLOCKED 0. Next eligible **009**, dependencies 004/006/007 DONE; not started.
+- Changes: serialized staged-file claim, complete City record validation while lookups continue, atomic live-file switch and reader swap under the lookup lock, old-reader closure, lifecycle-owned polling and cancellation guard, immutable build/load/age/stale/update-failure diagnostics. Added six replacement/failure/concurrency/configuration tests using the original synthetic fixture generator. README, external credential-placeholder configuration and [operator/design instructions](architecture/008-geoip-replacement.md) updated; ignored staging/candidate artifacts. No specification/backlog contract changes, dependencies, toolchains, commit, push or deployment.
+- Sources: `intruvia-core/src/main/java/li/intruvia/core/geo/GeoIpComponent.java`, `intruvia-core/src/test/java/li/intruvia/core/geo/GeoIpComponentTest.java`, and test-isolation correction in `intruvia-app/src/test/java/li/intruvia/app/DatabaseFixture.java`. Existing staged/deleted MachineCredentials.java and the runtime template's configured GeoIP path preserved.
+- Focused command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-core -am test`.
+  - First exit 1 at compilation: MaxMind networks() declares checked InvalidNetworkException; added explicit handling. [Output](verification/008-unit-tests.txt). No tests ran in this attempt.
+  - Retry exit 0: 18 core tests, zero failures/errors/skips. [Output](verification/008-unit-retry.txt). Two additional failure/locking tests were added before full verification.
+- Full command, three runs: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH INTRUVIA_TEST_POSTGRES_IMAGE=postgres:18-trixie scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+  - First exit 1: 30 unit/HTTP tests passed; 4 integration tests, one failure. ApplicationIT expected UNAVAILABLE but inherited the runtime template's real local database and got FOUND. Fixed the isolated test fixture to use its own missing database path, preventing tests from reading/updating operator data. [Failure output](verification/008-acceptance.txt).
+  - Second exit 0: all five reactor projects SUCCESS; 30 unit/HTTP + 4 integration tests, zero failures/errors/skips. [Output](verification/008-final-acceptance.txt).
+  - Final exit 0 after adding the interrupted-poller guard/test: all five reactor projects SUCCESS; same 34 tests, zero failures/errors/skips. [Final acceptance and PostgreSQL image identity](verification/008-final-review-acceptance.txt). Each invocation's disposable container/databases cleaned up by the script.
+- Acceptance coverage: 20,000 parallel lookups across ten replacements return coherent old/new results; deterministic held read lock delays swap and old-reader closure. Invalid headers/edition/tree/records/geography retain the working reader and live bytes; failed destination rename and symlinks are rejected; successful swap survives restart; missing database restarts degraded and recovers by staging. Polling, actual reader close, stop/destroy, interrupted-call non-consumption, exact 14-day stale boundary and invalid interval settings pass. Diagnostics preserve successful load/build metadata on rejection. No actual database or license key added.
+- Framework/API inspection: local source HEAD `e34b772f9d58f053a0272457708658d0dceadf76`, actual version `2.8.0-SNAPSHOT`; local Maven repository inspected. Installed artifacts suffice offline; no rebuild/relabeling or timestamped-baseline equivalence claimed. Inspected MaxMind 5.2.0/reader 4.1.0 installed APIs with `javap` and Networks.java source; checked official external update instructions (linked in design).
+- Review command: `python3 docs/verification/007-review.py > docs/verification/008-review.txt` initially exited 1 because its indentation assertion rejected a pre-existing Javadoc leading space; partial output retained as [initial review](verification/008-review-initial.txt). Adapted task-specific review permits Javadoc lines. `python3 docs/verification/008-review.py > docs/verification/008-review.txt` — exit 0 after final build: framework/cache/package hashes match, all test reports pass, Java length/tab review passes, no source MMDB, pre-existing user change preserved.
+- Integrity commands: `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/008-strolch.sha256`; `sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar intruvia-app/target/intruvia/lib/geoip2-*.jar intruvia-app/target/intruvia/lib/maxmind-db-*.jar > docs/verification/008-artifacts.sha256`; both corresponding `sha256sum -c` commands exit 0, all entries OK after final build.
+- Inspection issues: `rg` unavailable (127), used find/direct reads; guessed GeoIp.java/GeoIpTest.java paths absent, actual component/test filenames located and read. Required guidelines were available.
+- Unrun/out of scope: production geoipupdate download/deployment, licensed-dataset accuracy or size/performance measurements, unsupported atomic-filesystem simulation, power-loss durability, framework rebuild/tests, protected HTTP diagnostics (019) and browser checks. Shutdown may wait for current validation; transient heap needs roughly three database sizes. These operational limits are documented; no remaining task 008 blocker.
+- Final checks: `git diff --check` exit 0; Python ledger assertions verify 22 rows, DONE 8/TODO 14/IN_PROGRESS 0/BLOCKED 0, next eligible 009. No other task started.
