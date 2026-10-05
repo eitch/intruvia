@@ -54,6 +54,21 @@ final class DatabaseFixture implements AutoCloseable {
 		}
 	}
 
+	void rejectReceipt(String id) throws SQLException {
+		try (var connection = DriverManager.getConnection(this.url, this.username, this.password);
+				var statement = connection.createStatement()) {
+			statement.executeUpdate("ALTER TABLE resources ADD CONSTRAINT ingest_failure CHECK (id <> '" +
+					id.replace("'", "''") + "')");
+		}
+	}
+
+	void allowReceipt() throws SQLException {
+		try (var connection = DriverManager.getConnection(this.url, this.username, this.password);
+				var statement = connection.createStatement()) {
+			statement.executeUpdate("ALTER TABLE resources DROP CONSTRAINT ingest_failure");
+		}
+	}
+
 	private static String xml(String value) {
 		return value.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 	}
