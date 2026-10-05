@@ -107,7 +107,7 @@ checksums with verification evidence: local snapshot results do not verify the o
 timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
 
 The application binds only to loopback and now requires durable PostgreSQL storage.
-Ingestion, viewer authentication and readiness endpoints remain pending. The packaged
+The ingestion HTTP endpoint, viewer authentication and readiness endpoints remain pending. The packaged
 `production` environment rejects transient stores; there is no memory-only fallback.
 
 `mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
@@ -143,7 +143,7 @@ and a typed Strolch Resource mapper. See the [field mapping](docs/architecture/0
 [v1 API schema](docs/api/v1.schema.json) and [complete synthetic fixture](docs/api/event-v1.json).
 Sequences are decimal strings on the wire; absent coordinates remain null. The fixture
 uses a documentation IPv6 address with invented geography solely for serialization tests;
-real ingestion must classify that address as NON_PUBLIC. Ingestion remains pending. Run `scripts/verify-postgresql.sh` with Java 25 to verify JSON and
+real ingestion classifies that address as NON_PUBLIC. The ingestion HTTP endpoint remains pending. Run `scripts/verify-postgresql.sh` with Java 25 to verify JSON and
 Strolch XML round trips, including IPv6, partial locations and 64-bit sequence precision.
 
 ## Machine ingestion credentials
@@ -228,3 +228,18 @@ Budget roughly three database sizes of heap during validation. See the
 for directory permissions, configuration, recovery and shutdown behavior.
 Enrichment is ready for the ingestion service; the public ingestion endpoint remains pending.
 See [policy, configuration, provenance and synthetic test fixtures](docs/architecture/007-geoip-enrichment.md).
+
+## Atomic ingestion service
+
+Task 009 provides a Strolch service for validated Fail2ban events. Application code
+invokes a fresh `IngestService` through the registered `ServiceHandler`, using the
+producer's framework certificate and the protected identity mapping. It requires
+`event:ingest`; identity comes from the certificate username. GeoIP runs before the
+write transaction, and event, receipt and sequence commit atomically. Equal retries
+return the original ID/sequence, including after event pruning; changed payloads
+conflict. An accepted retry bypasses timestamp-age rejection and new enrichment.
+
+The public POST endpoint remains task 010. See the [service contract and locking
+protocol](docs/architecture/009-atomic-ingestion.md) for result handling and later
+retention integration. Run `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`
+with Java 25 for the real-database concurrency, rollback and retry checks.
