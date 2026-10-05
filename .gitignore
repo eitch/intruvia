@@ -66,6 +66,9 @@ replay_pid*
 /tmp/
 /temp/
 *.mmdb
+*.mmdb.staged
+*.mmdb.part
+.intruvia-geoip-*.candidate
 GeoIP.conf
 
 # Optional frontend tooling output
