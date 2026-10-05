@@ -184,16 +184,220 @@ public class GeoIpComponentTest {
 		}
 	}
 
+	@Test
+	public void replacesStagedDatabaseClosesOldReaderAndSurvivesRestart() throws Exception {
+		Path path = database(Map.of("8.8.8.8", fullRecord(1, 2)));
+		GeoIpComponent component = start(path);
+		try {
+			DatabaseReader old = reader(component);
+			SyntheticCityDatabase.write(staged(path), Map.of("8.8.8.8", fullRecord(3, 4)), "GeoLite2-City");
+			Thread.currentThread().interrupt();
+			try {
+				assertFalse(component.replaceStagedDatabase());
+				assertTrue(Files.exists(staged(path)));
+			} finally {
+				Thread.interrupted();
+			}
+			assertTrue(component.replaceStagedDatabase());
+			assertFalse(Files.exists(staged(path)));
+			assertEquals(Double.valueOf(3), component.enrich("8.8.8.8").latitude());
+			assertEquals("GeoLite2-City", component.diagnostics().databaseEdition());
+			assertEquals(NOW, component.diagnostics().lastSuccessfulLoadAt());
+			assertFalse(component.diagnostics().updateFailed());
+			assertThrows(IOException.class, () -> old.tryCity(InetAddress.ofLiteral("8.8.8.8")));
+			component.stop();
+			component.start();
+			assertEquals(Double.valueOf(3), component.enrich("8.8.8.8").latitude());
+			component.stop();
+			Files.delete(path);
+			component.start();
+			assertFalse(component.diagnostics().available());
+			assertEquals(GeoStatus.UNAVAILABLE, component.enrich("8.8.8.8").status());
+			SyntheticCityDatabase.write(staged(path), Map.of("8.8.8.8", fullRecord(5, 6)));
+			assertTrue(component.replaceStagedDatabase());
+			assertEquals(Double.valueOf(5), component.enrich("8.8.8.8").latitude());
+		} finally {
+			stop(component);
+		}
+	}
+
+	@Test
+	public void rejectsBadReplacementWithoutChangingWorkingFileOrMetadata() throws Exception {
+		Path path = database(Map.of("8.8.8.8", fullRecord(1, 2)));
+		byte[] original = Files.readAllBytes(path);
+		GeoIpComponent component = start(path);
+		try {
+			DatabaseReader old = reader(component);
+			for (int mode = 0; mode < 5; mode++) {
+				switch (mode) {
+					case 0 -> Files.writeString(staged(path), "broken");
+					case 1 -> SyntheticCityDatabase.write(staged(path), Map.of(), "GeoIP2-Country");
+					case 2 -> SyntheticCityDatabase.write(staged(path), Map.of("9.9.9.9", "invalid record"));
+					case 3 -> SyntheticCityDatabase.write(staged(path), Map.of("9.9.9.9", fullRecord(91, 0)));
+					case 4 -> {
+						byte[] corrupt = original.clone();
+						corrupt[0] = 127;
+						Files.write(staged(path), corrupt);
+					}
+				}
+				assertFalse("mode " + mode, component.replaceStagedDatabase());
+				assertSame(old, reader(component));
+				assertArrayEquals(original, Files.readAllBytes(path));
+				assertEquals(Double.valueOf(1), component.enrich("8.8.8.8").latitude());
+				assertEquals(NOW, component.diagnostics().lastSuccessfulLoadAt());
+				assertTrue(component.diagnostics().updateFailed());
+			}
+			try (var files = Files.list(path.getParent())) {
+				assertFalse(files.anyMatch(file -> file.getFileName().toString().endsWith(".candidate")));
+			}
+		} finally {
+			stop(component);
+		}
+	}
+
+	@Test
+	public void concurrentLookupsSeeCompleteOldOrNewSnapshots() throws Exception {
+		Path path = database(Map.of("8.8.8.8", fullRecord(1, 2)));
+		GeoIpComponent component = start(path);
+		var ready = new java.util.concurrent.CountDownLatch(4);
+		var go = new java.util.concurrent.CountDownLatch(1);
+		try (var pool = java.util.concurrent.Executors.newFixedThreadPool(4)) {
+			var futures = new java.util.ArrayList<java.util.concurrent.Future<?>>();
+			for (int worker = 0; worker < 4; worker++) {
+				futures.add(pool.submit(() -> {
+					ready.countDown();
+					assertTrue(go.await(5, java.util.concurrent.TimeUnit.SECONDS));
+					for (int i = 0; i < 5000; i++) {
+						Geo geo = component.enrich("8.8.8.8");
+						assertEquals(GeoStatus.FOUND, geo.status());
+						assertTrue(geo.latitude() == 1 || geo.latitude() == 3);
+						assertEquals(geo.latitude() + 1, geo.longitude(), 0);
+					}
+					return null;
+				}));
+			}
+			assertTrue(ready.await(5, java.util.concurrent.TimeUnit.SECONDS));
+			go.countDown();
+			for (int i = 0; i < 10; i++) {
+				SyntheticCityDatabase.write(staged(path), Map.of("8.8.8.8", fullRecord(i % 2 == 0 ? 3 : 1, i % 2 == 0 ? 4 : 2)));
+				assertTrue(component.replaceStagedDatabase());
+			}
+			for (var future : futures)
+				future.get(10, java.util.concurrent.TimeUnit.SECONDS);
+		} finally {
+			stop(component);
+		}
+	}
+
+	@Test
+	public void exposesBuildAgeAndExactStaleBoundaryAndPollsStaging() throws Exception {
+		Path path = database(Map.of("8.8.8.8", fullRecord(1, 2)));
+		Instant built = Instant.ofEpochSecond(SyntheticCityDatabase.BUILD_EPOCH);
+		for (long age : new long[]{1209600, 1209601}) {
+			GeoIpComponent component = start(path, Clock.fixed(built.plusSeconds(age), ZoneOffset.UTC), Map.of());
+			try {
+				assertEquals(built, component.diagnostics().databaseBuildAt());
+				assertEquals(java.time.Duration.ofSeconds(age), component.diagnostics().databaseAge());
+				assertEquals(age > 1209600, component.diagnostics().stale());
+			} finally {
+				stop(component);
+			}
+		}
+		GeoIpComponent component = start(path, Clock.fixed(NOW, ZoneOffset.UTC), Map.of("updateIntervalSeconds", "1"));
+		try {
+			SyntheticCityDatabase.write(staged(path), Map.of("8.8.8.8", fullRecord(3, 4)));
+			long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+			while (component.enrich("8.8.8.8").latitude() != 3 && System.nanoTime() < deadline)
+				Thread.sleep(20);
+			assertEquals(Double.valueOf(3), component.enrich("8.8.8.8").latitude());
+			component.stop();
+			SyntheticCityDatabase.write(staged(path), Map.of("8.8.8.8", fullRecord(5, 6)));
+			assertFalse(component.replaceStagedDatabase());
+			assertTrue(Files.exists(staged(path)));
+		} finally {
+			component.destroy();
+		}
+	}
+
+	@Test
+	public void waitsForActiveLookupLockBeforeClosingOldReader() throws Exception {
+		Path path = database(Map.of("8.8.8.8", fullRecord(1, 2)));
+		GeoIpComponent component = start(path);
+		var field = GeoIpComponent.class.getDeclaredField("lifecycle");
+		field.setAccessible(true);
+		var lock = (java.util.concurrent.locks.ReentrantReadWriteLock) field.get(component);
+		DatabaseReader original = reader(component);
+		try (var pool = java.util.concurrent.Executors.newSingleThreadExecutor()) {
+			SyntheticCityDatabase.write(staged(path), Map.of("8.8.8.8", fullRecord(3, 4)));
+			java.util.concurrent.Future<Boolean> replacement;
+			lock.readLock().lock();
+			try {
+				replacement = pool.submit(component::replaceStagedDatabase);
+				long deadline = System.nanoTime() + java.util.concurrent.TimeUnit.SECONDS.toNanos(5);
+				while (!lock.hasQueuedThreads() && System.nanoTime() < deadline)
+					Thread.sleep(10);
+				assertTrue("Swap must wait for the active lookup lock", lock.hasQueuedThreads());
+				assertFalse(replacement.isDone());
+				assertTrue(original.tryCity(InetAddress.ofLiteral("8.8.8.8")).isPresent());
+			} finally {
+				lock.readLock().unlock();
+			}
+			assertTrue(replacement.get(5, java.util.concurrent.TimeUnit.SECONDS));
+			assertThrows(IOException.class, () -> original.tryCity(InetAddress.ofLiteral("8.8.8.8")));
+		} finally {
+			stop(component);
+		}
+	}
+
+	@Test
+	public void failedFileSwitchRetainsReaderAndRejectsInvalidSettings() throws Exception {
+		Path path = database(Map.of("8.8.8.8", fullRecord(1, 2)));
+		GeoIpComponent component = start(path);
+		try {
+			Files.delete(path);
+			Files.createDirectory(path);
+			Files.writeString(path.resolve("obstruction"), "test");
+			SyntheticCityDatabase.write(staged(path), Map.of("8.8.8.8", fullRecord(3, 4)));
+			assertFalse(component.replaceStagedDatabase());
+			assertEquals(Double.valueOf(1), component.enrich("8.8.8.8").latitude());
+			assertTrue(component.diagnostics().updateFailed());
+			Files.delete(path.resolve("obstruction"));
+			Files.delete(path);
+			Files.createSymbolicLink(staged(path), this.folder.newFile().toPath());
+			assertFalse(component.replaceStagedDatabase());
+			assertEquals(Double.valueOf(1), component.enrich("8.8.8.8").latitude());
+		} finally {
+			stop(component);
+		}
+		for (String property : new String[]{"staleAfterSeconds", "updateIntervalSeconds"}) {
+			for (String value : new String[]{"0", "-1", "invalid"}) {
+				assertThrows(IllegalArgumentException.class,
+						() -> start(null, Clock.fixed(NOW, ZoneOffset.UTC), Map.of(property, value)));
+			}
+		}
+	}
+
+	private static Path staged(Path path) {
+		return path.resolveSibling(path.getFileName() + ".staged");
+	}
+
 	private Path database(Map<String, Object> records) throws IOException {
 		return SyntheticCityDatabase.write(this.folder.newFile().toPath(), records);
 	}
 
 	private GeoIpComponent start(Path path) throws Exception {
+		return start(path, Clock.fixed(NOW, ZoneOffset.UTC), Map.of());
+	}
+
+	private GeoIpComponent start(Path path, Clock clock, Map<String, String> settings) throws Exception {
+		var properties = new java.util.HashMap<>(settings);
+		if (path != null)
+			properties.put("databasePath", path.toString());
 		var directory = this.folder.getRoot();
 		var runtime = new RuntimeConfiguration("Intruvia", "test", Map.of(), directory, directory, directory, Set.of());
-		var configuration = new ComponentConfiguration(runtime, "GeoIp", path == null ? Map.of() : Map.of("databasePath", path.toString()),
+		var configuration = new ComponentConfiguration(runtime, "GeoIp", properties,
 				GeoIpComponent.class.getName(), GeoIpComponent.class.getName(), Set.of());
-		var component = new GeoIpComponent(null, "GeoIp", Clock.fixed(NOW, ZoneOffset.UTC));
+		var component = new GeoIpComponent(null, "GeoIp", clock);
 		component.setup(configuration);
 		component.initialize(configuration);
 		component.start();

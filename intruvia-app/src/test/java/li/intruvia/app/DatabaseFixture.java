@@ -29,7 +29,10 @@ final class DatabaseFixture implements AutoCloseable {
 						"<db.url>" + xml(this.url) + "</db.url><db.username>" + xml(this.username) +
 						"</db.username><db.password>" + xml(this.password) + "</db.password>" +
 						"<db.pool.maximumPoolSize>2</db.pool.maximumPoolSize>")
-				.replace("<allowSchemaCreation>false", "<allowSchemaCreation>true");
+				.replace("<allowSchemaCreation>false", "<allowSchemaCreation>true")
+				// Never read or update an operator's database from the runtime template during tests.
+				.replaceAll("<databasePath>[^<]*</databasePath>",
+						"<databasePath>" + xml(this.runtime.resolve("missing.mmdb").toString()) + "</databasePath>");
 		Files.writeString(this.runtime.resolve("config/StrolchConfiguration.xml"), config);
 		for (String name : new String[]{"PrivilegeConfig.xml", "PrivilegeRoles.xml", "PrivilegeUsers.xml"})
 			Files.copy(Path.of("src/test/resources/privilege", name), this.runtime.resolve("config").resolve(name));
