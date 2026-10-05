@@ -1,0 +1,16 @@
+Framework source version: 2.8.0-SNAPSHOT
+Framework source HEAD: e34b772f9d58f053a0272457708658d0dceadf76
+Packaged/cache match: strolch-agent-2.8.0-SNAPSHOT.jar 3a9607fb42f16944b434b189610dea9708a786f911f3dc115a595bb567851ca3
+Packaged/cache match: strolch-model-2.8.0-SNAPSHOT.jar b4f0284db1eaf5d02718c8be401693b2bbe98ec3ded18b73545969c78d20543d
+Packaged/cache match: strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar 91b48e8fd10fe5f15da296418dedeea7e4b01a8fd835ceffa0abba3020578374
+Packaged/cache match: strolch-privilege-2.8.0-SNAPSHOT.jar cf01dc3bc47aa5ee845c1ab764911410e0f252329039d7d07c40be540dcc5a0c
+Packaged/cache match: strolch-service-2.8.0-SNAPSHOT.jar d578610b9819f3530a007d3dc5e5fed7667f48e207a5b311a67294a4cbf4c168
+Packaged/cache match: strolch-utils-2.8.0-SNAPSHOT.jar 0266a75b02ea2a2f46d397ee1195e8a110788664f21e1c96cf1a658610024cc9
+No timestamped-baseline equivalence claimed; no relabeling or rebuild needed.
+Ingestion Java length/tab review passed.
+intruvia-core surefire {'tests': 20, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-rest surefire {'tests': 8, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-app surefire {'tests': 2, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-app failsafe {'tests': 10, 'failures': 0, 'errors': 0, 'skipped': 0}
+No MMDB fixture checked into source tree.
+Pre-existing staged/deleted MachineCredentials.java state preserved.
