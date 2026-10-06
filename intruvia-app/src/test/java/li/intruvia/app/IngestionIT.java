@@ -284,7 +284,7 @@ public class IngestionIT {
 		return handler.authenticatePersonalAccessToken(token, "ingestion-test");
 	}
 
-	private static DatabaseFixture database() throws Exception {
+	static DatabaseFixture database() throws Exception {
 		var database = new DatabaseFixture();
 		var encryption = new DefaultEncryptionHandler();
 		encryption.initialize(Map.of("hashAlgorithm", "PBKDF2WithHmacSHA512", "hashIterations", "10000", "hashKeyLength", "256"));

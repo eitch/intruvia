@@ -5,8 +5,7 @@ import jakarta.annotation.Priority;
 import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
+import li.intruvia.rest.ingest.IngestHttp;
 import jakarta.ws.rs.core.SecurityContext;
 import li.intruvia.core.auth.MachineIdentities;
 import li.strolch.privilege.base.AccessDeniedException;
@@ -15,7 +14,6 @@ import li.strolch.privilege.model.Certificate;
 
 import java.security.Principal;
 import java.util.Set;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 @MachineIngest
@@ -43,15 +41,16 @@ public final class MachineAuthenticationFilter implements ContainerRequestFilter
 		}
 		PrivilegeHandler privileges = this.handler.get();
 		Certificate certificate;
+		li.strolch.privilege.model.PrivilegeContext context;
 		try {
 			certificate = privileges.authenticatePersonalAccessToken(token, "intruvia-ingest");
+			context = privileges.validate(certificate);
 		} catch (AccessDeniedException e) {
 			reject(request, 401, "unauthorized", "Authentication required");
 			return;
 		}
-		var context = privileges.validate(certificate);
 		String instance = this.identities.instances().get(certificate.getUsername());
-		// Task 010 may add its explicit service privilege. Broad/admin certificates are never accepted here.
+		// The ingestion service uses this same privilege. Broad/admin certificates are never accepted here.
 		if (!certificate.getUsage().isApi() || instance == null ||
 				!context.getPrivileges().keySet().equals(Set.of(INGEST)) || !context.hasPrivilege(INGEST, INGEST)) {
 			reject(request, 403, "forbidden", "Ingestion permission and server identity required");
@@ -73,11 +72,6 @@ public final class MachineAuthenticationFilter implements ContainerRequestFilter
 	}
 
 	private static void reject(ContainerRequestContext request, int status, String code, String message) {
-		String body = "{\"error\":{\"code\":\"" + code + "\",\"message\":\"" + message +
-				"\",\"requestId\":\"" + UUID.randomUUID() + "\"}}";
-		var response = Response.status(status).type(MediaType.APPLICATION_JSON_TYPE).entity(body).header("Cache-Control", "no-store");
-		if (status == 401)
-			response.header("WWW-Authenticate", "Bearer realm=\"intruvia-ingest\"");
-		request.abortWith(response.build());
+		request.abortWith(IngestHttp.error(status, code, message));
 	}
 }

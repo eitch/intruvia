@@ -3,6 +3,9 @@ package li.intruvia.app;
 
 import li.intruvia.core.auth.MachineIdentities;
 import li.intruvia.rest.IntruviaRestApplication;
+import li.intruvia.rest.ingest.IngestionLimits;
+import li.strolch.service.api.ServiceHandler;
+import org.eclipse.jetty.server.ConnectionLimit;
 import li.strolch.agent.api.ComponentState;
 import li.strolch.agent.api.StrolchAgent;
 import li.strolch.agent.api.StrolchBootstrapper;
@@ -31,11 +34,13 @@ public final class IntruviaApplication implements AutoCloseable {
 		if (port < 0 || port > 65535)
 			throw new IllegalArgumentException("Port must be between 0 and 65535");
 		MachineIdentities identities;
+		IngestionLimits limits;
 		Path identityFile = runtime.resolve("config/machine-identities.conf");
 		try {
 			identities = MachineIdentities.load(identityFile);
+			limits = IngestionLimits.load(runtime.resolve("config/ingestion.properties"));
 		} catch (IOException e) {
-			throw new IllegalArgumentException("Cannot load protected machine identities");
+			throw new IllegalArgumentException("Cannot load ingestion configuration");
 		}
 		Properties version = new Properties();
 		version.setProperty("groupId", "li.intruvia");
@@ -48,12 +53,15 @@ public final class IntruviaApplication implements AutoCloseable {
 		this.connector = new ServerConnector(this.server);
 		this.connector.setHost("127.0.0.1");
 		this.connector.setPort(port);
+		this.connector.setIdleTimeout(limits.idleSeconds() * 1000L);
 		this.server.addConnector(this.connector);
+		this.server.addBean(new ConnectionLimit(limits.connections(), this.connector));
 		ServletContextHandler context = new ServletContextHandler();
 		context.setContextPath("/");
 		context.addServlet(new ServletHolder(new StaticPageServlet()), "/");
 		context.addServlet(new ServletHolder(new ServletContainer(new IntruviaRestApplication())), "/health/*");
-		var api = new IntruviaRestApplication(() -> this.agent.getPrivilegeHandler().getPrivilegeHandler(), identities);
+		var api = new IntruviaRestApplication(() -> this.agent.getPrivilegeHandler().getPrivilegeHandler(), identities,
+				() -> this.agent.getContainer().getComponent(ServiceHandler.class), limits);
 		context.addServlet(new ServletHolder(new ServletContainer(api)), "/api/v1/*");
 		this.server.setHandler(context);
 	}

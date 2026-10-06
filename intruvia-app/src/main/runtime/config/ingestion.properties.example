@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Copy to ingestion.properties in the external runtime/config directory.
+# All values are positive integers, read once at startup.
+bodyBytes=16384
+eventsPerSecond=10
+burst=100
+globalPerSecond=100
+globalBurst=1000
+connections=256
+idleSeconds=30
+maximumAgeSeconds=604800
+maximumFutureSeconds=300
