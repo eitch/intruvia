@@ -314,10 +314,28 @@
       "required": [
         "id",
         "sequence",
-        "duplicate",
-        "geoStatus"
+        "duplicate"
       ],
-      "additionalProperties": false
+      "additionalProperties": false,
+      "if": {
+        "properties": {
+          "duplicate": {
+            "const": false
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "geoStatus"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "geoStatus"
+          ]
+        }
+      }
     },
     "error": {
       "type": "object",
