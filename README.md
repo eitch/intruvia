@@ -107,8 +107,9 @@ checksums with verification evidence: local snapshot results do not verify the o
 timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
 
 The application binds only to loopback and now requires durable PostgreSQL storage.
-The ingestion HTTP endpoint is available; viewer authentication and readiness endpoints remain pending. The packaged
-`production` environment rejects transient stores; there is no memory-only fallback.
+The ingestion HTTP endpoint and viewer sessions are available. The viewer UI and
+readiness endpoint remain pending. The packaged `production` environment rejects
+transient stores; there is no memory-only fallback.
 
 `mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
 starts a loopback Docker PostgreSQL container, runs `mvn -B clean verify`, and removes
@@ -123,7 +124,8 @@ For a persistent runtime, copy the packaged `runtime/` outside `target/`, copy i
 `config/Privilege*.xml.example` files to the corresponding `.xml` names, and replace
 both `CHANGE-ME` values in `PrivilegeConfig.xml` with independently generated secrets.
 Keep runtime configuration and the process environment protected; example roles contain
-only a system agent and provide no viewer login. Set `DB_URL` (a PostgreSQL JDBC URL),
+a system agent and a Viewer role; provision viewer users as described below.
+Set `DB_URL` (a PostgreSQL JDBC URL),
 `DB_USERNAME` and `DB_PASSWORD` through protected service configuration, not command-line
 arguments. Use a dedicated empty database owned by the application role.
 
@@ -274,4 +276,29 @@ state are persisted; restart resets buckets. Compressed request bodies are unsup
 
 See [HTTP design, setting bounds and checks](docs/architecture/010-ingestion-http.md).
 Verify with Java 25 and `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
-Receipt-capacity admission is task 013; viewer sessions and WebSocket delivery are pending.
+Receipt-capacity admission is task 013; WebSocket delivery remains pending.
+
+## Viewer sessions
+
+Copy `runtime/config/viewer.properties.example` to `viewer.properties` in your
+external runtime and set `origin=https://your-intruvia-host` (no trailing slash).
+Missing configuration disables viewer sessions. HTTP is allowed only for explicit
+loopback development origins. HTTPS origins receive Secure, HttpOnly,
+SameSite=Strict cookies restricted to `/api/v1`; no token belongs in browser storage.
+
+Provision an ENABLED Strolch user with the supplied `Viewer` role (`event:read`)
+and a Strolch password hash in protected external privilege configuration. Existing
+runtimes must also add the SessionHandler component and agent GetCertificates
+permission from the updated examples. See the [provisioning steps and HTTP contract](docs/architecture/011-viewer-sessions.md).
+
+The same-origin client logs in with `POST /api/v1/session`, JSON `{username,password}`,
+`Content-Type: application/json` and `X-Intruvia-CSRF: 1`; the browser sends Origin.
+`GET /api/v1/session` checks the cookie session. `DELETE /api/v1/session` logs out
+with the same CSRF header and Origin. Both login and session checks return only
+`{username}`. Sessions expire after at most 30 minutes by default, and logout
+invalidates the shared REST/future WebSocket validator immediately. Authorization
+headers and machine PATs cannot authenticate viewer routes.
+
+The login/map UI is task 015; read APIs and the WebSocket endpoint are still pending.
+Verify sessions and the full regression suite with Java 25 and
+`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
