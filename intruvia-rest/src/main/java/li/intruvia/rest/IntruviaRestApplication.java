@@ -2,6 +2,7 @@
 package li.intruvia.rest;
 
 import li.intruvia.core.auth.MachineIdentities;
+import li.intruvia.rest.session.*;
 import li.intruvia.rest.auth.MachineAuthenticationFilter;
 import li.strolch.privilege.handler.PrivilegeHandler;
 import li.strolch.service.api.ServiceHandler;
@@ -26,5 +27,11 @@ public class IntruviaRestApplication extends ResourceConfig {
 		register(new GlobalAdmissionFilter(limits));
 		register(new Fail2banResource(services, identities, limits));
 		register(IngestExceptionMapper.class);
+	}
+	public IntruviaRestApplication viewers(ViewerSessions sessions) {
+		register(new SessionResource(sessions));
+		register(new ViewerAuthenticationFilter(sessions));
+		register(ViewerException.Mapper.class);
+		return this;
 	}
 }

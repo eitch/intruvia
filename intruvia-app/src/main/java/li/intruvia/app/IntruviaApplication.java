@@ -2,6 +2,10 @@
 package li.intruvia.app;
 
 import li.intruvia.core.auth.MachineIdentities;
+import li.intruvia.rest.session.ViewerConfiguration;
+import li.intruvia.rest.session.ViewerSessions;
+import li.strolch.runtime.sessions.StrolchSessionHandler;
+import java.time.Clock;
 import li.intruvia.rest.IntruviaRestApplication;
 import li.intruvia.rest.ingest.IngestionLimits;
 import li.strolch.service.api.ServiceHandler;
@@ -31,13 +35,19 @@ public final class IntruviaApplication implements AutoCloseable {
 	private boolean closed;
 
 	public IntruviaApplication(Path runtime, int port) {
+		this(runtime, port, Clock.systemUTC());
+	}
+
+	IntruviaApplication(Path runtime, int port, Clock clock) {
 		if (port < 0 || port > 65535)
 			throw new IllegalArgumentException("Port must be between 0 and 65535");
 		MachineIdentities identities;
 		IngestionLimits limits;
+		ViewerConfiguration viewer;
 		Path identityFile = runtime.resolve("config/machine-identities.conf");
 		try {
 			identities = MachineIdentities.load(identityFile);
+			viewer = ViewerConfiguration.load(runtime.resolve("config/viewer.properties"));
 			limits = IngestionLimits.load(runtime.resolve("config/ingestion.properties"));
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Cannot load ingestion configuration");
@@ -62,6 +72,7 @@ public final class IntruviaApplication implements AutoCloseable {
 		context.addServlet(new ServletHolder(new ServletContainer(new IntruviaRestApplication())), "/health/*");
 		var api = new IntruviaRestApplication(() -> this.agent.getPrivilegeHandler().getPrivilegeHandler(), identities,
 				() -> this.agent.getContainer().getComponent(ServiceHandler.class), limits);
+		api.viewers(new ViewerSessions(() -> this.agent.getContainer().getComponent(StrolchSessionHandler.class), viewer, clock));
 		context.addServlet(new ServletHolder(new ServletContainer(api)), "/api/v1/*");
 		this.server.setHandler(context);
 	}
