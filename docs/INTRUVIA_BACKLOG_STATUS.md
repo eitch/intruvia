@@ -1,17 +1,17 @@
 # Intruvia — backlog status
 
-Updated: 2026-10-06 · Implementation state: tasks 001–010 complete; task 011 next
+Updated: 2026-10-06 · Implementation state: tasks 001–011 complete; task 012 next
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **010 — Expose the authenticated ingestion endpoint (DONE)**.
-- Next task: **011 — Add authenticated viewer sessions (TODO)**; dependencies 002 and 005 are DONE.
-- Completed: **10 / 22**. TODO: **12**. IN_PROGRESS: **0**. BLOCKED: **0**.
-- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; task 007 enrichment is complete; task 008 replacement is complete; task 009 atomic ingestion is complete; task 010 ingestion HTTP is complete; tasks 011–022 remain TODO.
+- Current task: **011 — Add authenticated viewer sessions (DONE)**.
+- Next task: **012 — Implement bounded snapshots and cursor history (TODO)**; dependencies 004, 009 and 011 are DONE.
+- Completed: **11 / 22**. TODO: **11**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; task 007 enrichment is complete; task 008 replacement is complete; task 009 atomic ingestion is complete; task 010 ingestion HTTP is complete; task 011 viewer sessions is complete; tasks 012–022 remain TODO.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
-- Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence is verified with the local snapshot override; the ingestion HTTP endpoint is verified; viewer and deployment remain pending.
+- Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence is verified with the local snapshot override; the ingestion HTTP endpoint and viewer sessions are verified; viewer UI and deployment remain pending.
 
 ## Status conventions
 
@@ -31,7 +31,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 008 | Add safe GeoIP database replacement | 007 | DONE | [Design/update procedure](architecture/008-geoip-replacement.md), [full verification](verification/008-final-review-acceptance.txt), [review](verification/008-review.txt), [hashes](verification/008-artifacts.sha256). Validated staged atomic replacement, concurrent lookup safety, diagnostics and external update example; 30 unit/HTTP + 4 integration tests passed. |
 | 009 | Implement atomic ingestion and deduplication | 004, 006, 007 | DONE | [Design](architecture/009-atomic-ingestion.md), [full verification](verification/009-final-verify.txt), [review](verification/009-review.txt), [hashes](verification/009-artifacts.sha256). Serialized Strolch service/command with receipt recheck and atomic sequence; 30 unit/HTTP + 10 integration tests passed. |
 | 010 | Expose the authenticated ingestion endpoint | 005, 009 | DONE | [Design/configuration](architecture/010-ingestion-http.md), [full verification](verification/010-final-verify.txt), [review](verification/010-review.txt), [hashes](verification/010-artifacts.sha256). PAT-authenticated POST, bounded parsing, global/instance admission and safe responses; 33 unit/HTTP + 14 PostgreSQL/application integration tests passed. |
-| 011 | Add authenticated viewer sessions | 002, 005 | TODO | — |
+| 011 | Add authenticated viewer sessions | 002, 005 | DONE | [Design/provisioning](architecture/011-viewer-sessions.md), [full acceptance](verification/011-acceptance.txt), [review](verification/011-review.txt), [hashes](verification/011-artifacts.sha256). Framework cookie sessions, exact Origin/CSRF, read authorization, PAT separation, logout/expiry; 34 unit/HTTP + 17 PostgreSQL/application tests passed. |
 | 012 | Implement bounded snapshots and cursor history | 004, 009, 011 | TODO | — |
 | 013 | Implement bounded retention and receipt cleanup | 009, 012 | TODO | — |
 | 014 | Implement the ordered WebSocket event stream | 010, 011, 012, 013 | TODO | — |
@@ -399,3 +399,28 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Inspection failures: `rg` unavailable (127); guessed TimestampPolicy.java and framework service/exception paths absent, actual EventAgePolicy and framework sources located. Required guidelines available. No failed/unrun result represented as success.
 - Unrun/out of scope: connection-saturation load test, proxy/TLS deployment, capacity benchmark, browser tests, framework rebuild/tests, receipt capacity/retention (013), viewer sessions (011), WebSocket delivery (014). Transport-level HTTP framing errors originate in Jetty before JAX-RS and do not use the application envelope. Rate buckets reset on restart; operational limits documented. No remaining task 010 blocker.
 - Final checks: `git diff --check` exit 0; Python ledger assertions verify 22 rows, DONE 10/TODO 12/IN_PROGRESS 0/BLOCKED 0, next eligible 011. No other task started.
+
+### 2026-10-06 (UTC) — task 011 started
+
+- Agent: Codex. Transition: TODO → IN_PROGRESS. Ledger verified: no prior IN_PROGRESS tasks; 011 is the lowest eligible TODO, dependencies 002/005 DONE.
+- Read project/framework guidelines, including Vanilla JavaScript, specification, numbered backlog and status ledger. Required guidelines available. `rg` unavailable (exit 127); using find/grep.
+- Preserve pre-existing `AD intruvia-core/src/main/java/li/intruvia/core/auth/MachineCredentials.java` index/worktree state. No commit, push or deployment. Scope limited to viewer sessions.
+
+### 2026-10-06 (UTC) — task 011 completed
+
+- Agent: Codex. IN_PROGRESS → DONE. Exactly task 011 executed; dependencies 002/005 DONE. Counts: DONE 11, TODO 11, IN_PROGRESS 0, BLOCKED 0. Next eligible **012**, dependencies 004/009/011 DONE; not started. Specification/backlog requirements unchanged. No commit, push, deployment, new dependency/toolchain or upstream edits.
+- Changes: registered Strolch SessionHandler; bounded password login, cookie session GET and CSRF-protected logout at `/api/v1/session`; explicit external public Origin; secure/strict/path-restricted cookies; shared REST/future socket validator and read filter with Strolch policy-aware `event:read` checks; PAT/Bearer separation; synchronous absolute expiry and framework invalidation. Added Viewer role and narrow agent session-restoration privilege, packaged config example, README and [design/provisioning](architecture/011-viewer-sessions.md).
+- Sources: `intruvia-rest/src/main/java/li/intruvia/rest/session/`, REST/application registration, external runtime config, `intruvia-app/src/test/java/li/intruvia/app/ViewerSessionIT.java`, `intruvia-rest/src/test/java/li/intruvia/rest/session/ViewerConfigurationTest.java`. Existing staged/deleted MachineCredentials.java and configured operator GeoIP path preserved. No frontend edits or browser credential storage introduced.
+- Initial command: `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-rest -am test` — exit 0; 31 core/REST tests, zero failures/errors/skips. [Output](verification/011-compile.txt).
+- Full command (three runs): `JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+  - First exit 0: 33 unit/HTTP + 17 integration tests (50 total); [output](verification/011-first-verify.txt).
+  - Second exit 0 after config and duplicate-header/unauthorized-session coverage: 34 unit/HTTP + 17 integration tests (51 total); [output](verification/011-final-verify.txt).
+  - Final exit 0 after policy-aware read authorization and explicit-deny regression: all five reactor projects SUCCESS; 51 tests, zero failures/errors/skips. [Acceptance output and PostgreSQL image identity](verification/011-acceptance.txt). Each script cleaned up its disposable PostgreSQL container/databases. No failed test/build result in this attempt.
+- Acceptance: real production HTTP wiring validates Secure/HttpOnly/SameSite=Strict/Path cookies, explicit loopback development mode, exact/missing/duplicate Origin and custom CSRF header rules, denied CORS preflight, malformed/oversized/media input, safe errors, incorrect/disabled/unauthorized login and explicit policy denial. Real read-scoped PATs, API certificates, Bearer credentials (even with a valid cookie), duplicate/tampered/session-ID-only cookies fail. Viewer cookies cannot ingest. Valid read sessions work; login rotates; logout and clock-controlled exact 30-minute expiry reject subsequent HTTP and shared-validator calls and invalidate the underlying framework certificate. No actual event read route implemented (012).
+- Review finding resolved before completion: framework `assertHasPrivilege` only checks privilege existence; use `hasPrivilege(event:read, event:read)` to honor the policy as well. Framework idle expiry is periodic, so the shared validator enforces the documented absolute lifetime synchronously. Jersey logs resource-instance provider-candidate warnings, but production session/ingestion routes are registered and pass HTTP tests.
+- Framework: inspected local Maven repository and referenced source, actual `2.8.0-SNAPSHOT`, HEAD `e34b772f9d58f053a0272457708658d0dceadf76`. Installed session handler, privilege handler, certificate and context classes match framework target classes; source hashes recorded. Offline cache suffices; no artifact resolution blocker, rebuild or relabeling. These checks do not establish timestamped-baseline equivalence.
+- Review command: `python3 docs/verification/011-review.py > docs/verification/011-review.txt` — exit 0; package/cache hashes, source/target/JAR identity comparison, Java tabs/line lengths, all test counts, packaged viewer config/roles/component, unchanged frontend and pre-existing staged/deleted file checks pass.
+- Integrity commands: `sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/011-strolch.sha256`; `sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar > docs/verification/011-artifacts.sha256`; both `sha256sum -c` commands exit 0, all entries OK.
+- Inspection issues: `rg` unavailable (127); guessed MachineAuthenticator.java absent, actual MachineAuthenticationFilter located/read. Required guidelines available. No permission/dependency/decision blocker remains.
+- Unrun/out of scope: browser visual/TLS-cookie behavior (no UI changed), actual TLS proxy deployment, production provisioning, idle scheduler timing, session persistence/restart, actual WebSocket upgrades/closure (014), history (012), frontend login (015), framework rebuild/tests and load tests. HTTP cookie flag tests use loopback transport, not a TLS browser. No unrun check claimed successful.
+- Final checks: `git diff --check` exit 0; Python ledger assertions verify 22 rows, DONE 11/TODO 11/IN_PROGRESS 0/BLOCKED 0 and next eligible 012. No other task started.
