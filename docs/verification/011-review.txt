@@ -1,0 +1,27 @@
+Actual Strolch version: 2.8.0-SNAPSHOT
+Framework HEAD: e34b772f9d58f053a0272457708658d0dceadf76
+Packaged/cache match: strolch-agent-2.8.0-SNAPSHOT.jar 3a9607fb42f16944b434b189610dea9708a786f911f3dc115a595bb567851ca3
+Packaged/cache match: strolch-model-2.8.0-SNAPSHOT.jar b4f0284db1eaf5d02718c8be401693b2bbe98ec3ded18b73545969c78d20543d
+Packaged/cache match: strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar 91b48e8fd10fe5f15da296418dedeea7e4b01a8fd835ceffa0abba3020578374
+Packaged/cache match: strolch-privilege-2.8.0-SNAPSHOT.jar cf01dc3bc47aa5ee845c1ab764911410e0f252329039d7d07c40be540dcc5a0c
+Packaged/cache match: strolch-service-2.8.0-SNAPSHOT.jar d578610b9819f3530a007d3dc5e5fed7667f48e207a5b311a67294a4cbf4c168
+Packaged/cache match: strolch-utils-2.8.0-SNAPSHOT.jar 0266a75b02ea2a2f46d397ee1195e8a110788664f21e1c96cf1a658610024cc9
+Installed/target class match: StrolchSessionHandler ac27396a4c7462b0a82a1d9c0c14dfe241e93ee73671ce45d237937907f808ec
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/runtime/sessions/StrolchSessionHandler.java 66e3b7a768117c64c049441801c4d545d06026d5624a902e6a074b84af761002
+Installed/target class match: DefaultStrolchSessionHandler e36a021df0324525cb41d278cc0173eb5b94eec88d774eeaff82018a853e4b7c
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/runtime/sessions/DefaultStrolchSessionHandler.java 70eefb0f8c7f3b66be94a6d1107a86f77c479a8ae52c47d1d0b9c442d5f35fe4
+Installed/target class match: DefaultPrivilegeHandler 6bf03030e620e88e1c199aeae2dd25e70f74254a1c4eed437331579c9d5a4d24
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/handler/DefaultPrivilegeHandler.java 06173440613fdc68280c29b0863c33b582a0bffe975a299b52d8a8d3f79fcae7
+Installed/target class match: Certificate d37c743e60846c127b3571c4479c30e8c45059edbe0ecc0716e8252ebc5a3fe6
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/model/Certificate.java b72d5e2fb0079aa94f0ff0972a200bc9e915be607c0b66ea9cc158ed5fd0c569
+Installed/target class match: PrivilegeContext 8ce382d8cb95c1de0ddb08ea426ffc07094413b034d424fecaafcf1c9f02041e
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/model/PrivilegeContext.java 5ced6dd2433d5296304d9cb25e5b15aa622632ea314e25f854938ea6f323760d
+Local snapshot only; no timestamped artifact relabeling/equivalence claimed.
+Changed/new Java tabs and line lengths passed.
+intruvia-core surefire {'tests': 20, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-rest surefire {'tests': 12, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-app surefire {'tests': 2, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-app failsafe {'tests': 17, 'failures': 0, 'errors': 0, 'skipped': 0}
+Viewer configuration, role and session component packaged identically.
+Unrelated staged/deleted MachineCredentials.java preserved.
+No frontend changes: no new browser credential storage or UI behavior.
