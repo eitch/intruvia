@@ -1,0 +1,5 @@
+# Copy to viewer.properties in the external runtime/config to enable viewer sessions.
+# Exact public browser origin: no trailing slash, path, query, user info or wildcard.
+origin=https://intruvia.example.org
+# HTTP is accepted only for localhost, 127.0.0.1 or [::1] development origins.
+# Cookies are Secure for HTTPS; the origin is never inferred from proxy/Host headers.

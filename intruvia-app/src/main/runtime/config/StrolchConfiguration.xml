@@ -10,6 +10,16 @@
 			<Properties><privilegeConfigFile>PrivilegeConfig.xml</privilegeConfigFile></Properties>
 		</Component>
 		<Component>
+			<name>SessionHandler</name>
+			<api>li.strolch.runtime.sessions.StrolchSessionHandler</api>
+			<impl>li.strolch.runtime.sessions.DefaultStrolchSessionHandler</impl>
+			<depends>PrivilegeHandler</depends>
+			<Properties>
+				<session.ttl.minutes>30</session.ttl.minutes>
+				<session.maxKeepAlive.minutes>30</session.maxKeepAlive.minutes>
+			</Properties>
+		</Component>
+		<Component>
 			<name>PersistenceHandler</name>
 			<api>li.strolch.persistence.api.PersistenceHandler</api>
 			<impl>li.strolch.persistence.postgresql.PostgreSqlPersistenceHandler</impl>

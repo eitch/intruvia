@@ -17,6 +17,7 @@
 
 <Roles>
 	<Role name="agent">
+		<Privilege name="PrivilegeAction" policy="DefaultPrivilege"><Allow>GetCertificates</Allow></Privilege>
 		<Privilege name="li.strolch.search.StrolchSearch" policy="DefaultPrivilege">
 			<Allow>li.strolch.search.ResourceSearch</Allow>
 		</Privilege>
