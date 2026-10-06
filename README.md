@@ -107,7 +107,7 @@ checksums with verification evidence: local snapshot results do not verify the o
 timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
 
 The application binds only to loopback and now requires durable PostgreSQL storage.
-The ingestion HTTP endpoint, viewer authentication and readiness endpoints remain pending. The packaged
+The ingestion HTTP endpoint is available; viewer authentication and readiness endpoints remain pending. The packaged
 `production` environment rejects transient stores; there is no memory-only fallback.
 
 `mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
@@ -143,13 +143,13 @@ and a typed Strolch Resource mapper. See the [field mapping](docs/architecture/0
 [v1 API schema](docs/api/v1.schema.json) and [complete synthetic fixture](docs/api/event-v1.json).
 Sequences are decimal strings on the wire; absent coordinates remain null. The fixture
 uses a documentation IPv6 address with invented geography solely for serialization tests;
-real ingestion classifies that address as NON_PUBLIC. The ingestion HTTP endpoint remains pending. Run `scripts/verify-postgresql.sh` with Java 25 to verify JSON and
+real ingestion classifies that address as NON_PUBLIC. The ingestion HTTP endpoint is available below. Run `scripts/verify-postgresql.sh` with Java 25 to verify JSON and
 Strolch XML round trips, including IPv6, partial locations and 64-bit sequence precision.
 
 ## Machine ingestion credentials
 
 Machine authentication uses Strolch Personal Access Tokens (PATs). The ingestion
-endpoint remains task 010. Send `Authorization: Bearer <tokenId>:<tokenValue>` over
+endpoint is `POST /api/v1/fail2ban/events`. Send `Authorization: Bearer <tokenId>:<tokenValue>` over
 HTTPS. Tokens must have exactly the `event:ingest` privilege; viewer/session credentials
 and broad PATs are rejected.
 
@@ -186,7 +186,7 @@ and [full regression results](docs/verification/005-resume-acceptance.txt).
 ## Fail2ban input validation
 
 Task 006 adds a strict, bounded JSON parser and canonical Fail2ban adapter. The
-public ingestion endpoint is still pending (task 010). Inputs are limited to
+public ingestion endpoint uses this parser. Inputs are limited to
 16 KiB by default; unknown/duplicate fields, invalid literals and malformed values
 are rejected. IPv4-mapped IPv6 becomes IPv4, timestamps become UTC, and equivalent
 payloads share a stable digest. Jail text remains plain data, with a 128-character
@@ -226,7 +226,7 @@ default 14-day stale flag are available through the component diagnostics API.
 Budget roughly three database sizes of heap during validation. See the
 [update procedure and external geoipupdate example](docs/architecture/008-geoip-replacement.md)
 for directory permissions, configuration, recovery and shutdown behavior.
-Enrichment is ready for the ingestion service; the public ingestion endpoint remains pending.
+Enrichment is used by the ingestion service and public ingestion endpoint.
 See [policy, configuration, provenance and synthetic test fixtures](docs/architecture/007-geoip-enrichment.md).
 
 ## Atomic ingestion service
@@ -239,7 +239,39 @@ write transaction, and event, receipt and sequence commit atomically. Equal retr
 return the original ID/sequence, including after event pruning; changed payloads
 conflict. An accepted retry bypasses timestamp-age rejection and new enrichment.
 
-The public POST endpoint remains task 010. See the [service contract and locking
+The public POST endpoint delegates to this service. See the [service contract and locking
 protocol](docs/architecture/009-atomic-ingestion.md) for result handling and later
 retention integration. Run `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`
 with Java 25 for the real-database concurrency, rollback and retry checks.
+
+## Fail2ban ingestion HTTP endpoint
+
+Send the v1 JSON payload from the [specification](docs/INTRUVIA_SPECIFICATION.md#4-fail2ban-api)
+to `POST /api/v1/fail2ban/events`, with `Content-Type: application/json` and the
+Strolch PAT Authorization header described above. Use HTTPS at the reverse proxy;
+the application remains bound to loopback. The request body must contain only the
+producer fields, never a server identity or geography. The certificate and protected
+mapping select the server identity, and the same certificate authorizes the service.
+
+A committed event returns `201` with `id`, decimal-string `sequence`, `duplicate:false`
+and `geoStatus`. An identical retry returns `200` with the original `id`, `sequence`
+and `duplicate:true`; it omits `geoStatus` because a retained receipt may outlive its
+event. Changed retries return `409`. Validation, authentication, privilege, size and
+media failures return `400`, `401`, `403`, `413` and `415`; database failures return
+`503` without acknowledging success. Errors have `{error:{code,message,requestId}}`.
+Responses use `Cache-Control: no-store` and do not echo payloads or credentials.
+
+Optionally copy `runtime/config/ingestion.properties.example` to `ingestion.properties`
+in the external runtime. Defaults are a 16 KiB UTF-8 body, seven-day maximum event age,
+five-minute future allowance, and 10 requests/second with burst 100 per configured
+instance. All authenticated attempts, including retries and rejected payloads, consume
+that instance's bucket. PAT rotation shares the bucket. A separate global bucket allows
+100 API requests/second with burst 1000 before authentication; Jetty caps connections at
+256 with a 30-second idle timeout. Request-rate rejection returns `429` with integer
+`Retry-After` seconds; connection saturation pauses accepts. Reverse-proxy connection
+and request limits should also cover internet-facing traffic. No request queues or rate
+state are persisted; restart resets buckets. Compressed request bodies are unsupported.
+
+See [HTTP design, setting bounds and checks](docs/architecture/010-ingestion-http.md).
+Verify with Java 25 and `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+Receipt-capacity admission is task 013; viewer sessions and WebSocket delivery are pending.
