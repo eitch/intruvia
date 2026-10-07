@@ -299,6 +299,29 @@ with the same CSRF header and Origin. Both login and session checks return only
 invalidates the shared REST/future WebSocket validator immediately. Authorization
 headers and machine PATs cannot authenticate viewer routes.
 
-The login/map UI is task 015; read APIs and the WebSocket endpoint are still pending.
+The login/map UI is task 015; the WebSocket endpoint is still pending.
 Verify sessions and the full regression suite with Java 25 and
+`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+
+## Viewer snapshots and history
+
+Use the viewer session cookie from login to request `GET /api/v1/events/snapshot`.
+It returns `{items,cursor,minAfter,truncated}` with the latest 1000 events in ascending
+sequence order. Set `limit=1` through `1000` for a smaller window. `cursor` captures
+the committed head, including events omitted from the window; it is the future stream
+bootstrap cursor. `minAfter` is the oldest accepted exclusive history cursor.
+
+For history, request `GET /api/v1/events?after=0&limit=500`. It returns
+`{items,nextAfter,hasMore,through}`. Pass both `after=nextAfter` and the first page's
+`through` on every following page until `hasMore` is false. New commits do not change
+that catch-up window. A new request without `through` captures a new head. Limits are
+1–1000, default 500. All sequence values are decimal strings; keep them as strings
+in browser code. `after` is required and exclusive; there are no offset/search filters.
+
+Malformed or ahead-of-head cursors and invalid limits return `400`. A cursor below
+`minAfter` returns `410` with `error.code=resync_required`; load a new snapshot.
+These routes require a valid viewer cookie and `event:read`; machine PATs and Bearer
+headers cannot authenticate reads. Responses are uncached. Automatic retention is
+still task 013. See [read contracts and consistency](docs/architecture/012-event-reads.md)
+and [v1 schemas](docs/api/v1.schema.json). Verify with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
