@@ -150,7 +150,7 @@ public class ViewerSessionIT {
 		}
 	}
 
-	private static DatabaseFixture database(String origin) throws Exception {
+	static DatabaseFixture database(String origin) throws Exception {
 		var database = new DatabaseFixture();
 		Files.writeString(database.runtime.resolve("config/viewer.properties"), "origin=" + origin + "\n");
 		var encryption = new DefaultEncryptionHandler();
