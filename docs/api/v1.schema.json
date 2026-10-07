@@ -375,6 +375,62 @@
           "pattern": "^[1-9][0-9]*$"
         }
       ]
+    },
+    "snapshot": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "$ref": "#/$defs/event"
+          }
+        },
+        "cursor": {
+          "$ref": "#/$defs/sequence"
+        },
+        "minAfter": {
+          "$ref": "#/$defs/sequence"
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "items",
+        "cursor",
+        "minAfter",
+        "truncated"
+      ],
+      "additionalProperties": false
+    },
+    "historyPage": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "$ref": "#/$defs/event"
+          }
+        },
+        "nextAfter": {
+          "$ref": "#/$defs/sequence"
+        },
+        "hasMore": {
+          "type": "boolean"
+        },
+        "through": {
+          "$ref": "#/$defs/sequence"
+        }
+      },
+      "required": [
+        "items",
+        "nextAfter",
+        "hasMore",
+        "through"
+      ],
+      "additionalProperties": false
     }
   }
 }
