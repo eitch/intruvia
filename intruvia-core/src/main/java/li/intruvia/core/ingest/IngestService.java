@@ -10,14 +10,13 @@ import li.intruvia.core.geo.GeoIpComponent;
 import li.intruvia.core.model.SecurityEvent;
 import li.intruvia.core.persistence.EventRepository;
 import li.strolch.exception.StrolchException;
-import li.strolch.model.Resource;
+import li.intruvia.core.persistence.EventStreamLock;
 import li.strolch.persistence.api.StrolchTransaction;
 import li.strolch.persistence.api.StrolchTransactionException;
 import li.strolch.persistence.api.StrolchPersistenceException;
 import li.strolch.service.api.AbstractService;
 import li.strolch.utils.concurrent.ElementLockingException;
 
-import static li.intruvia.core.model.ModelConstants.*;
 import static li.intruvia.core.ingest.IngestResult.Outcome.*;
 
 /** One instance per invocation, executed through the framework ServiceHandler with the caller's certificate. */
@@ -57,7 +56,7 @@ public final class IngestService extends AbstractService<IngestArgument, IngestR
 			return new IngestResult(INVALID, null);
 		try {
 			try (var tx = openUserTx(true)) {
-				lockStream(tx);
+				EventStreamLock.acquire(tx);
 				IngestResult duplicate = existing(tx, instance, arg.event);
 				if (duplicate != null)
 					return duplicate;
@@ -67,7 +66,7 @@ public final class IngestService extends AbstractService<IngestArgument, IngestR
 					this.enrichment.apply(arg.event.ip());
 			IngestCommand command;
 			try (var tx = openUserTx().rollbackOnFailure()) {
-				lockStream(tx);
+				EventStreamLock.acquire(tx);
 				IngestResult duplicate = existing(tx, instance, arg.event);
 				if (duplicate != null)
 					return duplicate;
@@ -86,15 +85,6 @@ public final class IngestService extends AbstractService<IngestArgument, IngestR
 			// Fixed failure contract; do not propagate persistence details into service logs or HTTP responses.
 			return new IngestResult(UNAVAILABLE, null);
 		}
-	}
-
-	private static void lockStream(StrolchTransaction tx) {
-		if (Thread.currentThread().isInterrupted())
-			throw new ElementLockingException("Ingestion interrupted");
-		tx.lock(Resource.locatorFor(TYPE_EVENT_STREAM_STATE, STREAM_ID));
-		// Local framework lock acquisition restores interruption without throwing. Never proceed in that case.
-		if (Thread.currentThread().isInterrupted())
-			throw new ElementLockingException("Ingestion interrupted");
 	}
 
 	private IngestResult existing(StrolchTransaction tx, String instance, Fail2banEvent payload) {

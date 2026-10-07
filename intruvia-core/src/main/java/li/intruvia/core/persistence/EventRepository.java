@@ -30,7 +30,7 @@ public final class EventRepository {
 		return this.mapper.toStreamState(tx.getResourceBy(TYPE_EVENT_STREAM_STATE, STREAM_ID, true));
 	}
 
-	/** Internal bounded search boundary; HTTP cursor/retention contracts belong to task 012. */
+	/** Internal fixture/search boundary; viewer windows use the locked EventReadService. */
 	public List<SecurityEvent> events(StrolchTransaction tx, int limit) {
 		if (limit < 1 || limit > 1000)
 			throw new IllegalArgumentException("Event limit must be between 1 and 1000");
