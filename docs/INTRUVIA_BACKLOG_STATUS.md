@@ -1,15 +1,15 @@
 # Intruvia — backlog status
 
-Updated: 2026-10-06 · Implementation state: tasks 001–011 complete; task 012 next
+Updated: 2026-10-06 · Implementation state: tasks 001–011 complete; task 012 in progress
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **011 — Add authenticated viewer sessions (DONE)**.
-- Next task: **012 — Implement bounded snapshots and cursor history (TODO)**; dependencies 004, 009 and 011 are DONE.
-- Completed: **11 / 22**. TODO: **11**. IN_PROGRESS: **0**. BLOCKED: **0**.
-- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; task 007 enrichment is complete; task 008 replacement is complete; task 009 atomic ingestion is complete; task 010 ingestion HTTP is complete; task 011 viewer sessions is complete; tasks 012–022 remain TODO.
+- Current task: **012 — Implement bounded snapshots and cursor history (IN_PROGRESS)**.
+- Next task: **013 — Implement bounded retention and receipt cleanup (TODO)**; awaits 012.
+- Completed: **11 / 22**. TODO: **10**. IN_PROGRESS: **1**. BLOCKED: **0**.
+- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; task 007 enrichment is complete; task 008 replacement is complete; task 009 atomic ingestion is complete; task 010 ingestion HTTP is complete; task 011 viewer sessions is complete; task 012 is IN_PROGRESS; tasks 013–022 remain TODO.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence is verified with the local snapshot override; the ingestion HTTP endpoint and viewer sessions are verified; viewer UI and deployment remain pending.
 
@@ -32,7 +32,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 009 | Implement atomic ingestion and deduplication | 004, 006, 007 | DONE | [Design](architecture/009-atomic-ingestion.md), [full verification](verification/009-final-verify.txt), [review](verification/009-review.txt), [hashes](verification/009-artifacts.sha256). Serialized Strolch service/command with receipt recheck and atomic sequence; 30 unit/HTTP + 10 integration tests passed. |
 | 010 | Expose the authenticated ingestion endpoint | 005, 009 | DONE | [Design/configuration](architecture/010-ingestion-http.md), [full verification](verification/010-final-verify.txt), [review](verification/010-review.txt), [hashes](verification/010-artifacts.sha256). PAT-authenticated POST, bounded parsing, global/instance admission and safe responses; 33 unit/HTTP + 14 PostgreSQL/application integration tests passed. |
 | 011 | Add authenticated viewer sessions | 002, 005 | DONE | [Design/provisioning](architecture/011-viewer-sessions.md), [full acceptance](verification/011-acceptance.txt), [review](verification/011-review.txt), [hashes](verification/011-artifacts.sha256). Framework cookie sessions, exact Origin/CSRF, read authorization, PAT separation, logout/expiry; 34 unit/HTTP + 17 PostgreSQL/application tests passed. |
-| 012 | Implement bounded snapshots and cursor history | 004, 009, 011 | TODO | — |
+| 012 | Implement bounded snapshots and cursor history | 004, 009, 011 | IN_PROGRESS | Acceptance pending. |
 | 013 | Implement bounded retention and receipt cleanup | 009, 012 | TODO | — |
 | 014 | Implement the ordered WebSocket event stream | 010, 011, 012, 013 | TODO | — |
 | 015 | Build the viewer shell and initial map | 011, 012 | TODO | — |
@@ -424,3 +424,8 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Inspection issues: `rg` unavailable (127); guessed MachineAuthenticator.java absent, actual MachineAuthenticationFilter located/read. Required guidelines available. No permission/dependency/decision blocker remains.
 - Unrun/out of scope: browser visual/TLS-cookie behavior (no UI changed), actual TLS proxy deployment, production provisioning, idle scheduler timing, session persistence/restart, actual WebSocket upgrades/closure (014), history (012), frontend login (015), framework rebuild/tests and load tests. HTTP cookie flag tests use loopback transport, not a TLS browser. No unrun check claimed successful.
 - Final checks: `git diff --check` exit 0; Python ledger assertions verify 22 rows, DONE 11/TODO 11/IN_PROGRESS 0/BLOCKED 0 and next eligible 012. No other task started.
+
+### 2026-10-06 — task 012 started
+
+- Agent: Codex. TODO → IN_PROGRESS. Verified 22 ledger rows, no active task, lowest eligible TODO 012; dependencies 004/009/011 DONE. Counts: DONE 11, TODO 10, IN_PROGRESS 1, BLOCKED 0. Next 013 awaits 012.
+- Read project/framework guidelines (including Vanilla JavaScript and Strolch specification), specification, backlog/status and README. Required guidelines available. `rg` unavailable (127); using find/grep/Python. Preserve pre-existing staged/deleted MachineCredentials.java. No commit, push, deployment or other task.
