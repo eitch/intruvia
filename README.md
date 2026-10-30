@@ -276,7 +276,7 @@ state are persisted; restart resets buckets. Compressed request bodies are unsup
 
 See [HTTP design, setting bounds and checks](docs/architecture/010-ingestion-http.md).
 Verify with Java 25 and `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
-Receipt-capacity admission is task 013; WebSocket delivery remains pending.
+Receipt-capacity admission is available; WebSocket delivery remains pending.
 
 ## Viewer sessions
 
@@ -321,7 +321,29 @@ in browser code. `after` is required and exclusive; there are no offset/search f
 Malformed or ahead-of-head cursors and invalid limits return `400`. A cursor below
 `minAfter` returns `410` with `error.code=resync_required`; load a new snapshot.
 These routes require a valid viewer cookie and `event:read`; machine PATs and Bearer
-headers cannot authenticate reads. Responses are uncached. Automatic retention is
-still task 013. See [read contracts and consistency](docs/architecture/012-event-reads.md)
+headers cannot authenticate reads. Responses are uncached. Automatic retention is available as described below. See [read contracts and consistency](docs/architecture/012-event-reads.md)
 and [v1 schemas](docs/api/v1.schema.json). Verify with Java 25 and
+`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+
+
+## Bounded event retention
+
+Events are retained for 30 days from ingestion, with a maximum of 100,000 events.
+A daily sweep removes expired events; new ingestion also prunes the oldest prefix
+when needed. Snapshot `minAfter` advances atomically with removal. History below
+that cursor returns `410 resync_required`; load a fresh snapshot.
+
+Receipts remain independently for at least 30 days, so an identical retry can still
+return the original ID/sequence after its event is pruned. Receipt storage is capped
+at 1,000,000 records. When no slot remains after expiry cleanup, new ingestion returns
+`429` with `error.code=receipt_capacity` and `Retry-After: 86400`. Unexpired receipts
+are preserved. The delay recommends when to retry; it does not guarantee available
+capacity. Ordinary request-rate limits also remain in effect.
+
+Existing external runtimes must copy the Retention component from the packaged
+`runtime/config/StrolchConfiguration.xml` and add the agent's `event:retention`
+privilege from `PrivilegeRoles.xml.example`. Adjust the five Retention properties
+there and restart; malformed settings fail startup. Receipt lifetime cannot be less
+than 30 days. See [settings, transaction semantics and verification](docs/architecture/013-retention.md).
+Run the full PostgreSQL suite with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
