@@ -1,0 +1,288 @@
+127.0.0.1:5432 - accepting connections
+PostgreSQL test image: sha256:8d76d8de17e883d3995f76252e260bc6b7761e9c23edbf3356b0676d37c49ddb ["postgres@sha256:3725f4e2499eef5134592b3b4ab79a543ed7f8e533b05b5b637af926630f6650"]
+                                                          version                                                           
+----------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+(1 row)
+
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-core ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-core/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 32 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.core.retention.RetentionPolicyTest
+[ERROR] Tests run: 2, Failures: 1, Errors: 1, Skipped: 0, Time elapsed: 0.073 s <<< FAILURE! -- in li.intruvia.core.retention.RetentionPolicyTest
+[ERROR] li.intruvia.core.retention.RetentionPolicyTest.defaultsAndConfiguredBounds -- Time elapsed: 0.041 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.io.File.isDirectory()" because "configPathF" is null
+	at li.strolch.runtime.configuration.RuntimeConfiguration.<init>(RuntimeConfiguration.java:67)
+	at li.intruvia.core.retention.RetentionPolicyTest.load(RetentionPolicyTest.java:25)
+	at li.intruvia.core.retention.RetentionPolicyTest.defaultsAndConfiguredBounds(RetentionPolicyTest.java:13)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+
+[ERROR] li.intruvia.core.retention.RetentionPolicyTest.unsafeMalformedAndUnknownSettingsFail -- Time elapsed: 0 s <<< FAILURE!
+java.lang.AssertionError: unexpected exception type thrown; expected:<java.lang.IllegalArgumentException> but was:<java.lang.NullPointerException>
+	at org.junit.Assert.assertThrows(Assert.java:1020)
+	at org.junit.Assert.assertThrows(Assert.java:981)
+	at li.intruvia.core.retention.RetentionPolicyTest.unsafeMalformedAndUnknownSettingsFail(RetentionPolicyTest.java:20)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:63)
+	at org.junit.runners.ParentRunner$4.run(ParentRunner.java:331)
+	at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:79)
+	at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:329)
+	at org.junit.runners.ParentRunner.access$100(ParentRunner.java:66)
+	at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:293)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.junit.runners.ParentRunner.run(ParentRunner.java:413)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.execute(JUnit4Provider.java:316)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeWithRerun(JUnit4Provider.java:240)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.executeTestSet(JUnit4Provider.java:214)
+	at org.apache.maven.surefire.junit4.JUnit4Provider.invoke(JUnit4Provider.java:155)
+	at org.apache.maven.surefire.booter.ForkedBooter.runSuitesInProcess(ForkedBooter.java:385)
+	at org.apache.maven.surefire.booter.ForkedBooter.execute(ForkedBooter.java:162)
+	at org.apache.maven.surefire.booter.ForkedBooter.run(ForkedBooter.java:507)
+	at org.apache.maven.surefire.booter.ForkedBooter.main(ForkedBooter.java:495)
+Caused by: java.lang.NullPointerException: Cannot invoke "java.io.File.isDirectory()" because "configPathF" is null
+	at li.strolch.runtime.configuration.RuntimeConfiguration.<init>(RuntimeConfiguration.java:67)
+	at li.intruvia.core.retention.RetentionPolicyTest.load(RetentionPolicyTest.java:25)
+	at li.intruvia.core.retention.RetentionPolicyTest.lambda$unsafeMalformedAndUnknownSettingsFail$0(RetentionPolicyTest.java:20)
+	at org.junit.Assert.assertThrows(Assert.java:1001)
+	... 28 more
+
+[INFO] Running li.intruvia.core.model.EventModelTest
+14:04:38.760 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 27ms
+14:04:38.808 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 979us
+14:04:38.818 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+14:04:38.820 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 694us
+14:04:38.824 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 984us
+14:04:38.827 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 777us
+14:04:38.829 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+14:04:38.831 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 735us
+14:04:38.833 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 802us
+14:04:38.844 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+14:04:38.846 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 622us
+14:04:38.848 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 395us
+14:04:38.849 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 665us
+14:04:38.863 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+14:04:38.865 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 802us
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.151 s -- in li.intruvia.core.model.EventModelTest
+[INFO] Running li.intruvia.core.geo.GeoIpComponentTest
+14:04:38.894 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.894 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.896 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:38.896 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.896 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.900 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.900 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.900 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.900 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.901 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+14:04:38.902 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.902 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.903 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.903 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.903 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+14:04:38.904 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.904 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.904 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.904 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.913 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+14:04:38.916 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.916 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.916 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.916 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.918 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP update rejected; retaining previous database (further warnings suppressed until successful update)
+14:04:38.969 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.969 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.969 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.969 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.976 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+14:04:38.983 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.983 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.983 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.983 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.983 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:38.983 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.984 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.985 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.985 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.985 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.985 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:38.995 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:38.995 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:38.995 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:38.995 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:39.011 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:39.011 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:39.011 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:39.011 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:39.011 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:39.012 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:39.012 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:39.012 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:39.012 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:39.012 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:39.012 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.031 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.031 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.031 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.031 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.035 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.035 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.036 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.036 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.309 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.310 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.310 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.310 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.316 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP update rejected; retaining previous database (further warnings suppressed until successful update)
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.319 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+14:04:40.320 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.322 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.323 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.323 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.323 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.327 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.328 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.328 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.328 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.332 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+14:04:40.333 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+14:04:40.333 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+14:04:40.333 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+14:04:40.334 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP lookup failed; enrichment returns ERROR (further warnings suppressed until restart)
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.452 s -- in li.intruvia.core.geo.GeoIpComponentTest
+[INFO] Running li.intruvia.core.geo.PublicAddressPolicyTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in li.intruvia.core.geo.PublicAddressPolicyTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Failures: 
+[ERROR]   RetentionPolicyTest.unsafeMalformedAndUnknownSettingsFail:20 unexpected exception type thrown; expected:<java.lang.IllegalArgumentException> but was:<java.lang.NullPointerException>
+[ERROR] Errors: 
+[ERROR]   RetentionPolicyTest.defaultsAndConfiguredBounds:13->load:25 » NullPointer Cannot invoke "java.io.File.isDirectory()" because "configPathF" is null
+[INFO] 
+[ERROR] Tests run: 22, Failures: 1, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  0.094 s]
+[INFO] intruvia-core ...................................... FAILURE [  3.644 s]
+[INFO] intruvia-rest ...................................... SKIPPED
+[INFO] intruvia-web ....................................... SKIPPED
+[INFO] intruvia-app ....................................... SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.824 s
+[INFO] Finished at: 2026-10-07T14:04:40+02:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project intruvia-core: There are test failures.
+[ERROR] 
+[ERROR] See /home/eitch/src/git/intruvia/intruvia-core/target/surefire-reports for the individual test results.
+[ERROR] See dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :intruvia-core

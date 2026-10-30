@@ -1,0 +1,2 @@
+22 rows; DONE 13/TODO 9/IN_PROGRESS 0/BLOCKED 0; task 013 DONE; next eligible 014.
+Date, counts, current/next summary and dependencies match ledger. No other task started.

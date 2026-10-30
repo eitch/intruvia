@@ -1,0 +1,35 @@
+Actual Strolch version: 2.8.0-SNAPSHOT
+Framework HEAD: e34b772f9d58f053a0272457708658d0dceadf76
+Packaged/cache match: strolch-agent-2.8.0-SNAPSHOT.jar a23a8e5b8d48cc9d2bc6254c205bf5d690eb0ac25d57e8d8ad830ed393758308
+Packaged/cache match: strolch-model-2.8.0-SNAPSHOT.jar d59a537f634da37ff53002ceedd3e4045d842d0365577ff40072739fe515d977
+Packaged/cache match: strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar aa4a112b71298c0e7d79c56ce128d45ca859d5877aeee810ff00fe729288f66c
+Packaged/cache match: strolch-privilege-2.8.0-SNAPSHOT.jar d59bfded3c3b61d600a8301ce7fd82a2b451be8de09f2c9dfcf7bfd706686ae9
+Packaged/cache match: strolch-service-2.8.0-SNAPSHOT.jar 62a064cdfdb7aaa87ed9cbd7c806c38811b38b9aaa58a9ae2675e7a56b14e229
+Packaged/cache match: strolch-utils-2.8.0-SNAPSHOT.jar 21af1f27f1df8017bd7a52094d2a909e3ff31c6cff86fff51494594c78980adc
+Installed/target class match: ResourceSearch a7b1d3708ec6c46e57f7c0fa9ebb17fa7f7a773cb715d4c874b27869e7a3177b
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/search/ResourceSearch.java 8d10a4daee8a43a836747a1afbccc237439155a9fd7a4ef445ed7b3b1c2361e7
+Installed/target class match: ComponentConfiguration cba027779a2e5a21143dd1db4dff718985c8b0c2db243f80e340db95a951a35d
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/runtime/configuration/ComponentConfiguration.java a01c1adcb221fc7e77720454d0046d7df372a2b8945d3afd1a4abfab3e728f31
+Installed/target class match: AbstractionConfiguration 7956631b4a54aac5f7ac991f3a7c3091204fca02af8285bb9cf50f352ce68502
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/runtime/configuration/AbstractionConfiguration.java a5227f3596c39db332e65a56f7f0835418d313d497d387e598e93de78eee67cb
+Installed/target class match: SearchResult 3b2bbffd736c70da1901ca932b9e011287e4649c868ebf38a2de28ac973a72ec
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/search/SearchResult.java 5608c1c2d3cd4c4a198a3f72150648d5cc694178d798ac70b48d18170d79843a
+Installed/target class match: AbstractService 3299d46a2201ddd4195a086fb7f8cfe6bd36befa8f661d07b55687fddbfb30cd
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/service/api/AbstractService.java ec46addc8b2abf87100e0162d69fcf8bb9eee4deccea1488d3a729606eb24230
+Installed/target class match: AbstractTransaction d9d19a3f9499f2e5ca59d6c7c431e42f341b1c60b28b6ee1509c9df380ea5583
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/persistence/api/AbstractTransaction.java 3a1de238c3cf903a4bd67099433bfd0af836fb33154355c3c77f0e3dcfec92bf
+Installed/target class match: DefaultServiceHandler 1849c1b3c4e8a365f29f1d05f70a950d55b6e3568224674bc8bc3b61b5a76c4e
+Source identity: /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/service/api/DefaultServiceHandler.java ef100eb4cce0998285522ca89d3b3c761b1d4db1ef62ce5ccc8525587715d940
+Local snapshot only; no timestamped artifact relabeling/equivalence claimed.
+Changed/new Java tabs and line lengths passed.
+intruvia-core surefire {'tests': 22, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-rest surefire {'tests': 12, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-app surefire {'tests': 2, 'failures': 0, 'errors': 0, 'skipped': 0}
+intruvia-app failsafe {'tests': 28, 'failures': 0, 'errors': 0, 'skipped': 0}
+Retention component/configuration and role packaged identically.
+Unrelated staged/deleted MachineCredentials.java preserved.
+No frontend changes: no new browser credential storage or UI behavior.
+Default settings, lifecycle dependencies and maintenance role checked.
+Retention classes are in the assembled distribution.
+Six retention PostgreSQL/HTTP/concurrency/lifecycle acceptance tests passed.
+Full clean offline verification passed: 64 tests, zero failures/errors/skips.
