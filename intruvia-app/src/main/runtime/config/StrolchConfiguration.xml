@@ -70,5 +70,19 @@
 			<impl>li.intruvia.core.IntruviaComponent</impl>
 			<depends>MigrationsHandler</depends>
 		</Component>
+		<Component>
+			<name>Retention</name>
+			<api>li.intruvia.core.retention.RetentionComponent</api>
+			<impl>li.intruvia.core.retention.RetentionComponent</impl>
+			<depends>Intruvia</depends>
+			<depends>ServiceHandler</depends>
+			<Properties>
+				<eventAgeSeconds>2592000</eventAgeSeconds>
+				<eventCapacity>100000</eventCapacity>
+				<receiptAgeSeconds>2592000</receiptAgeSeconds>
+				<receiptCapacity>1000000</receiptCapacity>
+				<sweepSeconds>86400</sweepSeconds>
+			</Properties>
+		</Component>
 	</env>
 </StrolchConfiguration>
