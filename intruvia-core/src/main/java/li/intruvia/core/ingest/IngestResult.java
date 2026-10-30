@@ -7,7 +7,7 @@ import li.strolch.service.api.ServiceResult;
 import li.strolch.service.api.ServiceResultState;
 
 public final class IngestResult extends ServiceResult {
-	public enum Outcome { CREATED, DUPLICATE, CONFLICT, INVALID, FORBIDDEN, UNAVAILABLE }
+	public enum Outcome { CREATED, DUPLICATE, CONFLICT, INVALID, FORBIDDEN, CAPACITY, UNAVAILABLE }
 
 	/** geoStatus is absent on duplicates: the retained receipt does not require the event to exist. */
 	public record Accepted(UUID id, String sequence, boolean duplicate, GeoStatus geoStatus) {}

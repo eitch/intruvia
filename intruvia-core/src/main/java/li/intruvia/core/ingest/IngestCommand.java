@@ -24,11 +24,16 @@ public final class IngestCommand extends Command {
 
 	public IngestCommand(StrolchTransaction tx, String instance, Fail2banEvent payload, SecurityEvent.Geo geo,
 			Instant now, EventStreamState previous) {
+		this(tx, instance, payload, geo, now, previous, Duration.ofDays(30));
+	}
+
+	public IngestCommand(StrolchTransaction tx, String instance, Fail2banEvent payload, SecurityEvent.Geo geo,
+			Instant now, EventStreamState previous, Duration receiptAge) {
 		super(tx);
 		long sequence = Math.addExact(Long.parseLong(previous.lastCommittedSequence()), 1);
 		this.event = payload.toEvent(instance, UUID.randomUUID(), sequence, now, geo);
 		this.receipt = new IngestReceipt(receiptId(instance, payload.eventId()), instance, payload.eventId(),
-				payload.payloadDigest(), this.event.id(), this.event.sequence(), now.plus(Duration.ofDays(30)).toString());
+				payload.payloadDigest(), this.event.id(), this.event.sequence(), now.plus(receiptAge).toString());
 		this.state = new EventStreamState(this.event.sequence(), previous.minAfter());
 	}
 

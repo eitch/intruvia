@@ -68,6 +68,8 @@ public final class Fail2banResource {
 				case CONFLICT -> IngestHttp.error(409, "event_conflict", "Event ID already used with different payload");
 				case INVALID -> IngestHttp.error(400, "invalid_event", "Invalid event payload");
 				case FORBIDDEN -> IngestHttp.error(403, "forbidden", "Ingestion permission and server identity required");
+				case CAPACITY -> Response.fromResponse(IngestHttp.error(429, "receipt_capacity", "Receipt capacity reached"))
+						.header("Retry-After", 86400).build();
 				case UNAVAILABLE -> IngestHttp.error(503, "unavailable", "Ingestion unavailable");
 			};
 		} catch (InvalidEventException e) {

@@ -2,6 +2,9 @@
 package li.intruvia.core.ingest;
 
 import java.time.Clock;
+import java.time.Instant;
+import li.intruvia.core.retention.RetentionCommand;
+import li.intruvia.core.retention.RetentionComponent;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -64,7 +67,7 @@ public final class IngestService extends AbstractService<IngestArgument, IngestR
 			}
 			SecurityEvent.Geo geo = this.enrichment == null ? getComponent(GeoIpComponent.class).enrich(arg.event.ip()) :
 					this.enrichment.apply(arg.event.ip());
-			IngestCommand command;
+			IngestCommand command = null;
 			try (var tx = openUserTx().rollbackOnFailure()) {
 				EventStreamLock.acquire(tx);
 				IngestResult duplicate = existing(tx, instance, arg.event);
@@ -72,12 +75,17 @@ public final class IngestService extends AbstractService<IngestArgument, IngestR
 					return duplicate;
 				var now = this.clock.instant();
 				this.agePolicy.validate(arg.event.occurredAt(), now);
-				command = new IngestCommand(tx, instance, arg.event, geo, now, this.repository.streamState(tx));
-				tx.addCommand(command);
+				var retention = new RetentionCommand(tx, getComponent(RetentionComponent.class).policy(), now, INGEST_PRIVILEGE, true);
+				tx.addCommand(retention);
+				if (retention.hasReceiptCapacity()) {
+					command = new IngestCommand(tx, instance, arg.event, geo, now, retention.state(),
+							getComponent(RetentionComponent.class).policy().receiptAge());
+					tx.addCommand(command);
+				}
 				tx.commitOnClose();
 			}
 			// No success or publication may escape until transaction close has completed.
-			return command.committedResult();
+			return command == null ? new IngestResult(CAPACITY, null) : command.committedResult();
 		} catch (InvalidEventException e) {
 			return new IngestResult(INVALID, null);
 		} catch (StrolchException | StrolchTransactionException | StrolchPersistenceException |
@@ -89,7 +97,7 @@ public final class IngestService extends AbstractService<IngestArgument, IngestR
 
 	private IngestResult existing(StrolchTransaction tx, String instance, Fail2banEvent payload) {
 		var receipt = this.repository.receipt(tx, IngestCommand.receiptId(instance, payload.eventId()));
-		if (receipt.isEmpty())
+		if (receipt.isEmpty() || !Instant.parse(receipt.get().expiresAt()).isAfter(this.clock.instant()))
 			return null;
 		var value = receipt.get();
 		if (!value.payloadDigest().equals(payload.payloadDigest()))
