@@ -1,0 +1,42 @@
+Framework HEAD: d26f020ad14e24d0c62db678b75bc63d0b342e4f
+Framework status: clean
+Requested version override: 2.8.0-SNAPSHOT; NOT historical timestamped baseline 2.8.0-20260927.120822-2
+Packaged SHA256: a69d019265f3d43de97e65e08052de4ff73c0fe3f30db849be84b6e9b3c75aae intruvia-app/target/intruvia/lib/strolch-agent-2.8.0-SNAPSHOT.jar
+Matching cache binaries: /home/eitch/.m2/repository/li/strolch/strolch-agent/2.8.0-SNAPSHOT/strolch-agent-2.8.0-20261105.152255-22.jar, /home/eitch/.m2/repository/li/strolch/strolch-agent/2.8.0-SNAPSHOT/strolch-agent-2.8.0-SNAPSHOT.jar
+Packaged SHA256: fe9954044d1d019b5bd996c08762b3a6deca48544be10aebf8808af77de1801d intruvia-app/target/intruvia/lib/strolch-model-2.8.0-SNAPSHOT.jar
+Matching cache binaries: /home/eitch/.m2/repository/li/strolch/strolch-model/2.8.0-SNAPSHOT/strolch-model-2.8.0-20261105.152255-22.jar, /home/eitch/.m2/repository/li/strolch/strolch-model/2.8.0-SNAPSHOT/strolch-model-2.8.0-SNAPSHOT.jar
+Packaged SHA256: f1d252321a5542a80697a98e5b653c35e11589fc4c029548c18643b565e3c528 intruvia-app/target/intruvia/lib/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar
+Matching cache binaries: /home/eitch/.m2/repository/li/strolch/strolch-persistence-postgresql/2.8.0-SNAPSHOT/strolch-persistence-postgresql-2.8.0-20261105.152255-22.jar, /home/eitch/.m2/repository/li/strolch/strolch-persistence-postgresql/2.8.0-SNAPSHOT/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar
+Packaged SHA256: 36d741499e8b878fa8551e7ad089001d06bd8ffd80ef8510c2b366aa2a602b18 intruvia-app/target/intruvia/lib/strolch-privilege-2.8.0-SNAPSHOT.jar
+Matching cache binaries: /home/eitch/.m2/repository/li/strolch/strolch-privilege/2.8.0-SNAPSHOT/strolch-privilege-2.8.0-20261105.152255-22.jar, /home/eitch/.m2/repository/li/strolch/strolch-privilege/2.8.0-SNAPSHOT/strolch-privilege-2.8.0-SNAPSHOT.jar
+Packaged SHA256: d768507739abf6dea9ca23806418418ff639b30e754547da51aa4b8426cb79a5 intruvia-app/target/intruvia/lib/strolch-service-2.8.0-SNAPSHOT.jar
+Matching cache binaries: /home/eitch/.m2/repository/li/strolch/strolch-service/2.8.0-SNAPSHOT/strolch-service-2.8.0-20261105.152255-22.jar, /home/eitch/.m2/repository/li/strolch/strolch-service/2.8.0-SNAPSHOT/strolch-service-2.8.0-SNAPSHOT.jar
+Packaged SHA256: 40b35690a32cf3d65e7ab5a4e7358a554bb2a0fadc0e39f80ac419c24846ec13 intruvia-app/target/intruvia/lib/strolch-utils-2.8.0-SNAPSHOT.jar
+Matching cache binaries: /home/eitch/.m2/repository/li/strolch/strolch-utils/2.8.0-SNAPSHOT/strolch-utils-2.8.0-20261105.152255-22.jar, /home/eitch/.m2/repository/li/strolch/strolch-utils/2.8.0-SNAPSHOT/strolch-utils-2.8.0-SNAPSHOT.jar
+Checkout equals published source: ccfc5dd87d3e8319806609e9bfaa8c7f9fde19b4570fa0e649c4dad68c8dd336 /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/runtime/sessions/DefaultStrolchSessionHandler.java
+Checkout equals published source: ec46addc8b2abf87100e0162d69fcf8bb9eee4deccea1488d3a729606eb24230 /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/service/api/AbstractService.java
+Checkout equals published source: ef100eb4cce0998285522ca89d3b3c761b1d4db1ef62ce5ccc8525587715d940 /home/eitch/src/git/atx-dev/strolch/strolch-agent/src/main/java/li/strolch/service/api/DefaultServiceHandler.java
+Checkout equals published source: d168c0444837308c152e7d87e9ff2d61bbcadbb664e99c40cede71d9f9026bb0 /home/eitch/src/git/atx-dev/strolch/strolch-privilege/src/main/java/li/strolch/privilege/handler/DefaultPrivilegeHandler.java
+Test report: intruvia-core/target/surefire-reports/TEST-li.intruvia.core.geo.GeoIpComponentTest.xml (13, 0, 0, 0)
+Test report: intruvia-core/target/surefire-reports/TEST-li.intruvia.core.geo.PublicAddressPolicyTest.xml (2, 0, 0, 0)
+Test report: intruvia-core/target/surefire-reports/TEST-li.intruvia.core.model.EventModelTest.xml (5, 0, 0, 0)
+Test report: intruvia-core/target/surefire-reports/TEST-li.intruvia.core.retention.RetentionPolicyTest.xml (2, 0, 0, 0)
+Test report: intruvia-rest/target/surefire-reports/TEST-li.intruvia.rest.dto.Fail2banDtoTest.xml (2, 0, 0, 0)
+Test report: intruvia-rest/target/surefire-reports/TEST-li.intruvia.rest.ingest.AdmissionTest.xml (3, 0, 0, 0)
+Test report: intruvia-rest/target/surefire-reports/TEST-li.intruvia.rest.ingest.Fail2banValidationTest.xml (6, 0, 0, 0)
+Test report: intruvia-rest/target/surefire-reports/TEST-li.intruvia.rest.session.ViewerConfigurationTest.xml (1, 0, 0, 0)
+Test report: intruvia-rest/target/surefire-reports/TEST-li.intruvia.rest.stream.StreamConnectionTest.xml (4, 0, 0, 0)
+Test report: intruvia-app/target/surefire-reports/TEST-li.intruvia.app.MachineAuthenticationTest.xml (2, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.ApplicationIT.xml (2, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.EventReadIT.xml (5, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.EventStreamIT.xml (7, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.IngestionHttpIT.xml (4, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.IngestionIT.xml (6, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.PersistenceIT.xml (2, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.RetentionIT.xml (6, 0, 0, 0)
+Test report: intruvia-app/target/failsafe-reports/TEST-li.intruvia.app.ViewerSessionIT.xml (3, 0, 0, 0)
+Total: 75 tests, zero failures/errors/skips (40 unit/HTTP, 35 integration).
+Changed Java tabs/line lengths/SPDX and unchanged frontend: PASS
+Existing operator GeoIP path preserved: PASS
+Endpoint/dispatcher, pinned transport and component configuration packaged: PASS
+git diff --check: PASS

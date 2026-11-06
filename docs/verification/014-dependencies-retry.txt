@@ -1,0 +1,1396 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.8.1:go-offline (default-cli) @ intruvia ---
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-io/3.5.1/plexus-io-3.5.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-io/3.5.1/plexus-io-3.5.1.jar (80 kB at 324 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/shared/maven-dependency-analyzer/1.15.0/maven-dependency-analyzer-1.15.0.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/shared/maven-dependency-tree/3.3.0/maven-dependency-tree-3.3.0.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.plexus/0.9.0.M3/org.eclipse.sisu.plexus-0.9.0.M3.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.inject/0.9.0.M3/org.eclipse.sisu.inject-0.9.0.M3.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-classworlds/2.6.0/plexus-classworlds-2.6.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.inject/0.9.0.M3/org.eclipse.sisu.inject-0.9.0.M3.jar (434 kB at 7.3 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/commons-codec/commons-codec/1.17.0/commons-codec-1.17.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/shared/maven-dependency-analyzer/1.15.0/maven-dependency-analyzer-1.15.0.jar (45 kB at 542 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-classworlds/2.6.0/plexus-classworlds-2.6.0.jar (53 kB at 637 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/shared/maven-dependency-tree/3.3.0/maven-dependency-tree-3.3.0.jar (43 kB at 517 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/commons-codec/commons-codec/1.17.0/commons-codec-1.17.0.jar (373 kB at 3.6 MB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.plexus/0.9.0.M3/org.eclipse.sisu.plexus-0.9.0.M3.jar (216 kB at 2.1 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/maven-archiver/3.6.6/maven-archiver-3.6.6.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/reporting/maven-reporting-exec/2.0.1/maven-reporting-exec-2.0.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-transport-wagon/1.4.1/maven-resolver-transport-wagon-1.4.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-archiver/4.11.0/plexus-archiver-4.11.0.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-i18n/1.1.0/plexus-i18n-1.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/maven-archiver/3.6.6/maven-archiver-3.6.6.pom (5.2 kB at 127 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-archiver/4.11.0/plexus-archiver-4.11.0.pom (5.6 kB at 145 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-i18n/1.1.0/plexus-i18n-1.1.0.pom (2.8 kB at 75 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-interactivity-api/1.5.1/plexus-interactivity-api-1.5.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-apt/2.1.0/doxia-module-apt-2.1.0.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xhtml5/2.1.0/doxia-module-xhtml5-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-interactivity-api/1.5.1/plexus-interactivity-api-1.5.1.pom (1.7 kB at 60 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-interactivity/1.5.1/plexus-interactivity-1.5.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-transport-wagon/1.4.1/maven-resolver-transport-wagon-1.4.1.pom (4.6 kB at 38 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xdoc/2.1.0/doxia-module-xdoc-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-interactivity/1.5.1/plexus-interactivity-1.5.1.pom (1.7 kB at 30 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-fml/2.1.0/doxia-module-fml-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/reporting/maven-reporting-exec/2.0.1/maven-reporting-exec-2.0.1.pom (9.6 kB at 69 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/shared/maven-shared-components/48/maven-shared-components-48.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xhtml5/2.1.0/doxia-module-xhtml5-2.1.0.pom (2.2 kB at 24 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-modules/2.1.0/doxia-modules-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-apt/2.1.0/doxia-module-apt-2.1.0.pom (2.1 kB at 22 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/shared/maven-shared-components/48/maven-shared-components-48.pom (3.8 kB at 131 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-markdown/2.1.0/doxia-module-markdown-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xdoc/2.1.0/doxia-module-xdoc-2.1.0.pom (4.6 kB at 70 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-fml/2.1.0/doxia-module-fml-2.1.0.pom (4.8 kB at 79 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-modules/2.1.0/doxia-modules-2.1.0.pom (2.4 kB at 37 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-site-renderer/2.1.0/doxia-site-renderer-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-markdown/2.1.0/doxia-module-markdown-2.1.0.pom (8.7 kB at 130 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-server/9.4.58.v20250814/jetty-server-9.4.58.v20250814.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-http/9.4.58.v20250814/jetty-http-9.4.58.v20250814.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-site-renderer/2.1.0/doxia-site-renderer-2.1.0.pom (8.1 kB at 127 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-servlet/9.4.58.v20250814/jetty-servlet-9.4.58.v20250814.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-webapp/9.4.58.v20250814/jetty-webapp-9.4.58.v20250814.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util/9.4.58.v20250814/jetty-util-9.4.58.v20250814.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-server/9.4.58.v20250814/jetty-server-9.4.58.v20250814.pom (3.6 kB at 59 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-project/9.4.58.v20250814/jetty-project-9.4.58.v20250814.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-http/9.4.58.v20250814/jetty-http-9.4.58.v20250814.pom (4.0 kB at 52 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-webapp/9.4.58.v20250814/jetty-webapp-9.4.58.v20250814.pom (3.2 kB at 47 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util/9.4.58.v20250814/jetty-util-9.4.58.v20250814.pom (4.0 kB at 64 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-servlet/9.4.58.v20250814/jetty-servlet-9.4.58.v20250814.pom (2.3 kB at 30 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-project/9.4.58.v20250814/jetty-project-9.4.58.v20250814.pom (72 kB at 848 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/junit/junit-bom/5.10.5/junit-bom-5.10.5.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/junit/junit-bom/5.10.5/junit-bom-5.10.5.pom (5.6 kB at 101 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-classworlds/2.9.0/plexus-classworlds-2.9.0.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/wagon/wagon-provider-api/3.0.0/wagon-provider-api-3.0.0.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-spi/1.4.1/maven-resolver-spi-1.4.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/tukaani/xz/1.11/xz-1.11.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-classworlds/2.9.0/plexus-classworlds-2.9.0.pom (7.1 kB at 223 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/tukaani/xz/1.11/xz-1.11.pom (1.9 kB at 62 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jsoup/jsoup/1.22.1/jsoup-1.22.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jetbrains/annotations/26.1.0/annotations-26.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/wagon/wagon-provider-api/3.0.0/wagon-provider-api-3.0.0.pom (1.9 kB at 31 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/wagon/wagon/3.0.0/wagon-3.0.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-spi/1.4.1/maven-resolver-spi-1.4.1.pom (2.6 kB at 40 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.plexus/1.0.0/org.eclipse.sisu.plexus-1.0.0.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-skin-model/2.1.0/doxia-skin-model-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jsoup/jsoup/1.22.1/jsoup-1.22.1.pom (20 kB at 683 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-velocity/2.3.0/plexus-velocity-2.3.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.plexus/1.0.0/org.eclipse.sisu.plexus-1.0.0.pom (17 kB at 561 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/sisu-inject/1.0.0/sisu-inject-1.0.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jetbrains/annotations/26.1.0/annotations-26.1.0.pom (1.7 kB at 25 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/velocity/velocity-engine-core/2.4.1/velocity-engine-core-2.4.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/sisu-inject/1.0.0/sisu-inject-1.0.0.pom (28 kB at 1.1 MB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/wagon/wagon/3.0.0/wagon-3.0.0.pom (21 kB at 299 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-io/9.4.58.v20250814/jetty-io-9.4.58.v20250814.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-skin-model/2.1.0/doxia-skin-model-2.1.0.pom (2.9 kB at 43 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-security/9.4.58.v20250814/jetty-security-9.4.58.v20250814.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/9.4.58.v20250814/jetty-util-ajax-9.4.58.v20250814.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-velocity/2.3.0/plexus-velocity-2.3.0.pom (4.3 kB at 68 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/velocity/velocity-engine-core/2.4.1/velocity-engine-core-2.4.1.pom (12 kB at 428 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/9.4.58.v20250814/jetty-xml-9.4.58.v20250814.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/velocity/velocity-engine-parent/2.4.1/velocity-engine-parent-2.4.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/velocity/velocity-engine-parent/2.4.1/velocity-engine-parent-2.4.1.pom (9.5 kB at 328 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-io/9.4.58.v20250814/jetty-io-9.4.58.v20250814.pom (1.2 kB at 18 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-security/9.4.58.v20250814/jetty-security-9.4.58.v20250814.pom (2.1 kB at 31 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/9.4.58.v20250814/jetty-util-ajax-9.4.58.v20250814.pom (1.3 kB at 18 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.inject/1.0.0/org.eclipse.sisu.inject-1.0.0.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/commons/commons-lang3/3.19.0/commons-lang3-3.19.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/9.4.58.v20250814/jetty-xml-9.4.58.v20250814.pom (1.7 kB at 29 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.inject/1.0.0/org.eclipse.sisu.inject-1.0.0.pom (18 kB at 598 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/commons/commons-lang3/3.19.0/commons-lang3-3.19.0.pom (32 kB at 1.1 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/commons/commons-parent/88/commons-parent-88.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/commons/commons-parent/88/commons-parent-88.pom (80 kB at 2.2 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/reporting/maven-reporting-exec/2.0.1/maven-reporting-exec-2.0.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/reporting/maven-reporting-exec/2.0.1/maven-reporting-exec-2.0.1.jar (28 kB at 425 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-transport-wagon/1.4.1/maven-resolver-transport-wagon-1.4.1.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/maven-archiver/3.6.6/maven-archiver-3.6.6.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-archiver/4.11.0/plexus-archiver-4.11.0.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-i18n/1.1.0/plexus-i18n-1.1.0.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-interactivity-api/1.5.1/plexus-interactivity-api-1.5.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-interactivity-api/1.5.1/plexus-interactivity-api-1.5.1.jar (10 kB at 355 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xhtml5/2.1.0/doxia-module-xhtml5-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-i18n/1.1.0/plexus-i18n-1.1.0.jar (10 kB at 352 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-apt/2.1.0/doxia-module-apt-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/maven-archiver/3.6.6/maven-archiver-3.6.6.jar (28 kB at 766 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xdoc/2.1.0/doxia-module-xdoc-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-archiver/4.11.0/plexus-archiver-4.11.0.jar (227 kB at 5.8 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-fml/2.1.0/doxia-module-fml-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-transport-wagon/1.4.1/maven-resolver-transport-wagon-1.4.1.jar (31 kB at 463 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-markdown/2.1.0/doxia-module-markdown-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-apt/2.1.0/doxia-module-apt-2.1.0.jar (55 kB at 593 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-site-model/2.1.0/doxia-site-model-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xhtml5/2.1.0/doxia-module-xhtml5-2.1.0.jar (17 kB at 178 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-site-renderer/2.1.0/doxia-site-renderer-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-fml/2.1.0/doxia-module-fml-2.1.0.jar (38 kB at 377 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-server/9.4.58.v20250814/jetty-server-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-xdoc/2.1.0/doxia-module-xdoc-2.1.0.jar (35 kB at 329 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-http/9.4.58.v20250814/jetty-http-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-module-markdown/2.1.0/doxia-module-markdown-2.1.0.jar (41 kB at 333 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-servlet/9.4.58.v20250814/jetty-servlet-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-site-model/2.1.0/doxia-site-model-2.1.0.jar (92 kB at 538 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-webapp/9.4.58.v20250814/jetty-webapp-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-server/9.4.58.v20250814/jetty-server-9.4.58.v20250814.jar (749 kB at 3.6 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util/9.4.58.v20250814/jetty-util-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-servlet/9.4.58.v20250814/jetty-servlet-9.4.58.v20250814.jar (148 kB at 706 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-classworlds/2.9.0/plexus-classworlds-2.9.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-http/9.4.58.v20250814/jetty-http-9.4.58.v20250814.jar (253 kB at 1.2 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-spi/1.4.1/maven-resolver-spi-1.4.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-classworlds/2.9.0/plexus-classworlds-2.9.0.jar (54 kB at 228 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/wagon/wagon-provider-api/3.0.0/wagon-provider-api-3.0.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-webapp/9.4.58.v20250814/jetty-webapp-9.4.58.v20250814.jar (142 kB at 563 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-io/3.6.0/plexus-io-3.6.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-site-renderer/2.1.0/doxia-site-renderer-2.1.0.jar (1.4 MB at 5.3 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/tukaani/xz/1.11/xz-1.11.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-io/3.6.0/plexus-io-3.6.0.jar (80 kB at 285 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/github/luben/zstd-jni/1.5.7-6/zstd-jni-1.5.7-6.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util/9.4.58.v20250814/jetty-util-9.4.58.v20250814.jar (595 kB at 2.1 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark/0.62.2/flexmark-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/resolver/maven-resolver-spi/1.4.1/maven-resolver-spi-1.4.1.jar (37 kB at 126 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-data/0.62.2/flexmark-util-data-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/tukaani/xz/1.11/xz-1.11.jar (169 kB at 557 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-misc/0.62.2/flexmark-util-misc-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/wagon/wagon-provider-api/3.0.0/wagon-provider-api-3.0.0.jar (55 kB at 172 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-sequence/0.62.2/flexmark-util-sequence-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-data/0.62.2/flexmark-util-data-0.62.2.jar (25 kB at 77 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-ast/0.62.2/flexmark-util-ast-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark/0.62.2/flexmark-0.62.2.jar (444 kB at 1.3 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-abbreviation/0.62.2/flexmark-ext-abbreviation-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-misc/0.62.2/flexmark-util-misc-0.62.2.jar (59 kB at 167 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-autolink/0.62.2/flexmark-ext-autolink-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-sequence/0.62.2/flexmark-util-sequence-0.62.2.jar (223 kB at 594 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-definition/0.62.2/flexmark-ext-definition-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-ast/0.62.2/flexmark-util-ast-0.62.2.jar (65 kB at 174 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-escaped-character/0.62.2/flexmark-ext-escaped-character-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-abbreviation/0.62.2/flexmark-ext-abbreviation-0.62.2.jar (27 kB at 71 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-footnotes/0.62.2/flexmark-ext-footnotes-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-autolink/0.62.2/flexmark-ext-autolink-0.62.2.jar (9.7 kB at 25 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-gfm-strikethrough/0.62.2/flexmark-ext-gfm-strikethrough-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-definition/0.62.2/flexmark-ext-definition-0.62.2.jar (32 kB at 78 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-tables/0.62.2/flexmark-ext-tables-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-escaped-character/0.62.2/flexmark-ext-escaped-character-0.62.2.jar (12 kB at 29 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-typographic/0.62.2/flexmark-ext-typographic-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-footnotes/0.62.2/flexmark-ext-footnotes-0.62.2.jar (31 kB at 76 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-wikilink/0.62.2/flexmark-ext-wikilink-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-gfm-strikethrough/0.62.2/flexmark-ext-gfm-strikethrough-0.62.2.jar (23 kB at 55 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-yaml-front-matter/0.62.2/flexmark-ext-yaml-front-matter-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-tables/0.62.2/flexmark-ext-tables-0.62.2.jar (47 kB at 108 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jsoup/jsoup/1.22.1/jsoup-1.22.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-wikilink/0.62.2/flexmark-ext-wikilink-0.62.2.jar (30 kB at 68 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jetbrains/annotations/26.1.0/annotations-26.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-typographic/0.62.2/flexmark-ext-typographic-0.62.2.jar (20 kB at 45 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.plexus/1.0.0/org.eclipse.sisu.plexus-1.0.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-ext-yaml-front-matter/0.62.2/flexmark-ext-yaml-front-matter-0.62.2.jar (17 kB at 36 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-skin-model/2.1.0/doxia-skin-model-2.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.plexus/1.0.0/org.eclipse.sisu.plexus-1.0.0.jar (216 kB at 428 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-velocity/2.3.0/plexus-velocity-2.3.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jsoup/jsoup/1.22.1/jsoup-1.22.1.jar (508 kB at 1.0 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/velocity/velocity-engine-core/2.4.1/velocity-engine-core-2.4.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/jetbrains/annotations/26.1.0/annotations-26.1.0.jar (31 kB at 59 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/maven/doxia/doxia-skin-model/2.1.0/doxia-skin-model-2.1.0.jar (19 kB at 34 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-io/9.4.58.v20250814/jetty-io-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/github/luben/zstd-jni/1.5.7-6/zstd-jni-1.5.7-6.jar (7.4 MB at 13 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-security/9.4.58.v20250814/jetty-security-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/apache/velocity/velocity-engine-core/2.4.1/velocity-engine-core-2.4.1.jar (516 kB at 914 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/9.4.58.v20250814/jetty-util-ajax-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar (96 kB at 169 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/9.4.58.v20250814/jetty-xml-9.4.58.v20250814.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-velocity/2.3.0/plexus-velocity-2.3.0.jar (6.2 kB at 11 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-builder/0.62.2/flexmark-util-builder-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-builder/0.62.2/flexmark-util-builder-0.62.2.jar (5.3 kB at 8.7 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-collection/0.62.2/flexmark-util-collection-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-io/9.4.58.v20250814/jetty-io-9.4.58.v20250814.jar (185 kB at 294 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-dependency/0.62.2/flexmark-util-dependency-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-security/9.4.58.v20250814/jetty-security-9.4.58.v20250814.jar (120 kB at 187 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-format/0.62.2/flexmark-util-format-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/9.4.58.v20250814/jetty-util-ajax-9.4.58.v20250814.jar (67 kB at 105 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-html/0.62.2/flexmark-util-html-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/9.4.58.v20250814/jetty-xml-9.4.58.v20250814.jar (70 kB at 108 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-visitor/0.62.2/flexmark-util-visitor-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-collection/0.62.2/flexmark-util-collection-0.62.2.jar (67 kB at 102 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util/0.62.2/flexmark-util-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-visitor/0.62.2/flexmark-util-visitor-0.62.2.jar (6.8 kB at 10 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/nibor/autolink/autolink/0.6.0/autolink-0.6.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-html/0.62.2/flexmark-util-html-0.62.2.jar (55 kB at 81 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.inject/1.0.0/org.eclipse.sisu.inject-1.0.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-dependency/0.62.2/flexmark-util-dependency-0.62.2.jar (16 kB at 24 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-component-annotations/2.2.0/plexus-component-annotations-2.2.0.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-format/0.62.2/flexmark-util-format-0.62.2.jar (109 kB at 160 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-options/0.62.2/flexmark-util-options-0.62.2.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util/0.62.2/flexmark-util-0.62.2.jar (1.9 kB at 2.7 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/nibor/autolink/autolink/0.6.0/autolink-0.6.0.jar (16 kB at 23 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/codehaus/plexus/plexus-component-annotations/2.2.0/plexus-component-annotations-2.2.0.jar (4.2 kB at 5.9 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/com/vladsch/flexmark/flexmark-util-options/0.62.2/flexmark-util-options-0.62.2.jar (12 kB at 17 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/sisu/org.eclipse.sisu.inject/1.0.0/org.eclipse.sisu.inject-1.0.0.jar (304 kB at 427 kB/s)
+[INFO] Resolved plugin: velocity-tools-generic-3.1.jar
+[INFO] Resolved plugin: maven-dependency-tree-3.3.0.jar
+[INFO] Resolved plugin: doxia-site-model-2.0.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.0.0.jar
+[INFO] Resolved plugin: flexmark-util-sequence-0.62.2.jar
+[INFO] Resolved plugin: surefire-logger-api-3.5.2.jar
+[INFO] Resolved plugin: asm-9.7.jar
+[INFO] Resolved plugin: plexus-interpolation-1.26.jar
+[INFO] Resolved plugin: flexmark-ext-abbreviation-0.62.2.jar
+[INFO] Resolved plugin: plexus-java-1.3.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.3.0.jar
+[INFO] Resolved plugin: commons-lang3-3.20.0.jar
+[INFO] Resolved plugin: commons-lang3-3.12.0.jar
+[INFO] Resolved plugin: commons-codec-1.17.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-html-0.62.2.jar
+[INFO] Resolved plugin: plexus-compiler-javac-2.15.0.jar
+[INFO] Resolved plugin: commons-io-2.22.0.jar
+[INFO] Resolved plugin: flexmark-ext-escaped-character-0.62.2.jar
+[INFO] Resolved plugin: surefire-shared-utils-3.5.2.jar
+[INFO] Resolved plugin: flexmark-ext-footnotes-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-analyzer-1.15.0.jar
+[INFO] Resolved plugin: jetty-util-ajax-9.4.58.v20250814.jar
+[INFO] Resolved plugin: json-simple-3.0.2.jar
+[INFO] Resolved plugin: flexmark-util-builder-0.62.2.jar
+[INFO] Resolved plugin: flexmark-util-collection-0.62.2.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.0.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.7-6.jar
+[INFO] Resolved plugin: autolink-0.6.0.jar
+[INFO] Resolved plugin: commons-logging-1.2.jar
+[INFO] Resolved plugin: maven-filtering-3.3.1.jar
+[INFO] Resolved plugin: jetty-util-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-surefire-plugin-3.5.2.jar
+[INFO] Resolved plugin: surefire-extensions-api-3.5.2.jar
+[INFO] Resolved plugin: surefire-api-3.5.2.jar
+[INFO] Resolved plugin: flexmark-util-format-0.62.2.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-0.9.0.M3.jar
+[INFO] Resolved plugin: maven-archiver-3.6.2.jar
+[INFO] Resolved plugin: flexmark-ext-wikilink-0.62.2.jar
+[INFO] Resolved plugin: wagon-provider-api-3.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-api-2.15.0.jar
+[INFO] Resolved plugin: flexmark-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.16.1.jar
+[INFO] Resolved plugin: flexmark-util-visitor-0.62.2.jar
+[INFO] Resolved plugin: maven-resolver-transport-wagon-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-typographic-0.62.2.jar
+[INFO] Resolved plugin: maven-site-plugin-3.22.0.jar
+[INFO] Resolved plugin: maven-reporting-exec-2.0.1.jar
+[INFO] Resolved plugin: commons-text-1.12.0.jar
+[INFO] Resolved plugin: maven-archiver-3.6.6.jar
+[INFO] Resolved plugin: maven-resolver-api-1.9.27.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.1.0.jar
+[INFO] Resolved plugin: doxia-module-fml-2.1.0.jar
+[INFO] Resolved plugin: plexus-io-3.4.2.jar
+[INFO] Resolved plugin: surefire-extensions-spi-3.5.2.jar
+[INFO] Resolved plugin: aircompressor-0.27.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-1.0.0.jar
+[INFO] Resolved plugin: flexmark-util-0.62.2.jar
+[INFO] Resolved plugin: maven-install-plugin-3.2.0.jar
+[INFO] Resolved plugin: plexus-interpolation-1.27.jar
+[INFO] Resolved plugin: maven-deploy-plugin-3.2.0.jar
+[INFO] Resolved plugin: doxia-module-markdown-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-options-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.11.0.jar
+[INFO] Resolved plugin: plexus-interactivity-api-1.5.1.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.jar
+[INFO] Resolved plugin: maven-compiler-plugin-3.14.0.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.0.0.jar
+[INFO] Resolved plugin: jetty-http-9.4.58.v20250814.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.1.jar
+[INFO] Resolved plugin: commons-codec-1.16.1.jar
+[INFO] Resolved plugin: flexmark-ext-gfm-strikethrough-0.62.2.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.2.0.jar
+[INFO] Resolved plugin: commons-beanutils-1.9.4.jar
+[INFO] Resolved plugin: javax.inject-1.jar
+[INFO] Resolved plugin: commons-digester3-3.2.jar
+[INFO] Resolved plugin: doxia-core-2.0.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-0.9.0.M3.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.0.0.jar
+[INFO] Resolved plugin: javax.servlet-api-3.1.0.jar
+[INFO] Resolved plugin: flexmark-util-data-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-plugin-3.8.1.jar
+[INFO] Resolved plugin: maven-common-artifact-filters-3.4.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.2.0.jar
+[INFO] Resolved plugin: plexus-utils-4.0.3.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.1.0.jar
+[INFO] Resolved plugin: plexus-classworlds-2.6.0.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.1.0.jar
+[INFO] Resolved plugin: surefire-booter-3.5.2.jar
+[INFO] Resolved plugin: commons-compress-1.26.2.jar
+[INFO] Resolved plugin: xz-1.9.jar
+[INFO] Resolved plugin: jetty-servlet-9.4.58.v20250814.jar
+[INFO] Resolved plugin: commons-lang3-3.17.0.jar
+[INFO] Resolved plugin: flexmark-ext-definition-0.62.2.jar
+[INFO] Resolved plugin: plexus-io-3.5.1.jar
+[INFO] Resolved plugin: plexus-classworlds-2.9.0.jar
+[INFO] Resolved plugin: slf4j-api-1.7.36.jar
+[INFO] Resolved plugin: doxia-sink-api-2.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.4.1.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.0.0.jar
+[INFO] Resolved plugin: maven-jar-plugin-3.4.2.jar
+[INFO] Resolved plugin: maven-resolver-api-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-tables-0.62.2.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.0.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-1.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-manager-2.15.0.jar
+[INFO] Resolved plugin: doxia-core-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-ast-0.62.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.29.jar
+[INFO] Resolved plugin: asm-9.7.1.jar
+[INFO] Resolved plugin: maven-resolver-spi-1.4.1.jar
+[INFO] Resolved plugin: maven-shared-incremental-1.1.jar
+[INFO] Resolved plugin: file-management-3.1.0.jar
+[INFO] Resolved plugin: commons-compress-1.26.1.jar
+[INFO] Resolved plugin: plexus-utils-4.0.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.0.0.jar
+[INFO] Resolved plugin: xz-1.11.jar
+[INFO] Resolved plugin: maven-artifact-transfer-0.13.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.1.0.jar
+[INFO] Resolved plugin: flexmark-ext-autolink-0.62.2.jar
+[INFO] Resolved plugin: doxia-sink-api-2.0.0.jar
+[INFO] Resolved plugin: snappy-0.4.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.1.0.jar
+[INFO] Resolved plugin: plexus-build-api-0.0.7.jar
+[INFO] Resolved plugin: plexus-io-3.6.0.jar
+[INFO] Resolved plugin: maven-shared-utils-3.4.2.jar
+[INFO] Resolved plugin: jetty-server-9.4.58.v20250814.jar
+[INFO] Resolved plugin: flexmark-util-dependency-0.62.2.jar
+[INFO] Resolved plugin: commons-codec-1.19.0.jar
+[INFO] Resolved plugin: maven-reporting-impl-4.0.0.jar
+[INFO] Resolved plugin: maven-surefire-common-3.5.2.jar
+[INFO] Resolved plugin: zstd-jni-1.5.5-11.jar
+[INFO] Resolved plugin: commons-lang3-3.14.0.jar
+[INFO] Resolved plugin: plexus-i18n-1.1.0.jar
+[INFO] Resolved plugin: flexmark-util-misc-0.62.2.jar
+[INFO] Resolved plugin: jetty-security-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-xml-3.0.1.jar
+[INFO] Resolved plugin: maven-clean-plugin-3.4.0.jar
+[INFO] Resolved plugin: jetty-webapp-9.4.58.v20250814.jar
+[INFO] Resolved plugin: annotations-26.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.9.27.jar
+[INFO] Resolved plugin: asm-9.9.1.jar
+[INFO] Resolved plugin: plexus-i18n-1.0-beta-10.jar
+[INFO] Resolved plugin: jsoup-1.22.1.jar
+[INFO] Resolved plugin: commons-collections-3.2.2.jar
+[INFO] Resolved plugin: doxia-site-model-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.10.0.jar
+[INFO] Resolved plugin: qdox-2.2.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.6-3.jar
+[INFO] Resolved plugin: jetty-io-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-reporting-api-4.0.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.11.0.jar
+[INFO] Resolved plugin: qdox-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.9.2.jar
+[INFO] Resolved plugin: jetty-xml-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-java-1.4.0.jar
+[INFO] Resolved plugin: maven-resources-plugin-3.3.1.jar
+[INFO] Resolved plugin: plexus-utils-3.5.1.jar
+[INFO] Resolved plugin: commons-compress-1.28.0.jar
+[INFO] Resolved plugin: flexmark-ext-yaml-front-matter-0.62.2.jar
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.8.1:go-offline (default-cli) @ intruvia-core ---
+[INFO] Resolved plugin: velocity-tools-generic-3.1.jar
+[INFO] Resolved plugin: maven-dependency-tree-3.3.0.jar
+[INFO] Resolved plugin: doxia-site-model-2.0.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.0.0.jar
+[INFO] Resolved plugin: flexmark-util-sequence-0.62.2.jar
+[INFO] Resolved plugin: surefire-logger-api-3.5.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.26.jar
+[INFO] Resolved plugin: asm-9.7.jar
+[INFO] Resolved plugin: flexmark-ext-abbreviation-0.62.2.jar
+[INFO] Resolved plugin: plexus-java-1.3.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.3.0.jar
+[INFO] Resolved plugin: commons-lang3-3.20.0.jar
+[INFO] Resolved plugin: commons-lang3-3.12.0.jar
+[INFO] Resolved plugin: commons-codec-1.17.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-html-0.62.2.jar
+[INFO] Resolved plugin: plexus-compiler-javac-2.15.0.jar
+[INFO] Resolved plugin: commons-io-2.22.0.jar
+[INFO] Resolved plugin: flexmark-ext-escaped-character-0.62.2.jar
+[INFO] Resolved plugin: surefire-shared-utils-3.5.2.jar
+[INFO] Resolved plugin: flexmark-ext-footnotes-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-analyzer-1.15.0.jar
+[INFO] Resolved plugin: jetty-util-ajax-9.4.58.v20250814.jar
+[INFO] Resolved plugin: json-simple-3.0.2.jar
+[INFO] Resolved plugin: flexmark-util-builder-0.62.2.jar
+[INFO] Resolved plugin: flexmark-util-collection-0.62.2.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.0.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.7-6.jar
+[INFO] Resolved plugin: autolink-0.6.0.jar
+[INFO] Resolved plugin: maven-filtering-3.3.1.jar
+[INFO] Resolved plugin: commons-logging-1.2.jar
+[INFO] Resolved plugin: jetty-util-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-surefire-plugin-3.5.2.jar
+[INFO] Resolved plugin: surefire-extensions-api-3.5.2.jar
+[INFO] Resolved plugin: surefire-api-3.5.2.jar
+[INFO] Resolved plugin: flexmark-util-format-0.62.2.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-0.9.0.M3.jar
+[INFO] Resolved plugin: maven-archiver-3.6.2.jar
+[INFO] Resolved plugin: flexmark-ext-wikilink-0.62.2.jar
+[INFO] Resolved plugin: wagon-provider-api-3.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-api-2.15.0.jar
+[INFO] Resolved plugin: flexmark-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.16.1.jar
+[INFO] Resolved plugin: flexmark-util-visitor-0.62.2.jar
+[INFO] Resolved plugin: maven-resolver-transport-wagon-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-typographic-0.62.2.jar
+[INFO] Resolved plugin: maven-site-plugin-3.22.0.jar
+[INFO] Resolved plugin: maven-reporting-exec-2.0.1.jar
+[INFO] Resolved plugin: commons-text-1.12.0.jar
+[INFO] Resolved plugin: maven-archiver-3.6.6.jar
+[INFO] Resolved plugin: maven-resolver-api-1.9.27.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.1.0.jar
+[INFO] Resolved plugin: doxia-module-fml-2.1.0.jar
+[INFO] Resolved plugin: plexus-io-3.4.2.jar
+[INFO] Resolved plugin: surefire-extensions-spi-3.5.2.jar
+[INFO] Resolved plugin: aircompressor-0.27.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-1.0.0.jar
+[INFO] Resolved plugin: flexmark-util-0.62.2.jar
+[INFO] Resolved plugin: maven-install-plugin-3.2.0.jar
+[INFO] Resolved plugin: plexus-interpolation-1.27.jar
+[INFO] Resolved plugin: maven-deploy-plugin-3.2.0.jar
+[INFO] Resolved plugin: doxia-module-markdown-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-options-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.11.0.jar
+[INFO] Resolved plugin: plexus-interactivity-api-1.5.1.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.jar
+[INFO] Resolved plugin: maven-compiler-plugin-3.14.0.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.0.0.jar
+[INFO] Resolved plugin: jetty-http-9.4.58.v20250814.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.1.jar
+[INFO] Resolved plugin: commons-codec-1.16.1.jar
+[INFO] Resolved plugin: flexmark-ext-gfm-strikethrough-0.62.2.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.2.0.jar
+[INFO] Resolved plugin: commons-beanutils-1.9.4.jar
+[INFO] Resolved plugin: javax.inject-1.jar
+[INFO] Resolved plugin: commons-digester3-3.2.jar
+[INFO] Resolved plugin: doxia-core-2.0.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-0.9.0.M3.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.0.0.jar
+[INFO] Resolved plugin: javax.servlet-api-3.1.0.jar
+[INFO] Resolved plugin: flexmark-util-data-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-plugin-3.8.1.jar
+[INFO] Resolved plugin: maven-common-artifact-filters-3.4.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.2.0.jar
+[INFO] Resolved plugin: plexus-utils-4.0.3.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.1.0.jar
+[INFO] Resolved plugin: plexus-classworlds-2.6.0.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.1.0.jar
+[INFO] Resolved plugin: surefire-booter-3.5.2.jar
+[INFO] Resolved plugin: commons-compress-1.26.2.jar
+[INFO] Resolved plugin: xz-1.9.jar
+[INFO] Resolved plugin: jetty-servlet-9.4.58.v20250814.jar
+[INFO] Resolved plugin: commons-lang3-3.17.0.jar
+[INFO] Resolved plugin: flexmark-ext-definition-0.62.2.jar
+[INFO] Resolved plugin: plexus-io-3.5.1.jar
+[INFO] Resolved plugin: plexus-classworlds-2.9.0.jar
+[INFO] Resolved plugin: slf4j-api-1.7.36.jar
+[INFO] Resolved plugin: doxia-sink-api-2.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.4.1.jar
+[INFO] Resolved plugin: maven-jar-plugin-3.4.2.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.0.0.jar
+[INFO] Resolved plugin: maven-resolver-api-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-tables-0.62.2.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.0.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-1.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-manager-2.15.0.jar
+[INFO] Resolved plugin: doxia-core-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-ast-0.62.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.29.jar
+[INFO] Resolved plugin: asm-9.7.1.jar
+[INFO] Resolved plugin: maven-resolver-spi-1.4.1.jar
+[INFO] Resolved plugin: maven-shared-incremental-1.1.jar
+[INFO] Resolved plugin: file-management-3.1.0.jar
+[INFO] Resolved plugin: commons-compress-1.26.1.jar
+[INFO] Resolved plugin: plexus-utils-4.0.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.0.0.jar
+[INFO] Resolved plugin: xz-1.11.jar
+[INFO] Resolved plugin: maven-artifact-transfer-0.13.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.1.0.jar
+[INFO] Resolved plugin: flexmark-ext-autolink-0.62.2.jar
+[INFO] Resolved plugin: doxia-sink-api-2.0.0.jar
+[INFO] Resolved plugin: snappy-0.4.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.1.0.jar
+[INFO] Resolved plugin: plexus-build-api-0.0.7.jar
+[INFO] Resolved plugin: plexus-io-3.6.0.jar
+[INFO] Resolved plugin: maven-shared-utils-3.4.2.jar
+[INFO] Resolved plugin: jetty-server-9.4.58.v20250814.jar
+[INFO] Resolved plugin: flexmark-util-dependency-0.62.2.jar
+[INFO] Resolved plugin: commons-codec-1.19.0.jar
+[INFO] Resolved plugin: maven-reporting-impl-4.0.0.jar
+[INFO] Resolved plugin: maven-surefire-common-3.5.2.jar
+[INFO] Resolved plugin: zstd-jni-1.5.5-11.jar
+[INFO] Resolved plugin: commons-lang3-3.14.0.jar
+[INFO] Resolved plugin: plexus-i18n-1.1.0.jar
+[INFO] Resolved plugin: flexmark-util-misc-0.62.2.jar
+[INFO] Resolved plugin: jetty-security-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-xml-3.0.1.jar
+[INFO] Resolved plugin: maven-clean-plugin-3.4.0.jar
+[INFO] Resolved plugin: jetty-webapp-9.4.58.v20250814.jar
+[INFO] Resolved plugin: annotations-26.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.9.27.jar
+[INFO] Resolved plugin: asm-9.9.1.jar
+[INFO] Resolved plugin: plexus-i18n-1.0-beta-10.jar
+[INFO] Resolved plugin: jsoup-1.22.1.jar
+[INFO] Resolved plugin: commons-collections-3.2.2.jar
+[INFO] Resolved plugin: doxia-site-model-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.10.0.jar
+[INFO] Resolved plugin: qdox-2.2.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.6-3.jar
+[INFO] Resolved plugin: jetty-io-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-reporting-api-4.0.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.11.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.9.2.jar
+[INFO] Resolved plugin: qdox-2.1.0.jar
+[INFO] Resolved plugin: jetty-xml-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-java-1.4.0.jar
+[INFO] Resolved plugin: maven-resources-plugin-3.3.1.jar
+[INFO] Resolved plugin: plexus-utils-3.5.1.jar
+[INFO] Resolved plugin: commons-compress-1.28.0.jar
+[INFO] Resolved plugin: flexmark-ext-yaml-front-matter-0.62.2.jar
+[INFO] Resolved dependency: pgpainless-core-2.0.4.jar
+[INFO] Resolved dependency: jackson-datatype-jsr310-2.22.1.jar
+[INFO] Resolved dependency: jsr305-3.0.2.jar
+[INFO] Resolved dependency: logback-classic-1.6.5.jar
+[INFO] Resolved dependency: jackson-core-2.22.1.jar
+[INFO] Resolved dependency: logback-core-1.6.5.jar
+[INFO] Resolved dependency: jakarta.mail-api-2.1.5.jar
+[INFO] Resolved dependency: strolch-model-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: persistence-4.2.0.jar
+[INFO] Resolved dependency: commons-codec-1.19.0.jar
+[INFO] Resolved dependency: bcprov-jdk18on-1.86.jar
+[INFO] Resolved dependency: gson-2.14.0.jar
+[INFO] Resolved dependency: bcpkix-jdk18on-1.86.jar
+[INFO] Resolved dependency: bcjmail-jdk18on-1.86.jar
+[INFO] Resolved dependency: bcpg-jdk18on-1.86.jar
+[INFO] Resolved dependency: base-4.2.0.jar
+[INFO] Resolved dependency: bcutil-jdk18on-1.86.jar
+[INFO] Resolved dependency: commons-csv-1.14.1.jar
+[INFO] Resolved dependency: storage-4.2.0.jar
+[INFO] Resolved dependency: strolch-service-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: afs-4.2.0.jar
+[INFO] Resolved dependency: junit-4.13.2.jar
+[INFO] Resolved dependency: geoip2-5.2.0.jar
+[INFO] Resolved dependency: hamcrest-core-1.3.jar
+[INFO] Resolved dependency: jakarta.activation-api-2.1.4.jar
+[INFO] Resolved dependency: slf4j-api-2.0.20.jar
+[INFO] Resolved dependency: kotlin-stdlib-1.9.21.jar
+[INFO] Resolved dependency: storage-embedded-4.2.0.jar
+[INFO] Resolved dependency: afs-nio-4.2.0.jar
+[INFO] Resolved dependency: angus-mail-2.0.5.jar
+[INFO] Resolved dependency: error_prone_annotations-2.48.0.jar
+[INFO] Resolved dependency: jackson-annotations-2.22.jar
+[INFO] Resolved dependency: maxmind-db-4.1.0.jar
+[INFO] Resolved dependency: strolch-agent-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: commons-io-2.20.0.jar
+[INFO] Resolved dependency: strolch-privilege-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: cron-1.6.2.jar
+[INFO] Resolved dependency: jakarta.xml.bind-api-4.0.5.jar
+[INFO] Resolved dependency: angus-activation-2.0.3.jar
+[INFO] Resolved dependency: jackson-databind-2.22.1.jar
+[INFO] Resolved dependency: persistence-binary-4.2.0.jar
+[INFO] Resolved dependency: strolch-utils-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: annotations-13.0.jar
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-rest >----------------------
+[INFO] Building intruvia-rest 0.0.1                                       [3/5]
+[INFO]   from intruvia-rest/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.8.1:go-offline (default-cli) @ intruvia-rest ---
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-api/2.1.1/jakarta.websocket-api-2.1.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-api/2.1.1/jakarta.websocket-api-2.1.1.pom (4.5 kB at 155 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-all/2.1.1/jakarta.websocket-all-2.1.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-all/2.1.1/jakarta.websocket-all-2.1.1.pom (11 kB at 451 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-api/2.1.1/jakarta.websocket-api-2.1.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-api/2.1.1/jakarta.websocket-api-2.1.1.jar (24 kB at 918 kB/s)
+[INFO] Resolved plugin: velocity-tools-generic-3.1.jar
+[INFO] Resolved plugin: maven-dependency-tree-3.3.0.jar
+[INFO] Resolved plugin: doxia-site-model-2.0.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.0.0.jar
+[INFO] Resolved plugin: flexmark-util-sequence-0.62.2.jar
+[INFO] Resolved plugin: surefire-logger-api-3.5.2.jar
+[INFO] Resolved plugin: asm-9.7.jar
+[INFO] Resolved plugin: plexus-interpolation-1.26.jar
+[INFO] Resolved plugin: flexmark-ext-abbreviation-0.62.2.jar
+[INFO] Resolved plugin: plexus-java-1.3.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.3.0.jar
+[INFO] Resolved plugin: commons-lang3-3.20.0.jar
+[INFO] Resolved plugin: commons-lang3-3.12.0.jar
+[INFO] Resolved plugin: commons-codec-1.17.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-html-0.62.2.jar
+[INFO] Resolved plugin: plexus-compiler-javac-2.15.0.jar
+[INFO] Resolved plugin: commons-io-2.22.0.jar
+[INFO] Resolved plugin: flexmark-ext-escaped-character-0.62.2.jar
+[INFO] Resolved plugin: surefire-shared-utils-3.5.2.jar
+[INFO] Resolved plugin: flexmark-ext-footnotes-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-analyzer-1.15.0.jar
+[INFO] Resolved plugin: jetty-util-ajax-9.4.58.v20250814.jar
+[INFO] Resolved plugin: json-simple-3.0.2.jar
+[INFO] Resolved plugin: flexmark-util-builder-0.62.2.jar
+[INFO] Resolved plugin: flexmark-util-collection-0.62.2.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.0.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.7-6.jar
+[INFO] Resolved plugin: autolink-0.6.0.jar
+[INFO] Resolved plugin: commons-logging-1.2.jar
+[INFO] Resolved plugin: maven-filtering-3.3.1.jar
+[INFO] Resolved plugin: jetty-util-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-surefire-plugin-3.5.2.jar
+[INFO] Resolved plugin: surefire-extensions-api-3.5.2.jar
+[INFO] Resolved plugin: surefire-api-3.5.2.jar
+[INFO] Resolved plugin: flexmark-util-format-0.62.2.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-0.9.0.M3.jar
+[INFO] Resolved plugin: maven-archiver-3.6.2.jar
+[INFO] Resolved plugin: flexmark-ext-wikilink-0.62.2.jar
+[INFO] Resolved plugin: wagon-provider-api-3.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-api-2.15.0.jar
+[INFO] Resolved plugin: flexmark-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.16.1.jar
+[INFO] Resolved plugin: flexmark-util-visitor-0.62.2.jar
+[INFO] Resolved plugin: maven-resolver-transport-wagon-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-typographic-0.62.2.jar
+[INFO] Resolved plugin: maven-site-plugin-3.22.0.jar
+[INFO] Resolved plugin: maven-reporting-exec-2.0.1.jar
+[INFO] Resolved plugin: commons-text-1.12.0.jar
+[INFO] Resolved plugin: maven-archiver-3.6.6.jar
+[INFO] Resolved plugin: maven-resolver-api-1.9.27.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.1.0.jar
+[INFO] Resolved plugin: doxia-module-fml-2.1.0.jar
+[INFO] Resolved plugin: plexus-io-3.4.2.jar
+[INFO] Resolved plugin: surefire-extensions-spi-3.5.2.jar
+[INFO] Resolved plugin: aircompressor-0.27.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-1.0.0.jar
+[INFO] Resolved plugin: flexmark-util-0.62.2.jar
+[INFO] Resolved plugin: maven-install-plugin-3.2.0.jar
+[INFO] Resolved plugin: maven-deploy-plugin-3.2.0.jar
+[INFO] Resolved plugin: plexus-interpolation-1.27.jar
+[INFO] Resolved plugin: doxia-module-markdown-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-options-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.11.0.jar
+[INFO] Resolved plugin: plexus-interactivity-api-1.5.1.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.jar
+[INFO] Resolved plugin: maven-compiler-plugin-3.14.0.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.0.0.jar
+[INFO] Resolved plugin: jetty-http-9.4.58.v20250814.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-gfm-strikethrough-0.62.2.jar
+[INFO] Resolved plugin: commons-codec-1.16.1.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.2.0.jar
+[INFO] Resolved plugin: commons-beanutils-1.9.4.jar
+[INFO] Resolved plugin: javax.inject-1.jar
+[INFO] Resolved plugin: commons-digester3-3.2.jar
+[INFO] Resolved plugin: doxia-core-2.0.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-0.9.0.M3.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.0.0.jar
+[INFO] Resolved plugin: javax.servlet-api-3.1.0.jar
+[INFO] Resolved plugin: flexmark-util-data-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-plugin-3.8.1.jar
+[INFO] Resolved plugin: maven-common-artifact-filters-3.4.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.2.0.jar
+[INFO] Resolved plugin: plexus-utils-4.0.3.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.1.0.jar
+[INFO] Resolved plugin: plexus-classworlds-2.6.0.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.1.0.jar
+[INFO] Resolved plugin: surefire-booter-3.5.2.jar
+[INFO] Resolved plugin: commons-compress-1.26.2.jar
+[INFO] Resolved plugin: xz-1.9.jar
+[INFO] Resolved plugin: jetty-servlet-9.4.58.v20250814.jar
+[INFO] Resolved plugin: commons-lang3-3.17.0.jar
+[INFO] Resolved plugin: flexmark-ext-definition-0.62.2.jar
+[INFO] Resolved plugin: plexus-io-3.5.1.jar
+[INFO] Resolved plugin: plexus-classworlds-2.9.0.jar
+[INFO] Resolved plugin: slf4j-api-1.7.36.jar
+[INFO] Resolved plugin: doxia-sink-api-2.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.4.1.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.0.0.jar
+[INFO] Resolved plugin: maven-jar-plugin-3.4.2.jar
+[INFO] Resolved plugin: maven-resolver-api-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-tables-0.62.2.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.0.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-1.0.0.jar
+[INFO] Resolved plugin: doxia-core-2.1.0.jar
+[INFO] Resolved plugin: plexus-compiler-manager-2.15.0.jar
+[INFO] Resolved plugin: flexmark-util-ast-0.62.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.29.jar
+[INFO] Resolved plugin: maven-resolver-spi-1.4.1.jar
+[INFO] Resolved plugin: asm-9.7.1.jar
+[INFO] Resolved plugin: maven-shared-incremental-1.1.jar
+[INFO] Resolved plugin: file-management-3.1.0.jar
+[INFO] Resolved plugin: commons-compress-1.26.1.jar
+[INFO] Resolved plugin: plexus-utils-4.0.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.0.0.jar
+[INFO] Resolved plugin: xz-1.11.jar
+[INFO] Resolved plugin: maven-artifact-transfer-0.13.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.1.0.jar
+[INFO] Resolved plugin: flexmark-ext-autolink-0.62.2.jar
+[INFO] Resolved plugin: doxia-sink-api-2.0.0.jar
+[INFO] Resolved plugin: snappy-0.4.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.1.0.jar
+[INFO] Resolved plugin: plexus-build-api-0.0.7.jar
+[INFO] Resolved plugin: plexus-io-3.6.0.jar
+[INFO] Resolved plugin: maven-shared-utils-3.4.2.jar
+[INFO] Resolved plugin: jetty-server-9.4.58.v20250814.jar
+[INFO] Resolved plugin: flexmark-util-dependency-0.62.2.jar
+[INFO] Resolved plugin: commons-codec-1.19.0.jar
+[INFO] Resolved plugin: maven-surefire-common-3.5.2.jar
+[INFO] Resolved plugin: maven-reporting-impl-4.0.0.jar
+[INFO] Resolved plugin: plexus-i18n-1.1.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.5-11.jar
+[INFO] Resolved plugin: commons-lang3-3.14.0.jar
+[INFO] Resolved plugin: flexmark-util-misc-0.62.2.jar
+[INFO] Resolved plugin: jetty-security-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-xml-3.0.1.jar
+[INFO] Resolved plugin: maven-clean-plugin-3.4.0.jar
+[INFO] Resolved plugin: jetty-webapp-9.4.58.v20250814.jar
+[INFO] Resolved plugin: annotations-26.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.9.27.jar
+[INFO] Resolved plugin: asm-9.9.1.jar
+[INFO] Resolved plugin: plexus-i18n-1.0-beta-10.jar
+[INFO] Resolved plugin: jsoup-1.22.1.jar
+[INFO] Resolved plugin: commons-collections-3.2.2.jar
+[INFO] Resolved plugin: doxia-site-model-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.10.0.jar
+[INFO] Resolved plugin: qdox-2.2.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.6-3.jar
+[INFO] Resolved plugin: jetty-io-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-reporting-api-4.0.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.11.0.jar
+[INFO] Resolved plugin: qdox-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.9.2.jar
+[INFO] Resolved plugin: jetty-xml-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-java-1.4.0.jar
+[INFO] Resolved plugin: maven-resources-plugin-3.3.1.jar
+[INFO] Resolved plugin: commons-compress-1.28.0.jar
+[INFO] Resolved plugin: plexus-utils-3.5.1.jar
+[INFO] Resolved plugin: flexmark-ext-yaml-front-matter-0.62.2.jar
+[INFO] Resolved dependency: hk2-locator-3.0.6.jar
+[INFO] Resolved dependency: hk2-utils-3.0.6.jar
+[INFO] Resolved dependency: jackson-core-2.22.1.jar
+[INFO] Resolved dependency: logback-core-1.6.5.jar
+[INFO] Resolved dependency: jakarta.mail-api-2.1.5.jar
+[INFO] Resolved dependency: jersey-hk2-3.1.11.jar
+[INFO] Resolved dependency: bcprov-jdk18on-1.86.jar
+[INFO] Resolved dependency: javassist-3.30.2-GA.jar
+[INFO] Resolved dependency: gson-2.14.0.jar
+[INFO] Resolved dependency: bcpkix-jdk18on-1.86.jar
+[INFO] Resolved dependency: aopalliance-repackaged-3.0.6.jar
+[INFO] Resolved dependency: bcpg-jdk18on-1.86.jar
+[INFO] Resolved dependency: base-4.2.0.jar
+[INFO] Resolved dependency: hk2-api-3.0.6.jar
+[INFO] Resolved dependency: commons-csv-1.14.1.jar
+[INFO] Resolved dependency: osgi-resource-locator-1.0.3.jar
+[INFO] Resolved dependency: strolch-service-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: junit-4.13.2.jar
+[INFO] Resolved dependency: jersey-common-3.1.11.jar
+[INFO] Resolved dependency: jersey-server-3.1.11.jar
+[INFO] Resolved dependency: hamcrest-core-1.3.jar
+[INFO] Resolved dependency: slf4j-api-2.0.20.jar
+[INFO] Resolved dependency: kotlin-stdlib-1.9.21.jar
+[INFO] Resolved dependency: jackson-annotations-2.22.jar
+[INFO] Resolved dependency: maxmind-db-4.1.0.jar
+[INFO] Resolved dependency: cron-1.6.2.jar
+[INFO] Resolved dependency: jakarta.xml.bind-api-4.0.5.jar
+[INFO] Resolved dependency: persistence-binary-4.2.0.jar
+[INFO] Resolved dependency: jakarta.validation-api-3.0.2.jar
+[INFO] Resolved dependency: strolch-utils-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: pgpainless-core-2.0.4.jar
+[INFO] Resolved dependency: jackson-datatype-jsr310-2.22.1.jar
+[INFO] Resolved dependency: jsr305-3.0.2.jar
+[INFO] Resolved dependency: logback-classic-1.6.5.jar
+[INFO] Resolved dependency: strolch-model-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: jakarta.ws.rs-api-3.1.0.jar
+[INFO] Resolved dependency: persistence-4.2.0.jar
+[INFO] Resolved dependency: commons-codec-1.19.0.jar
+[INFO] Resolved dependency: jakarta.annotation-api-2.1.1.jar
+[INFO] Resolved dependency: bcjmail-jdk18on-1.86.jar
+[INFO] Resolved dependency: jakarta.inject-api-2.0.1.jar
+[INFO] Resolved dependency: jersey-client-3.1.11.jar
+[INFO] Resolved dependency: bcutil-jdk18on-1.86.jar
+[INFO] Resolved dependency: storage-4.2.0.jar
+[INFO] Resolved dependency: afs-4.2.0.jar
+[INFO] Resolved dependency: geoip2-5.2.0.jar
+[INFO] Resolved dependency: jakarta.activation-api-2.1.4.jar
+[INFO] Resolved dependency: storage-embedded-4.2.0.jar
+[INFO] Resolved dependency: afs-nio-4.2.0.jar
+[INFO] Resolved dependency: angus-mail-2.0.5.jar
+[INFO] Resolved dependency: error_prone_annotations-2.48.0.jar
+[INFO] Resolved dependency: jersey-container-servlet-core-3.1.11.jar
+[INFO] Resolved dependency: jakarta.websocket-api-2.1.1.jar
+[INFO] Resolved dependency: strolch-agent-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: commons-io-2.20.0.jar
+[INFO] Resolved dependency: strolch-privilege-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: angus-activation-2.0.3.jar
+[INFO] Resolved dependency: jakarta.servlet-api-6.0.0.jar
+[INFO] Resolved dependency: jackson-databind-2.22.1.jar
+[INFO] Resolved dependency: annotations-13.0.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-web >----------------------
+[INFO] Building intruvia-web 0.0.1                                        [4/5]
+[INFO]   from intruvia-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.8.1:go-offline (default-cli) @ intruvia-web ---
+[INFO] Resolved plugin: velocity-tools-generic-3.1.jar
+[INFO] Resolved plugin: maven-dependency-tree-3.3.0.jar
+[INFO] Resolved plugin: doxia-site-model-2.0.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.0.0.jar
+[INFO] Resolved plugin: flexmark-util-sequence-0.62.2.jar
+[INFO] Resolved plugin: surefire-logger-api-3.5.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.26.jar
+[INFO] Resolved plugin: asm-9.7.jar
+[INFO] Resolved plugin: flexmark-ext-abbreviation-0.62.2.jar
+[INFO] Resolved plugin: plexus-java-1.3.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.3.0.jar
+[INFO] Resolved plugin: commons-lang3-3.20.0.jar
+[INFO] Resolved plugin: commons-lang3-3.12.0.jar
+[INFO] Resolved plugin: commons-codec-1.17.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-html-0.62.2.jar
+[INFO] Resolved plugin: plexus-compiler-javac-2.15.0.jar
+[INFO] Resolved plugin: commons-io-2.22.0.jar
+[INFO] Resolved plugin: flexmark-ext-escaped-character-0.62.2.jar
+[INFO] Resolved plugin: flexmark-ext-footnotes-0.62.2.jar
+[INFO] Resolved plugin: surefire-shared-utils-3.5.2.jar
+[INFO] Resolved plugin: maven-dependency-analyzer-1.15.0.jar
+[INFO] Resolved plugin: jetty-util-ajax-9.4.58.v20250814.jar
+[INFO] Resolved plugin: json-simple-3.0.2.jar
+[INFO] Resolved plugin: flexmark-util-builder-0.62.2.jar
+[INFO] Resolved plugin: flexmark-util-collection-0.62.2.jar
+[INFO] Resolved plugin: zstd-jni-1.5.7-6.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.0.0.jar
+[INFO] Resolved plugin: autolink-0.6.0.jar
+[INFO] Resolved plugin: maven-filtering-3.3.1.jar
+[INFO] Resolved plugin: commons-logging-1.2.jar
+[INFO] Resolved plugin: jetty-util-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-surefire-plugin-3.5.2.jar
+[INFO] Resolved plugin: surefire-extensions-api-3.5.2.jar
+[INFO] Resolved plugin: flexmark-util-format-0.62.2.jar
+[INFO] Resolved plugin: surefire-api-3.5.2.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-0.9.0.M3.jar
+[INFO] Resolved plugin: maven-archiver-3.6.2.jar
+[INFO] Resolved plugin: flexmark-ext-wikilink-0.62.2.jar
+[INFO] Resolved plugin: wagon-provider-api-3.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-api-2.15.0.jar
+[INFO] Resolved plugin: flexmark-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.16.1.jar
+[INFO] Resolved plugin: flexmark-util-visitor-0.62.2.jar
+[INFO] Resolved plugin: maven-resolver-transport-wagon-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-typographic-0.62.2.jar
+[INFO] Resolved plugin: maven-site-plugin-3.22.0.jar
+[INFO] Resolved plugin: maven-reporting-exec-2.0.1.jar
+[INFO] Resolved plugin: maven-archiver-3.6.6.jar
+[INFO] Resolved plugin: commons-text-1.12.0.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.1.0.jar
+[INFO] Resolved plugin: maven-resolver-api-1.9.27.jar
+[INFO] Resolved plugin: doxia-module-fml-2.1.0.jar
+[INFO] Resolved plugin: plexus-io-3.4.2.jar
+[INFO] Resolved plugin: surefire-extensions-spi-3.5.2.jar
+[INFO] Resolved plugin: aircompressor-0.27.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-1.0.0.jar
+[INFO] Resolved plugin: flexmark-util-0.62.2.jar
+[INFO] Resolved plugin: maven-install-plugin-3.2.0.jar
+[INFO] Resolved plugin: plexus-interpolation-1.27.jar
+[INFO] Resolved plugin: doxia-module-markdown-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-options-0.62.2.jar
+[INFO] Resolved plugin: maven-deploy-plugin-3.2.0.jar
+[INFO] Resolved plugin: commons-io-2.11.0.jar
+[INFO] Resolved plugin: plexus-interactivity-api-1.5.1.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.jar
+[INFO] Resolved plugin: maven-compiler-plugin-3.14.0.jar
+[INFO] Resolved plugin: jetty-http-9.4.58.v20250814.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.1.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.0.0.jar
+[INFO] Resolved plugin: commons-codec-1.16.1.jar
+[INFO] Resolved plugin: flexmark-ext-gfm-strikethrough-0.62.2.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.2.0.jar
+[INFO] Resolved plugin: commons-beanutils-1.9.4.jar
+[INFO] Resolved plugin: javax.inject-1.jar
+[INFO] Resolved plugin: commons-digester3-3.2.jar
+[INFO] Resolved plugin: doxia-core-2.0.0.jar
+[INFO] Resolved plugin: javax.servlet-api-3.1.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-0.9.0.M3.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.0.0.jar
+[INFO] Resolved plugin: flexmark-util-data-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-plugin-3.8.1.jar
+[INFO] Resolved plugin: maven-common-artifact-filters-3.4.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.2.0.jar
+[INFO] Resolved plugin: plexus-utils-4.0.3.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.1.0.jar
+[INFO] Resolved plugin: plexus-classworlds-2.6.0.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.1.0.jar
+[INFO] Resolved plugin: surefire-booter-3.5.2.jar
+[INFO] Resolved plugin: commons-compress-1.26.2.jar
+[INFO] Resolved plugin: xz-1.9.jar
+[INFO] Resolved plugin: jetty-servlet-9.4.58.v20250814.jar
+[INFO] Resolved plugin: commons-lang3-3.17.0.jar
+[INFO] Resolved plugin: flexmark-ext-definition-0.62.2.jar
+[INFO] Resolved plugin: plexus-io-3.5.1.jar
+[INFO] Resolved plugin: plexus-classworlds-2.9.0.jar
+[INFO] Resolved plugin: slf4j-api-1.7.36.jar
+[INFO] Resolved plugin: doxia-sink-api-2.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.4.1.jar
+[INFO] Resolved plugin: maven-jar-plugin-3.4.2.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.0.0.jar
+[INFO] Resolved plugin: maven-resolver-api-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-tables-0.62.2.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-1.0.0.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.0.0.jar
+[INFO] Resolved plugin: doxia-core-2.1.0.jar
+[INFO] Resolved plugin: plexus-compiler-manager-2.15.0.jar
+[INFO] Resolved plugin: flexmark-util-ast-0.62.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.29.jar
+[INFO] Resolved plugin: maven-resolver-spi-1.4.1.jar
+[INFO] Resolved plugin: asm-9.7.1.jar
+[INFO] Resolved plugin: maven-shared-incremental-1.1.jar
+[INFO] Resolved plugin: file-management-3.1.0.jar
+[INFO] Resolved plugin: commons-compress-1.26.1.jar
+[INFO] Resolved plugin: plexus-utils-4.0.1.jar
+[INFO] Resolved plugin: xz-1.11.jar
+[INFO] Resolved plugin: doxia-module-apt-2.0.0.jar
+[INFO] Resolved plugin: maven-artifact-transfer-0.13.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.1.0.jar
+[INFO] Resolved plugin: flexmark-ext-autolink-0.62.2.jar
+[INFO] Resolved plugin: doxia-sink-api-2.0.0.jar
+[INFO] Resolved plugin: snappy-0.4.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.1.0.jar
+[INFO] Resolved plugin: plexus-build-api-0.0.7.jar
+[INFO] Resolved plugin: plexus-io-3.6.0.jar
+[INFO] Resolved plugin: maven-shared-utils-3.4.2.jar
+[INFO] Resolved plugin: jetty-server-9.4.58.v20250814.jar
+[INFO] Resolved plugin: flexmark-util-dependency-0.62.2.jar
+[INFO] Resolved plugin: commons-codec-1.19.0.jar
+[INFO] Resolved plugin: maven-surefire-common-3.5.2.jar
+[INFO] Resolved plugin: maven-reporting-impl-4.0.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.5-11.jar
+[INFO] Resolved plugin: commons-lang3-3.14.0.jar
+[INFO] Resolved plugin: plexus-i18n-1.1.0.jar
+[INFO] Resolved plugin: flexmark-util-misc-0.62.2.jar
+[INFO] Resolved plugin: jetty-security-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-xml-3.0.1.jar
+[INFO] Resolved plugin: maven-clean-plugin-3.4.0.jar
+[INFO] Resolved plugin: jetty-webapp-9.4.58.v20250814.jar
+[INFO] Resolved plugin: annotations-26.1.0.jar
+[INFO] Resolved plugin: asm-9.9.1.jar
+[INFO] Resolved plugin: maven-resolver-util-1.9.27.jar
+[INFO] Resolved plugin: plexus-i18n-1.0-beta-10.jar
+[INFO] Resolved plugin: jsoup-1.22.1.jar
+[INFO] Resolved plugin: commons-collections-3.2.2.jar
+[INFO] Resolved plugin: doxia-site-model-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.10.0.jar
+[INFO] Resolved plugin: qdox-2.2.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.6-3.jar
+[INFO] Resolved plugin: jetty-io-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-reporting-api-4.0.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.11.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.9.2.jar
+[INFO] Resolved plugin: qdox-2.1.0.jar
+[INFO] Resolved plugin: jetty-xml-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-java-1.4.0.jar
+[INFO] Resolved plugin: maven-resources-plugin-3.3.1.jar
+[INFO] Resolved plugin: plexus-utils-3.5.1.jar
+[INFO] Resolved plugin: commons-compress-1.28.0.jar
+[INFO] Resolved plugin: flexmark-ext-yaml-front-matter-0.62.2.jar
+[INFO] 
+[INFO] ----------------------< li.intruvia:intruvia-app >----------------------
+[INFO] Building intruvia-app 0.0.1                                        [5/5]
+[INFO]   from intruvia-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- dependency:3.8.1:go-offline (default-cli) @ intruvia-app ---
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jmx/12.0.16/jetty-jmx-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/12.0.16/jetty-util-ajax-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/12.0.16/jetty-util-ajax-12.0.16.pom (1.3 kB at 43 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jmx/12.0.16/jetty-jmx-12.0.16.pom (1.8 kB at 58 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jmx/12.0.16/jetty-jmx-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jmx/12.0.16/jetty-jmx-12.0.16.jar (33 kB at 1.2 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/12.0.16/jetty-util-ajax-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-util-ajax/12.0.16/jetty-util-ajax-12.0.16.jar (53 kB at 2.0 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-server/12.0.16/jetty-ee10-websocket-jakarta-server-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-server/12.0.16/jetty-ee10-websocket-jakarta-server-12.0.16.pom (3.2 kB at 123 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket/12.0.16/jetty-ee10-websocket-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket/12.0.16/jetty-ee10-websocket-12.0.16.pom (1.2 kB at 48 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-servlet/12.0.16/jetty-ee10-websocket-servlet-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-annotations/12.0.16/jetty-ee10-annotations-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-client/12.0.16/jetty-ee10-websocket-jakarta-client-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-servlet/12.0.16/jetty-ee10-websocket-servlet-12.0.16.pom (1.4 kB at 54 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-annotations/12.0.16/jetty-ee10-annotations-12.0.16.pom (3.4 kB at 130 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-client/12.0.16/jetty-ee10-websocket-jakarta-client-12.0.16.pom (3.1 kB at 114 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-client/12.0.16/jetty-client-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-client-api/2.1.1/jakarta.websocket-client-api-2.1.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-plus/12.0.16/jetty-ee10-plus-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-webapp/12.0.16/jetty-ee10-webapp-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-common/12.0.16/jetty-ee10-websocket-jakarta-common-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-plus/12.0.16/jetty-ee10-plus-12.0.16.pom (3.2 kB at 124 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-client/12.0.16/jetty-client-12.0.16.pom (5.5 kB at 204 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-webapp/12.0.16/jetty-ee10-webapp-12.0.16.pom (4.0 kB at 142 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-common/12.0.16/jetty-ee10-websocket-jakarta-common-12.0.16.pom (2.3 kB at 87 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-client-api/2.1.1/jakarta.websocket-client-api-2.1.1.pom (4.2 kB at 145 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-client/12.0.16/jetty-websocket-core-client-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-server/12.0.16/jetty-websocket-core-server-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.cdi-api/4.0.1/jakarta.enterprise.cdi-api-4.0.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.lang-model/4.0.1/jakarta.enterprise.lang-model-4.0.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/interceptor/jakarta.interceptor-api/2.1.0/jakarta.interceptor-api-2.1.0.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-client/12.0.16/jetty-websocket-core-client-12.0.16.pom (1.5 kB at 59 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-server/12.0.16/jetty-websocket-core-server-12.0.16.pom (956 B at 38 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket/12.0.16/jetty-websocket-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.lang-model/4.0.1/jakarta.enterprise.lang-model-4.0.1.pom (3.6 kB at 143 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.cdi-parent/4.0.1/jakarta.enterprise.cdi-parent-4.0.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/interceptor/jakarta.interceptor-api/2.1.0/jakarta.interceptor-api-2.1.0.pom (12 kB at 462 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.cdi-api/4.0.1/jakarta.enterprise.cdi-api-4.0.1.pom (12 kB at 431 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket/12.0.16/jetty-websocket-12.0.16.pom (1.0 kB at 42 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.cdi-parent/4.0.1/jakarta.enterprise.cdi-parent-4.0.1.pom (2.3 kB at 107 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jndi/12.0.16/jetty-jndi-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-plus/12.0.16/jetty-plus-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.pom (14 kB at 568 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-ee/12.0.16/jetty-ee-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-plus/12.0.16/jetty-plus-12.0.16.pom (1.4 kB at 59 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jndi/12.0.16/jetty-jndi-12.0.16.pom (1.9 kB at 74 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-ee/12.0.16/jetty-ee-12.0.16.pom (2.0 kB at 83 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/12.0.16/jetty-xml-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-alpn-client/12.0.16/jetty-alpn-client-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-common/12.0.16/jetty-websocket-core-common-12.0.16.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/12.0.16/jetty-xml-12.0.16.pom (2.5 kB at 95 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-alpn-client/12.0.16/jetty-alpn-client-12.0.16.pom (2.0 kB at 71 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-common/12.0.16/jetty-websocket-core-common-12.0.16.pom (1.8 kB at 65 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-alpn/12.0.16/jetty-alpn-12.0.16.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/el/jakarta.el-api/5.0.1/jakarta.el-api-5.0.1.pom
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/inject/jakarta.inject-api/2.0.1.MR/jakarta.inject-api-2.0.1.MR.pom
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-alpn/12.0.16/jetty-alpn-12.0.16.pom (810 B at 35 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/el/jakarta.el-api/5.0.1/jakarta.el-api-5.0.1.pom (12 kB at 175 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/inject/jakarta.inject-api/2.0.1.MR/jakarta.inject-api-2.0.1.MR.pom (5.7 kB at 77 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-server/12.0.16/jetty-ee10-websocket-jakarta-server-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-server/12.0.16/jetty-ee10-websocket-jakarta-server-12.0.16.jar (40 kB at 1.5 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-annotations/12.0.16/jetty-ee10-annotations-12.0.16.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-servlet/12.0.16/jetty-ee10-websocket-servlet-12.0.16.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-client/12.0.16/jetty-ee10-websocket-jakarta-client-12.0.16.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-webapp/12.0.16/jetty-ee10-webapp-12.0.16.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-plus/12.0.16/jetty-ee10-plus-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-annotations/12.0.16/jetty-ee10-annotations-12.0.16.jar (82 kB at 3.0 MB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-servlet/12.0.16/jetty-ee10-websocket-servlet-12.0.16.jar (8.7 kB at 322 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-client/12.0.16/jetty-client-12.0.16.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-client-api/2.1.1/jakarta.websocket-client-api-2.1.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-plus/12.0.16/jetty-ee10-plus-12.0.16.jar (23 kB at 777 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-common/12.0.16/jetty-ee10-websocket-jakarta-common-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/jetty-ee10-webapp/12.0.16/jetty-ee10-webapp-12.0.16.jar (131 kB at 3.5 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-client/12.0.16/jetty-websocket-core-client-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-client/12.0.16/jetty-ee10-websocket-jakarta-client-12.0.16.jar (20 kB at 529 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-server/12.0.16/jetty-websocket-core-server-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/websocket/jakarta.websocket-client-api/2.1.1/jakarta.websocket-client-api-2.1.1.jar (43 kB at 790 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.cdi-api/4.0.1/jakarta.enterprise.cdi-api-4.0.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-client/12.0.16/jetty-websocket-core-client-12.0.16.jar (25 kB at 391 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.lang-model/4.0.1/jakarta.enterprise.lang-model-4.0.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-server/12.0.16/jetty-websocket-core-server-12.0.16.jar (46 kB at 672 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/ee10/websocket/jetty-ee10-websocket-jakarta-common/12.0.16/jetty-ee10-websocket-jakarta-common-12.0.16.jar (114 kB at 1.6 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/interceptor/jakarta.interceptor-api/2.1.0/jakarta.interceptor-api-2.1.0.jar
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-client/12.0.16/jetty-client-12.0.16.jar (354 kB at 5.0 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jndi/12.0.16/jetty-jndi-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.lang-model/4.0.1/jakarta.enterprise.lang-model-4.0.1.jar (26 kB at 301 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-plus/12.0.16/jetty-plus-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/enterprise/jakarta.enterprise.cdi-api/4.0.1/jakarta.enterprise.cdi-api-4.0.1.jar (151 kB at 1.7 MB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-ee/12.0.16/jetty-ee-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/interceptor/jakarta.interceptor-api/2.1.0/jakarta.interceptor-api-2.1.0.jar (25 kB at 272 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/12.0.16/jetty-xml-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-jndi/12.0.16/jetty-jndi-12.0.16.jar (31 kB at 331 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-alpn-client/12.0.16/jetty-alpn-client-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/transaction/jakarta.transaction-api/2.0.1/jakarta.transaction-api-2.0.1.jar (29 kB at 301 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-common/12.0.16/jetty-websocket-core-common-12.0.16.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-plus/12.0.16/jetty-plus-12.0.16.jar (35 kB at 309 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/el/jakarta.el-api/5.0.1/jakarta.el-api-5.0.1.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-ee/12.0.16/jetty-ee-12.0.16.jar (4.6 kB at 40 kB/s)
+[INFO] Downloading from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/inject/jakarta.inject-api/2.0.1.MR/jakarta.inject-api-2.0.1.MR.jar
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-alpn-client/12.0.16/jetty-alpn-client-12.0.16.jar (7.2 kB at 61 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/jetty-xml/12.0.16/jetty-xml-12.0.16.jar (82 kB at 682 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/org/eclipse/jetty/websocket/jetty-websocket-core-common/12.0.16/jetty-websocket-core-common-12.0.16.jar (187 kB at 1.5 MB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/el/jakarta.el-api/5.0.1/jakarta.el-api-5.0.1.jar (88 kB at 513 kB/s)
+[INFO] Downloaded from repo.atexxi.ch: https://repo.atexxi.ch/repository/atx-all/jakarta/inject/jakarta.inject-api/2.0.1.MR/jakarta.inject-api-2.0.1.MR.jar (11 kB at 52 kB/s)
+[INFO] Resolved plugin: velocity-tools-generic-3.1.jar
+[INFO] Resolved plugin: maven-dependency-tree-3.3.0.jar
+[INFO] Resolved plugin: doxia-site-model-2.0.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.0.0.jar
+[INFO] Resolved plugin: flexmark-util-sequence-0.62.2.jar
+[INFO] Resolved plugin: surefire-logger-api-3.5.2.jar
+[INFO] Resolved plugin: asm-9.7.jar
+[INFO] Resolved plugin: plexus-interpolation-1.26.jar
+[INFO] Resolved plugin: flexmark-ext-abbreviation-0.62.2.jar
+[INFO] Resolved plugin: plexus-java-1.3.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.3.0.jar
+[INFO] Resolved plugin: commons-lang3-3.20.0.jar
+[INFO] Resolved plugin: commons-lang3-3.12.0.jar
+[INFO] Resolved plugin: commons-codec-1.17.0.jar
+[INFO] Resolved plugin: doxia-skin-model-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-html-0.62.2.jar
+[INFO] Resolved plugin: plexus-compiler-javac-2.15.0.jar
+[INFO] Resolved plugin: commons-io-2.22.0.jar
+[INFO] Resolved plugin: flexmark-ext-escaped-character-0.62.2.jar
+[INFO] Resolved plugin: surefire-shared-utils-3.5.2.jar
+[INFO] Resolved plugin: flexmark-ext-footnotes-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-analyzer-1.15.0.jar
+[INFO] Resolved plugin: jetty-util-ajax-9.4.58.v20250814.jar
+[INFO] Resolved plugin: json-simple-3.0.2.jar
+[INFO] Resolved plugin: flexmark-util-builder-0.62.2.jar
+[INFO] Resolved plugin: flexmark-util-collection-0.62.2.jar
+[INFO] Resolved plugin: zstd-jni-1.5.7-6.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.0.0.jar
+[INFO] Resolved plugin: autolink-0.6.0.jar
+[INFO] Resolved plugin: maven-filtering-3.3.1.jar
+[INFO] Resolved plugin: commons-logging-1.2.jar
+[INFO] Resolved plugin: jetty-util-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-surefire-plugin-3.5.2.jar
+[INFO] Resolved plugin: surefire-extensions-api-3.5.2.jar
+[INFO] Resolved plugin: surefire-api-3.5.2.jar
+[INFO] Resolved plugin: flexmark-util-format-0.62.2.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-0.9.0.M3.jar
+[INFO] Resolved plugin: flexmark-ext-wikilink-0.62.2.jar
+[INFO] Resolved plugin: maven-archiver-3.6.2.jar
+[INFO] Resolved plugin: wagon-provider-api-3.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-api-2.15.0.jar
+[INFO] Resolved plugin: flexmark-0.62.2.jar
+[INFO] Resolved plugin: flexmark-util-visitor-0.62.2.jar
+[INFO] Resolved plugin: commons-io-2.16.1.jar
+[INFO] Resolved plugin: maven-resolver-transport-wagon-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-typographic-0.62.2.jar
+[INFO] Resolved plugin: maven-site-plugin-3.22.0.jar
+[INFO] Resolved plugin: maven-reporting-exec-2.0.1.jar
+[INFO] Resolved plugin: maven-archiver-3.6.6.jar
+[INFO] Resolved plugin: commons-text-1.12.0.jar
+[INFO] Resolved plugin: maven-resolver-api-1.9.27.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.1.0.jar
+[INFO] Resolved plugin: doxia-module-fml-2.1.0.jar
+[INFO] Resolved plugin: plexus-io-3.4.2.jar
+[INFO] Resolved plugin: surefire-extensions-spi-3.5.2.jar
+[INFO] Resolved plugin: aircompressor-0.27.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-1.0.0.jar
+[INFO] Resolved plugin: flexmark-util-0.62.2.jar
+[INFO] Resolved plugin: maven-install-plugin-3.2.0.jar
+[INFO] Resolved plugin: doxia-module-markdown-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-options-0.62.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.27.jar
+[INFO] Resolved plugin: maven-deploy-plugin-3.2.0.jar
+[INFO] Resolved plugin: commons-io-2.11.0.jar
+[INFO] Resolved plugin: plexus-interactivity-api-1.5.1.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.jar
+[INFO] Resolved plugin: maven-compiler-plugin-3.14.0.jar
+[INFO] Resolved plugin: jetty-http-9.4.58.v20250814.jar
+[INFO] Resolved plugin: velocity-engine-core-2.4.1.jar
+[INFO] Resolved plugin: doxia-site-renderer-2.0.0.jar
+[INFO] Resolved plugin: flexmark-ext-gfm-strikethrough-0.62.2.jar
+[INFO] Resolved plugin: commons-codec-1.16.1.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.2.0.jar
+[INFO] Resolved plugin: commons-beanutils-1.9.4.jar
+[INFO] Resolved plugin: javax.inject-1.jar
+[INFO] Resolved plugin: commons-digester3-3.2.jar
+[INFO] Resolved plugin: doxia-core-2.0.0.jar
+[INFO] Resolved plugin: javax.servlet-api-3.1.0.jar
+[INFO] Resolved plugin: org.eclipse.sisu.plexus-0.9.0.M3.jar
+[INFO] Resolved plugin: plexus-component-annotations-2.0.0.jar
+[INFO] Resolved plugin: flexmark-util-data-0.62.2.jar
+[INFO] Resolved plugin: maven-dependency-plugin-3.8.1.jar
+[INFO] Resolved plugin: maven-common-artifact-filters-3.4.0.jar
+[INFO] Resolved plugin: plexus-velocity-2.2.0.jar
+[INFO] Resolved plugin: plexus-utils-4.0.3.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.1.0.jar
+[INFO] Resolved plugin: plexus-classworlds-2.6.0.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.1.0.jar
+[INFO] Resolved plugin: surefire-booter-3.5.2.jar
+[INFO] Resolved plugin: commons-compress-1.26.2.jar
+[INFO] Resolved plugin: jetty-servlet-9.4.58.v20250814.jar
+[INFO] Resolved plugin: xz-1.9.jar
+[INFO] Resolved plugin: commons-lang3-3.17.0.jar
+[INFO] Resolved plugin: flexmark-ext-definition-0.62.2.jar
+[INFO] Resolved plugin: plexus-io-3.5.1.jar
+[INFO] Resolved plugin: plexus-classworlds-2.9.0.jar
+[INFO] Resolved plugin: slf4j-api-1.7.36.jar
+[INFO] Resolved plugin: doxia-sink-api-2.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.4.1.jar
+[INFO] Resolved plugin: doxia-integration-tools-2.0.0.jar
+[INFO] Resolved plugin: maven-jar-plugin-3.4.2.jar
+[INFO] Resolved plugin: maven-resolver-api-1.4.1.jar
+[INFO] Resolved plugin: flexmark-ext-tables-0.62.2.jar
+[INFO] Resolved plugin: org.eclipse.sisu.inject-1.0.0.jar
+[INFO] Resolved plugin: doxia-module-xhtml5-2.0.0.jar
+[INFO] Resolved plugin: plexus-compiler-manager-2.15.0.jar
+[INFO] Resolved plugin: doxia-core-2.1.0.jar
+[INFO] Resolved plugin: flexmark-util-ast-0.62.2.jar
+[INFO] Resolved plugin: plexus-interpolation-1.29.jar
+[INFO] Resolved plugin: asm-9.7.1.jar
+[INFO] Resolved plugin: maven-resolver-spi-1.4.1.jar
+[INFO] Resolved plugin: maven-shared-incremental-1.1.jar
+[INFO] Resolved plugin: file-management-3.1.0.jar
+[INFO] Resolved plugin: commons-compress-1.26.1.jar
+[INFO] Resolved plugin: plexus-utils-4.0.1.jar
+[INFO] Resolved plugin: xz-1.11.jar
+[INFO] Resolved plugin: doxia-module-apt-2.0.0.jar
+[INFO] Resolved plugin: maven-artifact-transfer-0.13.1.jar
+[INFO] Resolved plugin: doxia-module-apt-2.1.0.jar
+[INFO] Resolved plugin: flexmark-ext-autolink-0.62.2.jar
+[INFO] Resolved plugin: doxia-sink-api-2.0.0.jar
+[INFO] Resolved plugin: snappy-0.4.jar
+[INFO] Resolved plugin: doxia-module-xdoc-2.1.0.jar
+[INFO] Resolved plugin: plexus-build-api-0.0.7.jar
+[INFO] Resolved plugin: plexus-io-3.6.0.jar
+[INFO] Resolved plugin: maven-shared-utils-3.4.2.jar
+[INFO] Resolved plugin: jetty-server-9.4.58.v20250814.jar
+[INFO] Resolved plugin: flexmark-util-dependency-0.62.2.jar
+[INFO] Resolved plugin: commons-codec-1.19.0.jar
+[INFO] Resolved plugin: maven-surefire-common-3.5.2.jar
+[INFO] Resolved plugin: maven-reporting-impl-4.0.0.jar
+[INFO] Resolved plugin: plexus-i18n-1.1.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.5-11.jar
+[INFO] Resolved plugin: commons-lang3-3.14.0.jar
+[INFO] Resolved plugin: flexmark-util-misc-0.62.2.jar
+[INFO] Resolved plugin: jetty-security-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-xml-3.0.1.jar
+[INFO] Resolved plugin: maven-clean-plugin-3.4.0.jar
+[INFO] Resolved plugin: maven-failsafe-plugin-3.5.2.jar
+[INFO] Resolved plugin: jetty-webapp-9.4.58.v20250814.jar
+[INFO] Resolved plugin: annotations-26.1.0.jar
+[INFO] Resolved plugin: maven-resolver-util-1.9.27.jar
+[INFO] Resolved plugin: asm-9.9.1.jar
+[INFO] Resolved plugin: plexus-i18n-1.0-beta-10.jar
+[INFO] Resolved plugin: jsoup-1.22.1.jar
+[INFO] Resolved plugin: commons-collections-3.2.2.jar
+[INFO] Resolved plugin: doxia-site-model-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.10.0.jar
+[INFO] Resolved plugin: qdox-2.2.0.jar
+[INFO] Resolved plugin: zstd-jni-1.5.6-3.jar
+[INFO] Resolved plugin: jetty-io-9.4.58.v20250814.jar
+[INFO] Resolved plugin: maven-reporting-api-4.0.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.11.0.jar
+[INFO] Resolved plugin: qdox-2.1.0.jar
+[INFO] Resolved plugin: plexus-archiver-4.9.2.jar
+[INFO] Resolved plugin: jetty-xml-9.4.58.v20250814.jar
+[INFO] Resolved plugin: plexus-java-1.4.0.jar
+[INFO] Resolved plugin: maven-resources-plugin-3.3.1.jar
+[INFO] Resolved plugin: plexus-utils-3.5.1.jar
+[INFO] Resolved plugin: commons-compress-1.28.0.jar
+[INFO] Resolved plugin: flexmark-ext-yaml-front-matter-0.62.2.jar
+[INFO] Resolved dependency: hk2-locator-3.0.6.jar
+[INFO] Resolved dependency: hk2-utils-3.0.6.jar
+[INFO] Resolved dependency: jetty-ee10-webapp-12.0.16.jar
+[INFO] Resolved dependency: jakarta.mail-api-2.1.5.jar
+[INFO] Resolved dependency: jetty-ee10-plus-12.0.16.jar
+[INFO] Resolved dependency: bcpkix-jdk18on-1.86.jar
+[INFO] Resolved dependency: aopalliance-repackaged-3.0.6.jar
+[INFO] Resolved dependency: bcpg-jdk18on-1.86.jar
+[INFO] Resolved dependency: strolch-persistence-postgresql-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: commons-csv-1.14.1.jar
+[INFO] Resolved dependency: jetty-jmx-12.0.16.jar
+[INFO] Resolved dependency: strolch-service-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: jersey-common-3.1.11.jar
+[INFO] Resolved dependency: kotlin-stdlib-1.9.21.jar
+[INFO] Resolved dependency: jackson-annotations-2.22.jar
+[INFO] Resolved dependency: jetty-security-12.0.16.jar
+[INFO] Resolved dependency: cron-1.6.2.jar
+[INFO] Resolved dependency: jakarta.transaction-api-2.0.1.jar
+[INFO] Resolved dependency: persistence-binary-4.2.0.jar
+[INFO] Resolved dependency: logback-classic-1.6.5.jar
+[INFO] Resolved dependency: asm-tree-9.7.1.jar
+[INFO] Resolved dependency: jakarta.websocket-client-api-2.1.1.jar
+[INFO] Resolved dependency: HikariCP-7.1.0.jar
+[INFO] Resolved dependency: persistence-4.2.0.jar
+[INFO] Resolved dependency: bcjmail-jdk18on-1.86.jar
+[INFO] Resolved dependency: jakarta.enterprise.lang-model-4.0.1.jar
+[INFO] Resolved dependency: jetty-ee10-servlet-12.0.16.jar
+[INFO] Resolved dependency: jetty-jndi-12.0.16.jar
+[INFO] Resolved dependency: jakarta.enterprise.cdi-api-4.0.1.jar
+[INFO] Resolved dependency: jetty-plus-12.0.16.jar
+[INFO] Resolved dependency: jersey-container-servlet-core-3.1.11.jar
+[INFO] Resolved dependency: commons-io-2.20.0.jar
+[INFO] Resolved dependency: jakarta.servlet-api-6.0.0.jar
+[INFO] Resolved dependency: jetty-ee10-websocket-servlet-12.0.16.jar
+[INFO] Resolved dependency: jetty-websocket-core-common-12.0.16.jar
+[INFO] Resolved dependency: annotations-13.0.jar
+[INFO] Resolved dependency: jetty-ee10-websocket-jakarta-client-12.0.16.jar
+[INFO] Resolved dependency: jackson-core-2.22.1.jar
+[INFO] Resolved dependency: logback-core-1.6.5.jar
+[INFO] Resolved dependency: jetty-xml-12.0.16.jar
+[INFO] Resolved dependency: jersey-hk2-3.1.11.jar
+[INFO] Resolved dependency: javassist-3.30.2-GA.jar
+[INFO] Resolved dependency: bcprov-jdk18on-1.86.jar
+[INFO] Resolved dependency: gson-2.14.0.jar
+[INFO] Resolved dependency: jetty-http-12.0.16.jar
+[INFO] Resolved dependency: base-4.2.0.jar
+[INFO] Resolved dependency: jetty-io-12.0.16.jar
+[INFO] Resolved dependency: hk2-api-3.0.6.jar
+[INFO] Resolved dependency: osgi-resource-locator-1.0.3.jar
+[INFO] Resolved dependency: jakarta.el-api-5.0.1.jar
+[INFO] Resolved dependency: asm-9.7.1.jar
+[INFO] Resolved dependency: jetty-util-ajax-12.0.16.jar
+[INFO] Resolved dependency: jersey-server-3.1.11.jar
+[INFO] Resolved dependency: junit-4.13.2.jar
+[INFO] Resolved dependency: hamcrest-core-1.3.jar
+[INFO] Resolved dependency: slf4j-api-2.0.20.jar
+[INFO] Resolved dependency: jetty-ee10-websocket-jakarta-common-12.0.16.jar
+[INFO] Resolved dependency: maxmind-db-4.1.0.jar
+[INFO] Resolved dependency: jakarta.xml.bind-api-4.0.5.jar
+[INFO] Resolved dependency: jakarta.interceptor-api-2.1.0.jar
+[INFO] Resolved dependency: jakarta.validation-api-3.0.2.jar
+[INFO] Resolved dependency: strolch-utils-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: jetty-session-12.0.16.jar
+[INFO] Resolved dependency: pgpainless-core-2.0.4.jar
+[INFO] Resolved dependency: jackson-datatype-jsr310-2.22.1.jar
+[INFO] Resolved dependency: jsr305-3.0.2.jar
+[INFO] Resolved dependency: strolch-model-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: jakarta.ws.rs-api-3.1.0.jar
+[INFO] Resolved dependency: jakarta.annotation-api-2.1.1.jar
+[INFO] Resolved dependency: commons-codec-1.19.0.jar
+[INFO] Resolved dependency: slf4j-api-2.0.16.jar
+[INFO] Resolved dependency: jetty-ee-12.0.16.jar
+[INFO] Resolved dependency: jetty-client-12.0.16.jar
+[INFO] Resolved dependency: jetty-ee10-websocket-jakarta-server-12.0.16.jar
+[INFO] Resolved dependency: jakarta.inject-api-2.0.1.jar
+[INFO] Resolved dependency: jersey-client-3.1.11.jar
+[INFO] Resolved dependency: jetty-util-12.0.16.jar
+[INFO] Resolved dependency: bcutil-jdk18on-1.86.jar
+[INFO] Resolved dependency: postgresql-42.7.14.jar
+[INFO] Resolved dependency: storage-4.2.0.jar
+[INFO] Resolved dependency: jetty-websocket-core-server-12.0.16.jar
+[INFO] Resolved dependency: afs-4.2.0.jar
+[INFO] Resolved dependency: checker-qual-3.55.1.jar
+[INFO] Resolved dependency: geoip2-5.2.0.jar
+[INFO] Resolved dependency: asm-commons-9.7.1.jar
+[INFO] Resolved dependency: jakarta.activation-api-2.1.4.jar
+[INFO] Resolved dependency: jetty-websocket-core-client-12.0.16.jar
+[INFO] Resolved dependency: storage-embedded-4.2.0.jar
+[INFO] Resolved dependency: afs-nio-4.2.0.jar
+[INFO] Resolved dependency: jetty-alpn-client-12.0.16.jar
+[INFO] Resolved dependency: angus-mail-2.0.5.jar
+[INFO] Resolved dependency: error_prone_annotations-2.48.0.jar
+[INFO] Resolved dependency: jetty-ee10-annotations-12.0.16.jar
+[INFO] Resolved dependency: jakarta.websocket-api-2.1.1.jar
+[INFO] Resolved dependency: strolch-agent-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: strolch-privilege-2.8.0-20261105.152255-22.jar
+[INFO] Resolved dependency: jakarta.inject-api-2.0.1.MR.jar
+[INFO] Resolved dependency: angus-activation-2.0.3.jar
+[INFO] Resolved dependency: jackson-databind-2.22.1.jar
+[INFO] Resolved dependency: jetty-server-12.0.16.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia ........................................... SUCCESS [  2.688 s]
+[INFO] intruvia-core ...................................... SUCCESS [  0.135 s]
+[INFO] intruvia-rest ...................................... SUCCESS [  0.193 s]
+[INFO] intruvia-web ....................................... SUCCESS [  0.056 s]
+[INFO] intruvia-app ....................................... SUCCESS [  0.789 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  4.011 s
+[INFO] Finished at: 2026-11-06T07:55:26+01:00
+[INFO] ------------------------------------------------------------------------

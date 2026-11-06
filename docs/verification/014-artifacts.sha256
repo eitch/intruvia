@@ -1,0 +1,13 @@
+4f81af1b23adb70b17b07b5da117875d3177ad218d92a0c71d147f844659f29e  intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+0b68f310a2b4c6963a1af5932ad89a53df70842ced370ffa175d79cd95dc6529  intruvia-app/target/intruvia/lib/intruvia-core-0.0.1.jar
+9141eed6b8b1cd7bcf86af7da423f66ec7b425003edde4a42de6457edb9e22db  intruvia-app/target/intruvia/lib/intruvia-rest-0.0.1.jar
+e3b614e1fd3e5c771c18f1522b86cec0210e37d1adf1d3d3655bb55e85b82407  intruvia-app/target/intruvia/lib/intruvia-web-0.0.1.jar
+beadb92c26d04da653f6d2db2532b549b7a0dbe59c6e22c23e55bd03617f0120  intruvia-app/target/intruvia/lib/jakarta.websocket-api-2.1.1.jar
+e8fe8c1dff948385a461dbc85dec5467cbe350f065ec1a0f3bfed53b79e7b102  intruvia-app/target/intruvia/lib/jakarta.websocket-client-api-2.1.1.jar
+2cf2e4e450a28a64b496730bdc65ae6aad41407fb4ab1bf195c4b829d18b1dcd  intruvia-app/target/intruvia/lib/jetty-ee10-websocket-jakarta-client-12.0.16.jar
+b015a32840876ab5a772c2db14bd6a6c7e568eebcefd3e0c6c5d84e6bf9a3ca2  intruvia-app/target/intruvia/lib/jetty-ee10-websocket-jakarta-common-12.0.16.jar
+b9182cd571fcfa83e55c5c9ea2e95ec24472a3961bbeb530f03ccc28f4acd2ba  intruvia-app/target/intruvia/lib/jetty-ee10-websocket-jakarta-server-12.0.16.jar
+979376b6bc583fa670bd200be77f04f6bce0945d2e61378c04f4f9163624ede2  intruvia-app/target/intruvia/lib/jetty-ee10-websocket-servlet-12.0.16.jar
+0ee04f306ac0759980f8b81e2585ad1caa4aead7df22f1a5277264b2d5ad6431  intruvia-app/target/intruvia/lib/jetty-websocket-core-client-12.0.16.jar
+bebe6fac6ddd4047bd7334bf43362c7f5d1404282ef866ca6b092950f6c1fa91  intruvia-app/target/intruvia/lib/jetty-websocket-core-common-12.0.16.jar
+03ae2eef7ba6ddbc9906a570a7d6cbac9bf243aa189f0793ecf1dd42711b2c91  intruvia-app/target/intruvia/lib/jetty-websocket-core-server-12.0.16.jar

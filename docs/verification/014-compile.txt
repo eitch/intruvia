@@ -1,0 +1,61 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO] 
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO] 
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO] 
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug release 25] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 5 source files with javac [debug release 25] to target/test-classes
+[INFO] 
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[WARNING] The POM for org.apache.maven.surefire:surefire-junit4:jar:3.5.2 is missing, no dependency information available
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO] 
+[INFO] intruvia-rest ...................................... SKIPPED
+[INFO] intruvia-web ....................................... SKIPPED
+[INFO] intruvia-app ....................................... SKIPPED
+[INFO] intruvia ........................................... SUCCESS [  0.002 s]
+[ERROR] intruvia-core ...................................... FAILURE [  1.831 s]
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.915 s
+[INFO] Finished at: 2026-11-06T07:57:22+01:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.5.2:test (default-test) on project intruvia-core: The following artifacts could not be resolved: org.apache.maven.surefire:surefire-junit4:jar:3.5.2 (absent): Cannot access repo.atexxi.ch (https://repo.atexxi.ch/repository/atx-all/) in offline mode and the artifact org.apache.maven.surefire:surefire-junit4:jar:3.5.2 has not been downloaded from it before. -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[ERROR] 
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <args> -rf :intruvia-core
