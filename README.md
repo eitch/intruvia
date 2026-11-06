@@ -276,7 +276,7 @@ state are persisted; restart resets buckets. Compressed request bodies are unsup
 
 See [HTTP design, setting bounds and checks](docs/architecture/010-ingestion-http.md).
 Verify with Java 25 and `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
-Receipt-capacity admission is available; WebSocket delivery remains pending.
+Receipt-capacity admission and ordered WebSocket delivery are available.
 
 ## Viewer sessions
 
@@ -299,7 +299,7 @@ with the same CSRF header and Origin. Both login and session checks return only
 invalidates the shared REST/future WebSocket validator immediately. Authorization
 headers and machine PATs cannot authenticate viewer routes.
 
-The login/map UI is task 015; the WebSocket endpoint is still pending.
+The login/map UI is task 015; the WebSocket endpoint is described below.
 Verify sessions and the full regression suite with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
 
@@ -347,3 +347,32 @@ there and restart; malformed settings fail startup. Receipt lifetime cannot be l
 than 30 days. See [settings, transaction semantics and verification](docs/architecture/013-retention.md).
 Run the full PostgreSQL suite with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+
+
+## Ordered live event stream
+
+After loading the viewer snapshot, connect a same-origin browser WebSocket to
+`/api/v1/events/stream?after=<snapshot.cursor>` using its viewer session cookie.
+Use WSS through the TLS reverse proxy. The server requires the exact configured
+viewer Origin and `event:read`; machine PATs and Authorization headers are rejected.
+Only the canonical decimal cursor is accepted in the query string.
+
+The server sends a version-1 `hello` with string `head`/`minAfter`, replays retained
+`event.created` frames in ascending sequence, and continues reading committed events.
+Frames include the full canonical event. Reconnect after the last event your client
+fully applied, deduplicating sequence/event IDs. An expired or ahead cursor produces
+`resync_required` and closes the socket; obtain a new snapshot. Session logout or
+expiry closes active sockets. Text/binary client commands are unsupported and close
+the connection.
+
+Existing runtimes must add both `StreamNotifications` and `EventStream` components
+from the packaged StrolchConfiguration.xml. Each connection is bounded to 1000
+pending/in-flight frames, 64 KiB per message and a 10-second send deadline; slow
+consumers disconnect and recover through replay. Ping/pong detects dead connections.
+A 250 ms durable poll recovers a missed post-commit wakeup. Upgrades share the REST
+global request bucket and Jetty connection cap.
+
+See the [protocol, lifecycle and recovery contract](docs/architecture/014-event-stream.md).
+Verify with Java 25 and
+`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+The browser map and automatic reconnect UI remain tasks 015–017.
