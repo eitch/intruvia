@@ -10,6 +10,10 @@
 	<artifactId>intruvia-app</artifactId>
 	<dependencies>
 		<dependency>
+			<groupId>org.eclipse.jetty.ee10.websocket</groupId>
+			<artifactId>jetty-ee10-websocket-jakarta-server</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>li.strolch</groupId>
 			<artifactId>strolch-persistence-postgresql</artifactId>
 		</dependency>
