@@ -115,9 +115,19 @@ public final class ViewerSessions {
 
 	public void logout(Certificate certificate) { this.handler.get().invalidate(certificate); }
 
-	public static String cookie(HttpHeaders headers) {
+	/** Servlet/WebSocket adapter: normalized lowercase header names, preserving duplicate values. */
+	public Certificate validateUpgrade(java.util.Map<String, List<String>> headers) {
+		checkOrigin(headers.get("origin"), true);
+		if (headers.containsKey("authorization")) throw ViewerHttp.failure(401);
+		var site = headers.get("sec-fetch-site");
+		if (site != null && !List.of("same-origin").equals(site)) throw ViewerHttp.failure(403);
+		return validateToken(cookieValues(headers.get("cookie")));
+	}
+
+	public static String cookie(HttpHeaders headers) { return cookieValues(headers.getRequestHeader(HttpHeaders.COOKIE)); }
+
+	public static String cookieValues(List<String> cookies) {
 		String value = null;
-		var cookies = headers.getRequestHeader(HttpHeaders.COOKIE);
 		if (cookies != null) {
 			for (String header : cookies) {
 				for (String part : header.split(";")) {

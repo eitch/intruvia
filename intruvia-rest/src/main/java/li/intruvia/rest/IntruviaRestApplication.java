@@ -31,8 +31,14 @@ public class IntruviaRestApplication extends ResourceConfig {
 
 	public IntruviaRestApplication(Supplier<PrivilegeHandler> handler, MachineIdentities identities,
 			Supplier<ServiceHandler> services, IngestionLimits limits) {
+		this(handler, identities, services, limits,
+				new li.intruvia.rest.ingest.TokenBucket(limits.globalPerSecond(), limits.globalBurst()));
+	}
+
+	public IntruviaRestApplication(Supplier<PrivilegeHandler> handler, MachineIdentities identities,
+			Supplier<ServiceHandler> services, IngestionLimits limits, li.intruvia.rest.ingest.TokenBucket globalAdmission) {
 		this(handler, identities);
-		register(new GlobalAdmissionFilter(limits));
+		register(new GlobalAdmissionFilter(globalAdmission));
 		register(new Fail2banResource(services, identities, limits));
 		register(new EventsResource(services));
 		register(IngestExceptionMapper.class);

@@ -2,6 +2,10 @@
 package li.intruvia.app;
 
 import li.intruvia.core.auth.MachineIdentities;
+import li.intruvia.rest.stream.EventStreamComponent;
+import li.intruvia.rest.stream.EventStreamServlet;
+import li.intruvia.rest.ingest.TokenBucket;
+import org.eclipse.jetty.ee10.websocket.jakarta.server.config.JakartaWebSocketServletContainerInitializer;
 import li.intruvia.rest.session.ViewerConfiguration;
 import li.intruvia.rest.session.ViewerSessions;
 import li.strolch.runtime.sessions.StrolchSessionHandler;
@@ -31,6 +35,7 @@ public final class IntruviaApplication implements AutoCloseable {
 	private static final Logger logger = LoggerFactory.getLogger(IntruviaApplication.class);
 	private final StrolchAgent agent;
 	private final Server server;
+	private final ViewerSessions viewers;
 	private final ServerConnector connector;
 	private boolean closed;
 
@@ -70,15 +75,22 @@ public final class IntruviaApplication implements AutoCloseable {
 		context.setContextPath("/");
 		context.addServlet(new ServletHolder(new StaticPageServlet()), "/");
 		context.addServlet(new ServletHolder(new ServletContainer(new IntruviaRestApplication())), "/health/*");
+		var admission = new TokenBucket(limits.globalPerSecond(), limits.globalBurst());
 		var api = new IntruviaRestApplication(() -> this.agent.getPrivilegeHandler().getPrivilegeHandler(), identities,
-				() -> this.agent.getContainer().getComponent(ServiceHandler.class), limits);
-		api.viewers(new ViewerSessions(() -> this.agent.getContainer().getComponent(StrolchSessionHandler.class), viewer, clock));
+				() -> this.agent.getContainer().getComponent(ServiceHandler.class), limits, admission);
+		this.viewers = new ViewerSessions(() -> this.agent.getContainer().getComponent(StrolchSessionHandler.class), viewer, clock);
+		api.viewers(this.viewers);
+		JakartaWebSocketServletContainerInitializer.configure(context,
+				(servletContext, container) -> {});
+		context.addServlet(new ServletHolder(new EventStreamServlet(
+				() -> this.agent.getContainer().getComponent(EventStreamComponent.class), admission)), "/api/v1/events/stream");
 		context.addServlet(new ServletHolder(new ServletContainer(api)), "/api/v1/*");
 		this.server.setHandler(context);
 	}
 
 	public void start() throws Exception {
 		this.agent.initialize();
+		this.agent.getContainer().getComponent(EventStreamComponent.class).configure(this.viewers);
 		this.agent.start();
 		if (this.agent.getContainer().getState() != ComponentState.STARTED)
 			throw new IllegalStateException("Strolch did not start");

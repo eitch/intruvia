@@ -14,7 +14,11 @@ public final class GlobalAdmissionFilter implements ContainerRequestFilter {
 	private final TokenBucket bucket;
 
 	public GlobalAdmissionFilter(IngestionLimits limits) {
-		this.bucket = new TokenBucket(limits.globalPerSecond(), limits.globalBurst());
+		this(new TokenBucket(limits.globalPerSecond(), limits.globalBurst()));
+	}
+
+	public GlobalAdmissionFilter(TokenBucket bucket) {
+		this.bucket = bucket;
 	}
 
 	@Override

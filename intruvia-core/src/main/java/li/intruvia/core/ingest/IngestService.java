@@ -14,6 +14,7 @@ import li.intruvia.core.model.SecurityEvent;
 import li.intruvia.core.persistence.EventRepository;
 import li.strolch.exception.StrolchException;
 import li.intruvia.core.persistence.EventStreamLock;
+import li.intruvia.core.persistence.EventStreamNotifications;
 import li.strolch.persistence.api.StrolchTransaction;
 import li.strolch.persistence.api.StrolchTransactionException;
 import li.strolch.persistence.api.StrolchPersistenceException;
@@ -85,6 +86,8 @@ public final class IngestService extends AbstractService<IngestArgument, IngestR
 				tx.commitOnClose();
 			}
 			// No success or publication may escape until transaction close has completed.
+			if (command != null)
+				getComponent(EventStreamNotifications.class).committed();
 			return command == null ? new IngestResult(CAPACITY, null) : command.committedResult();
 		} catch (InvalidEventException e) {
 			return new IngestResult(INVALID, null);

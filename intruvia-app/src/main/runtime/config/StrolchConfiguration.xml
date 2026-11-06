@@ -84,5 +84,19 @@
 				<sweepSeconds>86400</sweepSeconds>
 			</Properties>
 		</Component>
+		<Component>
+			<name>StreamNotifications</name>
+			<api>li.intruvia.core.persistence.EventStreamNotifications</api>
+			<impl>li.intruvia.core.persistence.EventStreamNotifications</impl>
+		</Component>
+		<Component>
+			<name>EventStream</name>
+			<api>li.intruvia.rest.stream.EventStreamComponent</api>
+			<impl>li.intruvia.rest.stream.EventStreamComponent</impl>
+			<depends>Intruvia</depends>
+			<depends>ServiceHandler</depends>
+			<depends>SessionHandler</depends>
+			<depends>StreamNotifications</depends>
+		</Component>
 	</env>
 </StrolchConfiguration>
