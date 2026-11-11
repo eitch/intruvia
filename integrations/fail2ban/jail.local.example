@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+# Merge into the target jail in jail.local or jail.d/intruvia.local.
+# Retain your EXISTING action list exactly and APPEND intruvia.py.
+# This example assumes the jail currently uses %(action_)s. If it uses another
+# action list (e.g. action_mwl), keep that list instead of replacing it.
+[sshd]
+action = %(action_)s
+         intruvia.py[endpoint="https://intruvia.example.org/api/v1/fail2ban/events"]
