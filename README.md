@@ -411,3 +411,17 @@ Leaflet 1.9.4 (BSD-2-Clause) and Natural Earth v5.1.2 public-domain 1:110m bound
 are packaged locally, with attribution below the map. No tile provider, API key,
 CDN or frontend build is needed. See the [viewer design, provenance and browser
 verification procedure](docs/architecture/015-snapshot-viewer.md).
+
+## Fail2ban notification action
+
+The distribution now includes `integrations/fail2ban/`: a Python 3 standard-library
+HTTPS notification helper and an additive Fail2ban Python action. Install the
+helper and action, provision a private root-owned PAT file, and append the action
+to each jail's existing action list. Keep the current firewall action and place
+notification last. Only new ban callbacks notify; unban/start/stop do not.
+
+**Delivery is best effort: events can be lost after three attempts within 15
+seconds during outages. There is no persistent offline queue.** Failed notification
+does not fail the normal ban action. TLS certificates are verified, and retries
+reuse the same event UUID/timestamp and JSON bytes. Tokens stay in the private file.
+See the [installation, rotation, retry policy and isolated test instructions](integrations/fail2ban/README.md).
