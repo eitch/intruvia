@@ -375,7 +375,7 @@ global request bucket and Jetty connection cap.
 See the [protocol, lifecycle and recovery contract](docs/architecture/014-event-stream.md).
 Verify with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
-Live browser highlighting is available below; automatic reconnect remains task 017.
+Live browser highlighting and automatic recovery are available below.
 
 ## Snapshot viewer
 
@@ -393,9 +393,16 @@ motion, the indication is a static high-contrast halo. New list rows highlight f
 three seconds, including unmapped events. Arrivals preserve the map view; use
 **Show on map** to find an off-screen event. Oldest events and their markers are
 evicted to keep the rolling window at 1000. Repeated frames do not highlight twice.
-If the stream closes or requests a new snapshot, the status gives a manual refresh
-action. Automatic reconnect, retention resynchronization and background-tab counts
-remain task 017. See [highlight design and measured browser checks](docs/architecture/016-live-highlights.md).
+Disconnected streams reconnect automatically using jittered exponential delays from
+1–2 seconds up to 15–30 seconds, resuming after the last fully applied event.
+Session expiry returns to login. An expired or ahead cursor reloads the snapshot
+and leaves a visible “Some older live updates are no longer available” notice;
+recovery snapshots have no pulses and cannot recover history beyond retention.
+Failed recovery reads preserve the previous view and retry. **Refresh snapshot**
+can also restart recovery manually. Events received while hidden remain in the
+bounded model; on return, a new-events count appears. Background animation timing
+is browser-controlled and is not guaranteed. See the [recovery contract and browser
+checks](docs/architecture/017-browser-recovery.md). See [highlight design and measured browser checks](docs/architecture/016-live-highlights.md).
 Missing locations remain in the list with a reason. A degraded GeoIP notice refers
 to those stored event results, rather than current database-reader health. GeoIP
 is an approximate network location, not a person's physical location.
