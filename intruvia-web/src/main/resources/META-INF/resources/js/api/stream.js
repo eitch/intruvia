@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: AGPL-3.0-only
-// One connection owned by the page. Automatic recovery belongs to task 017.
+// One socket; the owning recovery coordinator decides when to reconnect.
 export function openStream(after, onFrame, onClosed) {
 	const url = new URL('/api/v1/events/stream', window.location.href);
 	url.protocol = url.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -7,14 +7,9 @@ export function openStream(after, onFrame, onClosed) {
 	const socket = new WebSocket(url);
 	socket.onmessage = (message) => {
 		try { onFrame(JSON.parse(message.data)); }
-		catch {
-			socket.onmessage = null;
-			socket.onclose = null;
-			onClosed('Live update could not be applied. Refresh the snapshot.');
-			socket.close();
-		}
+		catch { onClosed(true); }
 	};
-	socket.onclose = () => onClosed('Offline · Refresh the snapshot to reconnect.');
+	socket.onclose = () => onClosed(false);
 	return () => {
 		socket.onmessage = null;
 		socket.onclose = null;
