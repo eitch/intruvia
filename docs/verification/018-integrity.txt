@@ -1,0 +1,14 @@
+intruvia-app/target/intruvia/lib/strolch-agent-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-model-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-privilege-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-service-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-utils-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/intruvia-app-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-core-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-rest-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-web-0.0.1.jar: OK
+intruvia-app/target/intruvia/integrations/fail2ban/README.md: OK
+intruvia-app/target/intruvia/integrations/fail2ban/intruvia.py: OK
+intruvia-app/target/intruvia/integrations/fail2ban/intruvia_notify.py: OK
+intruvia-app/target/intruvia/integrations/fail2ban/jail.local.example: OK

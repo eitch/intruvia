@@ -1,0 +1,2 @@
+PASS: 22 rows; only 018 TODO -> DONE; dependency 010 DONE; DONE 18/TODO 4/IN_PROGRESS 0/BLOCKED 0.
+PASS: current none, next eligible 019, summary/date consistent; no other task started.

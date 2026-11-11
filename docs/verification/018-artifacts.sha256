@@ -1,0 +1,8 @@
+13342a63c84b9d91135465a77beb659ccc6d72a328a9bad0b9449940a9cf9582  intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+0b68f310a2b4c6963a1af5932ad89a53df70842ced370ffa175d79cd95dc6529  intruvia-app/target/intruvia/lib/intruvia-core-0.0.1.jar
+9141eed6b8b1cd7bcf86af7da423f66ec7b425003edde4a42de6457edb9e22db  intruvia-app/target/intruvia/lib/intruvia-rest-0.0.1.jar
+5a473913893a101bba2940fae50116853f109276a412c08e113b4847fdbd0807  intruvia-app/target/intruvia/lib/intruvia-web-0.0.1.jar
+3e66337569830f404463146c4cc0f685510e16490a62f0070cec77dba87f49e3  intruvia-app/target/intruvia/integrations/fail2ban/README.md
+6f1c1690684cd1f67fbe073d57d24f3f3d89ff1cc9c42fd7908fce4da91ba2ca  intruvia-app/target/intruvia/integrations/fail2ban/intruvia.py
+15c156d7e84b1ec731bcaf6aefae0f24c393289099f19de523ec68f4bc3eddbf  intruvia-app/target/intruvia/integrations/fail2ban/intruvia_notify.py
+260ee18fc348661816d09c4c4ef731068c379a9ab9d6e19a61a72ff4ff9e8028  intruvia-app/target/intruvia/integrations/fail2ban/jail.local.example

@@ -1,0 +1,119 @@
+Task 018 — 2026-11-11 — Codex
+
+Selection/guidelines
+- Initial git status --short: empty. All 22 ledger rows checked; no IN_PROGRESS
+  task, 018 lowest eligible TODO, dependency 010 DONE. Set IN_PROGRESS before edits.
+- Read project/framework AGENTS.md and all seven framework guideline documents,
+  including Vanilla JavaScript in CODE_STYLE.md and STROLCH_SPECIFICATION.md;
+  project specification/backlog/status and README. Guidelines available.
+- Exactly task 018. Agent made no commit, push, deployment or host service/firewall edits,
+  upstream edits, application dependency or toolchain introduced.
+
+Sources/artifacts
+- integrations/fail2ban/{intruvia_notify.py,intruvia.py,jail.local.example,README.md}
+- integrations/fail2ban/tests/{test_notify.py,action_smoke.py}
+- intruvia-app/pom.xml resource-copy execution; README.md; architecture/018 design.
+- Distribution: intruvia-app/target/intruvia/integrations/fail2ban/ (four files).
+  Tests and bytecode excluded; every shipped byte equals source, review passes.
+- Application/distribution and six framework JAR SHA-256 manifests:
+  docs/verification/018-artifacts.sha256 and 018-strolch.sha256.
+
+Environment/isolated target source
+- Python 3.14.9; OpenSSL 4.1.0. Existing Java 25.0.5.0+8-tem/Maven 3.10.0.
+- Host fail2ban-client/import fail2ban were unavailable. No host installation.
+- curl -fL --max-time 30 https://github.com/fail2ban/fail2ban/archive/refs/tags/1.1.0.tar.gz -o /tmp/intruvia-018-fail2ban.tar.gz
+  exit 0; tar -xzf /tmp/intruvia-018-fail2ban.tar.gz -C /tmp exit 0.
+- Upstream archive SHA-256:
+  474fcc25afdaf929c74329d1e4d24420caabeea1ef2e041a267ce19269570bae
+  Source stays in /tmp, not bundled or installed; no external code copied into repo.
+- Smoke uses real Fail2ban 1.1.0 client/server, Python ActionBase and module loader,
+  temporary config/socket/PID/logs, polling jail and harmless marker command.
+  It does not run nftables/iptables or touch a running Fail2ban service.
+
+Helper checks
+1. PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s integrations/fail2ban/tests -v > docs/verification/018-helper-tests.txt 2>&1
+   exit 0: 9 tests, 37.021 s, all pass.
+2. Final deadline review extended the overall alarm to include PAT loading and
+   TLS-context setup after argument parsing; nested send does not extend it.
+   PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s integrations/fail2ban/tests -v > docs/verification/018-helper-tests-final.txt 2>&1
+   exit 0: 9 tests, 35.960 s, all pass on final runtime source. A tenth focused
+   test was added after this process loaded the suite, and run separately:
+   PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=integrations/fail2ban/tests python3 -m unittest -v test_notify.NotifyTest.test_outer_deadline_includes_setup_and_is_not_extended > docs/verification/018-deadline-setup-test.txt 2>&1
+   exit 0: 1 test, 0.081 s, pass. Ten distinct final tests pass in these two runs.
+- TLS mock-server tests: 429/500/503/599 and real transport disconnect each make
+  three attempts with byte-identical payload and Bearer header; 200/201 success.
+  One UUID/time per invocation, fresh UUID on next invocation. IPv6/Unicode,
+  quotes/backslashes/leading dash/shell-looking jail text survive actual CLI JSON.
+  No shell marker file created. 400/401/403/404/409/413/415/422/302 do not retry.
+  Exhausted 503 stops after three. Numeric Retry-After waits at least two seconds;
+  86400 stops immediately without an early retry; HTTP-date parsing is checked.
+  Untrusted certificate and trusted wrong hostname are rejected without POST.
+  HTTP/wrong path/URL credentials/query rejected. Private-file mode/owner,
+  symlink/length/invalid content checks pass; invalid event values rejected.
+- Real trickled TLS response headers keep individual socket reads active, but
+  the CLI exits 1 between 14.5 and 16 seconds with only the fixed local warning.
+  Additional setup fault injection proves a 50 ms outer alarm interrupts delayed
+  TLS setup rather than being reset by nested send. Not a slow-DNS OS test.
+
+Fail2ban smoke
+- PYTHONDONTWRITEBYTECODE=1 python3 integrations/fail2ban/tests/action_smoke.py /tmp/fail2ban-1.1.0 > docs/verification/018-action-smoke.txt 2>&1
+  exit 0; repeated against final helper:
+  PYTHONDONTWRITEBYTECODE=1 python3 integrations/fail2ban/tests/action_smoke.py /tmp/fail2ban-1.1.0 > docs/verification/018-action-smoke-final.txt 2>&1
+  exit 0. Actual -t parses shipped additive jail example; actions list contains
+  smoke-firewall and intruvia. Actual daemon start, IPv6 ban, unban, second ban
+  rejected by HTTPS receiver with 403, stop: exactly two POSTs. Marker action runs
+  twice and second ban remains effective; concise notification failure logged.
+  Real module loader additionally verifies adversarial jail text unchanged, no
+  shell evaluation, norestored flag, start/reban/unban/stop without notification.
+  Expected upstream long-jail-name warning for adversarial fixture is retained.
+
+Maven/package/framework
+- JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT > docs/verification/018-maven-verify.txt 2>&1
+  exit 0: all five reactor modules SUCCESS; 75 tests, zero failures/errors/skips
+  (40 unit/HTTP and 35 real PostgreSQL/application integration). Clean verify.
+- After final helper deadline refinement (no Java changes):
+  JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT package -DskipTests > docs/verification/018-final-package.txt 2>&1
+  exit 0: all modules SUCCESS; tests explicitly skipped for this repackaging only.
+- python3 docs/verification/018-review.py > docs/verification/018-review.txt 2>&1
+  exit 0 (initial and final): exact package bytes, excluded tests/bytecode, source
+  tabs/line length/SPDX, 75-test totals, local framework identities all pass.
+- Inspected installed local repository /home/eitch/.m2/repository/li/strolch and
+  clean referenced framework source HEAD f8353080a3c8b140accbff6ee171c73deabb0f17.
+  Actual version 2.8.0-SNAPSHOT; six packaged JARs equal installed local cache,
+  each hash recorded in review/manifests. Offline dependencies suffice. No
+  framework rebuild or relabelling; no claim of equivalence to the historical
+  exact timestamped 2.8.0-20260927.120822-2 baseline.
+- sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/018-strolch.sha256
+- sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar intruvia-app/target/intruvia/integrations/fail2ban/* > docs/verification/018-artifacts.sha256
+- sha256sum -c docs/verification/018-strolch.sha256 > docs/verification/018-integrity.txt
+- sha256sum -c docs/verification/018-artifacts.sha256 >> docs/verification/018-integrity.txt
+  Hash generation/check commands exit 0, every check OK.
+
+Failures/limitations
+- Environment probes found no host Fail2ban and no guessed
+  intruvia-app/src/assembly/distribution.xml; actual packaging uses POM resource
+  copies. First guarded POM edit assertion expected three exact closing patterns,
+  found fewer and exited 1 before changing the POM. Corrected to the actual first
+  resources execution; Maven later validates/uses it. No acceptance test failed.
+- No production endpoint/PAT, real firewall, other Fail2ban versions, persistent
+  offline delivery, host deployment, browser/capacity suite, TLS proxy rehearsal,
+  framework build/tests or recovery/restore was exercised. These are not claimed.
+  Smoke HTTPS receiver is a test server, not the real Intruvia ingestion endpoint;
+  the existing real-PAT ingestion regression passes separately in Maven.
+- Synchronous notification can delay its jail thread up to 16 seconds. Existing
+  ban action must precede it. Three bounded attempts can lose events in outages;
+  prominently documented. Parent directories/trust/executable files must be
+  administrator-protected. No blocker remains for task 018.
+- Disposable Fail2ban processes/configs and TLS fixtures cleaned by test finally
+  blocks; Maven PostgreSQL container removed by verification script. Docker name
+  check and pgrep show no Intruvia/018 test container/daemon (018-cleanup.txt empty).
+
+Final ledger/diff checks are recorded in 018-final-checks.txt and 018-ledger-check.txt.
+
+Concurrent workspace activity
+- Final status/log inspection observed HEAD had advanced externally from the
+  task-017 baseline ae551ea to 037f28b ([New] Add Fail2ban notification integration)
+  and eae3736 ([Project] Add task 018 verification artifacts). Index additions also
+  appeared. The agent invoked no git add/commit/reset/checkout/push and leaves
+  concurrent commits/staging untouched. Final review checks current source and
+  packaged bytes; ledger assertions still show only task 018 changed status.
