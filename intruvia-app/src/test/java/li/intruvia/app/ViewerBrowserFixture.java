@@ -14,7 +14,13 @@ public final class ViewerBrowserFixture {
 		int port;
 		try (var socket = new ServerSocket(0)) { port = socket.getLocalPort(); }
 		String origin = "http://127.0.0.1:" + port;
-		try (var database = ViewerSessionIT.database(origin); var app = new IntruviaApplication(database.runtime, port)) {
+		var time = new java.util.concurrent.atomic.AtomicReference<>(Instant.now());
+		var clock = new java.time.Clock() {
+			@Override public java.time.ZoneId getZone() { return java.time.ZoneOffset.UTC; }
+			@Override public java.time.Clock withZone(java.time.ZoneId zone) { return this; }
+			@Override public Instant instant() { return time.get(); }
+		};
+		try (var database = ViewerSessionIT.database(origin); var app = new IntruviaApplication(database.runtime, port, clock)) {
 			app.start();
 			app.agent().getPrivilegeHandler().runAsAgent(ctx -> {
 				try (var tx = app.agent().openTx(ctx.getCertificate(), "BrowserFixture", false).rollbackOnFailure()) {
@@ -42,6 +48,26 @@ public final class ViewerBrowserFixture {
 				long sequence = 1005;
 				String command;
 				while ((command = input.readLine()) != null) {
+					if (command.equals("expire")) {
+						time.set(Instant.now().plusSeconds(1801));
+						System.out.println("FIXTURE_DONE=expire");
+						System.out.flush();
+						continue;
+					}
+					if (command.equals("prune")) {
+						final long head = sequence;
+						app.agent().getPrivilegeHandler().runAsAgent(ctx -> {
+							try (var tx = app.agent().openTx(ctx.getCertificate(), "BrowserPruneFixture", false).rollbackOnFailure()) {
+								EventStreamLock.acquire(tx);
+								tx.streamResources(ModelConstants.TYPE_SECURITY_EVENT).toList().forEach(tx::remove);
+								new EventRepository().updateStreamState(tx, new EventStreamState(Long.toString(head), Long.toString(head)));
+								tx.commitOnClose();
+							}
+						});
+						System.out.println("FIXTURE_DONE=prune");
+						System.out.flush();
+						continue;
+					}
 					final long next = ++sequence;
 					final boolean mapped = !command.equals("unmapped");
 					app.agent().getPrivilegeHandler().runAsAgent(ctx -> {
@@ -56,6 +82,8 @@ public final class ViewerBrowserFixture {
 							tx.commitOnClose();
 						}
 					});
+					System.out.println("FIXTURE_DONE=" + next);
+					System.out.flush();
 				}
 			}
 		}
