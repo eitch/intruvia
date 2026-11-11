@@ -1,0 +1,168 @@
+Task 017 acceptance — 2026-11-11
+
+Selected exactly task 017: no IN_PROGRESS rows; lowest eligible TODO 017 with
+016 DONE. Initial git status clean. Read project/framework AGENTS.md, referenced
+build/testing/Strolch/style/commit guidelines (Vanilla JavaScript in CODE_STYLE.md
+and linked STROLCH_SPECIFICATION.md), specification, numbered backlog, ledger and
+README. No required guideline unavailable. No new dependency/toolchain, upstream
+edit, commit, push, deployment or other task started.
+
+Maven prefix:
+JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH
+Commands with that prefix:
+- scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+  Exit 0 on initial/second runs: 017-maven.txt and 017-second-maven.txt; all five reactor modules
+  SUCCESS, 40 unit/HTTP + 35 PostgreSQL/application integration tests, zero
+  failures/errors/skips (75 total). Second run includes the expanded browser
+  fixture (clock/prefix-prune controls). Fixture is optional, not a debug route.
+- mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT package -DskipTests
+  Exit 0 for 017-package.txt, 017-final-package.txt and 017-reviewed-package.txt.
+  Intermediate packaging, tests explicitly skipped. Frontend refinements after
+  clean verification are checked against packaged bytes and real browser behavior.
+
+Framework inspection: local cache /home/eitch/.m2/repository/li/strolch and source
+/home/eitch/src/git/atx-dev/strolch (clean HEAD
+f8353080a3c8b140accbff6ee171c73deabb0f17) inspected. Actual version 2.8.0-SNAPSHOT,
+six packaged framework jars equal installed local snapshot bytes; 017-review.txt
+and 017-strolch.sha256. Offline cached dependencies suffice; no framework rebuild
+or artifact relabelling. This is not verification of the historical timestamped
+2.8.0-20260927.120822-2 baseline. Java 25.0.5.0+8-tem, Maven 3.10.0,
+PostgreSQL 18.6, image sha256:f1ea2a1a4fb7b68d4836be1fdcb8a6466a89b072158bf9d97663600538c294c5.
+
+Browser database command:
+docker run --detach --rm --name intruvia-017-browser --publish 127.0.0.1::5432 --env POSTGRES_USER=intruvia_test --env POSTGRES_PASSWORD=intruvia_test --env POSTGRES_DB=intruvia_test postgres:18-bookworm
+Exit 0; loopback port 32777. Disposable test credentials only.
+Browser command prefix:
+XDG_CONFIG_HOME=/tmp/intruvia-017/config XDG_CACHE_HOME=/tmp/intruvia-017/cache JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem JUNIT_JAR=/home/eitch/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar PLAYWRIGHT_MODULE=/usr/lib/chatgpt/resources/cua_node/lib/node_modules/playwright INTRUVIA_TEST_DB_URL=jdbc:postgresql://127.0.0.1:32777/intruvia_test INTRUVIA_TEST_DB_USERNAME=intruvia_test INTRUVIA_TEST_DB_PASSWORD=intruvia_test
+Command with prefix:
+/home/eitch/.nvm/versions/node/v26.13.0/bin/node docs/verification/017-browser.cjs
+- First exit 1, 017-browser-first.txt: pruning fixture had removed only already
+  applied events. Cursor equalled minAfter, so correctly no resync; test timed out
+  expecting recovery. Corrected harness to lose an unread committed frame before
+  pruning. No application defect in this failed test.
+- Second exit 0, 017-browser-second.txt: real snapshot gap, before/after-commit
+  disconnect, no duplicate repulse, hidden-visibility contract, ahead cursor,
+  real pruning, failed-recovery-read retry, logout cancellation and real maximum
+  session lifetime expiry pass.
+- Third exit 0, 017-browser-third.txt: adds production coordinator virtual timer
+  registration checks for eight bounded jitter delays/single pending timer/stop
+  cleanup; lost hello deadline recovery and idle-cookie-loss session probe pass.
+- Source review found and removed an erroneous hello timeout scheduled after a
+  successful session probe; added healthy-idle-socket coverage for regression.
+
+Fault injection boundaries: actual Jetty/Strolch/PostgreSQL session, snapshot and
+WebSocket; synthetic geography is appended through real transactions, without
+notification (durable polling). A real snapshot response is held while committing
+an event, proving stream replay covers the gap. Browser drops one committed frame
+before the application handler, then closes and replays after last applied cursor.
+Exact duplicate injected after highlight expiry never repulses. Ahead cursor is a
+modified snapshot response with a real server resync frame; expired cursor uses
+real atomic prefix pruning. First automatic recovery snapshot is a route-fixture
+503, second is real. Server clock injection advances beyond actual 30-minute
+maximum lifetime; no mocked expiry response. Cookie loss uses real cookie removal
+and session GET. Visibilitychange/document.hidden are explicitly simulated in
+headless Chromium while socket delivery/model application remain real. This tests
+the visibility contract, not OS background suspension or background rendering.
+No OS crash, TLS proxy, real network blackhole or production capacity claim.
+
+Initial review:
+python3 docs/verification/017-review.py > docs/verification/017-review-first.txt 2>&1
+Exit 1, stale packaged ViewerPage bytes after a source refinement. Repackaged before
+browser/review checks; no stale package claimed verified.
+
+Snapshot regression: /tmp/intruvia-017-snapshot-regression.cjs generated from
+015-browser-smoke.cjs replacing output prefix 015- with 017-snapshot-regression-.
+Browser prefix above with XDG directories /tmp/intruvia-017/snapshot-{config,cache},
+same Node command with that script; exit 0 (017-snapshot-regression.txt).
+Real login/reload/logout/denied role/cookie loss, malicious-looking inert text,
+zero/partial/unmapped data, popup keyboard action, no initial animation, empty/503
+fixtures, repeated rendering and mobile pass. Historical output files preserved.
+
+Live regression: updated only task-016 harness's obsolete manual-recovery status
+expectations to automatic recovery. Temporary script changes output prefix 016-
+to 017-live-regression-. Same browser prefix with XDG directories
+/tmp/intruvia-017/live-{config,cache}, Node executable and temporary script path.
+Initial exit 1 (017-live-regression-first.txt): overlapping-ring assertion expected
+two active three-second rings but found zero during concurrent browser suites.
+Retained failure; final verification runs this timing-sensitive suite serially.
+
+Fourth browser run exit 0, 017-browser-fourth.txt: adds 26-second healthy idle
+socket survival across successful session probes. No socket recreation occurs.
+Final wording refinement removes stale "Reloading" text from the persistent gap
+notice once live; notice now remains "Some older live updates are no longer
+available." Final clean verification/browser run recorded below.
+
+Final clean Maven command: same Java/Maven prefix and
+scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+Exit 0, 017-final-maven.txt: 75 tests (40 unit/HTTP + 35 PostgreSQL/application
+integration), zero failures/errors/skips; all five reactor projects SUCCESS.
+Final packaged frontend includes the reviewed idle-probe fix, deadline cleanup,
+separate persistent gap/away notices, and final notice wording.
+
+Final source/artifact review command:
+python3 docs/verification/017-review.py > docs/verification/017-review.txt 2>&1
+Exit 0. Native ES module boundaries, packaged JS/CSS/HTML bytes, first-party JS
+under 300 lines with tabs and <160-character lines, changed Java fixture style,
+75 report totals, installed/framework JAR identity, clean framework source
+identity, hardware and OS recorded. No new framework/bundler/browser dependency.
+English-only UI matches existing language support. New event text uses existing
+safe components; notice/count values use textContent and shared number formatter.
+Cleanup ownership is wired through refresh, logout, page destroy and pagehide.
+
+Integrity commands (all exit 0; every entry OK):
+sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/017-strolch.sha256
+sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar > docs/verification/017-artifacts.sha256
+sha256sum -c docs/verification/017-strolch.sha256 > docs/verification/017-integrity.txt
+sha256sum -c docs/verification/017-artifacts.sha256 >> docs/verification/017-integrity.txt
+Distribution: intruvia-app/target/intruvia/ (application JAR, lib/, runtime/).
+
+Unrun/out of scope: actual OS background suspension/render timing, production TLS
+or proxy, release capacity/two-browser sustained workload, true network blackhole,
+OS process kill/power loss, framework rebuild/tests, deployment/restore rehearsal.
+Session expiry is real validator behavior under injected server clock, not a
+30-minute wall-clock wait. Visibility contract is browser-side fault injection,
+not a claim of background animation guarantees. No check unrun is claimed passed.
+
+Final browser command: same prefix and Node invocation of 017-browser.cjs.
+Exit 0, 017-browser-final.txt; Chromium 156.0.8078.79. All recovery criteria pass,
+including eight jitter-delay bounds and single-timer cleanup, snapshot/stream gap,
+disconnect before commit and after commit before model application, duplicate
+suppression, lost hello, healthy idle socket, actual prefix pruning, ahead cursor,
+503 recovery read followed by automatic retry, empty recovered snapshot without
+pulses, pending-reconnect logout cancellation, cookie-loss session probe and
+clock-driven real expiry/login navigation. Hidden-visibility contract retains two
+new events and shows count on return. No browser storage, external requests or
+page script errors. Reviewed 017-recovered.png: live status, persistent gap notice,
+separate away count, one mapped synthetic event and readable rolling-window label.
+
+Serial live regression command: same Node executable, environment as described
+above, /tmp/intruvia-017-live-regression.cjs (generated from the updated 016 harness
+with 017-live-regression- output prefix). Exit 0, 017-live-regression.txt.
+Independent overlapping rings/identities, three-second lifetime (3009.9 ms), no
+repulse, unmapped count/list, 1000-event eviction, off-screen keyboard action,
+reduced motion, refresh/logout cleanup, full-width sequence, malformed-frame
+resnapshot, automatic reconnect and mobile pass. Thirty foreground arrivals at
+10/s give receipt-to-next-requestAnimationFrame p95 44.3 ms <= 100 ms. This is a
+small regression sample/frame-opportunity proxy; no sustained-load, scanout or
+commit-to-highlight measurement claim. Earlier concurrent-suite failure retained.
+
+Cleanup commands, all exit 0 (017-cleanup.txt):
+docker exec intruvia-017-browser psql -U intruvia_test -d intruvia_test -tAc "SELECT count(*) FROM pg_database WHERE datname LIKE 'intruvia_test_%'"
+Returned 0: fixture databases dropped, including failed attempts.
+docker rm -f intruvia-017-browser
+Removed disposable container.
+docker ps --filter name=intruvia --format '{{.Names}}'
+No remaining Intruvia test container. Maven verification cleaned its own containers.
+
+Minor inspections: guessed api/session.js and web-module StaticPageServlet.java
+paths did not exist; actual api/viewer.js and app-module servlet found/read.
+No required guideline missing. No permissions, decisions or dependencies blocked.
+
+Final ledger command:
+python3 docs/verification/017-ledger-check.py > docs/verification/017-ledger-check.txt
+Exit 0: 22 rows, only 017 changed status, DONE 17/TODO 5/IN_PROGRESS 0/BLOCKED 0,
+summary/date/dependencies consistent, next eligible 018 (not started).
+git diff --check
+Exit 0; final artifact checks also exit 0 (017-final-checks.txt). Text logs trimmed
+only for trailing whitespace/EOF blank lines, preserving all results/failures.
+Exactly task 017 DONE; no commit/push/deployment or other task started.

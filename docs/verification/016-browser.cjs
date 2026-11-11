@@ -153,12 +153,10 @@ const assert = require('node:assert/strict');
 		await page.evaluate(() => window.testSocket.dispatchEvent(new MessageEvent('message', {
 			data: JSON.stringify({version: 2, type: 'event.created'})
 		})));
-		await page.getByText('Live update could not be applied. Refresh the snapshot.', {exact: true}).waitFor();
-		await page.getByRole('button', {name: 'Refresh snapshot'}).click();
+		await page.getByText('Some older live updates are no longer available.', {exact: true}).waitFor();
 		await page.getByText('Live · Showing recent events.', {exact: true}).waitFor();
 		await page.evaluate(() => window.testSocket.close());
-		await page.getByText('Offline · Refresh the snapshot to reconnect.', {exact: true}).waitFor();
-		await page.getByRole('button', {name: 'Refresh snapshot'}).click();
+		await page.getByText('Reconnecting · Showing previously received events.', {exact: true}).waitFor();
 		await page.getByText('Live · Showing recent events.', {exact: true}).waitFor();
 		await page.getByRole('button', {name: 'Log out', exact: true}).click();
 		await page.locator('#login:not([hidden])').waitFor();
@@ -170,7 +168,7 @@ const assert = require('node:assert/strict');
 			checks: ['real session/snapshot/WebSocket durable polling', 'no snapshot pulses', 'independent overlapping rings/count/identities',
 				'keyboard show-on-map and unchanged viewport on arrival', 'unmapped list highlight/count', '1000-event eviction',
 				'no repulse during or after three seconds', 'static reduced-motion halo', 'refresh and logout cleanup',
-				'full-width sequences', 'invalid-frame and offline states with manual recovery', 'mobile', 'no external requests or script errors']}, null, 2));
+				'full-width sequences', 'invalid-frame snapshot recovery and automatic reconnect', 'mobile', 'no external requests or script errors']}, null, 2));
 	} finally {
 		await browser?.close();
 		fixture.stdin.end();

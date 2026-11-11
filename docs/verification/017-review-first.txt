@@ -1,0 +1,12 @@
+Packaged bytes and style OK: intruvia-web/src/main/resources/META-INF/resources/js/app.js 61 lines
+Packaged bytes and style OK: intruvia-web/src/main/resources/META-INF/resources/js/api/transport.js 19 lines
+Packaged bytes and style OK: intruvia-web/src/main/resources/META-INF/resources/js/api/viewer.js 8 lines
+Packaged bytes and style OK: intruvia-web/src/main/resources/META-INF/resources/js/api/stream.js 18 lines
+Packaged bytes and style OK: intruvia-web/src/main/resources/META-INF/resources/js/components/eventDetails.js 22 lines
+Packaged bytes and style OK: intruvia-web/src/main/resources/META-INF/resources/js/components/EventMap.js 94 lines
+Packaged bytes and style OK: intruvia-web/src/main/resources/META-INF/resources/js/components/EventList.js 64 lines
+Traceback (most recent call last):
+  File "/home/eitch/src/git/intruvia/docs/verification/017-review.py", line 16, in <module>
+    assert jar.read('META-INF/resources/' + str(source.relative_to(web))) == source.read_bytes(), source
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: /home/eitch/src/git/intruvia/intruvia-web/src/main/resources/META-INF/resources/js/pages/ViewerPage.js

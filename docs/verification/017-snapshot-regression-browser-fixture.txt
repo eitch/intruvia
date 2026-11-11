@@ -1,0 +1,242 @@
+2026-11-11 13:17:41,003 INFO  li.strolch.agent.api.StrolchAgent - Setup Agent Intruvia:production
+2026-11-11 13:17:42,793 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Initializing 11 Strolch Components...
+2026-11-11 13:17:42,802 INFO  l.s.r.c.DbConnectionBuilder - Not configuring custom XmlFactorFactory on datasource for realm: defaultRealm
+2026-11-11 13:17:42,802 INFO  l.s.r.c.DbConnectionBuilder - Preparing HikariDataSource with a fail timeout of 1ms for realm defaultRealm to jdbc:postgresql://127.0.0.1:32777/intruvia_test_a180e87bdf8447818c7c6779dd8df836
+2026-11-11 13:17:42,817 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Starting...
+2026-11-11 13:17:42,925 INFO  com.zaxxer.hikari.pool.HikariPool - defaultRealm - Added connection org.postgresql.jdbc.PgConnection@906d29b
+2026-11-11 13:17:42,928 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Start completed.
+2026-11-11 13:17:42,929 INFO  l.s.r.c.DbConnectionBuilder - [defaultRealm] PostgreSQL Connection pool to jdbc:postgresql://127.0.0.1:32777/intruvia_test_a180e87bdf8447818c7c6779dd8df836 has a maximum pool size of 2 connections
+2026-11-11 13:17:43,061 INFO  l.s.p.handler.XmlPersistenceHandler - Read 6 Users, 0 Groups, 7 Roles, 0 Tokens, 0 Sessions
+2026-11-11 13:17:43,111 INFO  l.s.p.h.DefaultPrivilegeHandler - Persisting of sessions not enabled, so not loading!.
+2026-11-11 13:17:43,112 INFO  l.s.agent.impl.InternalStrolchRealm - Initializing Realm defaultRealm...
+2026-11-11 13:17:43,136 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 11 Strolch Components have been initialized. Took 343ms
+2026-11-11 13:17:43,150 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Starting 11 Strolch Components...
+2026-11-11 13:17:43,154 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Checking Schema version for: HikariDataSource for realm defaultRealm for intruvia_test at jdbc:postgresql://127.0.0.1:32777/intruvia_test_a180e87bdf8447818c7c6779dd8df836
+2026-11-11 13:17:43,166 INFO  li.strolch.db.DbSchemaVersionCheck - Connected to PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2)
+2026-11-11 13:17:43,204 ERROR li.strolch.db.DbSchemaVersionCheck - Failed to query version for app strolch: PSQLException: ERROR: relation "db_version" does not exist
+  Position: 25
+2026-11-11 13:17:43,206 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Creating initial schema version 0.9.10...
+2026-11-11 13:17:43,236 INFO  li.strolch.db.DbSchemaVersionCheck - [strolch:defaultRealm] Successfully created schema with version 0.9.10
+2026-11-11 13:17:43,240 INFO  l.strolch.agent.api.StrolchComponent - Data Initialization not enabled as 'allowDataInitOnSchemaCreate' is false!
+2026-11-11 13:17:43,274 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-11 13:17:43,452 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm...
+2026-11-11 13:17:43,681 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 190ms
+2026-11-11 13:17:43,684 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Resources using paging from DB...
+2026-11-11 13:17:43,684 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Resources in parallel took 193ms.
+2026-11-11 13:17:43,687 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 2ms
+2026-11-11 13:17:43,687 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Orders using paging from DB...
+2026-11-11 13:17:43,687 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Orders in parallel took 3ms.
+2026-11-11 13:17:43,690 INFO  l.s.agent.impl.CachedRealmLoader - Queried 0 types from DB took 2ms
+2026-11-11 13:17:43,690 INFO  l.s.agent.impl.CachedRealmLoader - Loading 0 Activities using paging from DB...
+2026-11-11 13:17:43,690 INFO  l.s.agent.impl.CachedRealmLoader - Loading of 0 Activities in parallel took 3ms.
+2026-11-11 13:17:43,691 INFO  l.s.agent.impl.CachedRealmLoader - Loading Model from Database for realm defaultRealm took 239ms.
+2026-11-11 13:17:43,691 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Orders
+2026-11-11 13:17:43,691 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Resources
+2026-11-11 13:17:43,691 INFO  l.s.agent.impl.CachedRealmLoader - Loaded 0 Activities
+2026-11-11 13:17:43,697 INFO  l.s.r.s.DefaultStrolchSessionHandler - Restored 0 sessions of which 0 had timed out and were removed.
+2026-11-11 13:17:43,706 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=289us, action=li.strolch.migrations.CurrentMigrationVersionQuery
+2026-11-11 13:17:43,710 INFO  li.strolch.migrations.Migrations - [defaultRealm] Running code migration 0.0.1 li.intruvia.core.persistence.InitialModelMigration
+2026-11-11 13:17:43,719 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 5ms
+2026-11-11 13:17:43,777 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=66ms, action=li.intruvia.core.persistence.InitialModelMigration
+2026-11-11 13:17:43,777 INFO  li.strolch.migrations.Migrations - Performed 1 migrations on 1 realms.
+2026-11-11 13:17:43,781 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:43,782 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=4ms, action=VerifyModel
+2026-11-11 13:17:43,810 INFO  l.s.a.impl.ComponentContainerImpl - System: OS: Linux 7.3.1-1-cachyos Arch: amd64 on Java Eclipse Adoptium 25.0.5 CPU Cores: 16
+2026-11-11 13:17:43,814 INFO  l.s.a.impl.ComponentContainerImpl - Memory: System Memory available 16.7 GB,  Total: 201.3 MB,  Used: 14.1 MB,  Free: 187.3 MB
+2026-11-11 13:17:43,814 INFO  l.s.a.impl.ComponentContainerImpl - Using locale en with timezone Europe/Zurich
+2026-11-11 13:17:43,814 INFO  l.s.a.impl.ComponentContainerImpl - file.encoding: UTF-8 / sun.jnu.encoding UTF-8
+2026-11-11 13:17:43,817 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 11 Strolch Components started for version 0.0.1. Took 664ms. Strolch is now ready to be used. Have fun =))
+2026-11-11 13:17:43,820 INFO  org.eclipse.jetty.server.Server - jetty-12.0.16; built: 2024-12-09T21:02:54.535Z; git: c3f88bafb4e393f23204dc14dc57b042e84debc7; jvm 25.0.5+8-LTS
+2026-11-11 13:17:43,858 INFO  o.e.j.server.handler.ContextHandler - Started oeje10s.ServletContextHandler@740abb5{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@560cbf1a{STARTED}}
+Nov 11, 2026 1:17:44 PM org.glassfish.jersey.internal.inject.Providers checkProviderRuntime
+WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+Nov 11, 2026 1:17:44 PM org.glassfish.jersey.internal.inject.Providers checkProviderRuntime
+WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+Nov 11, 2026 1:17:44 PM org.glassfish.jersey.internal.inject.Providers checkProviderRuntime
+WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+2026-11-11 13:17:44,303 INFO  o.e.j.e.s.ServletContextHandler - Started oeje10s.ServletContextHandler@740abb5{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@560cbf1a{STARTED}}
+2026-11-11 13:17:44,313 INFO  o.e.jetty.server.AbstractConnector - Started ServerConnector@1108adc8{HTTP/1.1, (http/1.1)}{127.0.0.1:37727}
+2026-11-11 13:17:44,320 INFO  org.eclipse.jetty.server.Server - Started oejs.Server@545de5a4{STARTING}[12.0.16,sto=5000] @6521ms
+2026-11-11 13:17:44,321 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:37727 (Strolch STARTED)
+2026-11-11 13:17:44,334 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:47,750 INFO  l.s.p.api.AbstractTransaction - TX user=agent, realm=defaultRealm, took=3s, action=BrowserFixture, close=3s
+BROWSER_FIXTURE=http://127.0.0.1:37727
+2026-11-11 13:17:50,046 INFO  l.s.p.h.DefaultPrivilegeHandler - User viewer authenticated with password: Certificate [sessionId=aa0bdebd-7d8f-4c9f-9ce0-04e8cff382a4, username=viewer, firstname=Test, lastname=Viewer, source=intruvia-viewer, locale=en_GB]
+2026-11-11 13:17:50,089 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=19ms, action=Login
+2026-11-11 13:17:50,090 INFO  l.s.r.s.DefaultStrolchSessionHandler - 1 sessions currently active.
+2026-11-11 13:17:50,176 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 3ms
+2026-11-11 13:17:50,209 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:50,270 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=97ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:50,271 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 99ms
+2026-11-11 13:17:50,853 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:50,859 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:50,860 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=10ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:50,860 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 11ms
+2026-11-11 13:17:50,874 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:50,885 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 3ms
+2026-11-11 13:17:50,885 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=14ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:50,886 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 14ms
+2026-11-11 13:17:50,891 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 3ms
+2026-11-11 13:17:50,896 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:50,900 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=11ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:50,900 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 12ms
+2026-11-11 13:17:51,154 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:51,160 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:51,160 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=9ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:51,160 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 9ms
+2026-11-11 13:17:51,424 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 12ms
+2026-11-11 13:17:51,431 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 4ms
+2026-11-11 13:17:51,432 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=20ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:51,433 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 21ms
+2026-11-11 13:17:51,694 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 4ms
+2026-11-11 13:17:51,712 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 13ms
+2026-11-11 13:17:51,713 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=23ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:51,715 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 24ms
+2026-11-11 13:17:51,975 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 6ms
+2026-11-11 13:17:51,979 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:51,979 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=11ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:51,980 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 12ms
+2026-11-11 13:17:52,257 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 20ms
+2026-11-11 13:17:52,270 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:52,270 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=33ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:52,271 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 34ms
+2026-11-11 13:17:52,543 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 20ms
+2026-11-11 13:17:52,563 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 4ms
+2026-11-11 13:17:52,564 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=42ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:52,565 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 42ms
+2026-11-11 13:17:52,825 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 5ms
+2026-11-11 13:17:52,841 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 5ms
+2026-11-11 13:17:52,841 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=22ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:52,842 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 23ms
+2026-11-11 13:17:53,095 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:53,113 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:53,114 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=21ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:53,114 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 21ms
+2026-11-11 13:17:53,371 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 6ms
+2026-11-11 13:17:53,394 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 2ms
+2026-11-11 13:17:53,395 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=30ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:53,395 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 30ms
+2026-11-11 13:17:53,649 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:53,671 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 11ms
+2026-11-11 13:17:53,672 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=25ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:53,672 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 25ms
+2026-11-11 13:17:53,926 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:53,929 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:53,929 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=5ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:53,929 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 6ms
+2026-11-11 13:17:54,190 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 6ms
+2026-11-11 13:17:54,196 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 817us
+2026-11-11 13:17:54,197 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=15ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:54,197 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 16ms
+2026-11-11 13:17:54,455 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 3ms
+2026-11-11 13:17:54,459 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:54,459 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=11ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:54,459 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 11ms
+2026-11-11 13:17:54,755 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 41ms
+2026-11-11 13:17:54,816 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 60ms
+2026-11-11 13:17:54,817 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=103ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:54,817 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 106ms
+2026-11-11 13:17:55,069 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 953us
+2026-11-11 13:17:55,071 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 780us
+2026-11-11 13:17:55,072 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=4ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:55,072 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 5ms
+2026-11-11 13:17:55,384 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 60ms
+2026-11-11 13:17:55,434 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 9ms
+2026-11-11 13:17:55,435 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=111ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:55,435 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 112ms
+2026-11-11 13:17:55,690 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 755us
+2026-11-11 13:17:55,700 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:55,700 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=11ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:55,700 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 11ms
+2026-11-11 13:17:56,425 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 812us
+2026-11-11 13:17:56,427 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 534us
+2026-11-11 13:17:56,541 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=116ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:56,541 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 117ms
+2026-11-11 13:17:58,370 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 90ms
+2026-11-11 13:17:58,464 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 51ms
+2026-11-11 13:17:58,465 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=244ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:58,465 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 256ms
+2026-11-11 13:17:58,594 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 24ms
+2026-11-11 13:17:58,758 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 96ms
+2026-11-11 13:17:58,758 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=189ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:58,759 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 293ms
+2026-11-11 13:17:58,851 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 92ms
+2026-11-11 13:17:58,903 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 668us
+2026-11-11 13:17:58,903 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=144ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:58,903 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 144ms
+2026-11-11 13:17:59,157 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:59,162 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 879us
+2026-11-11 13:17:59,162 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=8ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:59,163 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 8ms
+2026-11-11 13:17:59,572 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 979us
+2026-11-11 13:17:59,576 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:59,576 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=5ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:59,577 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 6ms
+2026-11-11 13:17:59,579 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:59,582 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:59,583 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=5ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:59,583 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 5ms
+2026-11-11 13:17:59,665 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 1ms
+2026-11-11 13:17:59,668 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 916us
+2026-11-11 13:17:59,668 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=5ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:59,668 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 5ms
+2026-11-11 13:17:59,675 INFO  l.s.p.h.DefaultPrivilegeHandler - User viewer logged out.
+2026-11-11 13:17:59,678 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=2ms, action=Logout
+2026-11-11 13:17:59,771 INFO  l.s.p.h.DefaultPrivilegeHandler - User denied authenticated with password: Certificate [sessionId=07ae2af7-a8e6-4964-86c2-2c9e019da898, username=denied, firstname=Test, lastname=Viewer, source=intruvia-viewer, locale=en_GB]
+2026-11-11 13:17:59,787 INFO  l.s.p.api.AbstractTransaction - TX user=denied, realm=defaultRealm, took=13ms, action=Login
+2026-11-11 13:17:59,789 INFO  l.s.r.s.DefaultStrolchSessionHandler - 1 sessions currently active.
+2026-11-11 13:17:59,793 INFO  l.s.p.h.DefaultPrivilegeHandler - User denied logged out.
+2026-11-11 13:17:59,802 INFO  l.s.p.api.AbstractTransaction - TX user=denied, realm=defaultRealm, took=8ms, action=Logout
+2026-11-11 13:17:59,938 INFO  l.s.p.h.DefaultPrivilegeHandler - User viewer authenticated with password: Certificate [sessionId=39afdad9-46fa-4e76-8f6a-8fddfdba964e, username=viewer, firstname=Test, lastname=Viewer, source=intruvia-viewer, locale=en_GB]
+2026-11-11 13:17:59,943 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=4ms, action=Login
+2026-11-11 13:17:59,943 INFO  l.s.r.s.DefaultStrolchSessionHandler - 1 sessions currently active.
+2026-11-11 13:17:59,951 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 825us
+2026-11-11 13:17:59,954 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 953us
+2026-11-11 13:17:59,971 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=21ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:17:59,971 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 22ms
+2026-11-11 13:18:00,086 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 876us
+2026-11-11 13:18:00,087 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 316us
+2026-11-11 13:18:00,088 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=3ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,088 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 3ms
+2026-11-11 13:18:00,089 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 289us
+2026-11-11 13:18:00,089 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 261us
+2026-11-11 13:18:00,089 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=1ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,090 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 1ms
+2026-11-11 13:18:00,170 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 495us
+2026-11-11 13:18:00,171 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 323us
+2026-11-11 13:18:00,171 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=2ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,171 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 2ms
+2026-11-11 13:18:00,244 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 869us
+2026-11-11 13:18:00,251 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 4ms
+2026-11-11 13:18:00,269 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=27ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,270 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 27ms
+2026-11-11 13:18:00,411 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 901us
+2026-11-11 13:18:00,413 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 764us
+2026-11-11 13:18:00,413 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=4ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,414 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 4ms
+2026-11-11 13:18:00,415 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 522us
+2026-11-11 13:18:00,418 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 475us
+2026-11-11 13:18:00,418 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=4ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,418 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 4ms
+2026-11-11 13:18:00,422 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 388us
+2026-11-11 13:18:00,423 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 294us
+2026-11-11 13:18:00,423 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=1ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,423 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 2ms
+2026-11-11 13:18:00,675 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 865us
+2026-11-11 13:18:00,676 INFO  l.s.model.xml.XmlModelSaxReader - SAX parsed stream took 685us
+2026-11-11 13:18:00,677 INFO  l.s.p.api.AbstractTransaction - TX user=viewer, realm=defaultRealm, took=3ms, action=li.intruvia.core.read.EventReadService
+2026-11-11 13:18:00,677 INFO  l.strolch.agent.api.StrolchComponent - User viewer: Service li.intruvia.core.read.EventReadService took 4ms
+2026-11-11 13:18:01,041 INFO  org.eclipse.jetty.server.Server - Stopped oejs.Server@545de5a4{STOPPING}[12.0.16,sto=5000]
+2026-11-11 13:18:01,041 INFO  org.eclipse.jetty.server.Server - Shutdown oejs.Server@545de5a4{STOPPING}[12.0.16,sto=5000]
+2026-11-11 13:18:01,046 INFO  o.e.jetty.server.AbstractConnector - Stopped ServerConnector@1108adc8{HTTP/1.1, (http/1.1)}{127.0.0.1:37727}
+2026-11-11 13:18:01,052 INFO  o.e.j.e.s.ServletContextHandler - Stopped oeje10s.ServletContextHandler@740abb5{ROOT,/,b=null,a=AVAILABLE,h=oeje10s.ServletHandler@560cbf1a{STOPPED}}
+2026-11-11 13:18:01,053 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Stopping 11 Strolch Components...
+2026-11-11 13:18:01,054 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 11 Strolch Components have been stopped. Took 823us
+2026-11-11 13:18:01,054 INFO  li.strolch.utils.ExecutorPool - Shutting down executor SessionHandler with 1 tasks
+2026-11-11 13:18:01,055 INFO  li.strolch.utils.ExecutorPool - Shutting down executor Agent with 1 tasks
+2026-11-11 13:18:01,055 INFO  li.strolch.utils.ExecutorPool - Shutting down executor LockingHandler with 1 tasks
+2026-11-11 13:18:01,055 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production Destroying 11 Strolch Components...
+2026-11-11 13:18:01,056 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown initiated...
+2026-11-11 13:18:01,057 INFO  com.zaxxer.hikari.HikariDataSource - defaultRealm - Shutdown completed.
+2026-11-11 13:18:01,058 INFO  l.s.a.impl.ComponentContainerImpl - Intruvia:production All 11 Strolch Components have been destroyed! Took 2ms
+2026-11-11 13:18:01,058 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED

@@ -1,0 +1,7 @@
+locator.waitFor: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByText('Offline · Retrying snapshot recovery. Previously received events remain visible.', { exact: true }) to be visible[22m
+
+    at /home/eitch/src/git/intruvia/docs/verification/017-browser.cjs:133:123 {
+  name: 'TimeoutError'
+}

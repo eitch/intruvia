@@ -1,0 +1,22 @@
+{
+  "browser": "156.0.8078.79",
+  "result": "PASS",
+  "events": 1000,
+  "markers": 167,
+  "checks": [
+    "real login/session reload/logout/denied role/expired cookie",
+    "wrong password",
+    "bounded snapshot, partial and all unmapped reasons, zero coordinates, details popup keyboard action",
+    "inert HTML-like text, no browser credentials stored, no initial animations",
+    "refresh error preserves data, empty rerender clears markers, repeated map creation",
+    "mobile layout",
+    "no external network requests or JavaScript errors",
+    "CSRF headers"
+  ],
+  "screenshots": [
+    "017-snapshot-regression-login.png",
+    "017-snapshot-regression-snapshot.png",
+    "017-snapshot-regression-empty.png",
+    "017-snapshot-regression-mobile.png"
+  ]
+}
