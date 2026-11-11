@@ -38,7 +38,26 @@ public final class ViewerBrowserFixture {
 			System.out.println("BROWSER_FIXTURE=" + origin);
 			System.out.flush();
 			// The harness closes stdin to release both the application and disposable database.
-			while (System.in.read() != -1) { }
+			try (var input = new java.io.BufferedReader(new java.io.InputStreamReader(System.in))) {
+				long sequence = 1005;
+				String command;
+				while ((command = input.readLine()) != null) {
+					final long next = ++sequence;
+					final boolean mapped = !command.equals("unmapped");
+					app.agent().getPrivilegeHandler().runAsAgent(ctx -> {
+						try (var tx = app.agent().openTx(ctx.getCertificate(), "BrowserLiveFixture", false).rollbackOnFailure()) {
+							EventStreamLock.acquire(tx);
+							var repository = new EventRepository();
+							var geo = new SecurityEvent.Geo(mapped ? GeoStatus.FOUND : GeoStatus.NON_PUBLIC, null, null, null, null,
+									mapped ? 0.0 : null, mapped ? 0.0 : null, null, null, null, null, null);
+							var payload = new Fail2banEvent(UUID.randomUUID(), Instant.now(), "2001:db8::42", "live-fixture", null);
+							repository.addEvent(tx, payload.toEvent("live-fixture-" + next, UUID.randomUUID(), next, Instant.now(), geo));
+							repository.updateStreamState(tx, new EventStreamState(Long.toString(next), "0"));
+							tx.commitOnClose();
+						}
+					});
+				}
+			}
 		}
 	}
 }
