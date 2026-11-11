@@ -375,7 +375,7 @@ global request bucket and Jetty connection cap.
 See the [protocol, lifecycle and recovery contract](docs/architecture/014-event-stream.md).
 Verify with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
-Live browser highlighting and automatic reconnect remain tasks 016–017.
+Live browser highlighting is available below; automatic reconnect remains task 017.
 
 ## Snapshot viewer
 
@@ -386,8 +386,16 @@ metadata, and **Show on map** for mapped events. Logout clears the displayed eve
 Existing sessions are restored after reload; expired sessions return to login on
 the next read. Counts describe the visible window, not all-time activity.
 
-Initial snapshots have no live pulses. The page explicitly reports that live
-updates are not connected; live highlighting and reconnect are tasks 016/017.
+Initial snapshots have no live pulses. After loading a snapshot, the page connects
+its authenticated live stream. Each new mapped event gets an independent three-second
+pulse; shared locations show a count and concentric/staggered rings. With reduced
+motion, the indication is a static high-contrast halo. New list rows highlight for
+three seconds, including unmapped events. Arrivals preserve the map view; use
+**Show on map** to find an off-screen event. Oldest events and their markers are
+evicted to keep the rolling window at 1000. Repeated frames do not highlight twice.
+If the stream closes or requests a new snapshot, the status gives a manual refresh
+action. Automatic reconnect, retention resynchronization and background-tab counts
+remain task 017. See [highlight design and measured browser checks](docs/architecture/016-live-highlights.md).
 Missing locations remain in the list with a reason. A degraded GeoIP notice refers
 to those stored event results, rather than current database-reader health. GeoIP
 is an approximate network location, not a person's physical location.
