@@ -51,6 +51,17 @@ public class ApplicationIT {
 				assertTrue(page.body().contains("<h1>Intruvia</h1>"));
 				assertTrue(page.headers().firstValue("Content-Type").orElseThrow().startsWith("text/html"));
 				assertEquals(page.body(), get(client, port, "/index.html").body());
+				for (String path : new String[]{"/js/app.js", "/js/pages/ViewerPage.js", "/viewer.css",
+						"/vendor/leaflet/leaflet.js", "/vendor/leaflet/leaflet.css", "/data/world-110m.geojson"}) {
+					var asset = get(client, port, path);
+					assertEquals(path, 200, asset.statusCode());
+					assertEquals("nosniff", asset.headers().firstValue("X-Content-Type-Options").orElseThrow());
+					assertTrue(asset.headers().firstValue("Content-Security-Policy").orElseThrow().contains("script-src 'self'"));
+					assertFalse(asset.headers().firstValue("Content-Type").orElseThrow().startsWith("text/html"));
+				}
+				for (String path : new String[]{"/js/../config/StrolchConfiguration.xml", "/data/NOTICE.txt",
+						"/js/missing.js", "/vendor/leaflet/../../runtime/config/PrivilegeUsers.xml"})
+					assertEquals(path, 404, get(client, port, path).statusCode());
 				HttpResponse<String> health = get(client, port, "/health/live");
 				assertEquals(200, health.statusCode());
 				assertEquals("{\"status\":\"UP\"}", health.body());
