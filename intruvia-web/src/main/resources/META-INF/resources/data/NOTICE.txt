@@ -1,0 +1,11 @@
+Natural Earth vector v5.1.2 — ne_110m_admin_0_countries (1:110 million).
+Source: https://github.com/nvkelso/natural-earth-vector/blob/v5.1.2/geojson/ne_110m_admin_0_countries.geojson
+Terms: https://www.naturalearthdata.com/about/terms-of-use/
+Natural Earth data is public domain. No permission is needed to use Natural Earth.
+Intruvia preserves the geometry and removes feature properties to reduce the local asset.
+Boundaries and names do not imply endorsement. This layer is a visual backdrop, not a legal boundary authority.
+
+Leaflet 1.9.4: https://github.com/Leaflet/Leaflet/tree/v1.9.4
+Locally packaged distribution from https://registry.npmjs.org/leaflet/-/leaflet-1.9.4.tgz
+BSD-2-Clause license and original copyright notices are in ../vendor/leaflet/LICENSE and leaflet.js.
+No runtime CDN, external tiles, or map service is used.
