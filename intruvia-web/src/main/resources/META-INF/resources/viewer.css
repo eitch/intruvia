@@ -1,0 +1,30 @@
+/* SPDX-License-Identifier: AGPL-3.0-only */
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #153044; background: #edf2f5; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+header { background: #112d40; color: #fff; padding: 1.3rem 2rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+h1 { margin: 0; font-size: 1.8rem; letter-spacing: .03em; }
+header p { margin: .4rem 0 0; color: #d3e2ed; }
+main { max-width: 1700px; margin: auto; padding: 1rem 2rem; }
+button, input { font: inherit; border: 1px solid #6a8090; border-radius: .3rem; padding: .6rem .8rem; }
+button { color: #fff; background: #19526b; cursor: pointer; }
+button:disabled { opacity: .65; cursor: wait; }
+a { color: #164d70; }
+:focus-visible { outline: 3px solid #d6850b; outline-offset: 3px; }
+[hidden] { display: none !important; }
+#login { max-width: 28rem; padding: 1.5rem; background: white; border-radius: .6rem; margin: 3rem auto; }
+label { display: grid; gap: .4rem; margin-bottom: 1rem; }
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+h2 { font-size: 1.3rem; }
+.workspace { display: grid; grid-template-columns: minmax(0, 2fr) minmax(20rem, 1fr); gap: 1.4rem; }
+#map { height: 62vh; min-height: 340px; background: #d9e9f1; border: 1px solid #6a8090; border-radius: .5rem; }
+.caption { font-size: .8rem; line-height: 1.5; color: #3c5262; }
+.recent { background: #fff; border: 1px solid #ccd6df; border-radius: .5rem; padding: 0 1rem 1rem; }
+#events { list-style: none; padding: 0; margin: 0; max-height: 62vh; overflow: auto; }
+#events li { border-top: 1px solid #d2dce4; padding: .9rem .2rem; overflow-wrap: anywhere; }
+#events li p { margin: .3rem 0; font-size: .9rem; }
+#events button { margin-top: .4rem; font-size: .85rem; }
+dl { display: grid; grid-template-columns: auto 1fr; gap: .3rem .7rem; max-width: 320px; overflow-wrap: anywhere; }
+dt { font-weight: 600; } dd { margin: 0; }
+#geo-notice:not(:empty) { border-left: 4px solid #a05b00; padding: .6rem; background: #fff3d8; }
+@media (max-width: 900px) { .workspace { grid-template-columns: 1fr; } header, main { padding: 1rem; } #map { height: 50vh; } }
