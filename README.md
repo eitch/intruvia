@@ -74,7 +74,7 @@ JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH scripts/verify-postgres
 /path/to/jdk-25/bin/java -jar intruvia-app/target/intruvia/intruvia-app-0.0.1.jar /path/to/runtime 8080
 ```
 
-Open `http://127.0.0.1:8080/` for the packaged local landing page.
+Open `http://127.0.0.1:8080/` for the packaged viewer login and world-map snapshot.
 `http://127.0.0.1:8080/health/live` returns `{"status":"UP"}`.
 Stop with Ctrl+C or SIGTERM; Jetty stops before Strolch is stopped and destroyed.
 The port is optional (default 8080); `0` selects an ephemeral port printed in the log.
@@ -107,8 +107,8 @@ checksums with verification evidence: local snapshot results do not verify the o
 timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
 
 The application binds only to loopback and now requires durable PostgreSQL storage.
-The ingestion HTTP endpoint and viewer sessions are available. The viewer UI and
-readiness endpoint remain pending. The packaged `production` environment rejects
+The ingestion HTTP endpoint, viewer sessions and snapshot viewer are available. The
+readiness endpoint remains pending. The packaged `production` environment rejects
 transient stores; there is no memory-only fallback.
 
 `mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
@@ -299,7 +299,7 @@ with the same CSRF header and Origin. Both login and session checks return only
 invalidates the shared REST/future WebSocket validator immediately. Authorization
 headers and machine PATs cannot authenticate viewer routes.
 
-The login/map UI is task 015; the WebSocket endpoint is described below.
+The login/map snapshot UI is available at `/`; the WebSocket endpoint is described below.
 Verify sessions and the full regression suite with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
 
@@ -375,4 +375,24 @@ global request bucket and Jetty connection cap.
 See the [protocol, lifecycle and recovery contract](docs/architecture/014-event-stream.md).
 Verify with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
-The browser map and automatic reconnect UI remain tasks 015–017.
+Live browser highlighting and automatic reconnect remain tasks 016–017.
+
+## Snapshot viewer
+
+Open `/` on the configured viewer origin and sign in with a provisioned Viewer
+account. The map and keyboard-accessible recent list show a rolling window of at
+most 1000 events. Use **Refresh snapshot** to update it, **Event details** for full
+metadata, and **Show on map** for mapped events. Logout clears the displayed events.
+Existing sessions are restored after reload; expired sessions return to login on
+the next read. Counts describe the visible window, not all-time activity.
+
+Initial snapshots have no live pulses. The page explicitly reports that live
+updates are not connected; live highlighting and reconnect are tasks 016/017.
+Missing locations remain in the list with a reason. A degraded GeoIP notice refers
+to those stored event results, rather than current database-reader health. GeoIP
+is an approximate network location, not a person's physical location.
+
+Leaflet 1.9.4 (BSD-2-Clause) and Natural Earth v5.1.2 public-domain 1:110m boundaries
+are packaged locally, with attribution below the map. No tile provider, API key,
+CDN or frontend build is needed. See the [viewer design, provenance and browser
+verification procedure](docs/architecture/015-snapshot-viewer.md).
