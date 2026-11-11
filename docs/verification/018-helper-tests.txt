@@ -1,0 +1,14 @@
+test_cli_json_encoding_and_unique_invocations (test_notify.NotifyTest.test_cli_json_encoding_and_unique_invocations) ... ok
+test_no_retry_for_other_4xx_or_redirect (test_notify.NotifyTest.test_no_retry_for_other_4xx_or_redirect) ... ok
+test_protected_token_file (test_notify.NotifyTest.test_protected_token_file) ... ok
+test_real_overall_deadline_with_trickled_headers (test_notify.NotifyTest.test_real_overall_deadline_with_trickled_headers) ... ok
+test_retry_after_and_deadline_refusal (test_notify.NotifyTest.test_retry_after_and_deadline_refusal) ... ok
+test_retry_statuses_and_network_reuse_exact_payload (test_notify.NotifyTest.test_retry_statuses_and_network_reuse_exact_payload) ... ok
+test_three_attempt_bound (test_notify.NotifyTest.test_three_attempt_bound) ... ok
+test_validation (test_notify.NotifyTest.test_validation) ... ok
+test_verified_tls_and_endpoint_restrictions (test_notify.NotifyTest.test_verified_tls_and_endpoint_restrictions) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 37.021s
+
+OK

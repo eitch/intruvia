@@ -1,0 +1,6 @@
+test_outer_deadline_includes_setup_and_is_not_extended (test_notify.NotifyTest.test_outer_deadline_includes_setup_and_is_not_extended) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.081s
+
+OK

@@ -1,0 +1,9 @@
+Jail name '-x; $(touch /tmp/intruvia-018-INJECTION) `id` " \\ ü' might be too long and some commands might not function correctly. Please shorten
+Fail2ban: Fail2Ban v1.1.0
+Configuration: OK: configuration test is successful
+Actions: The jail sshd has the following actions:
+smoke-firewall, intruvia
+PASS: real config/start/ban/unban/stop; additive firewall marker twice; IPv6 JSON; 403 notification failure preserves ban; only two ban callbacks notify.
+PASS: concise local failure warning present.
+PASS: real ActionBase loader, shell-looking jail passed unchanged; start/reban/unban/stop do not notify.
+Server ready

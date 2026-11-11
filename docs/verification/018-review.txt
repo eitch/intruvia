@@ -1,0 +1,23 @@
+Packaged identical: integrations/fail2ban/README.md 3e66337569830f404463146c4cc0f685510e16490a62f0070cec77dba87f49e3
+Packaged identical: integrations/fail2ban/intruvia.py 6f1c1690684cd1f67fbe073d57d24f3f3d89ff1cc9c42fd7908fce4da91ba2ca
+Packaged identical: integrations/fail2ban/intruvia_notify.py 15c156d7e84b1ec731bcaf6aefae0f24c393289099f19de523ec68f4bc3eddbf
+Packaged identical: integrations/fail2ban/jail.local.example 260ee18fc348661816d09c4c4ef731068c379a9ab9d6e19a61a72ff4ff9e8028
+Python tabs/length/SPDX: integrations/fail2ban/intruvia.py 45 lines
+Python tabs/length/SPDX: integrations/fail2ban/intruvia_notify.py 158 lines
+Python tabs/length/SPDX: integrations/fail2ban/tests/action_smoke.py 114 lines
+Python tabs/length/SPDX: integrations/fail2ban/tests/test_notify.py 215 lines
+Maven tests/failures/errors/skipped: [75, 0, 0, 0]
+Framework source HEAD: f8353080a3c8b140accbff6ee171c73deabb0f17
+Framework working-tree status: ''
+Actual 2.8.0-SNAPSHOT equals installed cache: strolch-agent-2.8.0-SNAPSHOT.jar 7ddd2b1c9a0dde4bc508448e135efa2938aafe3d23c0b8b9dc5d98022cf3e743
+Actual 2.8.0-SNAPSHOT equals installed cache: strolch-model-2.8.0-SNAPSHOT.jar 3e920906fa4e38225cecb8d22352861ac578f67aebd4bedfa209cb3d3965cb87
+Actual 2.8.0-SNAPSHOT equals installed cache: strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar cb868f5fd42b16b4725ce1eb4cafffb42bc7bfb19d024036e34a6cee253ec69a
+Actual 2.8.0-SNAPSHOT equals installed cache: strolch-privilege-2.8.0-SNAPSHOT.jar be621dbb353b792a9148339db518407d3e5c1d7ea8a6e33ee7e80ab592e71454
+Actual 2.8.0-SNAPSHOT equals installed cache: strolch-service-2.8.0-SNAPSHOT.jar 0a337294571b34d012af3b82ed6d67afc04d62170b7de5b1453dfca7a9f17370
+Actual 2.8.0-SNAPSHOT equals installed cache: strolch-utils-2.8.0-SNAPSHOT.jar 90884246ab0a8d7670540e71ca53124ba626d32ff9b6b40786fa5edaa94915a0
+Historical timestamped baseline is not asserted or relabelled; offline cache sufficed, no framework rebuild.
+Fail2ban 1.1.0 upstream archive: 474fcc25afdaf929c74329d1e4d24420caabeea1ef2e041a267ce19269570bae
+Upstream URL: https://github.com/fail2ban/fail2ban/archive/refs/tags/1.1.0.tar.gz
+Python: Python 3.14.9
+OpenSSL: OpenSSL 4.1.0 23 Oct 2026 (Library: OpenSSL 4.1.0 23 Oct 2026)
+PASS
