@@ -1,0 +1,17 @@
+PASS: 22 rows; DONE 15, TODO 7, IN_PROGRESS 0, BLOCKED 0; only task 015 changed; next 016; summary/date consistent.
+intruvia-app/target/intruvia/intruvia-app-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-core-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-rest-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-web-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/strolch-agent-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-model-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-privilege-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-service-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-utils-2.8.0-SNAPSHOT.jar: OK
+/home/eitch/.m2/repository/li/strolch/strolch-agent/2.8.0-SNAPSHOT/strolch-agent-2.8.0-SNAPSHOT.jar: OK
+/home/eitch/.m2/repository/li/strolch/strolch-model/2.8.0-SNAPSHOT/strolch-model-2.8.0-SNAPSHOT.jar: OK
+/home/eitch/.m2/repository/li/strolch/strolch-persistence-postgresql/2.8.0-SNAPSHOT/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar: OK
+/home/eitch/.m2/repository/li/strolch/strolch-privilege/2.8.0-SNAPSHOT/strolch-privilege-2.8.0-SNAPSHOT.jar: OK
+/home/eitch/.m2/repository/li/strolch/strolch-service/2.8.0-SNAPSHOT/strolch-service-2.8.0-SNAPSHOT.jar: OK
+/home/eitch/.m2/repository/li/strolch/strolch-utils/2.8.0-SNAPSHOT/strolch-utils-2.8.0-SNAPSHOT.jar: OK

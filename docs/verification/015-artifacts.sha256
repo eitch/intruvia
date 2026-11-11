@@ -1,0 +1,10 @@
+ff8798e06031ec67f8d82687e55c05fbe944168e842643e2259beae769a62a2f  intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+0b68f310a2b4c6963a1af5932ad89a53df70842ced370ffa175d79cd95dc6529  intruvia-app/target/intruvia/lib/intruvia-core-0.0.1.jar
+9141eed6b8b1cd7bcf86af7da423f66ec7b425003edde4a42de6457edb9e22db  intruvia-app/target/intruvia/lib/intruvia-rest-0.0.1.jar
+601033ab4c60a796b7176c85b6d2f9d0354d52747edb18deb778eb3fe22937c9  intruvia-app/target/intruvia/lib/intruvia-web-0.0.1.jar
+a69d019265f3d43de97e65e08052de4ff73c0fe3f30db849be84b6e9b3c75aae  intruvia-app/target/intruvia/lib/strolch-agent-2.8.0-SNAPSHOT.jar
+fe9954044d1d019b5bd996c08762b3a6deca48544be10aebf8808af77de1801d  intruvia-app/target/intruvia/lib/strolch-model-2.8.0-SNAPSHOT.jar
+f1d252321a5542a80697a98e5b653c35e11589fc4c029548c18643b565e3c528  intruvia-app/target/intruvia/lib/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar
+36d741499e8b878fa8551e7ad089001d06bd8ffd80ef8510c2b366aa2a602b18  intruvia-app/target/intruvia/lib/strolch-privilege-2.8.0-SNAPSHOT.jar
+d768507739abf6dea9ca23806418418ff639b30e754547da51aa4b8426cb79a5  intruvia-app/target/intruvia/lib/strolch-service-2.8.0-SNAPSHOT.jar
+40b35690a32cf3d65e7ab5a4e7358a554bb2a0fadc0e39f80ac419c24846ec13  intruvia-app/target/intruvia/lib/strolch-utils-2.8.0-SNAPSHOT.jar

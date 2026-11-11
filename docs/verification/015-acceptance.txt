@@ -1,0 +1,76 @@
+Task 015 acceptance — 2026-11-06
+
+Initial workspace: git status --short => empty. Task selection: no IN_PROGRESS;
+015 lowest eligible TODO, dependencies 011 and 012 DONE. No blocked task retried.
+
+Required guidelines read: workspace AGENTS.md; /home/eitch/src/git/atx-dev/strolch/AGENTS.md;
+all linked guidelines BUILD.md, TESTING.md, STROLCH_TESTING.md, STROLCH.md,
+CODE_STYLE.md (including Vanilla JavaScript), COMMIT_MESSAGES.md and linked
+STROLCH_SPECIFICATION.md. All three Intruvia planning documents read.
+
+Build attempts (cwd workspace):
+1. JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.4-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.4-tem/bin:$PATH scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+   Exit 127: mvn command not found after disposable DB startup. Historical JDK path
+   absent too. 015-first-verify.txt retained. Container cleaned by script trap.
+2. JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+   Exit 0: clean verify. 015-second-verify.txt.
+3. Same corrected command after HTTP asset checks/browser fixture: exit 0,
+   015-final-verify.txt. 40 unit/HTTP + 35 PostgreSQL/application integration tests.
+4. Same corrected command after final asset/transport review: exit 0,
+   015-final-review-verify.txt. 40 unit/HTTP + 35 integration tests; no failures,
+   errors or skips. Java 25.0.5, Maven 3.10.0, PostgreSQL 18.6. Disposable image
+   sha256:f1ea2a1a4fb7b68d4836be1fdcb8a6466a89b072158bf9d97663600538c294c5.
+
+Strolch version: installed local 2.8.0-SNAPSHOT, explicitly selected offline.
+Six assembled framework JARs byte-for-byte equal local installed snapshot JARs;
+identities in 015-local-strolch.sha256 and assembled hashes in 015-artifacts.sha256.
+No timestamped artifacts relabelled, no historical baseline compatibility claim.
+No artifact resolution failure or framework rebuild required.
+
+Assets:
+curl -fL --max-time 30 https://registry.npmjs.org/leaflet/-/leaflet-1.9.4.tgz -o /tmp/intruvia-015/leaflet.tgz
+curl -fL --max-time 30 https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_admin_0_countries.geojson -o /tmp/intruvia-015/world.geojson
+curl -fL --max-time 20 https://www.naturalearthdata.com/about/terms-of-use/ -o /tmp/intruvia-015/natural-earth-terms.html
+All exit 0. Terms confirm public-domain data including modified distribution.
+Python json comparison: 177 features, all raw geometries equal packaged geometries;
+only unused properties removed. Leaflet original JS/CSS/images/LICENSE retained.
+015-assets.sha256 records downloaded and packaged asset hashes.
+
+Browser smoke:
+docker run --detach --rm --name intruvia-015-browser --publish 127.0.0.1::5432 --env POSTGRES_USER=intruvia_test --env POSTGRES_PASSWORD=intruvia_test --env POSTGRES_DB=intruvia_test postgres:18-bookworm
+=> disposable loopback port 32771.
+JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem JUNIT_JAR=/home/eitch/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar PLAYWRIGHT_MODULE=/home/eitch/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright INTRUVIA_TEST_DB_URL=jdbc:postgresql://127.0.0.1:32771/intruvia_test INTRUVIA_TEST_DB_USERNAME=intruvia_test INTRUVIA_TEST_DB_PASSWORD=intruvia_test /home/eitch/.nvm/versions/node/v26.13.0/bin/node docs/verification/015-browser-smoke.cjs
+=> exit 1, browser launch failed (crashpad config location unavailable),
+015-browser-first.txt retained. No application assertion failed.
+Same command prefixed with:
+XDG_CONFIG_HOME=/tmp/intruvia-015/chromium-config XDG_CACHE_HOME=/tmp/intruvia-015/chromium-cache
+=> exit 0, 015-browser-second.txt. Existing Playwright used, nothing installed.
+Final repeat against final clean distribution with the same corrected command:
+=> exit 0, 015-browser-final.txt; Chromium 156.0.8078.79.
+Real Jetty/Strolch/PostgreSQL login and bounded authenticated snapshot, wrong
+password, denied viewer, session restoration, logout and cookie loss pass.
+1005 stored synthetic events => 1000 rendered rows, 167 independent markers at
+valid zero coordinates, 833 unmapped rows. Each unmapped reason asserted.
+No initial DOM animations, no script errors, no external page requests, no
+localStorage credentials, all session mutations have CSRF header. Keyboard
+Show on map opens safe details including literal HTML-like jail and accuracy.
+503 refresh preserves last snapshot; empty fixture clears rows/markers; repeated
+page creation and 390px responsive layout pass. Only empty/503 API responses
+are intercepted; real authentication and initial snapshot are not mocked.
+Screenshots reviewed visually: 015-login.png, 015-snapshot.png, 015-empty.png,
+015-mobile.png. Popups readable, attribution/GeoIP notice visible, no horizontal
+overflow. Final fixture lifecycle output: 015-browser-fixture.txt.
+
+docker exec intruvia-015-browser psql -U intruvia_test -d intruvia_test -tAc "SELECT count(*) FROM pg_database WHERE datname LIKE 'intruvia_test_%'"
+=> exit 0, count 0 (fixture databases dropped).
+docker rm -f intruvia-015-browser => exit 0.
+
+Review: native ES modules separated into app/page/API/components/utilities;
+all first-party JS modules <300 lines and lines <160 columns, no circular
+imports, no new runtime dependencies beyond the explicitly required local assets.
+No business values rendered with innerHTML. Requests/listeners/map cleanup owned
+by their creators. Single English UI, shared browser-locale formatters.
+
+Unrun/outside 015: live pulses/overlap indications (016), reconnect/idle session
+expiry handling (017), browser capacity/latency (020), production TLS/deployment
+(021). No live or release-readiness claims. No commit, push or deployment.
