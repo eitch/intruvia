@@ -1,0 +1,9 @@
+AssertionError [ERR_ASSERTION]: three-second indication lasted undefinedms
+    at /home/eitch/src/git/intruvia/docs/verification/016-browser.cjs:116:10 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

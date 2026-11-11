@@ -57,7 +57,7 @@ const assert = require('node:assert/strict');
 			'GeoIP database unavailable', 'No coordinates in location record']) {
 			assert.ok(await page.locator('#events').getByText(`Unmapped: ${reason}`, {exact: true}).count() > 0);
 		}
-		assert.match(await page.locator('#status').innerText(), /Live updates are not connected/);
+		assert.match(await page.locator('#status').innerText(), /Live · Showing recent events/);
 		assert.equal(await page.evaluate(() => document.getAnimations().length), 0);
 		await page.getByRole('button', {name: 'Show on map', exact: true}).first().focus();
 		await page.keyboard.press('Enter');

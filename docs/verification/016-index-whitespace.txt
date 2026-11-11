@@ -1,0 +1,799 @@
+docs/verification/016-browser-fixture.txt:52: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-browser-fixture.txt:54: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-browser-fixture.txt:56: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3: trailing whitespace.
++                                                          version
+docs/verification/016-final-maven.txt:11: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:17: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:22: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:24: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:29: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:32: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:35: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:39: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:42: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:46: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:49: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:215: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:217: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:219: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:220: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:223: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:228: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:231: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:234: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:238: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:241: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:245: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:248: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:262: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:264: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:266: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:267: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:270: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:275: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:278: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:281: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:284: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:287: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:290: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:293: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:296: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:301: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:304: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:307: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:311: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:314: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:318: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:321: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:345: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:347: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:349: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:350: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:353: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:356: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:358: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:361: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:417: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:419: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:421: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:493: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:495: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:497: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:575: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:577: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:579: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:668: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:670: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:672: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:783: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:785: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:787: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:946: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:948: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:950: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:1038: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:1040: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:1042: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:1863: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:1865: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:1867: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:1950: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:1952: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:1954: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2081: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2083: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2085: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2166: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2168: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2170: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2253: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2255: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2257: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2327: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2329: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2331: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2416: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2418: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2420: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2527: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2529: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2531: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2628: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2630: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2632: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2764: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2766: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2768: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2844: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2846: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2848: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:2937: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:2939: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:2941: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3068: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3070: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3072: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3147: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3149: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3151: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3225: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3227: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3229: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3314: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3316: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3318: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3409: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3411: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3413: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3528: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3530: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3532: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3822: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3824: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3826: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3911: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3913: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3915: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:3990: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:3992: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:3994: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4081: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4083: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4085: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4151: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4153: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4155: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4223: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4225: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4227: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4300: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4302: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4304: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4414: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4416: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4418: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4535: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4537: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4539: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4636: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4638: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4640: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4746: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4748: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4750: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:4838: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:4840: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:4842: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:5498: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:5500: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:5502: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:5635: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:5637: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:5639: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:5714: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:5716: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:5718: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:5788: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-final-maven.txt:5790: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-final-maven.txt:5792: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-final-maven.txt:5837: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:5839: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:5841: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:5842: trailing whitespace.
++[INFO]
+docs/verification/016-final-maven.txt:5846: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:3: trailing whitespace.
++                                                          version
+docs/verification/016-maven.txt:11: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:17: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:22: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:24: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:29: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:32: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:35: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:39: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:42: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:46: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:49: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:215: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:217: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:219: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:220: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:223: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:228: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:231: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:234: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:238: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:241: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:245: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:248: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:262: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:264: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:266: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:267: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:270: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:275: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:278: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:281: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:284: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:287: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:290: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:293: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:296: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:301: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:304: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:307: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:311: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:314: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:318: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:321: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:345: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:347: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:349: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:350: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:353: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:356: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:358: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:361: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:417: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:419: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:421: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:493: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:495: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:497: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:575: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:577: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:579: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:668: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:670: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:672: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:783: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:785: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:787: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:946: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:948: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:950: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:1038: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:1040: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:1042: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:1863: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:1865: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:1867: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:1950: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:1952: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:1954: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2081: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2083: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2085: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2166: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2168: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2170: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2253: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2255: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2257: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2327: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2329: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2331: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2416: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2418: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2420: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2527: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2529: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2531: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2628: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2630: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2632: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2766: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2768: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2770: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2846: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2848: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2850: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:2939: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:2941: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:2943: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3070: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3072: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3074: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3149: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3151: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3153: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3227: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3229: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3231: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3316: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3318: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3320: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3411: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3413: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3415: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3530: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3532: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3534: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3838: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3840: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3842: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:3927: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:3929: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:3931: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4006: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4008: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4010: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4097: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4099: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4101: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4167: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4169: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4171: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4239: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4241: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4243: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4316: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4318: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4320: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4430: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4432: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4434: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4553: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4555: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4557: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4654: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4656: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4658: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4764: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4766: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4768: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:4856: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:4858: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:4860: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:5516: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:5518: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:5520: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:5653: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:5655: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:5657: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:5732: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:5734: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:5736: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:5806: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-maven.txt:5808: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-maven.txt:5810: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.
+docs/verification/016-maven.txt:5855: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:5857: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:5859: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:5860: trailing whitespace.
++[INFO]
+docs/verification/016-maven.txt:5864: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:4: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:10: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:15: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:20: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:23: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:26: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:29: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:32: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:35: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:37: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:42: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:45: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:48: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:51: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:54: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:57: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:59: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:64: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:67: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:70: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:73: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:76: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:79: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:82: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:87: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:90: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:94: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:97: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:101: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:104: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:107: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:110: trailing whitespace.
++[INFO]
+docs/verification/016-package.txt:209: trailing whitespace.
++[INFO]
+docs/verification/016-review.txt:70: new blank line at EOF.
+docs/verification/016-snapshot-regression-browser-fixture.txt:52: trailing whitespace.
++WARNING: A provider li.intruvia.rest.ingest.Fail2banResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.ingest.Fail2banResource will be ignored.
+docs/verification/016-snapshot-regression-browser-fixture.txt:54: trailing whitespace.
++WARNING: A provider li.intruvia.rest.read.EventsResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.read.EventsResource will be ignored.
+docs/verification/016-snapshot-regression-browser-fixture.txt:56: trailing whitespace.
++WARNING: A provider li.intruvia.rest.session.SessionResource registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider li.intruvia.rest.session.SessionResource will be ignored.

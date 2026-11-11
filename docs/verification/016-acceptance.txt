@@ -1,0 +1,118 @@
+Task 016 acceptance — 2026-11-11
+
+Exactly one task selected: no prior IN_PROGRESS rows, lowest eligible TODO 016,
+dependencies 014/015 DONE. Initial git status clean. Both AGENTS.md documents,
+all referenced guidelines (Vanilla JavaScript within CODE_STYLE.md, linked Strolch
+specification), project specification/backlog/status and README read. No missing
+guideline, permission/decision/dependency blocker or scope change.
+
+Maven command prefix:
+JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH
+Commands with that prefix:
+1. scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+   Exit 0; 016-maven.txt; 40 unit/HTTP + 35 integration tests, no failures/errors/skips.
+2. mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT package -DskipTests
+   Exit 0; 016-package.txt. Packaging after stream-error-status correction;
+   tests explicitly skipped in this intermediate packaging command.
+3. scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+   Exit 0; 016-final-maven.txt; clean verification, all five reactor modules SUCCESS,
+   75 total tests (40 unit/HTTP + 35 PostgreSQL/application integration), no failures,
+   errors or skips. Final packaged browser bytes confirmed by review script.
+Java 25.0.5.0+8-tem, Maven 3.10.0, PostgreSQL 18.6, image/digest
+sha256:f1ea2a1a4fb7b68d4836be1fdcb8a6466a89b072158bf9d97663600538c294c5.
+
+Framework identity: inspected local repository /home/eitch/.m2/repository/li/strolch
+and referenced source /home/eitch/src/git/atx-dev/strolch (clean HEAD
+f8353080a3c8b140accbff6ee171c73deabb0f17). Actual selected version 2.8.0-SNAPSHOT.
+Six packaged framework JARs equal installed local snapshot JARs byte for byte;
+016-review.txt and 016-strolch.sha256 record identities. Offline dependencies
+sufficed. No framework rebuild/relabeling; no equivalence to historical timestamped
+2.8.0-20260927.120822-2 claimed. No dependency versions or toolchains introduced.
+
+Browser service:
+docker run --detach --rm --name intruvia-016-browser --publish 127.0.0.1::5432 --env POSTGRES_USER=intruvia_test --env POSTGRES_PASSWORD=intruvia_test --env POSTGRES_DB=intruvia_test postgres:18-bookworm
+Exit 0; loopback test port 32774. Test-only credentials and disposable DBs.
+Browser command prefix (all runs):
+XDG_CONFIG_HOME=/tmp/intruvia-016/chromium-config XDG_CACHE_HOME=/tmp/intruvia-016/chromium-cache JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem JUNIT_JAR=/home/eitch/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar PLAYWRIGHT_MODULE=/usr/lib/chatgpt/resources/cua_node/lib/node_modules/playwright INTRUVIA_TEST_DB_URL=jdbc:postgresql://127.0.0.1:32774/intruvia_test INTRUVIA_TEST_DB_USERNAME=intruvia_test INTRUVIA_TEST_DB_PASSWORD=intruvia_test
+Command with that prefix:
+/home/eitch/.nvm/versions/node/v26.13.0/bin/node docs/verification/016-browser.cjs
+- First exit 0: 016-browser-first.txt, p95 28 ms; initial live acceptance.
+- Second exit 1: 016-browser-second.txt; new harness duration assertion got undefined
+  because the observer missed classes assigned before DOM insertion. Application
+  indication expired correctly. Fixed observer to register inserted highlighted rows.
+- Third exit 0: 016-browser-third.txt; strengthened off-screen/duration checks pass.
+- Fourth exit 1: 016-browser-fourth.txt; newly injected malformed frame triggered the
+  harness receipt listener's unconditional frame.event.id access. Application safely
+  showed the protocol error. Guarded the measuring listener against missing events.
+- Final exit 0: 016-browser-final.txt; all strengthened checks pass against final
+  clean distribution. No JavaScript errors/external requests. Chromium 156.0.8078.79.
+
+Real session, snapshot and WebSocket; fixture appends synthetic geography through
+real Strolch transactions/PostgreSQL without notification, delivered via durable
+polling. Initial 1005 persisted events render 1000 rows and 167 mapped identities,
+no initial pulse, shared count 167. Live mapped/unmapped events update immediately;
+oldest eviction preserves 1000 rows, updates marker/counts; two overlapping mapped
+arrivals retain separate ring IDs and list/popup identities. No recenter on arrival,
+including verified off-screen ring; keyboard Show on map opens its event popup.
+Exact duplicate transport frames injected during and after the indication do not
+repulse. Measured first list highlight duration 3000.9 ms. Static reduced-motion
+halo checked through computed CSS and screenshot. Refresh clears active highlights;
+logout closes socket and clears rows/map. Mobile and decimal sequences above 2^53
+pass. Unsupported-version frame and closed socket produce visible manual recovery
+status; refresh creates a working connection. Automatic recovery remains 017.
+
+Timing: 30 real durable event arrivals at 10/s, foreground 1440x1000 viewport.
+WebSocket receipt observed before application handler; next requestAnimationFrame
+with highlighted DOM measured. Final p95 40.1 ms <= 100 ms, all raw samples in final
+JSON. This is a frame-opportunity proxy, not display scanout or commit-to-highlight
+measurement. Intel Core Ultra X7 358H, 16 logical CPUs; full OS/hardware in
+016-review.txt. No five-minute/two-browser/100,000-event capacity claim (020).
+
+Snapshot regression command: generated /tmp/intruvia-016-snapshot-regression.cjs
+from docs/verification/015-browser-smoke.cjs using Python string replacement
+'015-' -> '016-snapshot-regression-' to preserve historical screenshots/logs.
+Ran the same browser prefix and Node executable with that temporary script.
+Exit 0, 016-snapshot-regression.txt. Existing snapshot regression updated only to
+expect the new Live status. Real login/reload/logout/denied role/cookie loss,
+HTML-like text remaining inert, zero/partial/unmapped data, keyboard popup,
+empty/503 responses, repeated rendering and mobile pass. Empty/503 responses are
+route fixtures; authentication/initial snapshot are real. No historical evidence
+outputs overwritten. Reviewed 016-overlap.png and 016-reduced-motion.png visually.
+
+Review/integrity commands:
+python3 docs/verification/016-review.py > docs/verification/016-review.txt 2>&1
+Exit 0: packaged frontend bytes, JS size/tabs/line lengths, all 75 test counts,
+local/cache framework equality; hardware and framework HEAD/status recorded.
+Additional inline Python changed-Java fixture tabs/line lengths: exit 0.
+sha256sum intruvia-app/target/intruvia/lib/strolch-*.jar > docs/verification/016-strolch.sha256
+sha256sum intruvia-app/target/intruvia/intruvia-app-0.0.1.jar intruvia-app/target/intruvia/lib/intruvia-*.jar > docs/verification/016-artifacts.sha256
+sha256sum -c docs/verification/016-strolch.sha256 > docs/verification/016-integrity.txt
+sha256sum -c docs/verification/016-artifacts.sha256 >> docs/verification/016-integrity.txt
+All exit 0; every entry OK. Distribution at intruvia-app/target/intruvia/.
+
+Cleanup commands:
+docker exec intruvia-016-browser psql -U intruvia_test -d intruvia_test -tAc "SELECT count(*) FROM pg_database WHERE datname LIKE 'intruvia_test_%'"
+Exit 0, count 0: fixture databases dropped after every browser attempt.
+docker rm -f intruvia-016-browser
+Exit 0; container removed. Maven scripts cleaned their containers too.
+docker ps --filter name=intruvia --format '{{.Names}}'
+Exit 0, empty. Output: 016-cleanup.txt.
+
+Final source review: native ES modules, API -> transport contract, page composition,
+pure candidate model, incremental components; no circular dependency or copied
+formatters, DOM text for event values, timer/socket cleanup wired to refresh and
+page removal, English-only UI unchanged. All first-party JS modules under 100 lines.
+No commit, push, deployment, upstream edit or next task started. Requirements
+unchanged. Unrun: task-017 reconnect/resync/session-expiry/hidden-tab acceptance,
+task-020 capacity/end-to-end latency, production TLS/deployment, framework tests
+or rebuild, power-loss tests. No unrun check claimed successful; no blocker remains.
+
+Final ledger/whitespace checks:
+python3 docs/verification/016-ledger-check.py > docs/verification/016-ledger-check.txt
+Exit 0: all 22 rows; only 016 status changed; DONE 16/TODO 6/IN_PROGRESS 0/BLOCKED 0; next eligible 017.
+git diff --check
+Exit 0. Initial git diff --cached --check exited 2 for generated raw output trailing
+spaces/EOF blank lines (016-index-whitespace.txt); trimmed whitespace in generated
+016 text outputs without changing facts. Index/staging left untouched.
+git diff HEAD --check
+Exit 0 for final combined working-tree content. No commit or index mutation by agent.

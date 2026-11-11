@@ -1,0 +1,3 @@
+git diff HEAD --check: exit 0
+git diff --check: exit 0
+Final working-tree content checked after generated-output whitespace cleanup; index staging preserved.
