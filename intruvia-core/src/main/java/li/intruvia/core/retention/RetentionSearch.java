@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 package li.intruvia.core.retention;
 
-import java.util.Comparator;
 import java.util.List;
 import li.strolch.model.Resource;
 import li.strolch.persistence.api.StrolchTransaction;
@@ -20,8 +19,4 @@ final class RetentionSearch extends ResourceSearch {
 		return search(tx).toList();
 	}
 
-	List<Resource> events(StrolchTransaction tx) {
-		return resources(tx, TYPE_SECURITY_EVENT).stream()
-				.sorted(Comparator.comparingLong(resource -> resource.getLong(BAG_ENVELOPE, PARAM_SEQUENCE))).toList();
-	}
 }

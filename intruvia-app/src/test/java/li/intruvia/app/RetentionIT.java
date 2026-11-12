@@ -84,6 +84,25 @@ public class RetentionIT {
 	}
 
 	@Test(timeout = 60000)
+	public void reducedCapacitySelectsOldestSequencesFromUnorderedResources() throws Exception {
+		try (var database = database(10, 10, 86400); var app = new IntruviaApplication(database.runtime, 0)) {
+			app.start();
+			var cert = certificate(app);
+			for (int index = 0; index < 5; index++)
+				assertEquals(CREATED, ingest(app, cert, payload(NOW), NOW).outcome());
+			var reduced = new RetentionPolicy(Duration.ofDays(30), 2, Duration.ofDays(30), 10, 86400);
+			app.agent().getPrivilegeHandler().runAsAgent(ctx -> assertTrue(services(app).doService(ctx.getCertificate(),
+					new RetentionService(reduced, Clock.fixed(NOW, ZoneOffset.UTC)), new ServiceArgument()).isOk()));
+			assertState(app, 2, 5, "5", "3");
+			app.agent().getPrivilegeHandler().runAsAgent(ctx -> {
+				try (var tx = app.agent().openTx(ctx.getCertificate(), "ReducedCapacity", true)) {
+					assertEquals(List.of("4", "5"), new EventRepository().events(tx, 10).stream().map(SecurityEvent::sequence).toList());
+				}
+			});
+		}
+	}
+
+	@Test(timeout = 60000)
 	public void httpCapacityPreservesReceiptsAndExpiredHistoryReturns410() throws Exception {
 		try (var database = database(1, 2, 86400); var app = new IntruviaApplication(database.runtime, 0);
 				var client = HttpClient.newHttpClient()) {

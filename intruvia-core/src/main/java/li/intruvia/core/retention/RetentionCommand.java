@@ -3,7 +3,9 @@ package li.intruvia.core.retention;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 import li.intruvia.core.model.EventStreamState;
 import li.intruvia.core.persistence.EventRepository;
 import li.strolch.model.Resource;
@@ -22,26 +24,50 @@ public final class RetentionCommand extends Command {
 		super(tx);
 		validate();
 		var receipts = new RetentionSearch(privilege).resources(tx, TYPE_INGEST_RECEIPT);
+		String nowText = now.toString();
 		this.expiredReceipts = receipts.stream()
-				.filter(resource -> !Instant.parse(resource.getString(PARAM_EXPIRES_AT)).isAfter(now)).toList();
+				.filter(resource -> expired(resource.getString(PARAM_EXPIRES_AT), now, nowText)).toList();
 		this.hasReceiptCapacity = receipts.size() - this.expiredReceipts.size() < policy.receiptCapacity();
-		var events = new RetentionSearch(privilege).events(tx);
+		var events = new RetentionSearch(privilege).resources(tx, TYPE_SECURITY_EVENT);
 		int target = policy.eventCapacity() - (admission && this.hasReceiptCapacity ? 1 : 0);
-		int countPrefix = Math.max(0, events.size() - target);
+		int excess = Math.max(0, events.size() - target);
 		Instant cutoff = now.minus(policy.eventAge());
-		// A clock reversal can place old timestamps later in the log. Remove through the last expired event
-		// to preserve the contiguous-prefix invariant; newer events within that prefix are also removed.
-		int agePrefix = 0;
-		for (int index = 0; index < events.size(); index++)
-			if (!Instant.parse(events.get(index).getString(BAG_ENVELOPE, PARAM_RECEIVED_AT)).isAfter(cutoff))
-				agePrefix = index + 1;
-		int remove = Math.max(countPrefix, agePrefix);
-		this.removedEvents.addAll(events.subList(0, remove));
+		String cutoffText = cutoff.toString();
+		// The common admission case removes one event. Select the oldest excess candidates
+		// in O(n log(excess + 1)) instead of sorting the full retained history under the lock.
+		Comparator<Resource> sequenceOrder = Comparator.comparingLong(resource -> resource.getLong(BAG_ENVELOPE, PARAM_SEQUENCE));
+		var oldest = new PriorityQueue<Resource>(Math.max(1, excess), sequenceOrder.reversed());
+		long removedThrough = 0;
+		for (Resource event : events) {
+			long sequence = event.getLong(BAG_ENVELOPE, PARAM_SEQUENCE);
+			if (expired(event.getString(BAG_ENVELOPE, PARAM_RECEIVED_AT), cutoff, cutoffText))
+				removedThrough = Math.max(removedThrough, sequence);
+			if (excess > 0) {
+				if (oldest.size() < excess) oldest.add(event);
+				else if (sequenceOrder.compare(event, oldest.peek()) < 0) {
+					oldest.remove(); oldest.add(event);
+				}
+			}
+		}
+		if (!oldest.isEmpty())
+			removedThrough = Math.max(removedThrough, oldest.peek().getLong(BAG_ENVELOPE, PARAM_SEQUENCE));
+		// A reversed receive clock can expire a later sequence. Remove the complete prefix,
+		// including younger observations before it, to preserve the exclusive replay cursor.
+		for (Resource event : events)
+			if (event.getLong(BAG_ENVELOPE, PARAM_SEQUENCE) <= removedThrough)
+				this.removedEvents.add(event);
 		var previous = new EventRepository().streamState(tx);
-		long minimum = Long.parseLong(previous.minAfter());
-		if (remove > 0)
-			minimum = Math.max(minimum, events.get(remove - 1).getLong(BAG_ENVELOPE, PARAM_SEQUENCE));
+		long minimum = Math.max(Long.parseLong(previous.minAfter()), removedThrough);
 		this.state = new EventStreamState(previous.lastCommittedSequence(), Long.toString(minimum));
+	}
+
+	/** Model timestamps are canonical UTC. Avoid parsing dates far from the retention boundary. */
+	static boolean expired(String timestamp, Instant cutoff, String cutoffText) {
+		if (timestamp.length() > 10 && cutoffText.length() > 10 && timestamp.charAt(10) == 'T' && cutoffText.charAt(10) == 'T' &&
+				!timestamp.regionMatches(0, cutoffText, 0, 10))
+			return timestamp.compareTo(cutoffText) < 0;
+		// Same-day fractions and extended years require Instant ordering, not lexical ordering.
+		return !Instant.parse(timestamp).isAfter(cutoff);
 	}
 
 	public boolean hasReceiptCapacity() { return this.hasReceiptCapacity; }

@@ -19,6 +19,14 @@ import java.util.Map;
 final class SyntheticCityDatabase {
 	static final long BUILD_EPOCH = 1_700_000_000L;
 
+	/** Optional cross-module browser fixture generator; writes invented records only. */
+	public static void main(String[] args) throws IOException {
+		var record = Map.<String, Object>of("country", Map.of("iso_code", "CH", "names", Map.of("en", "Synthetic country")),
+				"location", Map.of("latitude", 0.0, "longitude", 0.0, "accuracy_radius", 12));
+		write(Path.of(args[0]), Map.of("8.8.8.8", record, "2606:4700:4700::1111", record));
+	}
+
+
 	private record Unsigned(long value, int type, int size) {
 	}
 
