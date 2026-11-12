@@ -1,0 +1,109 @@
+services:
+  db:
+    image: postgres:18-bookworm
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${INTRUVIA_DB_NAME:?Set INTRUVIA_DB_NAME in .env}
+      POSTGRES_USER: ${POSTGRES_ADMIN_USERNAME:?Set POSTGRES_ADMIN_USERNAME in .env}
+      POSTGRES_PASSWORD: ${POSTGRES_ADMIN_PASSWORD:?Set POSTGRES_ADMIN_PASSWORD in .env}
+      INTRUVIA_DB_USERNAME: ${INTRUVIA_DB_USERNAME:?Set INTRUVIA_DB_USERNAME in .env}
+      INTRUVIA_DB_PASSWORD: ${INTRUVIA_DB_PASSWORD:?Set INTRUVIA_DB_PASSWORD in .env}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+      - type: bind
+        source: ./db/init.sh
+        target: /docker-entrypoint-initdb.d/10-intruvia.sh
+        read_only: true
+        bind:
+          create_host_path: false
+    networks:
+      - database
+    healthcheck:
+      test: ["CMD-SHELL", "PGPASSWORD=\"$$INTRUVIA_DB_PASSWORD\" psql -X -h 127.0.0.1 -U \"$$INTRUVIA_DB_USERNAME\" -d \"$$POSTGRES_DB\" -tAc 'SELECT 1' >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 5s
+      retries: 24
+      start_period: 30s
+
+  app:
+    image: ${INTRUVIA_IMAGE:?Set the versioned Intruvia image in .env}
+    restart: unless-stopped
+    init: true
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    stop_grace_period: 180s
+    environment:
+      INTRUVIA_BIND_ADDRESS: 0.0.0.0
+      INTRUVIA_PUBLIC_ORIGIN: ${INTRUVIA_PUBLIC_ORIGIN:?Set the HTTPS origin in .env}
+      INTRUVIA_VIEWER_PASSWORD_FILE: /run/secrets/viewer-password
+      DB_URL: jdbc:postgresql://db:5432/${INTRUVIA_DB_NAME:?Set INTRUVIA_DB_NAME in .env}
+      DB_USERNAME: ${INTRUVIA_DB_USERNAME:?Set INTRUVIA_DB_USERNAME in .env}
+      DB_PASSWORD: ${INTRUVIA_DB_PASSWORD:?Set INTRUVIA_DB_PASSWORD in .env}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - runtime:/var/lib/intruvia/runtime
+      - app_logs:/var/log/intruvia
+      - type: bind
+        source: ./runtime-templates
+        target: /opt/intruvia/templates
+        read_only: true
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./secrets
+        target: /run/secrets
+        bind:
+          create_host_path: false
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
+    networks:
+      - proxy
+      - database
+    healthcheck:
+      test: ["CMD", "java", "-cp", "/opt/intruvia/intruvia-app.jar:/opt/intruvia/lib/*", "li.intruvia.app.ContainerHealthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 180s
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      INTRUVIA_PUBLIC_ORIGIN: ${INTRUVIA_PUBLIC_ORIGIN:?Set the HTTPS origin in .env}
+    depends_on:
+      app:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./Caddyfile
+        target: /etc/caddy/Caddyfile
+        read_only: true
+        bind:
+          create_host_path: false
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - proxy
+
+networks:
+  proxy:
+  database:
+    internal: true
+
+volumes:
+  postgres_data:
+  runtime:
+  app_logs:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,5 @@
+{$INTRUVIA_PUBLIC_ORIGIN} {
+	@health path /health /health/*
+	respond @health 404
+	reverse_proxy app:8080
+}
