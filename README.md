@@ -471,3 +471,25 @@ shutdown reports failure and leaves persistence running for that call; it does n
 destroy storage under active writes. Forced termination still relies on PostgreSQL
 transaction atomicity and durable replay. No delivery through a long producer outage
 is promised by the notification helper.
+
+### Full MVP and capacity verification
+
+The optional [MVP validation harness](docs/architecture/020-mvp-validation.md)
+uses the existing browser tooling and disposable PostgreSQL. It seeds 100,000
+retained events, submits events under two server identities, and measures two
+browser contexts during a five-minute 10 events/second workload plus a 100-event
+burst. Read the task-020 acceptance record and status ledger for actual results;
+the existence of this harness does not establish a passing capacity or release gate.
+
+The capacity fixture matches production environment-mode pool defaults: 10
+connections, 30,000 ms acquisition and 5,000 ms validation timeout. XML-credential
+runtimes instead use their XML pool settings; the template's 3,000 ms acquisition
+budget can reject requests during a concurrent burst. Configure a finite pool
+budget for your workload and allow for acquisition plus validation in readiness
+monitor timeouts. The validation report lists separate burst latency and failures.
+
+Task 020's measured combined-workload p95 was 951/961 ms across the two browsers;
+receipt-to-frame p95 was 29 ms. All 3,100 events committed and appeared. The burst
+phase alone had about 9.2 seconds p95, so this is not a one-second guarantee for
+each phase or request. See the [report](docs/verification/020-acceptance.txt) for
+raw measurements, failed attempts, hardware and receipt-population limits.
