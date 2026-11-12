@@ -1,0 +1,47 @@
+{
+  "result": "PASS",
+  "browser": "156.0.8078.79",
+  "snapshotAttempts": 2,
+  "retryDelaysMs": [
+    1857.5536605548587,
+    2898.222056293164,
+    4376.652450148108,
+    15751.63891218424,
+    21554.953479893316,
+    29173.29423038901,
+    25320.816157568108,
+    24294.6973007307
+  ],
+  "sockets": [
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1005",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1006",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1007",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1010",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1010",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=999999",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1010",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1010",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1011",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1012",
+    "ws://127.0.0.1:45417/api/v1/events/stream?after=1012"
+  ],
+  "checks": [
+    "real snapshot-to-stream commit gap",
+    "disconnect before commit",
+    "commit lost before apply replays from applied cursor",
+    "duplicates never repulse",
+    "hidden visibility contract retains model/count on return",
+    "ahead cursor real-server resync and visible snapshot notice",
+    "real prefix pruning resync",
+    "failed recovery snapshot preserves old model then automatically retries",
+    "snapshot no pulses and empty recovery",
+    "healthy idle socket survives probes",
+    "lost hello deadline reconnects",
+    "bounded jitter and single pending timer",
+    "logout cancels pending reconnect",
+    "idle cookie loss session probe",
+    "real session maximum-lifetime expiry navigates to login",
+    "no cursor/credentials in browser storage",
+    "no script errors or external requests"
+  ]
+}

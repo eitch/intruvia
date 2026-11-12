@@ -1,0 +1,106 @@
+Command: python3 docs/verification/022-ledger-check.py
+Exit: 0
+PASS: all22 DONE with existing evidence; only022 TODO -> DONE; counts/current/next/date consistent
+PASS: no production source/POM/integration changes; no subsequent backlog task
+
+Command: git diff --check
+Exit: 0
+
+Command: git diff HEAD --check
+Exit: 0
+
+Command: bash -n docs/verification/022-run-browser.sh
+Exit: 0
+
+New documentation/scripts: whitespace and Python compile PASS
+Command (documentation refresh; tests intentionally skipped): mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -DskipTests package
+Exit: 0
+Command: python3 docs/verification/022-review.py
+Exit: 0
+JUnit reports: tests/failures/errors/skipped [87, 0, 0, 0]
+Packaged class/resource bytes equal target/classes: intruvia-core
+Packaged class/resource bytes equal target/classes: intruvia-rest
+Packaged class/resource bytes equal target/classes: intruvia-app
+All packaged runtime files equal source; no personal GeoIP path in template
+Framework/cache byte identity: strolch-agent-2.8.0-SNAPSHOT.jar 7ddd2b1c9a0dde4bc508448e135efa2938aafe3d23c0b8b9dc5d98022cf3e743
+Framework/cache byte identity: strolch-model-2.8.0-SNAPSHOT.jar 3e920906fa4e38225cecb8d22352861ac578f67aebd4bedfa209cb3d3965cb87
+Framework/cache byte identity: strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar cb868f5fd42b16b4725ce1eb4cafffb42bc7bfb19d024036e34a6cee253ec69a
+Framework/cache byte identity: strolch-privilege-2.8.0-SNAPSHOT.jar be621dbb353b792a9148339db518407d3e5c1d7ea8a6e33ee7e80ab592e71454
+Framework/cache byte identity: strolch-service-2.8.0-SNAPSHOT.jar 0a337294571b34d012af3b82ed6d67afc04d62170b7de5b1453dfca7a9f17370
+Framework/cache byte identity: strolch-utils-2.8.0-SNAPSHOT.jar 90884246ab0a8d7670540e71ca53124ba626d32ff9b6b40786fa5edaa94915a0
+Clean framework source HEAD: f8353080a3c8b140accbff6ee171c73deabb0f17
+Actual framework version: 2.8.0-SNAPSHOT; no timestamp-baseline equivalence claimed
+Changed Java files: tabs, <=160 columns, <1000 lines; new source SPDX headers checked
+Application/runtime and framework SHA-256 manifests generated
+All packaged frontend bytes equal source
+Resolved dependency inventory: 96 JARs
+Reviewed source input manifest generated: 158 paths
+
+Command: python3 docs/verification/022-package.py
+Exit: 0
+PASS: 147 distribution files hashed; two normalized archive passes identical; every archived byte verified
+Archive: intruvia-app/target/intruvia-0.0.1-mvp.tar.gz SHA-256 699d7928c7983946a17513f712d8082d4d52184bb5df9295f15a059bf46a0572
+Archive modes 0644: run Python helpers via python3; deployment guide explicitly installs executable permissions.
+
+Command: sha256sum -c docs/verification/022-artifacts.sha256
+Exit: 0
+147 entries checked
+Command: sha256sum -c docs/verification/022-archive.sha256
+Exit: 0
+1 entries checked
+Command: sha256sum -c docs/verification/022-strolch.sha256
+Exit: 0
+6 entries checked
+Command: sha256sum -c docs/verification/022-source.sha256
+Exit: 0
+158 entries checked
+Final packaged README/LICENSE/release notes/checklist/completed ledger byte-match source: PASS
+Command: docker ps --format {{.Names}}
+Exit: 0
+PASS: no Intruvia test container remains
+
+Final documentation correction: wrapped README link; removed stale pending-release summary.
+Same documentation-only Maven package command: exit0 (022-package-final.txt).
+Command: python3 docs/verification/022-review.py
+Exit: 0
+JUnit reports: tests/failures/errors/skipped [87, 0, 0, 0]
+Packaged class/resource bytes equal target/classes: intruvia-core
+Packaged class/resource bytes equal target/classes: intruvia-rest
+Packaged class/resource bytes equal target/classes: intruvia-app
+All packaged runtime files equal source; no personal GeoIP path in template
+Framework/cache byte identity: strolch-agent-2.8.0-SNAPSHOT.jar 7ddd2b1c9a0dde4bc508448e135efa2938aafe3d23c0b8b9dc5d98022cf3e743
+Framework/cache byte identity: strolch-model-2.8.0-SNAPSHOT.jar 3e920906fa4e38225cecb8d22352861ac578f67aebd4bedfa209cb3d3965cb87
+Framework/cache byte identity: strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar cb868f5fd42b16b4725ce1eb4cafffb42bc7bfb19d024036e34a6cee253ec69a
+Framework/cache byte identity: strolch-privilege-2.8.0-SNAPSHOT.jar be621dbb353b792a9148339db518407d3e5c1d7ea8a6e33ee7e80ab592e71454
+Framework/cache byte identity: strolch-service-2.8.0-SNAPSHOT.jar 0a337294571b34d012af3b82ed6d67afc04d62170b7de5b1453dfca7a9f17370
+Framework/cache byte identity: strolch-utils-2.8.0-SNAPSHOT.jar 90884246ab0a8d7670540e71ca53124ba626d32ff9b6b40786fa5edaa94915a0
+Clean framework source HEAD: f8353080a3c8b140accbff6ee171c73deabb0f17
+Actual framework version: 2.8.0-SNAPSHOT; no timestamp-baseline equivalence claimed
+Changed Java files: tabs, <=160 columns, <1000 lines; new source SPDX headers checked
+Application/runtime and framework SHA-256 manifests generated
+All packaged frontend bytes equal source
+Resolved dependency inventory: 96 JARs
+Reviewed source input manifest generated: 158 paths
+Command: python3 docs/verification/022-package.py
+Exit: 0
+PASS: 147 distribution files hashed; two normalized archive passes identical; every archived byte verified
+Archive: intruvia-app/target/intruvia-0.0.1-mvp.tar.gz SHA-256 ed230f53ab255e1a1fd230583948e814b3d15984eaa5f78d0d102ee6926831e0
+Archive modes 0644: run Python helpers via python3; deployment guide explicitly installs executable permissions.
+Command: python3 docs/verification/022-ledger-check.py
+Exit: 0
+PASS: all22 DONE with existing evidence; only022 TODO -> DONE; counts/current/next/date consistent
+PASS: no production source/POM/integration changes; no subsequent backlog task
+Command: sha256sum -c docs/verification/022-artifacts.sha256
+Exit: 0
+147 entries OK
+Command: sha256sum -c docs/verification/022-archive.sha256
+Exit: 0
+1 entries OK
+Command: sha256sum -c docs/verification/022-source.sha256
+Exit: 0
+158 entries OK
+Command: sha256sum -c docs/verification/022-strolch.sha256
+Exit: 0
+6 entries OK
+Final git diff --check: exit0
+Final packaged documentation byte identity: PASS

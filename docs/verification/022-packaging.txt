@@ -1,0 +1,3 @@
+PASS: 147 distribution files hashed; two normalized archive passes identical; every archived byte verified
+Archive: intruvia-app/target/intruvia-0.0.1-mvp.tar.gz SHA-256 ed230f53ab255e1a1fd230583948e814b3d15984eaa5f78d0d102ee6926831e0
+Archive modes 0644: run Python helpers via python3; deployment guide explicitly installs executable permissions.

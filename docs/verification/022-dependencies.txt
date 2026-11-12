@@ -1,0 +1,96 @@
+HikariCP-7.1.0.jar  2be45c641b841e81df87292e181f2c203500c5f0e9a1676f135927387f3cf40b  com.zaxxer:HikariCP:7.1.0
+afs-4.2.0.jar  82a25b874a989d59879cfb1c7615bca3ae97e1c06557c4a755e3a4808b16e2a2  org.eclipse.serializer:afs:4.2.0
+afs-nio-4.2.0.jar  aac108ed517c11ebb7a325b4ab19b9ec3cea65afcd15d039e0061809bc5d0558  org.eclipse.store:afs-nio:4.2.0
+angus-activation-2.0.3.jar  a6bd35c538cf90fff941ad6258c40c08fca0b5c9c3f536c657114f27ce0527a7  org.eclipse.angus:angus-activation:2.0.3
+angus-mail-2.0.5.jar  b4d8c30d35f455def6c7a05fe595a1e62ea2b80cac3efec1e9ccf4118b23168a  org.eclipse.angus:angus-core:2.0.5, org.eclipse.angus:imap:2.0.5, org.eclipse.angus:logging-mailhandler:2.0.5, org.eclipse.angus:pop3:2.0.5, org.eclipse.angus:smtp:2.0.5, org.eclipse.angus:angus-mail:2.0.5
+annotations-13.0.jar  ace2a10dc8e2d5fd34925ecac03e4988b2c0f851650c94b8cef49ba1bd111478  org.jetbrains:annotations:13.0
+aopalliance-repackaged-3.0.6.jar  a82b6d1a348324ef88dc807c7cd7aaf633985cbff7b30036fb61a1b86981d840  org.glassfish.hk2.external:aopalliance-repackaged:3.0.6
+asm-9.7.1.jar  8cadd43ac5eb6d09de05faecca38b917a040bb9139c7edeb4cc81c740b713281  see JAR filename/manifest
+asm-commons-9.7.1.jar  9a579b54d292ad9be171d4313fd4739c635592c2b5ac3a459bbd1049cddec6a0  see JAR filename/manifest
+asm-tree-9.7.1.jar  9929881f59eb6b840e86d54570c77b59ce721d104e6dfd7a40978991c2d3b41f  see JAR filename/manifest
+base-4.2.0.jar  f2508e9d113340a55bc904a5fc7b56e8851ff012bc6e0b609c73a59527e39a1b  org.eclipse.serializer:base:4.2.0
+bcjmail-jdk18on-1.86.jar  a6c26f418de462f7f3e575de7561fa5af1995c220f236515963b56f31c347acb  see JAR filename/manifest
+bcpg-jdk18on-1.86.jar  8a52ea45b2063f6d41b8ca94409f255a1f4604922f7451c18a7cfd3a3c5b85ab  see JAR filename/manifest
+bcpkix-jdk18on-1.86.jar  8d8b41a4b149bdae8d331f059a578870954d1e3ff29f8269a9eb3ee19a7e4ef7  see JAR filename/manifest
+bcprov-jdk18on-1.86.jar  2af190b300cbb0b35e248ccf5f4a06b6072030aeb3da7a98ec73abe5b4cb371f  see JAR filename/manifest
+bcutil-jdk18on-1.86.jar  1c268e15f785aafb1e4670d8d6e5f856f69475e96c162dadcd1ff9b350e9139f  see JAR filename/manifest
+commons-codec-1.19.0.jar  5c3881e4f556855e9c532927ee0c9dfde94cc66760d5805c031a59887070af5f  commons-codec:commons-codec:1.19.0
+commons-csv-1.14.1.jar  32be0e1e76673092f5d12cb790bd2acb6c2ab04c4ea6efc69ea5ee17911c24fe  org.apache.commons:commons-csv:1.14.1
+commons-io-2.20.0.jar  df90bba0fe3cb586b7f164e78fe8f8f4da3f2dd5c27fa645f888100ccc25dd72  commons-io:commons-io:2.20.0
+cron-1.6.2.jar  4410f28a06c568ce1f7f8964317352dd286719c34f6e73e13ad6e5ea1c8b2ffc  ch.eitchnet:cron:1.6.2
+error_prone_annotations-2.48.0.jar  b49c5c958316ed67a09c699dda9aa749caf434d51d863dea599ef36a49b9c855  com.google.errorprone:error_prone_annotations:2.48.0
+geoip2-5.2.0.jar  1d8524be0a8f8de5a740f55e64c591e2c73a9a07034a7879384dd2a1b9648867  com.maxmind.geoip2:geoip2:5.2.0
+gson-2.14.0.jar  2cbd119bf1961c28788310963dc80ba65f58cdeec1dd139c8bdb1240faa2c36f  com.google.code.gson:gson:2.14.0
+hk2-api-3.0.6.jar  c049a21a9fd9316c7e291a2bc28835f70d25affb623dc1599a83b6b84ec83a4f  org.glassfish.hk2:hk2-api:3.0.6
+hk2-locator-3.0.6.jar  e2664d21b017c3aa1518b913264602bea604edc54d356103c10afba99abd04fc  org.glassfish.hk2:hk2-locator:3.0.6
+hk2-utils-3.0.6.jar  fc84d85a0744b576d9ec7db5845eeb998ed532a9450dd19c8c922c3ee6926206  org.glassfish.hk2:hk2-utils:3.0.6
+intruvia-core-0.0.1.jar  13759a91df297e1112b482067483629047552d5d0fd8e6da1552a95f0364ad0f  li.intruvia:intruvia-core:0.0.1
+intruvia-rest-0.0.1.jar  233c7740a11ad05af4cd96b312a62cd614cf358d587ca9ab0563129aae432b35  li.intruvia:intruvia-rest:0.0.1
+intruvia-web-0.0.1.jar  5a473913893a101bba2940fae50116853f109276a412c08e113b4847fdbd0807  li.intruvia:intruvia-web:0.0.1
+jackson-annotations-2.22.jar  21ddb598807d3a51a876704eb979d9296e1c6a6f47ab1826ff88c6d6a127a2d0  com.fasterxml.jackson.core:jackson-annotations:2.22
+jackson-core-2.22.1.jar  941ff029bcdb93e83d209ce516c1a7fb8bbac07d0a2fa122f5bf194b2cd7b4f4  com.fasterxml.jackson.core:jackson-core:2.22.1
+jackson-databind-2.22.1.jar  7dcd7e53bec1f56c7ad278bd1ca0840bebcc595d61ce44d6a8439abb75b965b2  com.fasterxml.jackson.core:jackson-databind:2.22.1
+jackson-datatype-jsr310-2.22.1.jar  85da45b7e5e565418963ff8f0dcb184365b0557c15468933f4318dde5c3ce845  com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.22.1
+jakarta.activation-api-2.1.4.jar  c9db52100ce6c8aac95cc39075f95720d2e561b11f8051b81c121ad4effd7004  jakarta.activation:jakarta.activation-api:2.1.4
+jakarta.annotation-api-2.1.1.jar  5f65fdaf424eee2b55e1d882ba9bb376be93fb09b37b808be6e22e8851c909fe  jakarta.annotation:jakarta.annotation-api:2.1.1
+jakarta.el-api-5.0.0.jar  57b822380207900f5145c2a687384c50fd41495d388a235791d96ae3b9bfd36d  jakarta.el:jakarta.el-api:5.0.0
+jakarta.enterprise.cdi-api-4.0.1.jar  beaf74c4f2618189309e3f4a09c43effab633dd96aa1f6dc58a6ba7ee0042717  jakarta.enterprise:jakarta.enterprise.cdi-api:4.0.1
+jakarta.enterprise.lang-model-4.0.1.jar  53acafe65b6ef0195fa1b8a0ef2650e5aa024c32cb4059c4df372d6b32089cd3  jakarta.enterprise:jakarta.enterprise.lang-model:4.0.1
+jakarta.inject-api-2.0.1.jar  f7dc98062fccf14126abb751b64fab12c312566e8cbdc8483598bffcea93af7c  jakarta.inject:jakarta.inject-api:2.0.1
+jakarta.interceptor-api-2.1.0.jar  ef787d3f713fc6ff4f02cd4b0dbed08f93d8af3400c90cbb43fb4b5c0583710b  jakarta.interceptor:jakarta.interceptor-api:2.1.0
+jakarta.mail-api-2.1.5.jar  aa493753acb7a8c45ba8f4c9cf1230a74e20237056dd5b5c8bc86c583e8cfa0e  jakarta.mail:jakarta.mail-api:2.1.5
+jakarta.servlet-api-6.0.0.jar  c034eb1afb158987dbb53a5fea0cadf611c8dae8daadd59c44d9d5ab70129cef  jakarta.servlet:jakarta.servlet-api:6.0.0
+jakarta.transaction-api-2.0.1.jar  50c0a7c760c13ae6c042acf182b28f0047413db95b4636fb8879bcffab5ba875  jakarta.transaction:jakarta.transaction-api:2.0.1
+jakarta.validation-api-3.0.2.jar  291c25e6910cc6a7ebd96d4c6baebf6d7c37676c5482c2d96146e901b62c1fc9  jakarta.validation:jakarta.validation-api:3.0.2
+jakarta.websocket-api-2.1.1.jar  beadb92c26d04da653f6d2db2532b549b7a0dbe59c6e22c23e55bd03617f0120  jakarta.websocket:jakarta.websocket-api:2.1.1
+jakarta.websocket-client-api-2.1.1.jar  e8fe8c1dff948385a461dbc85dec5467cbe350f065ec1a0f3bfed53b79e7b102  jakarta.websocket:jakarta.websocket-client-api:2.1.1
+jakarta.ws.rs-api-3.1.0.jar  6b3b3628b8b4aedda0d24c3354335e985497d8ef3c510b8f3028e920d5b8663d  jakarta.ws.rs:jakarta.ws.rs-api:3.1.0
+jakarta.xml.bind-api-4.0.5.jar  5e489b6c874c4119e003ff1403db523ee3a8959ec499f3de29e77245efccf216  jakarta.xml.bind:jakarta.xml.bind-api:4.0.5
+javassist-3.30.2-GA.jar  eba37290994b5e4868f3af98ff113f6244a6b099385d9ad46881307d3cb01aaf  org.javassist:javassist:3.30.2-GA
+jersey-client-3.1.11.jar  9f0f532a6babb530f4c7d6fc4f452b996a97aa7c34248bf249eea8a2ce639758  org.glassfish.jersey.core:jersey-client:3.1.11
+jersey-common-3.1.11.jar  ec516d7c2fdcfcd7eb7739eacf3cd6914e17a1595fd45826b33c8765965981b2  org.glassfish.jersey.core:jersey-common:3.1.11
+jersey-container-servlet-core-3.1.11.jar  4c93b928d93037d7250ab1db9b9eb5e2bd12cf9e67cd48d25dcc835249d47e40  org.glassfish.jersey.containers:jersey-container-servlet-core:3.1.11
+jersey-hk2-3.1.11.jar  faeee985d70b8223a9eb22baabf579d9f860141716efcaf74b0a252a63959fc3  org.glassfish.jersey.inject:jersey-hk2:3.1.11
+jersey-server-3.1.11.jar  7dde2adf6600f3e8f723e37a8c96c31838a682f8db854fdcfcf4f00695d6f903  org.glassfish.jersey.core:jersey-server:3.1.11
+jetty-alpn-client-12.0.16.jar  28ff9568536483af9844b06a840af90ff21ad4549aee284070ec614060305531  org.eclipse.jetty:jetty-alpn-client:12.0.16
+jetty-client-12.0.16.jar  0d5375c83a60362f2225ae06d4837463942f39c5bc6bd83172b4ad2aef28df29  org.eclipse.jetty:jetty-client:12.0.16
+jetty-ee-12.0.16.jar  1b795f43e0c28b4d6979572a1b0a719ed560052bea20a3e3dc52cc75e4561f7f  org.eclipse.jetty:jetty-ee:12.0.16
+jetty-ee10-annotations-12.0.16.jar  08ad96a3071d6161f23b5a00c76562ce4a34a83b3000ed6d572707879edb8b44  org.eclipse.jetty.ee10:jetty-ee10-annotations:12.0.16
+jetty-ee10-plus-12.0.16.jar  73e7441a24e2d7ab79ed0907b9ad73e4015a726e7f26a9b54c32b405415760e6  org.eclipse.jetty.ee10:jetty-ee10-plus:12.0.16
+jetty-ee10-servlet-12.0.16.jar  18a6c41074061a0ff440d618b43e7ab328e81226ec21c4d6a4d53b90b2c94a55  org.eclipse.jetty.ee10:jetty-ee10-servlet:12.0.16
+jetty-ee10-webapp-12.0.16.jar  743dfe48056e6338171ca5ac05d79fde1389148368d9764e85dac1d1bca6ede2  org.eclipse.jetty.ee10:jetty-ee10-webapp:12.0.16
+jetty-ee10-websocket-jakarta-client-12.0.16.jar  2cf2e4e450a28a64b496730bdc65ae6aad41407fb4ab1bf195c4b829d18b1dcd  org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-client:12.0.16
+jetty-ee10-websocket-jakarta-common-12.0.16.jar  b015a32840876ab5a772c2db14bd6a6c7e568eebcefd3e0c6c5d84e6bf9a3ca2  org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-common:12.0.16
+jetty-ee10-websocket-jakarta-server-12.0.16.jar  b9182cd571fcfa83e55c5c9ea2e95ec24472a3961bbeb530f03ccc28f4acd2ba  org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-jakarta-server:12.0.16
+jetty-ee10-websocket-servlet-12.0.16.jar  979376b6bc583fa670bd200be77f04f6bce0945d2e61378c04f4f9163624ede2  org.eclipse.jetty.ee10.websocket:jetty-ee10-websocket-servlet:12.0.16
+jetty-http-12.0.16.jar  b0751b3dd9a8abc79ba0c5061613843dba1d2ce231057f53ad3d038ca888dfb0  org.eclipse.jetty:jetty-http:12.0.16
+jetty-io-12.0.16.jar  c8dfd2d88d34be5461417f2256be0cc868865c45815f7ee0e409ddd872f0e84f  org.eclipse.jetty:jetty-io:12.0.16
+jetty-jndi-12.0.16.jar  0ef04c69b04d11bc2f5e76314f8035b631b8783f4d2d13901dfc0908c12cc8f9  org.eclipse.jetty:jetty-jndi:12.0.16
+jetty-plus-12.0.16.jar  9cdc3f050a92af8aa2a601fa846e649b3b60e81a3450e970a7ccc2da6f64bf8a  org.eclipse.jetty:jetty-plus:12.0.16
+jetty-security-12.0.16.jar  7a6d5b2d0edb1b5012b5510a80411c7fb4b9844b3879938d3b6e9ace3b9b6876  org.eclipse.jetty:jetty-security:12.0.16
+jetty-server-12.0.16.jar  9e3f17ca732154ee2c67cc2bc340f322b29335f74d65f7cc0104c2e9cdc6640e  org.eclipse.jetty:jetty-server:12.0.16
+jetty-session-12.0.16.jar  5d7dfd24c94472c368441488791412a31ea476ad4f1d9286b4f5802c5d85514b  org.eclipse.jetty:jetty-session:12.0.16
+jetty-util-12.0.16.jar  a03d43c194993ebb4d51fbfe7fe29134d7863b28708380eeedd11797c83543cf  org.eclipse.jetty:jetty-util:12.0.16
+jetty-websocket-core-client-12.0.16.jar  0ee04f306ac0759980f8b81e2585ad1caa4aead7df22f1a5277264b2d5ad6431  org.eclipse.jetty.websocket:jetty-websocket-core-client:12.0.16
+jetty-websocket-core-common-12.0.16.jar  bebe6fac6ddd4047bd7334bf43362c7f5d1404282ef866ca6b092950f6c1fa91  org.eclipse.jetty.websocket:jetty-websocket-core-common:12.0.16
+jetty-websocket-core-server-12.0.16.jar  03ae2eef7ba6ddbc9906a570a7d6cbac9bf243aa189f0793ecf1dd42711b2c91  org.eclipse.jetty.websocket:jetty-websocket-core-server:12.0.16
+jetty-xml-12.0.16.jar  a834f40e17c783a9f59bb7ee0a280626c7dacf6e7ee3e93dc0b6927a6aabdfd9  org.eclipse.jetty:jetty-xml:12.0.16
+jsr305-3.0.2.jar  766ad2a0783f2687962c8ad74ceecc38a28b9f72a2d085ee438b7813e928d0c7  com.google.code.findbugs:jsr305:3.0.2
+kotlin-stdlib-1.9.21.jar  3b479313ab6caea4e5e25d3dee8ca80c302c89ba73e1af4dafaa100f6ef9296a  see JAR filename/manifest
+logback-classic-1.6.5.jar  2e8c73aadad525e854af1ac95793af3dc75ecedd53c010ea2389de44c08e729b  ch.qos.logback:logback-classic:1.6.5
+logback-core-1.6.5.jar  03dcbf053b40166849b8eb0a30cbde40c04a448820e9a7589c4b0a2ec3a9db63  ch.qos.logback:logback-core:1.6.5
+maxmind-db-4.1.0.jar  4cc6993229122cb61ad8444f38d7e0da5a8623ae6c6f249858e0b28217978e77  com.maxmind.db:maxmind-db:4.1.0
+osgi-resource-locator-1.0.3.jar  aab5d7849f7cfcda2cc7c541ba1bd365151d42276f151c825387245dfde3dd74  org.glassfish.hk2:osgi-resource-locator:1.0.3
+persistence-4.2.0.jar  d9b63dadfa15117a527d39eff6c9b71cd5666aeb5e79f7ba5fd2e8e65ba34005  org.eclipse.serializer:persistence:4.2.0
+persistence-binary-4.2.0.jar  d8843aca8a20c660b6244d9d1a3b6a1487461ce61c8e32ffa3d8cc91f8e5801c  org.eclipse.serializer:persistence-binary:4.2.0
+pgpainless-core-2.0.4.jar  265dfefbfa4c5d33d659482e9813d526643122de982368727c6f1a0861275290  see JAR filename/manifest
+postgresql-42.7.12.jar  31fbf6f06b2217fb51d5100cee51b22625cc81640da0679b47914e54c1e6377c  see JAR filename/manifest
+slf4j-api-2.0.16.jar  a12578dde1ba00bd9b816d388a0b879928d00bab3c83c240f7013bf4196c579a  org.slf4j:slf4j-api:2.0.16
+storage-4.2.0.jar  afb1bc6feb79490d81b29fe70253010df3ee211a9cbfe846ef7feabb90f4b23a  org.eclipse.store:storage:4.2.0
+storage-embedded-4.2.0.jar  90415385d5868b213250948a6d17b840db57d6641730c04c4aa9d94bdec8daf5  org.eclipse.store:storage-embedded:4.2.0
+strolch-agent-2.8.0-SNAPSHOT.jar  7ddd2b1c9a0dde4bc508448e135efa2938aafe3d23c0b8b9dc5d98022cf3e743  li.strolch:strolch-agent:2.8.0-SNAPSHOT
+strolch-model-2.8.0-SNAPSHOT.jar  3e920906fa4e38225cecb8d22352861ac578f67aebd4bedfa209cb3d3965cb87  li.strolch:strolch-model:2.8.0-SNAPSHOT
+strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar  cb868f5fd42b16b4725ce1eb4cafffb42bc7bfb19d024036e34a6cee253ec69a  li.strolch:strolch-persistence-postgresql:2.8.0-SNAPSHOT
+strolch-privilege-2.8.0-SNAPSHOT.jar  be621dbb353b792a9148339db518407d3e5c1d7ea8a6e33ee7e80ab592e71454  li.strolch:strolch-privilege:2.8.0-SNAPSHOT
+strolch-service-2.8.0-SNAPSHOT.jar  0a337294571b34d012af3b82ed6d67afc04d62170b7de5b1453dfca7a9f17370  li.strolch:strolch-service:2.8.0-SNAPSHOT
+strolch-utils-2.8.0-SNAPSHOT.jar  90884246ab0a8d7670540e71ca53124ba626d32ff9b6b40786fa5edaa94915a0  li.strolch:strolch-utils:2.8.0-SNAPSHOT
