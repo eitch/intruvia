@@ -1,0 +1,17 @@
+Fresh packaged runtime: configured Strolch hash, Viewer/Producer/TokenOperator; scoped overlapping PATs persisted, output 0600, overwrite rejected. PASS
+First start creates PostgreSQL schema/model; clean restart with creation/migration/drop false, non-superuser DB owner; readiness UP with absent MMDB. PASS
+Verified TLS proxy ingestion 201; rotation same identity produces 200 duplicate; offline revocation persists across restart and old PAT returns 401. PASS
+Full custom pg_dump + runtime archive restored to NEW database with all schema flags false; ALL public tables count/content fingerprints equal. PASS
+Restored event ID/sequence and receipt duplicate preserved; changed payload 409; revoked PAT stays 401; newer head 2 rolled back to 1. PASS
+Restored public table fingerprints (synthetic data only): {"activities": "0:d41d8cd98f00b204e9800998ecf8427e", "audits": "0:d41d8cd98f00b204e9800998ecf8427e", "db_version": "21:26fa23e601def4d0269815ca0a7d4def", "operations_log": "0:d41d8cd98f00b204e9800998ecf8427e", "operations_log_values": "0:d41d8cd98f00b204e9800998ecf8427e", "orders": "0:d41d8cd98f00b204e9800998ecf8427e", "resources": "4:7b82651ccf99369e648a5aeb0d273b4f"}
+Removed disposable containers, runtime, passwords, PATs, certificate keys and backups.
+Traceback (most recent call last):
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 226, in <module>
+    result = run([os.environ['NODE_BIN'], 'docs/verification/021-browser.cjs'], env=dict(os.environ, REHEARSAL_SETTINGS=str(settings)))
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 35, in run
+    return subprocess.run(args, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, **kwargs).stdout
+           ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.14/subprocess.py", line 578, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/home/eitch/.nvm/versions/node/v26.13.0/bin/node', 'docs/verification/021-browser.cjs']' returned non-zero exit status 1.

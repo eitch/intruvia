@@ -1,0 +1,115 @@
+Task 021 — deployment and recovery acceptance, 2026-11-12 UTC
+
+Scope: docs/DEPLOYMENT.md, docs/deployment/{PrivilegeTool.java,quiet-logback.xml,
+nginx.conf.example,intruvia.service.example}, docs/architecture/021-deployment-recovery.md,
+README deployment entry and Maven distribution resource packaging. No application
+endpoint/model change, dependency/toolchain addition, commit, push or public deployment.
+Initial git status was clean. Task 022 not executed.
+
+Rehearsal setup:
+- New temporary release copied only from intruvia-app/target/intruvia, new protected
+  runtime initialized from its examples; no DatabaseFixture/test privilege XML.
+- Fresh PostgreSQL container and role intruvia: LOGIN only, database owner, no
+  superuser/CREATEDB/CREATEROLE. Container trust auth is disposable/loopback-only;
+  production guide requires authenticated connections and protected credentials.
+- Generated random temporary passwords/secrets/PATs, no real credentials. Temporary
+  artifacts removed in finally (including failed runs). Guide values are placeholders.
+- Actual Strolch 2.8.0-SNAPSHOT, not the timestamped baseline. Local repository and
+  /home/eitch/src/git/atx-dev/strolch inspected; no framework rebuild needed because
+  cached offline artifacts suffice. Framework HEAD and Java/report totals are in
+  021-environment.txt; packaged framework binaries are in 021-strolch.sha256.
+
+Commands/results (cwd repository root):
+1. JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem
+   PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH
+   scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+   > docs/verification/021-maven.txt 2>&1
+   exit 0: clean verify, all five reactor modules SUCCESS; 87 tests, zero failures,
+   errors or skips (42 core/rest unit + 4 application unit + 41 integration).
+2. docker pull nginx:stable-bookworm — exit 0. Runtime proxy for rehearsal only;
+   no Maven dependency/toolchain added. Exact proxy/PostgreSQL image digests appear
+   in 021-rehearsal-final.txt. PostgreSQL image already cached.
+3. JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem
+   PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH
+   mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -DskipTests package
+   > docs/verification/021-package.txt 2>&1 — exit 0, package only (tests skipped).
+4. JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem
+   NODE_BIN=/home/eitch/.nvm/versions/node/v26.13.0/bin/node
+   PLAYWRIGHT_MODULE=/usr/lib/chatgpt/resources/cua_node/lib/node_modules/playwright
+   python3 docs/verification/021-rehearsal.py
+   > docs/verification/021-rehearsal-final.txt 2>&1 — exit 0.
+   Existing optional Playwright/system Chromium used; no npm install/build.
+
+Acceptance observations from command 4:
+- Configured framework password hashing and offline cross-user scoped PAT issuance
+  from packaged source recipe; mode-0600 output, existing output rejected.
+- Started packaged executable as normal user with dedicated DB role; first-start
+  schema creation, stop, creation=false restart succeed; missing GeoIP stays ready.
+- nginx -t on adapted supplied config succeeds; real proxy HTTPS ingestion with
+  verified disposable localhost certificate returns 201. Replacement PAT gives
+  duplicate 200 with same ID/sequence and stable server-a identity. Persisted offline
+  old-token revocation returns 401 after restart; replacement remains usable.
+- Stopped application, custom pg_dump of whole DB plus runtime tar; made later
+  commit head=2; restored to NEW database with pg_restore --exit-on-error
+  --single-transaction --no-owner --no-acl. Restored runtime with unchanged privilege
+  secrets, schema flags all false. All seven public tables' counts and full-row
+  fingerprints equal before app startup; resources include event, receipt, stream
+  state and migration record. Exact fingerprints retained in rehearsal output.
+- After restart, same payload returns original ID/sequence=1 and duplicate=true;
+  changed jail returns 409 and revoked PAT still returns 401. Snapshot/browser head=1.
+- Real Chromium 156.0.8078.79 login through HTTPS, Secure/HttpOnly/SameSite=Strict
+  /api/v1 cookie, WSS connection with pre-restore cursor=2 injected only on first
+  connection; resync_required -> real recovery snapshot -> hello head=1 -> live.
+  Gap notice visible, exactly one event row; no page errors/external asset requests
+  or localStorage credentials. Screenshot 021-restored-browser.png visually reviewed.
+  Python verifies TLS using disposable certificate as CA; Chromium trusts only its
+  temporary SPKI. No global ignoreHTTPSErrors setting. Key removed after rehearsal.
+- Application console logs contain none of the generated password/PAT secrets.
+  Every maintenance stop exits gracefully; containers, temp runtime, secret files,
+  backups and keys removed. No host firewall/service configuration changed.
+
+Failed attempts, retained honestly:
+- 021-rehearsal-first.txt exit 1: source recipe compilation used nonexistent
+  PrivilegeHandler.logout; corrected to supported invalidate. Maven does not compile
+  this source-mode recipe, which is why the separate rehearsal is necessary.
+- 021-rehearsal-second.txt exit 1: all DB/HTTP restore checks passed, browser failed;
+  subprocess stderr was initially hidden by runner. Corrected sanitized diagnostics.
+- 021-rehearsal-third.txt exit 1: browser crashpad could not initialize writable
+  config; moved XDG_CONFIG_HOME/XDG_CACHE_HOME into disposable temp directory.
+- 021-rehearsal-fourth.txt exit 1: browser injection assumed URL was a string,
+  preventing first socket construction; converted with String(url). Production
+  application unchanged. Final actual WSS/resnapshot run passed.
+- 021-final-maven.txt exit 1: existing OperationalLoggingTest encountered
+  NoSuchFileException while inspecting a rolling archive (line 46, concurrent archive
+  cleanup). Initial clean suite had passed. No logging implementation/test was
+  changed; a fresh full verification retry is recorded separately.
+- A guessed EventModelMapper path did not exist during inspection; located existing
+  model constants instead. No guideline or required source was missing.
+
+Limits/unrun checks:
+- This is a clean isolated configuration/process/database/proxy rehearsal, not an OS
+  image installation or public production deployment. No host systemd installation,
+  public DNS/CA issuance, remote PostgreSQL TLS deployment, licensed MaxMind download,
+  or live firewall jail modification was performed. Those remain site operations;
+  task 018/008 evidence covers helper/action/update mechanics.
+- Small synthetic restore proves integrity semantics, not large-database recovery
+  duration; no RTO or zero-loss claim. Production backups must be encrypted/off-host.
+- Browser reauthenticates after restore; test explicitly injects its old cursor.
+  Sessions do not survive process restart. At/below-head alternate-history cursors
+  cannot universally detect a rollback; guide mandates viewer reload/login and
+  PAT revocation reconciliation before reopening ingress.
+- Receipt expiry/capacity, GeoIP replacement and Fail2ban deadline policies are
+  documented with existing integration evidence; not reimplemented in this task.
+- Data-loss limits, retention, producer outage loss and deferred features are explicit.
+- Task 020 burst-only latency limit remains documented; this task grants no release.
+
+Final clean verification, package inspection, hashes and ledger results are recorded
+in 021-final-maven-retry.txt and 021-final-checks.txt. Status becomes DONE only after these
+checks succeed. See status ledger for final transition and next eligible task 022.
+
+Final verification retry command is identical to command 1, redirecting to
+021-final-maven-retry.txt: exit 0, 87 tests, zero failures/errors/skips. The prior
+021-final-maven.txt failure is retained above. Distribution README/LICENSE,
+DEPLOYMENT.md, privilege/proxy/service recipes and acceptance report are present.
+Final package-only refresh after ledger/report edits does not rerun tests; checks
+and exact artifact digests are in 021-final-checks.txt / 021-artifacts.sha256.

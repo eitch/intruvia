@@ -1,0 +1,32 @@
+JUnit XML totals: {'tests': 87, 'failures': 0, 'errors': 0, 'skipped': 0}
+Distribution README/LICENSE, guide/report and all deployment recipes byte-match source: PASS
+Final package-only command: JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -DskipTests package
+Result: exit 0, BUILD SUCCESS (tests intentionally skipped for documentation refresh; prior clean verify passed)
+Distribution files hashed: 145
+Command: git diff --check
+Exit: 0
+
+Command: git diff HEAD --check
+Exit: 0
+
+Command: python3 docs/verification/021-ledger-check.py
+Exit: 0
+PASS: 22 rows; only 021 TODO -> DONE; DONE 21/TODO 1/IN_PROGRESS 0/BLOCKED 0
+PASS: current/date/counts and lowest eligible next task 022 agree; no other task started
+Command: sha256sum -c docs/verification/021-artifacts.sha256
+Exit: 0
+145 checksum entries OK
+Command: sha256sum -c docs/verification/021-strolch.sha256
+Exit: 0
+intruvia-app/target/intruvia/lib/strolch-agent-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-model-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-privilege-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-service-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-utils-2.8.0-SNAPSHOT.jar: OK
+Command: /home/eitch/.nvm/versions/node/v26.13.0/bin/node --check docs/verification/021-browser.cjs
+Exit: 0
+
+Python compile(021-rehearsal.py): PASS; no module/toolchain installed
+docker ps --format {{.Names}}: 
+Rehearsal screenshot visually inspected: visible gap notice, one retained event, live status, map attribution. PASS

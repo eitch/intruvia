@@ -1,0 +1,36 @@
+Fresh packaged runtime: configured Strolch hash, Viewer/Producer/TokenOperator; scoped overlapping PATs persisted, output 0600, overwrite rejected. PASS
+First start creates PostgreSQL schema/model; clean restart with creation/migration/drop false, non-superuser DB owner; readiness UP with absent MMDB. PASS
+Verified TLS proxy ingestion 201; rotation same identity produces 200 duplicate; offline revocation persists across restart and old PAT returns 401. PASS
+Full custom pg_dump + runtime archive restored to NEW database with all schema flags false; ALL public tables count/content fingerprints equal. PASS
+Restored event ID/sequence and receipt duplicate preserved; changed payload 409; revoked PAT stays 401; newer head 2 rolled back to 1. PASS
+Restored public table fingerprints (synthetic data only): {"activities": "0:d41d8cd98f00b204e9800998ecf8427e", "audits": "0:d41d8cd98f00b204e9800998ecf8427e", "db_version": "21:bb3f363f9c35f6608ca86e0deb1f8181", "operations_log": "0:d41d8cd98f00b204e9800998ecf8427e", "operations_log_values": "0:d41d8cd98f00b204e9800998ecf8427e", "orders": "0:d41d8cd98f00b204e9800998ecf8427e", "resources": "4:168ec256a758f6d71a2b5e33f83348a2"}
+Removed disposable containers, runtime, passwords, PATs, certificate keys and backups.
+Traceback (most recent call last):
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 234, in <module>
+    result = run([os.environ['NODE_BIN'], 'docs/verification/021-browser.cjs'], env=dict(os.environ, REHEARSAL_SETTINGS=str(settings)))
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 42, in run
+    raise AssertionError(f'{Path(args[0]).name} exit {result.returncode}: {detail}')
+AssertionError: node exit 1: browserType.launch: Target page, context or browser has been closed
+Browser logs:
+
+<launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --ignore-certificate-errors-spki-list=bb3tsbHEJLH1FFQt6l6KCGKbgXW97rDxzDihd+0/Gs4= --user-data-dir=/tmp/playwright_chromiumdev_profile-YnEe6t --remote-debugging-pipe --no-startup-window
+<launched> pid=969
+[pid=969][err] chrome_crashpad_handler: --database is required
+[pid=969][err] Try 'chrome_crashpad_handler --help' for more information.
+[pid=969][err] [969:969:1112/125431.320537:ERROR:third_party/crashpad/crashpad/util/linux/socket.cc:120] recvmsg: Connection reset by peer (104)
+Call log:
+[2m  - <launching> /usr/bin/chromium --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-dev-shm-usage --disable-extensions --disable-features=AcceptCHFrame,AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,Translate,AutoDeElevate,RenderDocument,OptimizationHints --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --enable-automation --disable-infobars --disable-search-engine-choice-screen --disable-sync --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --no-sandbox --no-sandbox --ignore-certificate-errors-spki-list=bb3tsbHEJLH1FFQt6l6KCGKbgXW97rDxzDihd+0/Gs4= --user-data-dir=/tmp/playwright_chromiumdev_profile-YnEe6t --remote-debugging-pipe --no-startup-window[22m
+[2m  - <launched> pid=969[22m
+[2m  - [pid=969][err] chrome_crashpad_handler: --database is required[22m
+[2m  - [pid=969][err] Try 'chrome_crashpad_handler --help' for more information.[22m
+[2m  - [pid=969][err] [969:969:1112/125431.320537:ERROR:third_party/crashpad/crashpad/util/linux/socket.cc:120] recvmsg: Connection reset by peer (104)[22m
+[2m  - [pid=969] <gracefully close start>[22m
+[2m  - [pid=969] <kill>[22m
+[2m  - [pid=969] <will force kill>[22m
+[2m  - [pid=969] <process did exit: exitCode=null, signal=SIGTRAP>[22m
+[2m  - [pid=969] starting temporary directories cleanup[22m
+[2m  - [pid=969] finished temporary directories cleanup[22m
+[2m  - [pid=969] <gracefully close end>[22m
+
+    at /home/eitch/src/git/intruvia/docs/verification/021-browser.cjs:8:33
+    at Object.<anonymous> (/home/eitch/src/git/intruvia/docs/verification/021-browser.cjs:46:3)

@@ -1,0 +1,11 @@
+Fresh packaged runtime: configured Strolch hash, Viewer/Producer/TokenOperator; scoped overlapping PATs persisted, output 0600, overwrite rejected. PASS
+First start creates PostgreSQL schema/model; clean restart with creation/migration/drop false, non-superuser DB owner; readiness UP with absent MMDB. PASS
+Verified TLS proxy ingestion 201; rotation same identity produces 200 duplicate; offline revocation persists across restart and old PAT returns 401. PASS
+Full custom pg_dump + runtime archive restored to NEW database with all schema flags false; ALL public tables count/content fingerprints equal. PASS
+Restored event ID/sequence and receipt duplicate preserved; changed payload 409; revoked PAT stays 401; newer head 2 rolled back to 1. PASS
+Restored public table fingerprints (synthetic data only): {"activities": "0:d41d8cd98f00b204e9800998ecf8427e", "audits": "0:d41d8cd98f00b204e9800998ecf8427e", "db_version": "21:15ce199bb32025bc1795b32d86cc0394", "operations_log": "0:d41d8cd98f00b204e9800998ecf8427e", "operations_log_values": "0:d41d8cd98f00b204e9800998ecf8427e", "orders": "0:d41d8cd98f00b204e9800998ecf8427e", "resources": "4:1f4ee922655952f9e27ed5a3f86bf2c5"}
+Chromium 156.0.8078.79: trusted HTTPS login, Secure cookie, WSS ahead cursor 2 -> resync_required -> snapshot head 1 -> live; visible gap notice, 1 row, no page errors/external requests/localStorage. PASS
+Application logs exclude rehearsal password and PATs. Shutdown succeeded at every maintenance boundary. PASS
+[nginx:stable-bookworm] sha256:552e7481ca93ffccd046aa658dbbed22caefbc09c66fa7cd247cbb90b8a5c609 ["nginx@sha256:552e7481ca93ffccd046aa658dbbed22caefbc09c66fa7cd247cbb90b8a5c609"]
+[postgres:18-bookworm] sha256:f1ea2a1a4fb7b68d4836be1fdcb8a6466a89b072158bf9d97663600538c294c5 ["postgres@sha256:f1ea2a1a4fb7b68d4836be1fdcb8a6466a89b072158bf9d97663600538c294c5"]
+Removed disposable containers, runtime, passwords, PATs, certificate keys and backups.

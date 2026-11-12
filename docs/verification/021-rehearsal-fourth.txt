@@ -1,0 +1,19 @@
+Fresh packaged runtime: configured Strolch hash, Viewer/Producer/TokenOperator; scoped overlapping PATs persisted, output 0600, overwrite rejected. PASS
+First start creates PostgreSQL schema/model; clean restart with creation/migration/drop false, non-superuser DB owner; readiness UP with absent MMDB. PASS
+Verified TLS proxy ingestion 201; rotation same identity produces 200 duplicate; offline revocation persists across restart and old PAT returns 401. PASS
+Full custom pg_dump + runtime archive restored to NEW database with all schema flags false; ALL public tables count/content fingerprints equal. PASS
+Restored event ID/sequence and receipt duplicate preserved; changed payload 409; revoked PAT stays 401; newer head 2 rolled back to 1. PASS
+Restored public table fingerprints (synthetic data only): {"activities": "0:d41d8cd98f00b204e9800998ecf8427e", "audits": "0:d41d8cd98f00b204e9800998ecf8427e", "db_version": "21:e785caf7cb60b6b308beabafea9c90cb", "operations_log": "0:d41d8cd98f00b204e9800998ecf8427e", "operations_log_values": "0:d41d8cd98f00b204e9800998ecf8427e", "orders": "0:d41d8cd98f00b204e9800998ecf8427e", "resources": "4:8768ac898222510067eb8a7521e1e453"}
+Removed disposable containers, runtime, passwords, PATs, certificate keys and backups.
+Traceback (most recent call last):
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 234, in <module>
+    result = run([os.environ['NODE_BIN'], 'docs/verification/021-browser.cjs'], env=dict(os.environ, REHEARSAL_SETTINGS=str(settings), XDG_CONFIG_HOME=str(BASE / 'browser-config'), XDG_CACHE_HOME=str(BASE / 'browser-cache')))
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 42, in run
+    raise AssertionError(f'{Path(args[0]).name} exit {result.returncode}: {detail}')
+AssertionError: node exit 1: locator.waitFor: Timeout 20000ms exceeded.
+Call log:
+[2m  - waiting for getByText('Some older live updates are no longer available') to be visible[22m
+
+    at /home/eitch/src/git/intruvia/docs/verification/021-browser.cjs:33:91 {
+  name: 'TimeoutError'
+}

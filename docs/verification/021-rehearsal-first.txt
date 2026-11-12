@@ -1,0 +1,14 @@
+Removed disposable containers, runtime, passwords, PATs, certificate keys and backups.
+Traceback (most recent call last):
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 120, in <module>
+    tool('hash', pw, hashed)
+    ~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/home/eitch/src/git/intruvia/docs/verification/021-rehearsal.py", line 54, in tool
+    raise AssertionError('PrivilegeTool unexpected exit: ' + result.stderr.decode()[:300])
+AssertionError: PrivilegeTool unexpected exit: docs/deployment/PrivilegeTool.java:53: error: cannot find symbol
+				} finally { handler.logout(certificate); }
+				                   ^
+  symbol:   method logout(Certificate)
+  location: variable handler of type PrivilegeHandler
+1 error
+error: compilation failed
