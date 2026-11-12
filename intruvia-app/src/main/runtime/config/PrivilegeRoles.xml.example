@@ -68,4 +68,7 @@
 	<Role name="Viewer">
 		<Privilege name="event:read" policy="DefaultPrivilege"><AllAllowed>true</AllAllowed></Privilege>
 	</Role>
+	<Role name="Operator">
+		<Privilege name="runtime:diagnostics" policy="DefaultPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+	</Role>
 </Roles>

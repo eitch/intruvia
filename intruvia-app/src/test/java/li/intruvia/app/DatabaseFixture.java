@@ -36,6 +36,8 @@ final class DatabaseFixture implements AutoCloseable {
 		Files.writeString(this.runtime.resolve("config/StrolchConfiguration.xml"), config);
 		for (String name : new String[]{"PrivilegeConfig.xml", "PrivilegeRoles.xml", "PrivilegeUsers.xml"})
 			Files.copy(Path.of("src/test/resources/privilege", name), this.runtime.resolve("config").resolve(name));
+		var privilege = this.runtime.resolve("config/PrivilegeConfig.xml");
+		Files.writeString(privilege, Files.readString(privilege).replace("CHANGE-ME", "synthetic-runtime-test-secret"));
 		try (Connection connection = admin(); var statement = connection.createStatement()) {
 			statement.executeUpdate("CREATE DATABASE " + this.database);
 		}
@@ -45,6 +47,26 @@ final class DatabaseFixture implements AutoCloseable {
 		var path = this.runtime.resolve("config/StrolchConfiguration.xml");
 		Files.writeString(path, Files.readString(path).replace("<db.useEnv>false</db.useEnv>", "<db.useEnv>true</db.useEnv>"));
 		return java.util.Map.of("DB_URL", this.url, "DB_USERNAME", this.username, "DB_PASSWORD", this.password);
+	}
+
+	Connection faultConnection() throws SQLException {
+		return DriverManager.getConnection(this.url, this.username, this.password);
+	}
+
+	void available(boolean available) throws SQLException {
+		try (var connection = admin(); var statement = connection.createStatement()) {
+			statement.executeUpdate("ALTER DATABASE " + this.database + " ALLOW_CONNECTIONS " + available);
+			if (!available)
+				statement.execute("SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '" + this.database + "'");
+		}
+	}
+
+	boolean hasBlockedWrite() throws SQLException {
+		try (var connection = admin(); var statement = connection.createStatement();
+				var rows = statement.executeQuery("SELECT count(*) FROM pg_stat_activity WHERE datname = '" + this.database +
+						"' AND wait_event_type = 'Lock' AND state = 'active'")) {
+			rows.next(); return rows.getInt(1) > 0;
+		}
 	}
 
 	void rejectRollbackFixture() throws SQLException {

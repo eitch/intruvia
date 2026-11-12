@@ -64,9 +64,10 @@ public class ApplicationIT {
 					assertEquals(path, 404, get(client, port, path).statusCode());
 				HttpResponse<String> health = get(client, port, "/health/live");
 				assertEquals(200, health.statusCode());
+				assertEquals(200, get(client, port, "/health/ready").statusCode());
 				assertEquals("{\"status\":\"UP\"}", health.body());
 				assertTrue(health.headers().firstValue("Content-Type").orElseThrow().startsWith("application/json"));
-				for (String path : new String[]{"/config/StrolchConfiguration.xml", "/health/ready", "/missing"})
+				for (String path : new String[]{"/config/StrolchConfiguration.xml", "/missing"})
 					assertEquals(path, 404, get(client, port, path).statusCode());
 				for (String path : new String[]{"/api/v1/events?after=0", "/api/v1/events/snapshot"})
 					assertEquals(path, 503, get(client, port, path).statusCode());

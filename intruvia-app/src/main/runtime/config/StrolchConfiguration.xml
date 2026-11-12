@@ -25,6 +25,8 @@
 			<impl>li.strolch.persistence.postgresql.PostgreSqlPersistenceHandler</impl>
 			<Properties>
 				<db.useEnv>true</db.useEnv>
+				<db.pool.connectionTimeout>3000</db.pool.connectionTimeout>
+				<db.pool.validationTimeout>2000</db.pool.validationTimeout>
 				<allowSchemaCreation>false</allowSchemaCreation>
 				<allowSchemaMigration>false</allowSchemaMigration>
 				<allowSchemaDrop>false</allowSchemaDrop>
@@ -55,7 +57,7 @@
 			<api>li.intruvia.core.geo.GeoIpComponent</api>
 			<impl>li.intruvia.core.geo.GeoIpComponent</impl>
 			<!-- Optional absolute City MMDB path. Empty/missing file means degraded enrichment. -->
-			<Properties><databasePath>/home/eitch/SynologyDrive/scripts/iptables/geoip_blocking/GeoLite2-City_20261002/GeoLite2-City.mmdb</databasePath></Properties>
+			<Properties><databasePath></databasePath></Properties>
 		</Component>
 		<Component>
 			<name>ServiceHandler</name>
@@ -97,6 +99,12 @@
 			<depends>ServiceHandler</depends>
 			<depends>SessionHandler</depends>
 			<depends>StreamNotifications</depends>
+			<Properties>
+				<queueFrames>1000</queueFrames>
+				<messageBytes>65536</messageBytes>
+				<sendSeconds>10</sendSeconds>
+				<pollMillis>250</pollMillis>
+			</Properties>
 		</Component>
 	</env>
 </StrolchConfiguration>

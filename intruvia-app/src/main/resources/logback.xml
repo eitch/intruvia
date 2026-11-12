@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Synchronous, size-bounded operational logs. Framework messages can contain DB URLs/model values. -->
 <configuration>
 	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder><pattern>%date %-5level %logger{36} - %msg%n</pattern></encoder>
 	</appender>
-	<root level="INFO"><appender-ref ref="CONSOLE"/></root>
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${intruvia.log.dir:-logs}/intruvia.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>${intruvia.log.dir:-logs}/intruvia.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+			<maxFileSize>10MB</maxFileSize>
+			<maxHistory>5</maxHistory>
+			<totalSizeCap>50MB</totalSizeCap>
+			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		</rollingPolicy>
+		<encoder><pattern>%date %-5level %logger{36} - %msg%n</pattern></encoder>
+	</appender>
+	<logger name="li.intruvia" level="INFO" additivity="false">
+		<appender-ref ref="CONSOLE"/><appender-ref ref="FILE"/>
+	</logger>
+	<root level="OFF"/>
 </configuration>
