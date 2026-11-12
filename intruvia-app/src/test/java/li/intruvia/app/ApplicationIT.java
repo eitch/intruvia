@@ -21,6 +21,7 @@ import java.util.regex.Pattern;
 import static org.junit.Assert.*;
 
 public class ApplicationIT {
+	private static final String TEST_BIND_ADDRESS = "127.0.0.2";
 	private DatabaseFixture database;
 
 	@Before
@@ -42,6 +43,7 @@ public class ApplicationIT {
 				"-jar", distribution.resolve("intruvia-app-0.0.1.jar").toString(), this.database.runtime.toString(), "0")
 				.directory(distribution.toFile()).redirectErrorStream(true).redirectOutput(log.toFile());
 		builder.environment().putAll(this.database.productionEnvironment());
+		builder.environment().put("INTRUVIA_BIND_ADDRESS", TEST_BIND_ADDRESS);
 		Process process = builder.start();
 		try {
 			int port = awaitPort(process, log);
@@ -102,7 +104,7 @@ public class ApplicationIT {
 	}
 
 	private static int awaitPort(Process process, Path log) throws Exception {
-		var pattern = Pattern.compile("Intruvia started: http://127\\.0\\.0\\.1:(\\d+)");
+		var pattern = Pattern.compile("Intruvia started on " + Pattern.quote(TEST_BIND_ADDRESS) + ":(\\d+)");
 		long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(30);
 		while (System.nanoTime() < deadline) {
 			String output = Files.readString(log);
@@ -116,7 +118,7 @@ public class ApplicationIT {
 	}
 
 	private static HttpResponse<String> get(HttpClient client, int port, String path) throws Exception {
-		return client.send(HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + path))
+		return client.send(HttpRequest.newBuilder(URI.create("http://" + TEST_BIND_ADDRESS + ":" + port + path))
 				.timeout(Duration.ofSeconds(5)).build(), HttpResponse.BodyHandlers.ofString());
 	}
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import static org.junit.Assert.*;
 
@@ -17,6 +18,8 @@ public class OperationalLoggingTest {
 		Path folder = Files.createTempDirectory(Path.of("target"), "bounded-logs-").toAbsolutePath();
 		var context = new LoggerContext();
 		context.setMDCAdapter(new ch.qos.logback.classic.util.LogbackMDCAdapter());
+		var compression = context.getExecutorService();
+		var cleanup = context.getAlternateExecutorService();
 		try {
 			context.putProperty("intruvia.log.dir", folder.toString());
 			var configurator = new JoranConfigurator();
@@ -31,7 +34,16 @@ public class OperationalLoggingTest {
 			context.getLogger("li.strolch.persistence").error("CANARY-credential CANARY-payload");
 			for (int index = 0; index < 150; index++)
 				logger.warn("request_failed requestId=00000000-0000-0000-0000-000000000000 status=503");
-		} finally { context.stop(); }
+			appender.stop();
+			compression.shutdown();
+			cleanup.shutdown();
+			assertTrue("Compression tasks finished", compression.awaitTermination(30, TimeUnit.SECONDS));
+			assertTrue("Cleanup tasks finished", cleanup.awaitTermination(30, TimeUnit.SECONDS));
+		} finally {
+			context.stop();
+			compression.shutdownNow();
+			cleanup.shutdownNow();
+		}
 		boolean archived = false;
 		try (var files = Files.list(folder)) {
 			for (Path file : files.toList()) {

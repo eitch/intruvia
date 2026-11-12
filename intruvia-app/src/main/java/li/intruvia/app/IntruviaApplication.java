@@ -30,13 +30,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Properties;
 
-/** Owns the HTTP and Strolch lifecycles; only loopback is exposed by the skeleton. */
+/** Owns the HTTP and Strolch lifecycles. */
 public final class IntruviaApplication implements AutoCloseable {
 	private static final Logger logger = LoggerFactory.getLogger(IntruviaApplication.class);
 	private final StrolchAgent agent;
 	private final Server server;
 	private final ViewerSessions viewers;
 	private final ServerConnector connector;
+	private final String bindAddress;
 	private boolean closed;
 	private final java.util.concurrent.Semaphore readinessProbe = new java.util.concurrent.Semaphore(1);
 	private final li.intruvia.rest.ops.RuntimeDiagnostics diagnostics = new li.intruvia.rest.ops.RuntimeDiagnostics();
@@ -49,6 +50,7 @@ public final class IntruviaApplication implements AutoCloseable {
 	IntruviaApplication(Path runtime, int port, Clock clock) {
 		if (port < 0 || port > 65535)
 			throw new IllegalArgumentException("Port must be between 0 and 65535");
+		this.bindAddress = BindAddress.parse(System.getenv("INTRUVIA_BIND_ADDRESS"));
 		java.util.logging.LogManager.getLogManager().reset();
 		java.util.logging.Logger.getLogger("").setLevel(java.util.logging.Level.OFF);
 		RuntimeConfiguration.validate(runtime);
@@ -71,9 +73,9 @@ public final class IntruviaApplication implements AutoCloseable {
 		PersistenceConfiguration.validate(this.agent.getStrolchConfiguration());
 		RuntimeConfiguration.validateSessions(this.agent.getStrolchConfiguration());
 		this.server = new Server();
-		this.server.setStopTimeout(5000);
+		this.server.setStopTimeout(90_000);
 		this.connector = new ServerConnector(this.server);
-		this.connector.setHost("127.0.0.1");
+		this.connector.setHost(this.bindAddress);
 		this.connector.setPort(port);
 		this.connector.setIdleTimeout(limits.idleSeconds() * 1000L);
 		this.server.addConnector(this.connector);
@@ -107,7 +109,7 @@ public final class IntruviaApplication implements AutoCloseable {
 		if (this.agent.getContainer().getState() != ComponentState.STARTED)
 			throw new IllegalStateException("Strolch did not start");
 		this.server.start();
-		logger.info("Intruvia started: http://127.0.0.1:{} (Strolch STARTED)", port());
+		logger.info("Intruvia started on {}:{} (Strolch STARTED)", this.bindAddress, port());
 	}
 
 	boolean ready() {
