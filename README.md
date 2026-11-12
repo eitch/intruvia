@@ -1,6 +1,6 @@
 # Intruvia
 
-Intruvia is a self-hosted security-event viewer under development. See the
+Intruvia is a self-hosted security-event viewer. See the
 [specification](docs/INTRUVIA_SPECIFICATION.md), [backlog](docs/INTRUVIA_BACKLOG.md),
 and [status ledger](docs/INTRUVIA_BACKLOG_STATUS.md) for scope and implementation progress.
 
@@ -51,7 +51,7 @@ JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH \
 
 The probe starts Strolch/Jetty on loopback, verifies REST and WebSocket exchange,
 and shuts both down. It needs Maven dependency access but no PostgreSQL server.
-The application skeleton is available below; the event viewer remains pending.
+The complete MVP viewer is available below.
 
 To retry a blocked task after fixing its environment:
 
@@ -500,4 +500,6 @@ Follow the [installation and recovery guide](docs/DEPLOYMENT.md) for protected u
 provisioning, TLS/WSS proxying, service setup, GeoIP/Fail2ban operations and a coordinated
 PostgreSQL/runtime backup and restore. Deployment recipes are packaged in `docs/`.
 See [task 021 rehearsal evidence](docs/verification/021-acceptance.txt) for measured results
-and limits. Task 022 remains the release review.
+and limits. See the [0.0.1 release notes](docs/RELEASE_NOTES.md) and
+[release acceptance checklist](docs/verification/022-acceptance.md) for the reviewed
+artifact identity, verification and operational limits.
