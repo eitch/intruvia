@@ -4,6 +4,48 @@ Intruvia is a self-hosted security-event viewer. See the
 [specification](docs/INTRUVIA_SPECIFICATION.md), [backlog](docs/INTRUVIA_BACKLOG.md),
 and [status ledger](docs/INTRUVIA_BACKLOG_STATUS.md) for scope and implementation progress.
 
+## Compose quick start
+
+Use Docker Engine with Compose on a trusted host. Obtain the versioned deployment
+tarball and its checksum from your release owner; no full Intruvia image repository
+or published image has been supplied yet. Set `VERSION` to the downloaded release
+version, then verify and extract it:
+
+```bash
+: "${VERSION:?Set VERSION to the downloaded release version}"
+sha256sum -c "intruvia-deployment-${VERSION}.tar.gz.sha256"
+mkdir -m 0700 intruvia-deployment
+tar -xpzf "intruvia-deployment-${VERSION}.tar.gz" -C intruvia-deployment
+chmod 0700 intruvia-deployment
+cd intruvia-deployment
+```
+
+From that directory, edit the mode-0600 `.env`: retain the explicit
+versioned `INTRUVIA_IMAGE`, set the exact public HTTPS `INTRUVIA_PUBLIC_ORIGIN` (no
+path or trailing slash), and set distinct 24–128 character database passwords using
+only `A-Za-z0-9_-`. Protect `.env` from other users.
+
+Ensure `secrets/` is owned by UID/GID `10001:10001` with mode `0700`. With a protected
+editor create `secrets/viewer-password` owned by `10001:10001`, mode `0600` or `0400`,
+containing a strong initial viewer password; do not put it in commands, environment
+variables or logs. On rootless Docker, account for UID/GID mapping. The
+[detailed guide](docs/DEPLOYMENT.md#compose-deployment) includes a protected
+password-file creation example. Then run:
+
+```bash
+docker compose pull
+docker compose up -d
+```
+
+First start initializes an empty database and runtime and consumes that password
+file. Sign in as `viewer` at the HTTPS origin. The viewer cannot administer PATs;
+provision a separate privileged operator and producer before ingestion. See the
+[Compose guide](docs/DEPLOYMENT.md#compose-deployment) for networking, certificate,
+offline credentials, recovery and backups, and for changing an initialized origin:
+editing `.env` alone does not update `runtime/config/viewer.properties`. Existing
+credentials and users are not rotated by changing environment values. The standalone
+Java distribution and instructions remain available below.
+
 ## Run the next implementation task
 
 The runner needs Bash, `flock`, and an authenticated Codex CLI. It finds Codex on
@@ -106,7 +148,7 @@ Omit `-o` when other dependencies need downloading. Record the override and arti
 checksums with verification evidence: local snapshot results do not verify the original
 timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
 
-The application binds only to loopback and now requires durable PostgreSQL storage.
+The standalone application binds to loopback by default and requires durable PostgreSQL storage.
 The ingestion HTTP endpoint, viewer sessions and snapshot viewer are available. The
 readiness endpoint is available at `/health/ready`. The packaged `production` environment rejects
 transient stores; there is no memory-only fallback.
@@ -251,7 +293,7 @@ with Java 25 for the real-database concurrency, rollback and retry checks.
 Send the v1 JSON payload from the [specification](docs/INTRUVIA_SPECIFICATION.md#4-fail2ban-api)
 to `POST /api/v1/fail2ban/events`, with `Content-Type: application/json` and the
 Strolch PAT Authorization header described above. Use HTTPS at the reverse proxy;
-the application remains bound to loopback. The request body must contain only the
+the standalone application defaults to loopback. The request body must contain only the
 producer fields, never a server identity or geography. The certificate and protected
 mapping select the server identity, and the same certificate authorizes the service.
 
