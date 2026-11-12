@@ -64,6 +64,24 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>deployment-guide</id>
+                        <phase>prepare-package</phase>
+                        <goals><goal>copy-resources</goal></goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/intruvia/docs</outputDirectory>
+                            <resources><resource>
+                                <directory>../docs</directory><filtering>false</filtering>
+                                <includes>
+                                    <include>**/*.md</include><include>deployment/**</include>
+                                    <include>verification/021-acceptance.txt</include>
+                                </includes>
+                            </resource><resource>
+                                <directory>..</directory><targetPath>..</targetPath><filtering>false</filtering>
+                                <includes><include>README.md</include><include>LICENSE</include></includes>
+                            </resource></resources>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>fail2ban-integration</id>
                         <phase>prepare-package</phase>
                         <goals>
