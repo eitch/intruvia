@@ -1,0 +1,21 @@
+f240b9cc3aa9fddd9d029739c28a5b28e68304c10230bcd286ec8972111aeec0
+Browser: 156.0.8078.79
+Starting 100 arrivals scheduled at 10/s, then concurrent 100-event burst; 100000 seeded retained events.
+Elapsed milliseconds: 22209
+COUNTS=100000,200,EventStreamState[lastCommittedSequence=100200, minAfter=200]
+LOAD_DONE
+
+{"browser":1,"samples":200,"endToEndP95":2660,"receiptP95":27,"sustainedP95":694,"burstP95":2825}
+{"browser":2,"samples":200,"endToEndP95":2839,"receiptP95":27,"sustainedP95":661,"burstP95":2906}
+AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+
+  assert.ok(result.summary.endToEndP95 <= 1000)
+
+    at /home/eitch/src/git/intruvia/docs/verification/020-capacity.cjs:98:11 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: false,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}

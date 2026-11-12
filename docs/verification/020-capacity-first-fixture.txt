@@ -1,0 +1,2 @@
+Error: Could not find or load main class li.intruvia.app.CapacityBrowserFixture
+Caused by: java.lang.ClassNotFoundException: li.intruvia.app.CapacityBrowserFixture

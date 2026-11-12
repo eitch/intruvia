@@ -1,0 +1,135 @@
+2026-11-12 11:16:19,468 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:45203 (Strolch STARTED)
+SEEDED=100000
+CAPACITY_FIXTURE=http://127.0.0.1:45203
+2026-11-12 11:16:37,027 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=4ac54820-b27c-4339-a3a0-cf161d9fff3c status=401
+PROGRESS=0
+2026-11-12 11:16:43,879 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=5b7b031a-f879-4178-82d2-caaf8317f14e status=503
+2026-11-12 11:16:48,248 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=521bcf0f-35db-4995-b3bb-2836b694bfbf status=503
+PROGRESS=100
+2026-11-12 11:16:51,663 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=aa945d0a-5849-42b8-a919-d7ba265a0f12 status=503
+2026-11-12 11:16:56,462 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=3fc58673-5359-4c43-b452-18a4bb5c0ef2 status=503
+PROGRESS=200
+2026-11-12 11:17:00,362 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=5e9e0737-de20-4414-9d01-f3dc48e8881d status=503
+2026-11-12 11:17:02,289 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=185fb8f9-05b2-4aa9-afd3-666d617f988b status=503
+2026-11-12 11:17:07,722 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=cc23414c-0138-4ddf-b89d-80004bc58b06 status=503
+PROGRESS=300
+2026-11-12 11:17:09,150 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=33920c9f-91f8-49b4-a7a3-47cd6db95591 status=503
+2026-11-12 11:17:10,475 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=bbc65960-dd15-465f-bc04-69febc1c1b3b status=503
+2026-11-12 11:17:12,155 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=2cdd0f42-d3aa-439b-98f3-c173f8a70b9b status=503
+2026-11-12 11:17:13,478 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=4bb30331-749d-464c-b817-5bd10516f529 status=503
+2026-11-12 11:17:15,397 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=5a13d6dc-9dec-4ff8-9012-b425e7f61d0e status=503
+2026-11-12 11:17:16,513 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=5f0abbd9-8d1e-4efe-8179-343779405c9b status=503
+PROGRESS=400
+PROGRESS=500
+2026-11-12 11:17:32,249 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=8b794a7a-ed27-45b9-90d3-c47cef608bb9 status=503
+PROGRESS=600
+2026-11-12 11:17:39,291 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=b57bef78-cda4-4bd6-93a6-c4dc93eb1d15 status=503
+2026-11-12 11:17:43,006 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=39a58d0f-f632-44d3-be0b-199091d6f289 status=503
+2026-11-12 11:17:44,444 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=aa0d825d-e8f5-492d-8444-d271bebc3952 status=503
+PROGRESS=700
+2026-11-12 11:17:50,495 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=12fa06b9-51eb-4f90-b70d-8a127556c21f status=503
+PROGRESS=800
+2026-11-12 11:17:59,760 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=6caacf34-14e6-4828-8821-82c440e61bb2 status=503
+2026-11-12 11:18:01,040 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0a1ca964-8b93-4e29-a962-717d742a642b status=503
+2026-11-12 11:18:03,612 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0e3d3cd4-26f3-4278-ade7-edd2cadc4987 status=503
+2026-11-12 11:18:05,856 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=6feabdd0-f49e-4ef8-b356-f5d9a610bf96 status=503
+2026-11-12 11:18:07,945 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=df6be279-737a-42d2-9154-6ab20ea241a5 status=503
+PROGRESS=900
+2026-11-12 11:18:10,661 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=217b1938-f16a-486a-afe4-eddc85d963b5 status=503
+PROGRESS=1000
+2026-11-12 11:18:23,041 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=43b31b62-e671-4264-a663-7e8dfa72410f status=503
+2026-11-12 11:18:27,647 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=07d27c65-4a0d-4175-a46e-08c43a4c076b status=503
+PROGRESS=1100
+2026-11-12 11:18:31,964 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=c1056012-7647-4c41-a137-f02e7bca4f1a status=503
+2026-11-12 11:18:33,117 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=16f5fb76-f06f-4fc6-a755-ac948e6954cc status=503
+2026-11-12 11:18:34,774 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=ecbc9564-1fb4-4573-b590-4073c4fb40dd status=503
+2026-11-12 11:18:36,190 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=7c9e7dd1-4d77-42b6-adc5-b808fee2e6f7 status=503
+PROGRESS=1200
+2026-11-12 11:18:40,382 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=9191c452-0f1e-43cb-8e19-2042056955dc status=503
+2026-11-12 11:18:44,731 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=d9dd25e9-1c93-4954-b1e3-80551f8d5148 status=503
+2026-11-12 11:18:47,303 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=fb8caf2c-0a5f-4e28-b8c7-5e6b8960a5e3 status=503
+PROGRESS=1300
+2026-11-12 11:18:52,114 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=cb24ff1b-40fa-4f0e-bf54-616a0b8faba7 status=503
+PROGRESS=1400
+2026-11-12 11:18:59,445 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=112a7d7e-385a-4a59-bc0b-efb1ecfd7787 status=503
+2026-11-12 11:19:02,447 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=017a1061-fc4e-4c41-8dec-a9c68e3b565c status=503
+2026-11-12 11:19:04,452 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=074d9f9b-931d-4692-90ce-35712c7f9fd5 status=503
+PROGRESS=1500
+2026-11-12 11:19:08,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=28c833fe-13e5-4795-aba3-f3923fdf828d status=503
+2026-11-12 11:19:12,067 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=270816a1-f54f-467f-84b7-42d75a4663d0 status=503
+2026-11-12 11:19:18,308 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=600aa6d8-42b0-45e4-a703-a9dd99f44691 status=503
+PROGRESS=1600
+2026-11-12 11:19:20,554 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=4ed692ae-bc32-4953-8a57-12b774c41b2f status=503
+2026-11-12 11:19:23,647 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=75b0bc51-5a6b-44fd-b681-60a0df59e11c status=503
+PROGRESS=1700
+2026-11-12 11:19:32,381 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=c2b46dd6-507d-46a3-89af-0dded9883cb2 status=503
+2026-11-12 11:19:38,253 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0817601c-48a0-438e-a976-a048cd433422 status=503
+PROGRESS=1800
+2026-11-12 11:19:42,513 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=f9a19ef2-f0fe-4753-ac60-2c32e1c776b3 status=503
+PROGRESS=1900
+2026-11-12 11:19:49,570 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=1db099b1-526b-4292-b5c1-24aa65b6a2b1 status=503
+2026-11-12 11:19:53,566 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=30f87e0a-64c2-4aff-aad7-caabcf017171 status=503
+PROGRESS=2000
+2026-11-12 11:20:05,103 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=d2792dea-8a47-4b5e-8c84-aa6c218fe3be status=503
+2026-11-12 11:20:08,405 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=b068dd55-f855-45a8-94d9-021c7bb4264e status=503
+PROGRESS=2100
+PROGRESS=2200
+2026-11-12 11:20:21,147 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=35f55fec-675a-4bbd-bc08-bce8a24c8926 status=503
+2026-11-12 11:20:22,868 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=3ebf41a5-a706-46f8-8ae1-3af54000bb25 status=503
+2026-11-12 11:20:25,132 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=237f71fa-ac10-4614-b874-7aa4adfa0ebd status=503
+2026-11-12 11:20:26,732 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=ab0c31b0-2e99-4763-9df1-066dd80a6d56 status=503
+PROGRESS=2300
+2026-11-12 11:20:28,933 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=08404dcb-d8e1-46fa-a6ed-37f63ae021e0 status=503
+2026-11-12 11:20:31,813 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=34752c65-fbaa-47b4-9d88-4a3e095fc568 status=503
+2026-11-12 11:20:35,459 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=83b1e36e-33f1-4e83-9866-11a5a50af4a4 status=503
+2026-11-12 11:20:37,749 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=9b188744-22b5-46fd-809e-5dfc8312f27d status=503
+PROGRESS=2400
+2026-11-12 11:20:44,670 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=596b45ad-754b-4ce9-84bc-6e203cb9aa18 status=503
+2026-11-12 11:20:47,672 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0eebcc98-b628-4beb-91ea-c18b642a9284 status=503
+PROGRESS=2500
+2026-11-12 11:20:50,675 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=3b28864f-e86d-452d-879b-49dd08b9d1a8 status=503
+PROGRESS=2600
+2026-11-12 11:21:06,854 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=6575abf6-d9bf-404b-99e7-e7501c50a937 status=503
+PROGRESS=2700
+2026-11-12 11:21:12,416 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=cadd8aa3-c145-47a9-96d9-ebc127b610f4 status=503
+2026-11-12 11:21:14,338 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=eea4fff7-fe39-42ed-a6ca-8bd1caf539e8 status=503
+2026-11-12 11:21:17,780 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=74b9719b-9406-4399-b790-7d437a696560 status=503
+PROGRESS=2800
+2026-11-12 11:21:19,467 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0c06930a-6df7-46b4-8e4a-f6a8d796c077 status=503
+2026-11-12 11:21:20,784 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=5d90c0cf-836f-4789-b577-920a29ccdb38 status=503
+2026-11-12 11:21:23,789 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=2d39709f-283e-43e4-a6cd-1688c316b4b5 status=503
+2026-11-12 11:21:25,545 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=26ce8064-e8f7-4a5d-a3c8-2de1fd2fd6c0 status=503
+2026-11-12 11:21:28,102 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=a7757ecc-5dfd-42a8-a237-9f8594aa9fc3 status=503
+PROGRESS=2900
+2026-11-12 11:21:29,711 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=485595bc-3cb3-4dd1-b6c6-a32bde321139 status=503
+2026-11-12 11:21:36,462 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=a8d296d0-eba9-421d-a1a7-55abfce55902 status=503
+2026-11-12 11:21:44,898 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=bff0c095-9e07-4e0a-90d4-e50fd8222983 status=503
+2026-11-12 11:21:50,369 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=ceae4ebb-5f4e-4f1d-90df-1f85e71dc1b0 status=503
+2026-11-12 11:21:53,845 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=ac50f178-a642-421c-9159-9a742a082d4b status=503
+2026-11-12 11:21:55,630 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=911f24fd-e880-4da8-bdcb-e778c8cae6f5 status=503
+2026-11-12 11:21:57,793 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=e7d00e06-a696-4fe4-98da-1ef3bf7dc25e status=503
+2026-11-12 11:22:10,912 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=1820bfcd-3554-494d-80cd-ed9835662ccc status=503
+2026-11-12 11:22:13,757 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0c54dbfe-8f75-4192-bf4a-9bd2eea81177 status=503
+2026-11-12 11:22:26,915 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=15caf56c-9393-404e-9905-29121ff1beec status=503
+2026-11-12 11:22:30,218 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=b432a945-943b-431c-9a03-11e52f8eca04 status=503
+2026-11-12 11:22:32,201 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=9f33b7cb-b178-4ed3-a3da-b48e6eae2ef7 status=503
+2026-11-12 11:22:34,064 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=127851b1-a298-4207-891b-bbc90a8f86fd status=503
+2026-11-12 11:22:37,213 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=73399304-709f-4de8-a415-e901b64baa35 status=503
+2026-11-12 11:22:42,341 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=a83d58e4-05e9-489f-a337-07e35d6b02b6 status=503
+2026-11-12 11:22:46,045 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=1d494c0d-7140-4a65-83bc-fcc3d4a56643 status=503
+2026-11-12 11:22:47,794 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=dd7c54c9-fb77-4df0-9313-6c50c93f6d46 status=503
+2026-11-12 11:22:50,805 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=36015f79-9579-4e0a-918c-ba8f599f1fd8 status=503
+2026-11-12 11:22:52,217 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=7c336563-8dc1-48b3-b1dc-5c7772314c29 status=503
+2026-11-12 11:22:56,193 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=1f3a5d2b-180e-4786-9529-cc9a1e3eb667 status=503
+2026-11-12 11:23:00,897 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=95850960-61f6-47a0-b96c-d3ba6f0d572d status=503
+2026-11-12 11:23:05,975 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0f331c5d-dfcc-46df-ac90-6ef656c25075 status=503
+2026-11-12 11:23:09,124 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=f2d64750-370b-474d-abd9-d675b5b67596 status=503
+2026-11-12 11:23:11,959 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=a468974a-c602-47cb-8e76-ac5a8dbb7873 status=503
+2026-11-12 11:23:17,497 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=7a1db601-68aa-44bf-bd8d-71ed617cd1d3 status=503
+2026-11-12 11:23:20,038 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=f16ea4cc-ad2c-42f0-84fb-8cd0bda71573 status=503
+2026-11-12 11:23:24,982 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=dcdd8f70-9dda-4a79-ae2f-7bec5bef5148 status=503
+2026-11-12 11:23:27,345 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=05caff70-3046-48b8-bb24-a61262067e5e status=503
+2026-11-12 11:23:33,306 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=f75fd381-3235-4578-89ea-61443c2d4d9e status=503
+2026-11-12 11:23:35,512 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=83796898-758b-48a2-9142-18df52babb74 status=503
+2026-11-12 11:23:38,191 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=8882fca8-7aba-4a5a-9665-87dfc4290e67 status=503
+2026-11-12 11:23:50,037 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=80fc3adf-eb3a-492f-8cfe-67f0eb00f95e status=503

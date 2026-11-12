@@ -1,0 +1,4 @@
+9847b36072a30c0d5caa5cfec15efce546599f9144696725d26d199e8c626015
+Error: Fixture exited: 1
+    at waitFor (/home/eitch/src/git/intruvia/docs/verification/020-capacity.cjs:18:41)
+    at async /home/eitch/src/git/intruvia/docs/verification/020-capacity.cjs:24:3

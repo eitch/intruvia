@@ -1,0 +1,12 @@
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              0
+
+  0      0   0      0   0      0      0      0                              0
+100 589.7k 100 589.7k   0      0  1.20M      0                              0
+100 589.7k 100 589.7k   0      0  1.20M      0                              0
+100 589.7k 100 589.7k   0      0  1.20M      0                              0
+474fcc25afdaf929c74329d1e4d24420caabeea1ef2e041a267ce19269570bae  /tmp/intruvia-020-fail2ban.tar.gz

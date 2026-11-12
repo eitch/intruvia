@@ -1,0 +1,21 @@
+bbdd2b9565f6cc880de7127d9da1b792f8b4e5c78140baf1d587a7b8c4ba8ede
+Browser: 156.0.8078.79
+Starting 3000 arrivals scheduled at 10/s, then concurrent 100-event burst; 100000 seeded retained events.
+Elapsed milliseconds: 309374
+COUNTS=100000,3068,EventStreamState[lastCommittedSequence=103068, minAfter=3068]
+LOAD_DONE
+
+{"browser":1,"samples":3068,"endToEndP95":772,"receiptP95":29,"serverP95":485,"sustainedP95":719,"burstP95":6200,"sustainedSendSpanMs":299899}
+{"browser":2,"samples":3068,"endToEndP95":787,"receiptP95":29,"serverP95":478,"sustainedP95":731,"burstP95":6198,"sustainedSendSpanMs":299899}
+AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+
+3068 !== 3100
+
+    at /home/eitch/src/git/intruvia/docs/verification/020-capacity.cjs:99:11 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: 3068,
+  expected: 3100,
+  operator: 'strictEqual',
+  diff: 'simple'
+}

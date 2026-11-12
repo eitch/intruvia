@@ -1,0 +1,716 @@
+127.0.0.1:5432 - accepting connections
+PostgreSQL test image: sha256:f1ea2a1a4fb7b68d4836be1fdcb8a6466a89b072158bf9d97663600538c294c5 ["postgres@sha256:f1ea2a1a4fb7b68d4836be1fdcb8a6466a89b072158bf9d97663600538c294c5"]
+                                                          version
+----------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 18.6 (Debian 18.6-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit
+(1 row)
+
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Build Order:
+[INFO]
+[INFO] intruvia                                                           [pom]
+[INFO] intruvia-core                                                      [jar]
+[INFO] intruvia-rest                                                      [jar]
+[INFO] intruvia-web                                                       [jar]
+[INFO] intruvia-app                                                       [jar]
+[INFO]
+[INFO] ------------------------< li.intruvia:intruvia >------------------------
+[INFO] Building intruvia 0.0.1                                            [1/5]
+[INFO]   from pom.xml
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia ---
+[INFO]
+[INFO] ---------------------< li.intruvia:intruvia-core >----------------------
+[INFO] Building intruvia-core 0.0.1                                       [2/5]
+[INFO]   from intruvia-core/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-core ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-core/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-core ---
+[INFO] Copying 2 resources from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 33 source files with javac [debug release 25] to target/classes
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-core ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-core/src/test/resources
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-core ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 6 source files with javac [debug release 25] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-core ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.core.geo.GeoIpComponentTest
+11:29:55.644 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.646 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.647 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:55.647 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.647 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.650 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.651 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.651 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.651 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.652 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+11:29:55.653 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.653 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.653 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.653 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.654 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+11:29:55.654 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.654 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.655 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.655 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.666 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+11:29:55.668 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.669 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.669 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.669 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.670 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP update rejected; retaining previous database (further warnings suppressed until successful update)
+11:29:55.705 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.705 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.705 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.706 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.710 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP database could not be loaded; enrichment is UNAVAILABLE
+11:29:55.712 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.712 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.713 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.713 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.713 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:55.713 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.713 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.714 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.714 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.714 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.714 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.722 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.722 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.722 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.722 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.736 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.737 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.737 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.737 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.737 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.737 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.737 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:55.737 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:55.738 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:55.738 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:55.738 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.744 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.744 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.744 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.744 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.747 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.747 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.747 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.747 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.967 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.968 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.968 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.968 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.971 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP update rejected; retaining previous database (further warnings suppressed until successful update)
+11:29:56.973 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.973 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.973 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.974 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key databasePath=
+11:29:56.975 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.977 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.977 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.978 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.978 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.986 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.989 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:56.989 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:56.989 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key staleAfterSeconds=1209600
+11:29:56.989 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- GeoIp: Using default for key updateIntervalSeconds=60
+11:29:56.990 [main] WARN li.intruvia.core.geo.GeoIpComponent -- GeoIP lookup failed; enrichment returns ERROR (further warnings suppressed until restart)
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.403 s -- in li.intruvia.core.geo.GeoIpComponentTest
+[INFO] Running li.intruvia.core.geo.PublicAddressPolicyTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.001 s -- in li.intruvia.core.geo.PublicAddressPolicyTest
+[INFO] Running li.intruvia.core.model.EventModelTest
+11:29:57.044 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 28ms
+11:29:57.083 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+11:29:57.088 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+11:29:57.091 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 897us
+11:29:57.093 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 912us
+11:29:57.096 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 758us
+11:29:57.098 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+11:29:57.100 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 1ms
+11:29:57.102 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 971us
+11:29:57.104 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 557us
+11:29:57.105 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 405us
+11:29:57.107 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 475us
+11:29:57.108 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 704us
+11:29:57.117 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 836us
+11:29:57.119 [main] INFO li.strolch.model.xml.XmlModelSaxReader -- SAX parsed stream took 962us
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.108 s -- in li.intruvia.core.model.EventModelTest
+[INFO] Running li.intruvia.core.retention.RetentionCutoffTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.002 s -- in li.intruvia.core.retention.RetentionCutoffTest
+[INFO] Running li.intruvia.core.retention.RetentionPolicyTest
+11:29:57.136 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.137 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.138 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.138 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.139 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.140 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.141 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:57.141 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:57.141 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in li.intruvia.core.retention.RetentionPolicyTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 23, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-core ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-core/target/intruvia-core-0.0.1.jar
+[INFO]
+[INFO] ---------------------< li.intruvia:intruvia-rest >----------------------
+[INFO] Building intruvia-rest 0.0.1                                       [3/5]
+[INFO]   from intruvia-rest/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-rest ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-rest/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/main/resources
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 29 source files with javac [debug release 25] to target/classes
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-rest ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-rest/src/test/resources
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-rest ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 6 source files with javac [debug release 25] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-rest ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.rest.dto.Fail2banDtoTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.055 s -- in li.intruvia.rest.dto.Fail2banDtoTest
+[INFO] Running li.intruvia.rest.ingest.AdmissionTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.044 s -- in li.intruvia.rest.ingest.AdmissionTest
+[INFO] Running li.intruvia.rest.ingest.Fail2banValidationTest
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.032 s -- in li.intruvia.rest.ingest.Fail2banValidationTest
+[INFO] Running li.intruvia.rest.session.ViewerConfigurationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.003 s -- in li.intruvia.rest.session.ViewerConfigurationTest
+[INFO] Running li.intruvia.rest.stream.StreamConnectionTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in li.intruvia.rest.stream.StreamConnectionTest
+[INFO] Running li.intruvia.rest.stream.StreamLimitsTest
+11:29:58.115 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key locale=en
+11:29:58.116 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+11:29:58.117 [main] DEBUG li.strolch.runtime.configuration.AbstractionConfiguration -- Runtime: Using default for key verbose=false
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.006 s -- in li.intruvia.rest.stream.StreamLimitsTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-rest ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-rest/target/intruvia-rest-0.0.1.jar
+[INFO]
+[INFO] ----------------------< li.intruvia:intruvia-web >----------------------
+[INFO] Building intruvia-web 0.0.1                                        [4/5]
+[INFO]   from intruvia-web/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-web ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-web/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-web ---
+[INFO] Copying 24 resources from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-web ---
+[INFO] skip non existing resourceDirectory /home/eitch/src/git/intruvia/intruvia-web/src/test/resources
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-web ---
+[INFO] No sources to compile
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-web ---
+[INFO] No tests to run.
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-web ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-web/target/intruvia-web-0.0.1.jar
+[INFO]
+[INFO] ----------------------< li.intruvia:intruvia-app >----------------------
+[INFO] Building intruvia-app 0.0.1                                        [5/5]
+[INFO]   from intruvia-app/pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO]
+[INFO] --- clean:3.4.0:clean (default-clean) @ intruvia-app ---
+[INFO] Deleting /home/eitch/src/git/intruvia/intruvia-app/target
+[INFO]
+[INFO] --- resources:3.3.1:resources (default-resources) @ intruvia-app ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO]
+[INFO] --- compiler:3.14.0:compile (default-compile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 6 source files with javac [debug release 25] to target/classes
+[INFO]
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ intruvia-app ---
+[INFO] Copying 4 resources from src/test/resources to target/test-classes
+[INFO]
+[INFO] --- compiler:3.14.0:testCompile (default-testCompile) @ intruvia-app ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug release 25] to target/test-classes
+[INFO]
+[INFO] --- surefire:3.5.2:test (default-test) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.MachineAuthenticationTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.947 s -- in li.intruvia.app.MachineAuthenticationTest
+[INFO] Running li.intruvia.app.OperationalLoggingTest
+2026-11-12 11:30:01,738 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,739 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,740 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,741 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,742 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,743 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,744 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+2026-11-12 11:30:01,745 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=00000000-0000-0000-0000-000000000000 status=503
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.036 s -- in li.intruvia.app.OperationalLoggingTest
+[INFO] Running li.intruvia.app.RuntimeConfigurationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0 s -- in li.intruvia.app.RuntimeConfigurationTest
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- resources:3.3.1:copy-resources (runtime) @ intruvia-app ---
+[INFO] Copying 9 resources from src/main/runtime to target/intruvia/runtime
+[INFO]
+[INFO] --- resources:3.3.1:copy-resources (fail2ban-integration) @ intruvia-app ---
+[INFO] Copying 4 resources from ../integrations/fail2ban to target/intruvia/integrations/fail2ban
+[INFO]
+[INFO] --- jar:3.4.2:jar (default-jar) @ intruvia-app ---
+[INFO] Building jar: /home/eitch/src/git/intruvia/intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+[INFO]
+[INFO] --- dependency:3.8.1:copy-dependencies (distribution-libraries) @ intruvia-app ---
+[INFO]
+[INFO] --- failsafe:3.5.2:integration-test (default) @ intruvia-app ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junit4.JUnit4Provider
+[INFO]
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running li.intruvia.app.ApplicationIT
+2026-11-12 11:30:02,678 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:03,002 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:36529 (Strolch STARTED)
+2026-11-12 11:30:03,016 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.976 s -- in li.intruvia.app.ApplicationIT
+[INFO] Running li.intruvia.app.EventReadIT
+2026-11-12 11:30:04,242 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:04,328 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:41563 (Strolch STARTED)
+2026-11-12 11:30:04,452 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=7a1638a3-ef0c-4190-913d-d47815fa3d0e status=410
+2026-11-12 11:30:04,459 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:04,472 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:04,556 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:34747 (Strolch STARTED)
+2026-11-12 11:30:04,606 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:04,686 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:04,769 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:42663 (Strolch STARTED)
+2026-11-12 11:30:04,819 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=912d34b5-0ea7-4677-b414-65d10f15ee07 status=401
+2026-11-12 11:30:04,881 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:04,963 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:05,046 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:46593 (Strolch STARTED)
+2026-11-12 11:30:05,645 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=42efe69a-43dc-48fa-b0ad-0672b2da0165 status=400
+2026-11-12 11:30:05,885 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:05,954 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:06,036 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43539 (Strolch STARTED)
+2026-11-12 11:30:06,290 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=ad27543d-fe19-4afd-9574-fa7268c1d159 status=401
+2026-11-12 11:30:06,296 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:06,378 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:06,446 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43121 (Strolch STARTED)
+2026-11-12 11:30:06,836 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.679 s -- in li.intruvia.app.EventReadIT
+[INFO] Running li.intruvia.app.EventStreamIT
+2026-11-12 11:30:06,910 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:07,003 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:40129 (Strolch STARTED)
+2026-11-12 11:30:07,197 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=20f7773e-949a-46c5-836b-99353336a9ab status=401
+2026-11-12 11:30:07,202 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:07,279 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:07,370 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:37295 (Strolch STARTED)
+2026-11-12 11:30:09,396 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:09,412 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:09,496 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:42501 (Strolch STARTED)
+2026-11-12 11:30:09,521 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:09,583 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:09,686 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:41489 (Strolch STARTED)
+2026-11-12 11:30:09,722 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:09,788 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:09,880 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:37235 (Strolch STARTED)
+2026-11-12 11:30:09,884 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=94b6f785-cbbc-4527-b2ad-a635ee67b627 status=401
+2026-11-12 11:30:10,893 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:10,958 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:11,053 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43415 (Strolch STARTED)
+2026-11-12 11:30:11,072 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=593a8ba4-182e-46cd-86bf-2f9b7aca0c27 status=400
+2026-11-12 11:30:11,250 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:11,333 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:11,415 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:33089 (Strolch STARTED)
+2026-11-12 11:30:11,608 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:11,679 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:11,761 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:45145 (Strolch STARTED)
+2026-11-12 11:30:13,052 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 6.216 s -- in li.intruvia.app.EventStreamIT
+[INFO] Running li.intruvia.app.IngestionHttpIT
+2026-11-12 11:30:13,139 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:13,222 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43069 (Strolch STARTED)
+2026-11-12 11:30:14,268 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:14,284 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:14,371 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:42523 (Strolch STARTED)
+2026-11-12 11:30:15,402 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:15,467 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:15,563 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:35841 (Strolch STARTED)
+2026-11-12 11:30:15,621 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=84558032-5ade-43f4-a777-962b7b04a623 status=400
+2026-11-12 11:30:16,769 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:16,830 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:16,921 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:38027 (Strolch STARTED)
+2026-11-12 11:30:16,959 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=9bb44aa0-0a66-455e-b723-148861fcb35c status=401
+2026-11-12 11:30:17,126 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:17,189 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:17,263 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:37143 (Strolch STARTED)
+2026-11-12 11:30:17,266 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=5e89ae11-7bae-4cf2-b6d5-1efa9bd20839 status=401
+2026-11-12 11:30:18,371 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=ed18887f-97e2-487e-9be6-16cfa4726413 status=401
+2026-11-12 11:30:18,380 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.322 s -- in li.intruvia.app.IngestionHttpIT
+[INFO] Running li.intruvia.app.IngestionIT
+2026-11-12 11:30:18,459 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:18,545 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43837 (Strolch STARTED)
+2026-11-12 11:30:18,587 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:18,601 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:18,683 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:36491 (Strolch STARTED)
+2026-11-12 11:30:18,722 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:18,789 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:18,883 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:34535 (Strolch STARTED)
+2026-11-12 11:30:18,927 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:19,001 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:19,080 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:34453 (Strolch STARTED)
+2026-11-12 11:30:19,171 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:19,246 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:19,328 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:33501 (Strolch STARTED)
+2026-11-12 11:30:19,405 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:19,474 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:19,572 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:45819 (Strolch STARTED)
+2026-11-12 11:30:19,612 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:19,675 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:19,764 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43513 (Strolch STARTED)
+2026-11-12 11:30:19,810 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:19,825 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:19,909 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43075 (Strolch STARTED)
+2026-11-12 11:30:19,958 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.572 s -- in li.intruvia.app.IngestionIT
+[INFO] Running li.intruvia.app.PersistenceIT
+2026-11-12 11:30:20,056 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:20,155 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:42433 (Strolch STARTED)
+2026-11-12 11:30:20,191 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:20,204 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:20,295 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:45679 (Strolch STARTED)
+2026-11-12 11:30:20,326 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:20,339 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:20,434 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:44007 (Strolch STARTED)
+2026-11-12 11:30:20,443 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.484 s -- in li.intruvia.app.PersistenceIT
+[INFO] Running li.intruvia.app.RetentionIT
+2026-11-12 11:30:20,502 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:20,604 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:45159 (Strolch STARTED)
+2026-11-12 11:30:20,671 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:20,742 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:20,823 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:41943 (Strolch STARTED)
+2026-11-12 11:30:20,898 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:20,958 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:21,046 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:36581 (Strolch STARTED)
+2026-11-12 11:30:22,004 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:22,077 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:22,158 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:43623 (Strolch STARTED)
+2026-11-12 11:30:22,219 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:22,286 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:22,362 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:39231 (Strolch STARTED)
+2026-11-12 11:30:22,419 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:22,434 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:22,521 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:42307 (Strolch STARTED)
+2026-11-12 11:30:22,574 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:22,637 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:22,731 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:44757 (Strolch STARTED)
+2026-11-12 11:30:22,947 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:23,018 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:23,111 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:36235 (Strolch STARTED)
+2026-11-12 11:30:23,167 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=04d004d3-19f8-4f9f-84d1-b9ff62755ea8 status=429
+2026-11-12 11:30:23,214 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.768 s -- in li.intruvia.app.RetentionIT
+[INFO] Running li.intruvia.app.RuntimeOperationsIT
+2026-11-12 11:30:23,276 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:23,369 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:41623 (Strolch STARTED)
+2026-11-12 11:30:23,411 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:23,482 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:23,563 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:46673 (Strolch STARTED)
+2026-11-12 11:30:23,570 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=f529a84e-1c32-4569-bf6d-b91c4eb0a8e4 status=401
+2026-11-12 11:30:24,651 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:24,722 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:24,804 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:39359 (Strolch STARTED)
+2026-11-12 11:30:24,846 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=767a0356-efc7-43f3-b8e1-aa78934a6df6 status=409
+2026-11-12 11:30:25,861 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:25,923 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:26,011 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:33939 (Strolch STARTED)
+2026-11-12 11:30:26,069 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=3a046a7d-94ef-4494-966d-12cc216277cb status=503
+2026-11-12 11:30:27,080 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:27,092 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:27,178 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:33709 (Strolch STARTED)
+2026-11-12 11:30:27,186 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.019 s -- in li.intruvia.app.RuntimeOperationsIT
+[INFO] Running li.intruvia.app.ViewerSessionIT
+2026-11-12 11:30:27,295 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:27,385 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:34259 (Strolch STARTED)
+2026-11-12 11:30:27,407 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=e524e631-6558-4473-b95a-d999f173958a status=401
+2026-11-12 11:30:27,432 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:27,500 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:27,587 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:33091 (Strolch STARTED)
+2026-11-12 11:30:27,591 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=ec03269c-97f3-4cb5-a8ef-b10c6f9f023a status=503
+2026-11-12 11:30:27,620 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 11:30:27,689 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 11:30:27,790 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:40057 (Strolch STARTED)
+2026-11-12 11:30:27,794 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=639c2c64-31d7-41ff-ba7c-bd99baab86c3 status=401
+2026-11-12 11:30:27,940 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.704 s -- in li.intruvia.app.ViewerSessionIT
+[INFO]
+[INFO] Results:
+[INFO]
+[INFO] Tests run: 41, Failures: 0, Errors: 0, Skipped: 0
+[INFO]
+[INFO]
+[INFO] --- failsafe:3.5.2:verify (default) @ intruvia-app ---
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary for intruvia 0.0.1:
+[INFO]
+[INFO] intruvia ........................................... SUCCESS [  0.082 s]
+[INFO] intruvia-core ...................................... SUCCESS [  2.982 s]
+[INFO] intruvia-rest ...................................... SUCCESS [  0.831 s]
+[INFO] intruvia-web ....................................... SUCCESS [  0.042 s]
+[INFO] intruvia-app ....................................... SUCCESS [ 29.812 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  33.801 s
+[INFO] Finished at: 2026-11-12T11:30:27+01:00
+[INFO] ------------------------------------------------------------------------

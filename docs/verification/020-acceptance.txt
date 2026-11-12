@@ -1,0 +1,234 @@
+Task 020 — Full MVP and capacity validation
+Date: 2026-11-12, Europe/Zurich
+Exactly task 020 selected from 22 rows: no IN_PROGRESS, lowest eligible TODO,
+dependencies 017/018/019 DONE. Initial git status clean. Required project/framework
+AGENTS.md and all applicable guidelines (including Vanilla JavaScript), specification,
+backlog, ledger and README read. Ledger set IN_PROGRESS before implementation.
+No commit, stage, push, deployment, upstream edit or new application dependency/toolchain.
+
+Environment: 020-environment.txt. Actual Strolch 2.8.0-SNAPSHOT, local cache and clean
+framework source inspected. Offline cache suffices, no rebuild/relabel or equivalence
+to historical timestamped baseline claimed. Exact hashes in 020-strolch.sha256;
+application/runtime hashes in 020-artifacts.sha256; byte identity review in 020-review.txt.
+
+Maven prefix (from repository root):
+JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH
+
+Commands/results:
+- scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+  > docs/verification/020-maven.txt 2>&1
+  Exit 0, clean verify; all five modules SUCCESS, 85 tests, no failures/errors/skips.
+  Includes real PostgreSQL/Jetty/Strolch/PAT/session, retry/concurrent conflict,
+  restart, rollback, commit-without-wakeup replay, GeoIP error/degraded/IPv6/partial,
+  retention, slow consumer, readiness/DB fault and graceful shutdown coverage.
+- mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT package -DskipTests
+  > docs/verification/020-fixture-package.txt 2>&1
+  Exit 1: new optional fixture seed method omitted checked Exception declaration.
+  Corrected method declaration. Same command > 020-fixture-package-second.txt exit 0.
+  Same command after fixture pool/diagnostic changes > 020-fixture-package-final.txt
+  exit 0. These package commands explicitly skip tests; not substituted for clean verify.
+- bash docs/verification/020-run-browser.sh
+  > docs/verification/020-capacity-first.txt 2>&1
+  Exit 1: launched before successful fixture compilation, ClassNotFoundException;
+  first-fixture log retained. No application result claimed.
+- Same browser command with first compiled fixture, default 3000 scheduled arrivals:
+  020-capacity-two-connections.txt and 020-capacity-two-connections-fixture.txt.
+  Seeded 100000 through committed Strolch transactions, two authenticated contexts;
+  inherited DatabaseFixture's 2-connection pool and got repeated HTTP 503.
+  Producer scheduled all 3000 arrivals over five minutes, failed before burst while
+  draining queued futures. Harness timed out after seven minutes, then waited for
+  fixture cleanup. Interrupted with Ctrl-C (exec exit 130); explicitly docker rm -f
+  intruvia-020-browser exit 0. No p95 or completed capacity/burst pass from this run.
+  Early part was isolated; later serial browser regressions overlapped this already
+  failing run. It is not a valid production-default capacity measurement.
+  Corrected capacity fixture to default ten connections; no production setting changed.
+  Updated harness to retain raw measurements before assertions, report non-201s,
+  finish burst after HTTP failures and terminate incomplete fixture on timeout.
+- bash docs/verification/020-run-regressions.sh
+  > docs/verification/020-regressions.txt 2>&1
+  Exit 0. Serial snapshot/live/recovery suites use existing 015/016/017 scripts with
+  020 prefixes, same installed tooling and disposable PostgreSQL. PASS in
+  020-snapshot.txt, 020-live.txt, 020-recovery.txt. Actual session/snapshot/WebSocket;
+  zero external requests/script errors. Snapshot covers safe text, zero/partial/
+  unmapped, empty/error/repeated/mobile/keyboard and auth. Live covers independent
+  overlap/list indications, 1000 bound, duplicate suppression, off-screen action,
+  reduced motion, refresh/logout and recovery; 30 samples, receipt-to-frame p95
+  26.1 ms, first indication 3000.2 ms. Recovery covers snapshot/commit/stream gaps,
+  before/after-commit disconnect, pruning/ahead cursor, retry after read failure,
+  healthy/lost hello, duplicate, logout, real maximum session lifetime and cookie
+  loss. document.hidden is simulated for hidden-event-count contract; not OS suspension.
+  Regression timing is not the isolated capacity workload. Database count after
+  suites is 0; container removed. Screenshots retain 020 prefixes.
+- PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s integrations/fail2ban/tests -v
+  > docs/verification/020-helper-tests.txt 2>&1
+  Exit 0, 10 tests in 36.589s. TLS/retry/encoding/private PAT/deadline regressions pass.
+- curl -fL --max-time 30 https://github.com/fail2ban/fail2ban/archive/refs/tags/1.1.0.tar.gz -o /tmp/intruvia-020-fail2ban.tar.gz
+  and sha256sum archive, tar -xzf archive -C /tmp: exit 0. Source download output and
+  SHA-256 in 020-fail2ban-source.txt; 474fcc25afdaf929c74329d1e4d24420caabeea1ef2e041a267ce19269570bae.
+- PYTHONDONTWRITEBYTECODE=1 python3 integrations/fail2ban/tests/action_smoke.py /tmp/fail2ban-1.1.0
+  > docs/verification/020-action-smoke.txt 2>&1
+  Exit 0: actual Fail2ban 1.1.0 client/server/loader, additive harmless marker action,
+  IPv6 ban, safe adversarial jail, unban/stop/reban exclusions, 403 failure preserves
+  second ban/marker. No host firewall/service edit or upstream source bundled.
+- python3 docs/verification/020-review.py > docs/verification/020-review-first.txt 2>&1
+  Exit 1: style assertion rejected existing Javadoc leading stars; corrected review
+  to allow conventional Javadoc alignment. Subsequent review exit 0. Failure retained.
+
+Workload method, sources and limitations: docs/architecture/020-mvp-validation.md.
+No licensed MMDB redistributed; invented MMDB records through production Java reader.
+Headless next-rAF highlighted DOM is a frame opportunity, not scanout latency.
+No OS power-loss/kill guarantee, actual production TLS/proxy/deployment/restore,
+framework rebuild/tests, or release claim. Durable crash-window regression commits
+without notification and proves replay; deployment/recovery rehearsal belongs to 021.
+
+Capacity diagnostic/remediation sequence (all diagnostic overrides explicitly short):
+- CAPACITY_EVENTS=100 CAPACITY_TRACE=1 bash docs/verification/020-run-browser.sh
+  Exit 1; 020-capacity-diagnostic-before{,-fixture}.txt and -measurements.json.
+  Isolated default 10-connection pool, 100000 seeded events, two contexts;
+  100 scheduled arrivals at 10/s + 100 submitted burst requests, 16 producer workers.
+  All 200 HTTP commits/receipts and unique ordered highlighted arrivals per browser;
+  storage100000/head100200/minAfter200, no measuring errors/hidden contexts/external
+  requests/script errors. End-to-end p95 9588/9894 ms; receipt-to-frame 25/31 ms.
+  No JFR persistence/locking exception type reported (optional JDK event stream,
+  messages not recorded). Gate failed on latency, not missing browser indication.
+- Retention correction within the task-013 owning implementation, as required by 020:
+  select oldest excess candidates with bounded max-heap instead of sorting all
+  history under the lock; remove prefix through max(age-expired, capacity) sequence.
+  Existing retention service/transaction/rollback/cursor/receipt semantics preserved.
+  No dependency, schema, new component, parallel store or toolchain added.
+- Same clean Maven command > 020-optimized-maven.txt exit 0, 85 tests pass.
+- CAPACITY_EVENTS=100 bash docs/verification/020-run-browser.sh
+  Exit 1, 020-capacity-selection{,-fixture}.txt and -measurements.json.
+  All 200 commits/arrivals, p95 4127/4134 ms; sustained 3557/3814 ms; burst4503/4538ms.
+  Receipt-to-frame27/27ms; count/head/minAfter correct. Still fails latency.
+- Cutoff correction avoids repeatedly parsing canonical UTC dates on different
+  days; same-day fractional timestamps/extended years retain exact Instant ordering.
+  Added focused comparison matrix against Instant for dates/fractions/leap/extended
+  years and actual-runtime capacity shrink from5 to2 preserves sequences4/5 and
+  all5 receipts. Existing rollback/reversed-clock/restart/concurrency tests pass.
+- Same clean Maven command > 020-cutoff-maven.txt exit 0, 86 tests pass (new cutoff
+  test loaded; capacity-shrink IT was added after that run compiled tests).
+- CAPACITY_EVENTS=100 bash docs/verification/020-run-browser.sh
+  Exit 1, 020-capacity-cutoff{,-fixture}.txt and -measurements.json.
+  All200 commits/arrivals, sustained p95 below1s but burst phase makes this short
+  combined gate fail. Exact summaries in output/raw data. Not a five-minute pass.
+- Same clean Maven command > 020-final-maven.txt exit 0: 87 tests (46 unit/HTTP +
+  41 PostgreSQL/application integration), zero failures/errors/skips, all5 modules
+  SUCCESS. Includes final production sources and both new regression tests.
+- A full browser run was started with the 16-worker producer, then interrupted
+  (exec exit130) during sustained load when review found the generator would spread
+  its100-request burst over batches. 020-capacity-interrupted{,-fixture}.txt retained;
+  no completed workload/p95 claimed. Explicit docker rm -f intruvia-020-browser
+  exit0; adjusted producer to100 workers for actual concurrent burst arrivals.
+- Same package command > 020-burst-package.txt exit0, tests explicitly skipped for
+  this optional fixture-only compilation. No production source changed after the
+  final clean verify. Capacity timing records HTTP-send to highlighted next-rAF,
+  receipt to next-rAF and server receivedAt to next-rAF. The latter conservatively
+  includes precommit processing and bounds commit-to-frame time.
+
+Full 100-worker burst run with XML test timeout, not production environment timeout:
+- bash docs/verification/020-run-browser.sh exit1. Preserved as
+  020-capacity-three-second-pool{,-fixture}.txt, -measurements.json and -1/-2.png.
+  3000 actual sends span299899ms; all sustained events committed/delivered.
+  100 simultaneous burst submissions yielded68 commits and32 HTTP503 responses.
+  Both browsers receive all3068 unique committed events in exact sequence, each
+  with its own row+halo; no measuring errors, hidden contexts, script errors or
+  external traffic. Storage100000, receipts3068, head103068/minAfter3068.
+  Combined HTTP-send-to-frame p95 772/787ms, receipt29/29ms, server-received485/478ms;
+  sustained719/731ms, burst6200/6198ms. Gate fails expected3100 versus3068 arrivals;
+  no combined-p95 pass hides the rejected burst requests.
+- Investigated framework DbConnectionBuilder.build(): db.useEnv=true selects all
+  pool properties from environment and ignores XML; without overrides Hikari uses
+  maximumPoolSize10, connectionTimeout30000ms and validationTimeout5000ms.
+  Existing task019 contract already documents this. DatabaseFixture switches to
+  XML credentials and therefore applied3000/2000ms, unlike the environment-mode
+  runtime defaults. This is a fixture-mode mismatch, not proof default environment
+  mode returns the same503s. Internal exception cause was not captured; short pool
+  acquisition under concurrent load is the working explanation, not asserted as
+  a traced exception. Source inspected at verified framework HEAD; no upstream edit.
+- Capacity fixture now uses isolated XML test credentials but configures the same
+  effective production environment-mode Hikari defaults10/30000/5000. Test-only
+  introspection unwraps the actual data source and asserts all three values before
+  seeding; only those numeric settings are printed (POOL=...), never credentials.
+  No production default/rate/retention/queue/polling change. External deployments
+  selecting3s acquisition have the demonstrated burst limitation and must tune
+  their finite pool budget appropriately; readiness monitor budgets must account
+  for the selected timeout. Thirty-second pool waits do not guarantee per-request
+  burst latency below1s, which is reported separately.
+- Same package command >020-runtime-pool-package.txt and
+  >020-pool-assertion-package.txt: both exit0, tests explicitly skipped for optional
+  fixture changes only. Production source unchanged since87-test clean verify.
+- bash docs/verification/020-run-regressions.sh (second/final execution) exit0,
+  020-regressions.txt plus020-snapshot/live/recovery.txt. Final production build;
+  first results retained as020-*-first.txt. All three suites pass again. No browser
+  suites overlap the final production-pool capacity run.
+
+Measurement limits to retain even if the final gate passes:
+- Only the final full run uses all production environment-mode effective pool
+  defaults and100 concurrent producer workers. Early short runs are diagnostics,
+  not baseline acceptance. The first default-pool diagnostic enabled optional JFR
+  exception events; later runs did not. Cross-run deltas are not a controlled
+  profiler-overhead-isolated benchmark; the algorithmic changes are independently
+  covered by correctness tests and final workload measurements.
+- The seed contains100000 synthetic persisted events and no historical receipts;
+  measured requests add real receipts. This meets the stated retained-event load,
+  but does not characterize a100000/100000 event/receipt history or the separate
+  one-million-receipt storage ceiling. No larger receipt-population capacity claim.
+- The configured30s pool budget can delay readiness/overload failures. Overall p95
+  is a distribution target, not a bound on every request; burst-phase p95 and all
+  rejected/committed counts are reported separately. No per-request <=1s promise.
+
+Final baseline capacity result:
+- bash docs/verification/020-run-browser.sh >docs/verification/020-capacity.txt 2>&1
+  Exit0. Actual asserted Hikari defaults10/30000/5000, Java25 packaged application,
+  real local City reader/PAT HTTP/Jetty/Strolch/PostgreSQL, two visible isolated
+  Chromium156.0.8078.79 contexts. No competing browser suite. Fixture log:
+  020-capacity-fixture.txt; raw per-event data020-capacity-measurements.json;
+  screenshots020-capacity-1.png and020-capacity-2.png. First screenshot reviewed:
+  live state, rolling1000 window, recent server-b rows, synthetic zero-point map,
+  attribution and recent event list. Screenshots follow measurement completion;
+  individual three-second halos were asserted at each event's next-rAF, not inferred
+  from a later screenshot.
+- 3000 scheduled sends at10/s: actual first-to-last span299899.209ms; then100 workers
+  produce100 burst sends in4.787ms. All3100 return201 and create real receipts.
+  Both browsers receive exactly sequences100001..103100, no duplicates/gaps;
+  1550 events per server identity, every event has its own highlighted row and halo
+  at measured frame opportunity. No measuring failure, script error, external
+  request or hidden context. Each browser holds1000 rows; retained event count
+  remains100000, receipts3100, head103100/minAfter3100. Runtime closes normally.
+- Combined3100-arrival HTTP-send-to-frame p95: browser1=951ms, browser2=961ms,
+  both <=1000ms. Receipt-to-frame p95:29/29ms, both <=100ms. Server-received-to-frame
+  p95:582/579ms; includes precommit work and conservatively bounds commit-to-frame.
+  Sustained-only p95:845/861ms. Burst-only send-to-frame p95:9171/9163ms;
+  burst server-received-to-frame p95:8738/6618ms. These phase values do NOT meet
+  a separate1-second burst-phase target. Task020's combined-workload p95 gate passes;
+  this does not establish a1-second per-phase or per-event bound. Tail latency and
+  the narrow39ms margin in the slower combined result are material operating limits.
+- python3 docs/verification/020-capacity-review.py >docs/verification/020-capacity-review.txt 2>&1
+  Exit0. Independently rechecks raw samples, per-identity counts, exact sequence,
+  count/cursors, pool settings, actual five-minute/concurrent-burst timing and
+  combined p95 thresholds. Reports phase p95s explicitly; no rejected writes hidden.
+- Final browser regression outputs020-snapshot/live/recovery.txt all PASS; final
+  live receipt-to-frame p95=25.6ms over30 samples (separate small regression).
+  Earlier first regression p95=26.1ms is retained, not substituted for capacity.
+- python3 docs/verification/020-review.py >docs/verification/020-review.txt 2>&1
+  Exit0:87 passing reports, production class/resource/frontend/runtime byte
+  identity, Java/harness style, actual framework2.8.0-SNAPSHOT and six cache/JAR
+  identities. Both sha256sum -c manifests exit0, all entriesOK (020-integrity.txt).
+- bash -n docs/verification/020-run-browser.sh docs/verification/020-run-regressions.sh
+  Exit0. Runners now have explicit INT/TERM cleanup traps; normal final cleanup
+  observed, subsequent interruption-trap behavior not exercised. No Intruvia test
+  containers remain; removed leftover disposable XML DB configs from interrupted
+  runs only (020-cleanup.txt). No production data or host service touched.
+
+Final task status: DONE against the stated combined-workload p95 criterion, with
+all phase/receipt-population/headless/crash-injection limitations above retained.
+Next eligible task021 remains TODO; task022 still waits for020/021 completion.
+No other backlog task started. Specification/backlog unchanged; no release,
+deployment, backup/restore or power-loss claim. Final ledger/integrity/check results
+are recorded in020-final-checks.txt and020-ledger-check.txt.
+- Final additional untracked-text whitespace audit initially failed on blank lines
+  containing tabs in020-capacity.cjs (020-final-checks-first.txt records preceding
+  checks, all exit0; audit raised AssertionError naming that file). Removed only
+  trailing whitespace from the harness, no behavior/product changes. Final repeat
+  passes; this harness-only whitespace edit does not require another capacity run.

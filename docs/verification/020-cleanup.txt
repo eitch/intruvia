@@ -1,0 +1,2 @@
+Removed 1 leftover disposable fixture DB configuration(s) after interrupted runs.
+No Intruvia test container remains. Normal final fixture closed and dropped its database.

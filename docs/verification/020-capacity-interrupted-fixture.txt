@@ -1,0 +1,11 @@
+2026-11-12 11:30:44,928 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:39367 (Strolch STARTED)
+SEEDED=100000
+CAPACITY_FIXTURE=http://127.0.0.1:39367
+2026-11-12 11:31:00,819 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=175e577d-56a4-42cc-a175-6fab99f02c6e status=401
+2026-11-12 11:31:01,939 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=0bcbd9da-8491-457d-829b-f87376da2f06 status=401
+PROGRESS=0
+PROGRESS=100
+PROGRESS=200
+PROGRESS=300
+PROGRESS=400
+PROGRESS=500

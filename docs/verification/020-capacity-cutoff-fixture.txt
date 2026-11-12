@@ -1,0 +1,8 @@
+2026-11-12 11:28:45,340 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:41687 (Strolch STARTED)
+SEEDED=100000
+CAPACITY_FIXTURE=http://127.0.0.1:41687
+2026-11-12 11:29:01,114 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=5f82095b-bf68-4e55-9535-58376aa31b6a status=401
+PROGRESS=0
+COUNTS=100000,200,EventStreamState[lastCommittedSequence=100200, minAfter=200]
+LOAD_DONE
+2026-11-12 11:29:24,808 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED

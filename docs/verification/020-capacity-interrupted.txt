@@ -1,0 +1,3 @@
+7b6b45e67aaf7b509df21cc049437f44742899e0fe2660f002116839e4d5edbe
+Browser: 156.0.8078.79
+Starting 3000 arrivals scheduled at 10/s, then concurrent 100-event burst; 100000 seeded retained events.

@@ -1,0 +1,10 @@
+4ac164702d5994df4e0ce0906a5a8f974b67968fe887de75f5b5d733172f553a
+Browser: 156.0.8078.79
+Starting 3000 arrivals scheduled at 10/s, then concurrent 100-event burst; 100000 seeded retained events.
+Elapsed milliseconds: 312418
+COUNTS=100000,3100,EventStreamState[lastCommittedSequence=103100, minAfter=3100]
+LOAD_DONE
+
+{"browser":1,"samples":3100,"endToEndP95":951,"receiptP95":29,"serverP95":582,"sustainedP95":845,"burstP95":9171,"sustainedSendSpanMs":299900}
+{"browser":2,"samples":3100,"endToEndP95":961,"receiptP95":29,"serverP95":579,"sustainedP95":861,"burstP95":9163,"sustainedSendSpanMs":299900}
+PASS: ordered unique delivery, two identities/two browsers, bounded rows/storage and p95 targets.

@@ -1,0 +1,2432 @@
+[
+  {
+    "summary": {
+      "browser": 1,
+      "samples": 200,
+      "endToEndP95": 4127,
+      "receiptP95": 27,
+      "sustainedP95": 3557,
+      "burstP95": 4503
+    },
+    "items": [
+      {
+        "sequence": "100001",
+        "instance": "server-a",
+        "endToEnd": 333,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100002",
+        "instance": "server-a",
+        "endToEnd": 727,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100003",
+        "instance": "server-b",
+        "endToEnd": 827,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100004",
+        "instance": "server-a",
+        "endToEnd": 527,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100005",
+        "instance": "server-b",
+        "endToEnd": 627,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100006",
+        "instance": "server-b",
+        "endToEnd": 1094,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100007",
+        "instance": "server-a",
+        "endToEnd": 994,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100008",
+        "instance": "server-b",
+        "endToEnd": 694,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100009",
+        "instance": "server-b",
+        "endToEnd": 894,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100010",
+        "instance": "server-a",
+        "endToEnd": 794,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100011",
+        "instance": "server-a",
+        "endToEnd": 1386,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100012",
+        "instance": "server-b",
+        "endToEnd": 1286,
+        "receiptToFrame": 16
+      },
+      {
+        "sequence": "100013",
+        "instance": "server-a",
+        "endToEnd": 1186,
+        "receiptToFrame": 16
+      },
+      {
+        "sequence": "100014",
+        "instance": "server-b",
+        "endToEnd": 1086,
+        "receiptToFrame": 15
+      },
+      {
+        "sequence": "100015",
+        "instance": "server-a",
+        "endToEnd": 986,
+        "receiptToFrame": 15
+      },
+      {
+        "sequence": "100016",
+        "instance": "server-b",
+        "endToEnd": 886,
+        "receiptToFrame": 15
+      },
+      {
+        "sequence": "100017",
+        "instance": "server-a",
+        "endToEnd": 2127,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100018",
+        "instance": "server-b",
+        "endToEnd": 2027,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100019",
+        "instance": "server-a",
+        "endToEnd": 1927,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100020",
+        "instance": "server-a",
+        "endToEnd": 1727,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100021",
+        "instance": "server-b",
+        "endToEnd": 1827,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100022",
+        "instance": "server-b",
+        "endToEnd": 1627,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100023",
+        "instance": "server-a",
+        "endToEnd": 1527,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100024",
+        "instance": "server-b",
+        "endToEnd": 1427,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100025",
+        "instance": "server-a",
+        "endToEnd": 1327,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100026",
+        "instance": "server-b",
+        "endToEnd": 1227,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100027",
+        "instance": "server-a",
+        "endToEnd": 2611,
+        "receiptToFrame": 28
+      },
+      {
+        "sequence": "100028",
+        "instance": "server-a",
+        "endToEnd": 3011,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100029",
+        "instance": "server-a",
+        "endToEnd": 2411,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100030",
+        "instance": "server-b",
+        "endToEnd": 2911,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100031",
+        "instance": "server-a",
+        "endToEnd": 2811,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100032",
+        "instance": "server-a",
+        "endToEnd": 2011,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100033",
+        "instance": "server-b",
+        "endToEnd": 2711,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100034",
+        "instance": "server-b",
+        "endToEnd": 2511,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100035",
+        "instance": "server-b",
+        "endToEnd": 2311,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100036",
+        "instance": "server-a",
+        "endToEnd": 1811,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100037",
+        "instance": "server-b",
+        "endToEnd": 1711,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100038",
+        "instance": "server-a",
+        "endToEnd": 2211,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100039",
+        "instance": "server-b",
+        "endToEnd": 2111,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100040",
+        "instance": "server-b",
+        "endToEnd": 1511,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100041",
+        "instance": "server-b",
+        "endToEnd": 1911,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100042",
+        "instance": "server-a",
+        "endToEnd": 2627,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100043",
+        "instance": "server-b",
+        "endToEnd": 2527,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100044",
+        "instance": "server-a",
+        "endToEnd": 3027,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100045",
+        "instance": "server-a",
+        "endToEnd": 2227,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100046",
+        "instance": "server-b",
+        "endToEnd": 2327,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100047",
+        "instance": "server-a",
+        "endToEnd": 1427,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100048",
+        "instance": "server-a",
+        "endToEnd": 2827,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100049",
+        "instance": "server-b",
+        "endToEnd": 2727,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100050",
+        "instance": "server-b",
+        "endToEnd": 1927,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100051",
+        "instance": "server-a",
+        "endToEnd": 2427,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100052",
+        "instance": "server-b",
+        "endToEnd": 2127,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100053",
+        "instance": "server-a",
+        "endToEnd": 3809,
+        "receiptToFrame": 16
+      },
+      {
+        "sequence": "100054",
+        "instance": "server-a",
+        "endToEnd": 3633,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100055",
+        "instance": "server-a",
+        "endToEnd": 2255,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100056",
+        "instance": "server-b",
+        "endToEnd": 3533,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100057",
+        "instance": "server-a",
+        "endToEnd": 2746,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100058",
+        "instance": "server-a",
+        "endToEnd": 3433,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100059",
+        "instance": "server-b",
+        "endToEnd": 3333,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100060",
+        "instance": "server-a",
+        "endToEnd": 3023,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100061",
+        "instance": "server-b",
+        "endToEnd": 3126,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100062",
+        "instance": "server-b",
+        "endToEnd": 2901,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100063",
+        "instance": "server-b",
+        "endToEnd": 2629,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100064",
+        "instance": "server-a",
+        "endToEnd": 2521,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100065",
+        "instance": "server-b",
+        "endToEnd": 1901,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100066",
+        "instance": "server-b",
+        "endToEnd": 2376,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100067",
+        "instance": "server-b",
+        "endToEnd": 3069,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100068",
+        "instance": "server-b",
+        "endToEnd": 2299,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100069",
+        "instance": "server-b",
+        "endToEnd": 2528,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100070",
+        "instance": "server-a",
+        "endToEnd": 2652,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100071",
+        "instance": "server-a",
+        "endToEnd": 2416,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100072",
+        "instance": "server-b",
+        "endToEnd": 1787,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100073",
+        "instance": "server-a",
+        "endToEnd": 2968,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100074",
+        "instance": "server-a",
+        "endToEnd": 2172,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100075",
+        "instance": "server-a",
+        "endToEnd": 3557,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100076",
+        "instance": "server-b",
+        "endToEnd": 3658,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100077",
+        "instance": "server-a",
+        "endToEnd": 3317,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100078",
+        "instance": "server-b",
+        "endToEnd": 3185,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100079",
+        "instance": "server-a",
+        "endToEnd": 2493,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100080",
+        "instance": "server-a",
+        "endToEnd": 3049,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100081",
+        "instance": "server-b",
+        "endToEnd": 2389,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100082",
+        "instance": "server-a",
+        "endToEnd": 2806,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100083",
+        "instance": "server-a",
+        "endToEnd": 1806,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100084",
+        "instance": "server-b",
+        "endToEnd": 2685,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100085",
+        "instance": "server-a",
+        "endToEnd": 2014,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100086",
+        "instance": "server-b",
+        "endToEnd": 2929,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100087",
+        "instance": "server-b",
+        "endToEnd": 1686,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100088",
+        "instance": "server-b",
+        "endToEnd": 2953,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100089",
+        "instance": "server-a",
+        "endToEnd": 3055,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100090",
+        "instance": "server-a",
+        "endToEnd": 3785,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100091",
+        "instance": "server-b",
+        "endToEnd": 3656,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100092",
+        "instance": "server-b",
+        "endToEnd": 3413,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100093",
+        "instance": "server-b",
+        "endToEnd": 2228,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100094",
+        "instance": "server-a",
+        "endToEnd": 2104,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100095",
+        "instance": "server-a",
+        "endToEnd": 2830,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100096",
+        "instance": "server-b",
+        "endToEnd": 2717,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100097",
+        "instance": "server-a",
+        "endToEnd": 2577,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100098",
+        "instance": "server-b",
+        "endToEnd": 2472,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100099",
+        "instance": "server-a",
+        "endToEnd": 2350,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100100",
+        "instance": "server-b",
+        "endToEnd": 1982,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100101",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100102",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100103",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100104",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100105",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100106",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100107",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100108",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100109",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100110",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100111",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100112",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100113",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100114",
+        "instance": "server-a",
+        "endToEnd": 2161,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100115",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100116",
+        "instance": "server-b",
+        "endToEnd": 2161,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100117",
+        "instance": "server-a",
+        "endToEnd": 1512,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100118",
+        "instance": "server-b",
+        "endToEnd": 2806,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100119",
+        "instance": "server-a",
+        "endToEnd": 2906,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100120",
+        "instance": "server-a",
+        "endToEnd": 3641,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100121",
+        "instance": "server-a",
+        "endToEnd": 3381,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100122",
+        "instance": "server-b",
+        "endToEnd": 3504,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100123",
+        "instance": "server-b",
+        "endToEnd": 3280,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100124",
+        "instance": "server-b",
+        "endToEnd": 3030,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100125",
+        "instance": "server-b",
+        "endToEnd": 2015,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100126",
+        "instance": "server-a",
+        "endToEnd": 2690,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100127",
+        "instance": "server-b",
+        "endToEnd": 2557,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100128",
+        "instance": "server-a",
+        "endToEnd": 2369,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100129",
+        "instance": "server-b",
+        "endToEnd": 2270,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100130",
+        "instance": "server-a",
+        "endToEnd": 2151,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100131",
+        "instance": "server-b",
+        "endToEnd": 1830,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100132",
+        "instance": "server-a",
+        "endToEnd": 3182,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100133",
+        "instance": "server-b",
+        "endToEnd": 3075,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100134",
+        "instance": "server-a",
+        "endToEnd": 2961,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100135",
+        "instance": "server-b",
+        "endToEnd": 2055,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100136",
+        "instance": "server-a",
+        "endToEnd": 1954,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100137",
+        "instance": "server-b",
+        "endToEnd": 2813,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100138",
+        "instance": "server-a",
+        "endToEnd": 1693,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100139",
+        "instance": "server-a",
+        "endToEnd": 2684,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100140",
+        "instance": "server-a",
+        "endToEnd": 1171,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100141",
+        "instance": "server-b",
+        "endToEnd": 4149,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100142",
+        "instance": "server-a",
+        "endToEnd": 5042,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100143",
+        "instance": "server-b",
+        "endToEnd": 4912,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100144",
+        "instance": "server-b",
+        "endToEnd": 5169,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100145",
+        "instance": "server-a",
+        "endToEnd": 4765,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100146",
+        "instance": "server-a",
+        "endToEnd": 2235,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100147",
+        "instance": "server-a",
+        "endToEnd": 4026,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100148",
+        "instance": "server-a",
+        "endToEnd": 3253,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100149",
+        "instance": "server-b",
+        "endToEnd": 2856,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100150",
+        "instance": "server-b",
+        "endToEnd": 2633,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100151",
+        "instance": "server-b",
+        "endToEnd": 3632,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100152",
+        "instance": "server-a",
+        "endToEnd": 3497,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100153",
+        "instance": "server-b",
+        "endToEnd": 3904,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100154",
+        "instance": "server-b",
+        "endToEnd": 3373,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100155",
+        "instance": "server-b",
+        "endToEnd": 3105,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100156",
+        "instance": "server-a",
+        "endToEnd": 2505,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100157",
+        "instance": "server-b",
+        "endToEnd": 1894,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100158",
+        "instance": "server-a",
+        "endToEnd": 2733,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100159",
+        "instance": "server-b",
+        "endToEnd": 2116,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100160",
+        "instance": "server-a",
+        "endToEnd": 2996,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100161",
+        "instance": "server-b",
+        "endToEnd": 2376,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100162",
+        "instance": "server-a",
+        "endToEnd": 3928,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100163",
+        "instance": "server-a",
+        "endToEnd": 3594,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100164",
+        "instance": "server-a",
+        "endToEnd": 4162,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100165",
+        "instance": "server-a",
+        "endToEnd": 3128,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100166",
+        "instance": "server-b",
+        "endToEnd": 3784,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100167",
+        "instance": "server-b",
+        "endToEnd": 2754,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100168",
+        "instance": "server-a",
+        "endToEnd": 2875,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100169",
+        "instance": "server-b",
+        "endToEnd": 3489,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100170",
+        "instance": "server-a",
+        "endToEnd": 2416,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100171",
+        "instance": "server-a",
+        "endToEnd": 3369,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100172",
+        "instance": "server-b",
+        "endToEnd": 3262,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100173",
+        "instance": "server-b",
+        "endToEnd": 3007,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100174",
+        "instance": "server-a",
+        "endToEnd": 2648,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100175",
+        "instance": "server-b",
+        "endToEnd": 2516,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100176",
+        "instance": "server-b",
+        "endToEnd": 2312,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100177",
+        "instance": "server-a",
+        "endToEnd": 2214,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100178",
+        "instance": "server-b",
+        "endToEnd": 1068,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100179",
+        "instance": "server-a",
+        "endToEnd": 4006,
+        "receiptToFrame": 31
+      },
+      {
+        "sequence": "100180",
+        "instance": "server-b",
+        "endToEnd": 4627,
+        "receiptToFrame": 30
+      },
+      {
+        "sequence": "100181",
+        "instance": "server-b",
+        "endToEnd": 3895,
+        "receiptToFrame": 29
+      },
+      {
+        "sequence": "100182",
+        "instance": "server-a",
+        "endToEnd": 4503,
+        "receiptToFrame": 28
+      },
+      {
+        "sequence": "100183",
+        "instance": "server-a",
+        "endToEnd": 3506,
+        "receiptToFrame": 28
+      },
+      {
+        "sequence": "100184",
+        "instance": "server-b",
+        "endToEnd": 4373,
+        "receiptToFrame": 28
+      },
+      {
+        "sequence": "100185",
+        "instance": "server-a",
+        "endToEnd": 4250,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100186",
+        "instance": "server-a",
+        "endToEnd": 3266,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100187",
+        "instance": "server-b",
+        "endToEnd": 4127,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100188",
+        "instance": "server-b",
+        "endToEnd": 2347,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100189",
+        "instance": "server-b",
+        "endToEnd": 3129,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100190",
+        "instance": "server-b",
+        "endToEnd": 2906,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100191",
+        "instance": "server-a",
+        "endToEnd": 3718,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100192",
+        "instance": "server-b",
+        "endToEnd": 3404,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100193",
+        "instance": "server-b",
+        "endToEnd": 2100,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100194",
+        "instance": "server-a",
+        "endToEnd": 3027,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100195",
+        "instance": "server-a",
+        "endToEnd": 2223,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100196",
+        "instance": "server-b",
+        "endToEnd": 1827,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100197",
+        "instance": "server-a",
+        "endToEnd": 2780,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100198",
+        "instance": "server-b",
+        "endToEnd": 2646,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100199",
+        "instance": "server-a",
+        "endToEnd": 2447,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100200",
+        "instance": "server-a",
+        "endToEnd": 2132,
+        "receiptToFrame": 27
+      }
+    ],
+    "failures": [],
+    "hidden": false,
+    "rows": 1000
+  },
+  {
+    "summary": {
+      "browser": 2,
+      "samples": 200,
+      "endToEndP95": 4134,
+      "receiptP95": 27,
+      "sustainedP95": 3814,
+      "burstP95": 4538
+    },
+    "items": [
+      {
+        "sequence": "100001",
+        "instance": "server-a",
+        "endToEnd": 646,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100002",
+        "instance": "server-a",
+        "endToEnd": 467,
+        "receiptToFrame": 16
+      },
+      {
+        "sequence": "100003",
+        "instance": "server-b",
+        "endToEnd": 567,
+        "receiptToFrame": 15
+      },
+      {
+        "sequence": "100004",
+        "instance": "server-a",
+        "endToEnd": 776,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100005",
+        "instance": "server-b",
+        "endToEnd": 877,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100006",
+        "instance": "server-b",
+        "endToEnd": 677,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100007",
+        "instance": "server-a",
+        "endToEnd": 577,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100008",
+        "instance": "server-b",
+        "endToEnd": 993,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100009",
+        "instance": "server-b",
+        "endToEnd": 1193,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100010",
+        "instance": "server-a",
+        "endToEnd": 1093,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100011",
+        "instance": "server-a",
+        "endToEnd": 893,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100012",
+        "instance": "server-b",
+        "endToEnd": 793,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100013",
+        "instance": "server-a",
+        "endToEnd": 1612,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100014",
+        "instance": "server-b",
+        "endToEnd": 1512,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100015",
+        "instance": "server-a",
+        "endToEnd": 1412,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100016",
+        "instance": "server-b",
+        "endToEnd": 1312,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100017",
+        "instance": "server-a",
+        "endToEnd": 1212,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100018",
+        "instance": "server-b",
+        "endToEnd": 1112,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100019",
+        "instance": "server-a",
+        "endToEnd": 1012,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100020",
+        "instance": "server-a",
+        "endToEnd": 2593,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100021",
+        "instance": "server-b",
+        "endToEnd": 2693,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100022",
+        "instance": "server-b",
+        "endToEnd": 2493,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100023",
+        "instance": "server-a",
+        "endToEnd": 2393,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100024",
+        "instance": "server-b",
+        "endToEnd": 2293,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100025",
+        "instance": "server-a",
+        "endToEnd": 2193,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100026",
+        "instance": "server-b",
+        "endToEnd": 2093,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100027",
+        "instance": "server-a",
+        "endToEnd": 1593,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100028",
+        "instance": "server-a",
+        "endToEnd": 1993,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100029",
+        "instance": "server-a",
+        "endToEnd": 1393,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100030",
+        "instance": "server-b",
+        "endToEnd": 1894,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100031",
+        "instance": "server-a",
+        "endToEnd": 1794,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100032",
+        "instance": "server-a",
+        "endToEnd": 994,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100033",
+        "instance": "server-b",
+        "endToEnd": 1694,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100034",
+        "instance": "server-b",
+        "endToEnd": 2879,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100035",
+        "instance": "server-b",
+        "endToEnd": 2679,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100036",
+        "instance": "server-a",
+        "endToEnd": 2179,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100037",
+        "instance": "server-b",
+        "endToEnd": 2079,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100038",
+        "instance": "server-a",
+        "endToEnd": 2579,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100039",
+        "instance": "server-b",
+        "endToEnd": 2479,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100040",
+        "instance": "server-b",
+        "endToEnd": 1879,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100041",
+        "instance": "server-b",
+        "endToEnd": 2279,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100042",
+        "instance": "server-a",
+        "endToEnd": 1579,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100043",
+        "instance": "server-b",
+        "endToEnd": 1479,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100044",
+        "instance": "server-a",
+        "endToEnd": 1979,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100045",
+        "instance": "server-a",
+        "endToEnd": 2860,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100046",
+        "instance": "server-b",
+        "endToEnd": 2960,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100047",
+        "instance": "server-a",
+        "endToEnd": 2060,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100048",
+        "instance": "server-a",
+        "endToEnd": 3460,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100049",
+        "instance": "server-b",
+        "endToEnd": 3360,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100050",
+        "instance": "server-b",
+        "endToEnd": 2560,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100051",
+        "instance": "server-a",
+        "endToEnd": 3060,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100052",
+        "instance": "server-b",
+        "endToEnd": 2760,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100053",
+        "instance": "server-a",
+        "endToEnd": 2660,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100054",
+        "instance": "server-a",
+        "endToEnd": 2460,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100055",
+        "instance": "server-a",
+        "endToEnd": 1082,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100056",
+        "instance": "server-b",
+        "endToEnd": 2360,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100057",
+        "instance": "server-a",
+        "endToEnd": 1573,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100058",
+        "instance": "server-a",
+        "endToEnd": 3914,
+        "receiptToFrame": 30
+      },
+      {
+        "sequence": "100059",
+        "instance": "server-b",
+        "endToEnd": 3814,
+        "receiptToFrame": 29
+      },
+      {
+        "sequence": "100060",
+        "instance": "server-a",
+        "endToEnd": 3504,
+        "receiptToFrame": 29
+      },
+      {
+        "sequence": "100061",
+        "instance": "server-b",
+        "endToEnd": 3607,
+        "receiptToFrame": 28
+      },
+      {
+        "sequence": "100062",
+        "instance": "server-b",
+        "endToEnd": 3382,
+        "receiptToFrame": 28
+      },
+      {
+        "sequence": "100063",
+        "instance": "server-b",
+        "endToEnd": 3110,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100064",
+        "instance": "server-a",
+        "endToEnd": 3002,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100065",
+        "instance": "server-b",
+        "endToEnd": 2382,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100066",
+        "instance": "server-b",
+        "endToEnd": 2857,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100067",
+        "instance": "server-b",
+        "endToEnd": 2607,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100068",
+        "instance": "server-b",
+        "endToEnd": 1837,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100069",
+        "instance": "server-b",
+        "endToEnd": 2066,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100070",
+        "instance": "server-a",
+        "endToEnd": 2190,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100071",
+        "instance": "server-a",
+        "endToEnd": 3667,
+        "receiptToFrame": 28
+      },
+      {
+        "sequence": "100072",
+        "instance": "server-b",
+        "endToEnd": 3038,
+        "receiptToFrame": 27
+      },
+      {
+        "sequence": "100073",
+        "instance": "server-a",
+        "endToEnd": 4219,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100074",
+        "instance": "server-a",
+        "endToEnd": 3423,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100075",
+        "instance": "server-a",
+        "endToEnd": 3174,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100076",
+        "instance": "server-b",
+        "endToEnd": 3275,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100077",
+        "instance": "server-a",
+        "endToEnd": 2934,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100078",
+        "instance": "server-b",
+        "endToEnd": 2802,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100079",
+        "instance": "server-a",
+        "endToEnd": 2110,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100080",
+        "instance": "server-a",
+        "endToEnd": 2666,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100081",
+        "instance": "server-b",
+        "endToEnd": 2006,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100082",
+        "instance": "server-a",
+        "endToEnd": 2423,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100083",
+        "instance": "server-a",
+        "endToEnd": 1423,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100084",
+        "instance": "server-b",
+        "endToEnd": 2302,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100085",
+        "instance": "server-a",
+        "endToEnd": 2947,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100086",
+        "instance": "server-b",
+        "endToEnd": 3862,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100087",
+        "instance": "server-b",
+        "endToEnd": 2619,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100088",
+        "instance": "server-b",
+        "endToEnd": 2386,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100089",
+        "instance": "server-a",
+        "endToEnd": 2488,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100090",
+        "instance": "server-a",
+        "endToEnd": 3219,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100091",
+        "instance": "server-b",
+        "endToEnd": 3090,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100092",
+        "instance": "server-b",
+        "endToEnd": 2847,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100093",
+        "instance": "server-b",
+        "endToEnd": 1662,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100094",
+        "instance": "server-a",
+        "endToEnd": 1538,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100095",
+        "instance": "server-a",
+        "endToEnd": 2264,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100096",
+        "instance": "server-b",
+        "endToEnd": 4000,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100097",
+        "instance": "server-a",
+        "endToEnd": 3860,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100098",
+        "instance": "server-b",
+        "endToEnd": 3755,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100099",
+        "instance": "server-a",
+        "endToEnd": 3633,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100100",
+        "instance": "server-b",
+        "endToEnd": 3265,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100101",
+        "instance": "server-a",
+        "endToEnd": 1338,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100102",
+        "instance": "server-a",
+        "endToEnd": 1338,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100103",
+        "instance": "server-a",
+        "endToEnd": 1338,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100104",
+        "instance": "server-a",
+        "endToEnd": 1338,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100105",
+        "instance": "server-b",
+        "endToEnd": 1338,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100106",
+        "instance": "server-b",
+        "endToEnd": 1338,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100107",
+        "instance": "server-b",
+        "endToEnd": 1338,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100108",
+        "instance": "server-a",
+        "endToEnd": 1338,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100109",
+        "instance": "server-b",
+        "endToEnd": 1339,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100110",
+        "instance": "server-a",
+        "endToEnd": 1339,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100111",
+        "instance": "server-b",
+        "endToEnd": 2789,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100112",
+        "instance": "server-a",
+        "endToEnd": 2814,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100113",
+        "instance": "server-b",
+        "endToEnd": 2814,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100114",
+        "instance": "server-a",
+        "endToEnd": 2814,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100115",
+        "instance": "server-b",
+        "endToEnd": 2814,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100116",
+        "instance": "server-b",
+        "endToEnd": 2814,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100117",
+        "instance": "server-a",
+        "endToEnd": 2165,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100118",
+        "instance": "server-b",
+        "endToEnd": 1814,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100119",
+        "instance": "server-a",
+        "endToEnd": 1914,
+        "receiptToFrame": 18
+      },
+      {
+        "sequence": "100120",
+        "instance": "server-a",
+        "endToEnd": 2649,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100121",
+        "instance": "server-a",
+        "endToEnd": 2389,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100122",
+        "instance": "server-b",
+        "endToEnd": 2512,
+        "receiptToFrame": 16
+      },
+      {
+        "sequence": "100123",
+        "instance": "server-b",
+        "endToEnd": 3929,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100124",
+        "instance": "server-b",
+        "endToEnd": 3679,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100125",
+        "instance": "server-b",
+        "endToEnd": 2664,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100126",
+        "instance": "server-a",
+        "endToEnd": 3339,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100127",
+        "instance": "server-b",
+        "endToEnd": 3206,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100128",
+        "instance": "server-a",
+        "endToEnd": 3018,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100129",
+        "instance": "server-b",
+        "endToEnd": 2919,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100130",
+        "instance": "server-a",
+        "endToEnd": 2800,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100131",
+        "instance": "server-b",
+        "endToEnd": 1212,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100132",
+        "instance": "server-a",
+        "endToEnd": 2564,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100133",
+        "instance": "server-b",
+        "endToEnd": 2457,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100134",
+        "instance": "server-a",
+        "endToEnd": 2343,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100135",
+        "instance": "server-b",
+        "endToEnd": 1437,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100136",
+        "instance": "server-a",
+        "endToEnd": 3002,
+        "receiptToFrame": 17
+      },
+      {
+        "sequence": "100137",
+        "instance": "server-b",
+        "endToEnd": 3876,
+        "receiptToFrame": 13
+      },
+      {
+        "sequence": "100138",
+        "instance": "server-a",
+        "endToEnd": 2756,
+        "receiptToFrame": 13
+      },
+      {
+        "sequence": "100139",
+        "instance": "server-a",
+        "endToEnd": 3747,
+        "receiptToFrame": 12
+      },
+      {
+        "sequence": "100140",
+        "instance": "server-a",
+        "endToEnd": 2234,
+        "receiptToFrame": 12
+      },
+      {
+        "sequence": "100141",
+        "instance": "server-b",
+        "endToEnd": 2626,
+        "receiptToFrame": 12
+      },
+      {
+        "sequence": "100142",
+        "instance": "server-a",
+        "endToEnd": 3519,
+        "receiptToFrame": 11
+      },
+      {
+        "sequence": "100143",
+        "instance": "server-b",
+        "endToEnd": 3389,
+        "receiptToFrame": 11
+      },
+      {
+        "sequence": "100144",
+        "instance": "server-b",
+        "endToEnd": 3646,
+        "receiptToFrame": 11
+      },
+      {
+        "sequence": "100145",
+        "instance": "server-a",
+        "endToEnd": 3242,
+        "receiptToFrame": 10
+      },
+      {
+        "sequence": "100146",
+        "instance": "server-a",
+        "endToEnd": 712,
+        "receiptToFrame": 10
+      },
+      {
+        "sequence": "100147",
+        "instance": "server-a",
+        "endToEnd": 2503,
+        "receiptToFrame": 10
+      },
+      {
+        "sequence": "100148",
+        "instance": "server-a",
+        "endToEnd": 1730,
+        "receiptToFrame": 10
+      },
+      {
+        "sequence": "100149",
+        "instance": "server-b",
+        "endToEnd": 3762,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100150",
+        "instance": "server-b",
+        "endToEnd": 3539,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100151",
+        "instance": "server-b",
+        "endToEnd": 4538,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100152",
+        "instance": "server-a",
+        "endToEnd": 4403,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100153",
+        "instance": "server-b",
+        "endToEnd": 4810,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100154",
+        "instance": "server-b",
+        "endToEnd": 4279,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100155",
+        "instance": "server-b",
+        "endToEnd": 4011,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100156",
+        "instance": "server-a",
+        "endToEnd": 3411,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100157",
+        "instance": "server-b",
+        "endToEnd": 2800,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100158",
+        "instance": "server-a",
+        "endToEnd": 3639,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100159",
+        "instance": "server-b",
+        "endToEnd": 3021,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100160",
+        "instance": "server-a",
+        "endToEnd": 3901,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100161",
+        "instance": "server-b",
+        "endToEnd": 3281,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100162",
+        "instance": "server-a",
+        "endToEnd": 2671,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100163",
+        "instance": "server-a",
+        "endToEnd": 2337,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100164",
+        "instance": "server-a",
+        "endToEnd": 2905,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100165",
+        "instance": "server-a",
+        "endToEnd": 1871,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100166",
+        "instance": "server-b",
+        "endToEnd": 2527,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100167",
+        "instance": "server-b",
+        "endToEnd": 1497,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100168",
+        "instance": "server-a",
+        "endToEnd": 1618,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100169",
+        "instance": "server-b",
+        "endToEnd": 5107,
+        "receiptToFrame": 26
+      },
+      {
+        "sequence": "100170",
+        "instance": "server-a",
+        "endToEnd": 4034,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100171",
+        "instance": "server-a",
+        "endToEnd": 4987,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100172",
+        "instance": "server-b",
+        "endToEnd": 4880,
+        "receiptToFrame": 25
+      },
+      {
+        "sequence": "100173",
+        "instance": "server-b",
+        "endToEnd": 4625,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100174",
+        "instance": "server-a",
+        "endToEnd": 4266,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100175",
+        "instance": "server-b",
+        "endToEnd": 4134,
+        "receiptToFrame": 24
+      },
+      {
+        "sequence": "100176",
+        "instance": "server-b",
+        "endToEnd": 3930,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100177",
+        "instance": "server-a",
+        "endToEnd": 3832,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100178",
+        "instance": "server-b",
+        "endToEnd": 2686,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100179",
+        "instance": "server-a",
+        "endToEnd": 3085,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100180",
+        "instance": "server-b",
+        "endToEnd": 3706,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100181",
+        "instance": "server-b",
+        "endToEnd": 2974,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100182",
+        "instance": "server-a",
+        "endToEnd": 3582,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100183",
+        "instance": "server-a",
+        "endToEnd": 2585,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100184",
+        "instance": "server-b",
+        "endToEnd": 3452,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100185",
+        "instance": "server-a",
+        "endToEnd": 3329,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100186",
+        "instance": "server-a",
+        "endToEnd": 2345,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100187",
+        "instance": "server-b",
+        "endToEnd": 3206,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100188",
+        "instance": "server-b",
+        "endToEnd": 1426,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100189",
+        "instance": "server-b",
+        "endToEnd": 2208,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100190",
+        "instance": "server-b",
+        "endToEnd": 1985,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100191",
+        "instance": "server-a",
+        "endToEnd": 2797,
+        "receiptToFrame": 19
+      },
+      {
+        "sequence": "100192",
+        "instance": "server-b",
+        "endToEnd": 3531,
+        "receiptToFrame": 23
+      },
+      {
+        "sequence": "100193",
+        "instance": "server-b",
+        "endToEnd": 2227,
+        "receiptToFrame": 22
+      },
+      {
+        "sequence": "100194",
+        "instance": "server-a",
+        "endToEnd": 3154,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100195",
+        "instance": "server-a",
+        "endToEnd": 2350,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100196",
+        "instance": "server-b",
+        "endToEnd": 1954,
+        "receiptToFrame": 21
+      },
+      {
+        "sequence": "100197",
+        "instance": "server-a",
+        "endToEnd": 2907,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100198",
+        "instance": "server-b",
+        "endToEnd": 2773,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100199",
+        "instance": "server-a",
+        "endToEnd": 2574,
+        "receiptToFrame": 20
+      },
+      {
+        "sequence": "100200",
+        "instance": "server-a",
+        "endToEnd": 2099,
+        "receiptToFrame": 20
+      }
+    ],
+    "failures": [],
+    "hidden": false,
+    "rows": 1000
+  }
+]

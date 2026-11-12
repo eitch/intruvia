@@ -1,0 +1,17 @@
+Browser 1 endToEnd combined p95 ms: 951
+Browser 1 receiptToFrame combined p95 ms: 29
+Browser 1 serverToFrame combined p95 ms: 582
+Sustained send span ms: 299899.209
+100-worker burst send span ms: 4.787
+Burst send-to-frame p95 ms: 9171
+Burst server-received-to-frame p95 ms: 8738
+Browser 2 endToEnd combined p95 ms: 961
+Browser 2 receiptToFrame combined p95 ms: 29
+Browser 2 serverToFrame combined p95 ms: 579
+Sustained send span ms: 299899.209
+100-worker burst send span ms: 4.787
+Burst send-to-frame p95 ms: 9163
+Burst server-received-to-frame p95 ms: 6618
+PASS: two identities/two visible contexts, all3100 durable commits and ordered independent indications;
+100000 retained bound,3100 receipts, actual five-minute sends and concurrent100-event burst.
+Combined workload p95 gates pass; phase/tail latency remains explicitly reported.

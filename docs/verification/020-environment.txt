@@ -1,0 +1,14 @@
+Framework source: /home/eitch/src/git/atx-dev/strolch
+Source HEAD: f8353080a3c8b140accbff6ee171c73deabb0f17; git status --short empty.
+Inspected cache: /home/eitch/.m2/repository/li/strolch, installed 2.8.0-SNAPSHOT.
+Actual Maven override: -o -Dstrolch.version=2.8.0-SNAPSHOT.
+No framework rebuild or timestamped-baseline relabel/equivalence claimed.
+Java: /home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem
+Maven: /home/eitch/.sdkman/candidates/maven/3.10.0
+Node: /home/eitch/.nvm/versions/node/v26.13.0/bin/node
+Playwright: /usr/lib/chatgpt/resources/cua_node/lib/node_modules/playwright
+Browser: /usr/bin/chromium, 156.0.8078.79
+CPU: Intel Core Ultra X7 358H, 16 logical CPUs; lscpu reports 4800 MHz maximum.
+Host: CachyOS x86_64, kernel 7.3.3-1-cachyos, 62.28 GiB RAM (docker info).
+No application dependency/toolchain installed. Headless Chromium rendering is a
+requestAnimationFrame opportunity with highlighted DOM, not physical scanout.
