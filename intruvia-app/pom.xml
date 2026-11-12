@@ -42,7 +42,35 @@
         </dependency>
     </dependencies>
     <build>
+        <resources>
+            <resource><directory>src/main/resources</directory></resource>
+            <resource>
+                <directory>../docs/deployment</directory><targetPath>li/intruvia/app</targetPath>
+                <includes><include>quiet-logback.xml</include></includes>
+            </resource>
+            <resource>
+                <directory>..</directory><targetPath>META-INF</targetPath>
+                <includes><include>LICENSE</include></includes>
+            </resource>
+            <resource>
+                <directory>src/main/runtime</directory><targetPath>META-INF</targetPath>
+                <includes><include>LICENSE-Strolch</include></includes>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.6.1</version>
+                <executions>
+                    <execution>
+                        <id>offline-privilege-tool</id>
+                        <phase>generate-sources</phase>
+                        <goals><goal>add-source</goal></goals>
+                        <configuration><sources><source>${project.basedir}/../docs/deployment</source></sources></configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
