@@ -425,3 +425,49 @@ seconds during outages. There is no persistent offline queue.** Failed notificat
 does not fail the normal ban action. TLS certificates are verified, and retries
 reuse the same event UUID/timestamp and JSON bytes. Tokens stay in the private file.
 See the [installation, rotation, retry policy and isolated test instructions](integrations/fail2ban/README.md).
+
+## Runtime health and operator diagnostics
+
+`GET /health/live` reports process liveness; `GET /health/ready` returns only
+`{"status":"UP"}` (200) or `{"status":"DOWN"}` (503). Readiness checks the actual
+Strolch PostgreSQL pool, fails during database loss or shutdown, and stays UP
+when GeoIP is unavailable. Only one readiness probe runs at a time; overlapping
+probes return DOWN. Monitor with a finite timeout and retry rather than treating
+one busy probe as a permanent outage.
+
+Provision an operator with both the `Viewer` and supplied `Operator` roles in
+protected Strolch configuration. After ordinary cookie login,
+`GET /api/v1/diagnostics` reports process-lifetime ingestion created/duplicate/failure
+counters, active stream connections, slow-consumer disconnects, GeoIP load/build/age
+and stale/update status, and effective stream bounds. Ordinary viewers and machine
+PATs cannot read diagnostics. Responses are uncached and contain no credentials,
+IPs, instance names, payloads or filesystem paths. Counters reset on restart.
+
+Startup requires all four external runtime XML files, PostgreSQL URL/user/password,
+and nonblank privilege secretKey/secretSalt values replacing `CHANGE-ME`.
+Missing optional identity/viewer files disable the corresponding access; missing
+GeoIP remains degraded. Configure ingestion limits in `ingestion.properties`,
+retention and GeoIP in `StrolchConfiguration.xml`, and the EventStream properties
+`queueFrames`, `messageBytes`, `sendSeconds`, `pollMillis` there (defaults
+1000, 65536, 10, 250). Session TTL/maximum lifetime are bounded to 1–1440 minutes.
+See the [complete configuration and diagnostic contract](docs/architecture/019-runtime-operations.md)
+for ranges, database pool timeout settings and shutdown behavior.
+
+Each API response carries a server-generated `X-Request-ID`; API error JSON uses
+the same ID. Incoming IDs are ignored. Default logs contain only fixed operational
+messages and at most one request-failure summary per second, with status/ID only.
+Framework/Jersey logging is disabled because it can contain connection or model
+values. The synchronous rolling file defaults to `logs/intruvia.log` relative to
+the working directory; set `-Dintruvia.log.dir=/protected/path` before `-jar` to
+choose a protected directory. Rollover uses 10 MB files, five days and a 50 MB
+archive cap (plus the active file and temporary rollover overhead). Protect that
+directory and configure service-manager console retention. Replacing the logging
+configuration can re-enable sensitive framework logs; review it before use.
+
+On SIGTERM/Ctrl+C, new API work is rejected, readiness fails, active API calls drain,
+then the stream, Jetty, Strolch jobs, GeoIP readers and persistence close. Allow at
+least 90 seconds in the service manager. If request drain exceeds 30 seconds,
+shutdown reports failure and leaves persistence running for that call; it does not
+destroy storage under active writes. Forced termination still relies on PostgreSQL
+transaction atomicity and durable replay. No delivery through a long producer outage
+is promised by the notification helper.
