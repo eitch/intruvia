@@ -86,9 +86,16 @@ public class GeoIpComponent extends StrolchComponent {
 			if (!this.databasePath.isAbsolute())
 				throw new IllegalArgumentException("GeoIP databasePath must be absolute");
 		}
-		this.staleAfter = Duration.ofSeconds(Long.parseLong(configuration.getString("staleAfterSeconds", "1209600")));
-		this.updateIntervalSeconds = Long.parseLong(configuration.getString("updateIntervalSeconds", "60"));
-		if (this.staleAfter.isNegative() || this.staleAfter.isZero() || this.updateIntervalSeconds < 1)
+		if (!java.util.Set.of("databasePath", "staleAfterSeconds", "updateIntervalSeconds").containsAll(configuration.getPropertyKeys()))
+			throw new IllegalArgumentException("Unknown GeoIP setting");
+		try {
+			this.staleAfter = Duration.ofSeconds(Long.parseLong(configuration.getString("staleAfterSeconds", "1209600")));
+			this.updateIntervalSeconds = Long.parseLong(configuration.getString("updateIntervalSeconds", "60"));
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid GeoIP age or update interval");
+		}
+		if (this.staleAfter.isNegative() || this.staleAfter.isZero() || this.staleAfter.compareTo(Duration.ofDays(3650)) > 0 ||
+				this.updateIntervalSeconds < 1 || this.updateIntervalSeconds > 86400)
 			throw new IllegalArgumentException("GeoIP age and update intervals must be positive");
 		super.initialize(configuration);
 	}

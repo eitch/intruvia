@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 package li.intruvia.rest.ingest;
 
-import java.util.UUID;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import li.intruvia.core.model.EventJson;
@@ -16,7 +15,7 @@ public final class IngestHttp {
 	}
 
 	public static Response error(int status, String code, String message) {
-		var response = Response.fromResponse(json(status, new ApiError(new ApiError.Error(code, message, UUID.randomUUID().toString()))));
+		var response = Response.fromResponse(json(status, new ApiError(new ApiError.Error(code, message, li.intruvia.rest.ops.RequestIds.current()))));
 		if (status == 401)
 			response.header("WWW-Authenticate", "Bearer realm=\"intruvia-ingest\"");
 		return response.build();

@@ -370,7 +370,7 @@ public class GeoIpComponentTest {
 			stop(component);
 		}
 		for (String property : new String[]{"staleAfterSeconds", "updateIntervalSeconds"}) {
-			for (String value : new String[]{"0", "-1", "invalid"}) {
+			for (String value : new String[]{"0", "-1", "invalid", "315360001"}) {
 				assertThrows(IllegalArgumentException.class,
 						() -> start(null, Clock.fixed(NOW, ZoneOffset.UTC), Map.of(property, value)));
 			}

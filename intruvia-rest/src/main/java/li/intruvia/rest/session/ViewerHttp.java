@@ -4,7 +4,6 @@ package li.intruvia.rest.session;
 import jakarta.ws.rs.core.Response;
 import li.intruvia.rest.dto.ApiError;
 import li.intruvia.rest.ingest.IngestHttp;
-import java.util.UUID;
 
 final class ViewerHttp {
 	private ViewerHttp() {}
@@ -24,7 +23,7 @@ final class ViewerHttp {
 			case 503 -> "Viewer sessions unavailable";
 			default -> "Invalid session request";
 		};
-		Response response = IngestHttp.json(status, new ApiError(new ApiError.Error(code, message, UUID.randomUUID().toString())));
+		Response response = IngestHttp.json(status, new ApiError(new ApiError.Error(code, message, li.intruvia.rest.ops.RequestIds.current())));
 		return new ViewerException(response);
 	}
 }

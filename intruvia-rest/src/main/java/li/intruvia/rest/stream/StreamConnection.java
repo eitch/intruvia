@@ -14,11 +14,14 @@ final class StreamConnection {
 	static final int CAPACITY = 1000;
 	static final int MESSAGE_BYTES = 65536;
 	private final Session session;
+	private final StreamLimits limits;
 	private final java.util.function.LongSupplier time;
 	private final ArrayDeque<String> queue = new ArrayDeque<>();
 	private final Consumer<StreamConnection> removal;
 	private boolean sending;
 	private boolean closed;
+	private boolean queueDisconnect;
+	synchronized boolean queueDisconnect() { return this.queueDisconnect; }
 	private int terminalCode;
 	private long sendStarted;
 	private long pingAt;
@@ -32,26 +35,32 @@ final class StreamConnection {
 	}
 
 	StreamConnection(Session session, String token, long after, Consumer<StreamConnection> removal, java.util.function.LongSupplier time) {
+		this(session, token, after, removal, time, StreamLimits.DEFAULT);
+	}
+
+	StreamConnection(Session session, String token, long after, Consumer<StreamConnection> removal,
+			java.util.function.LongSupplier time, StreamLimits limits) {
 		this.session = session;
+		this.limits = limits;
 		this.time = time;
 		this.token = token;
 		this.after = after;
 		this.removal = removal;
 		this.pingAt = this.time.getAsLong();
-		session.getAsyncRemote().setSendTimeout(10000);
-		session.setMaxTextMessageBufferSize(MESSAGE_BYTES);
-		session.setMaxBinaryMessageBufferSize(MESSAGE_BYTES);
+		session.getAsyncRemote().setSendTimeout(limits.sendSeconds() * 1000L);
+		session.setMaxTextMessageBufferSize(limits.messageBytes());
+		session.setMaxBinaryMessageBufferSize(limits.messageBytes());
 		session.setMaxIdleTimeout(45000);
 	}
 
 	synchronized void offer(String frame) {
 		if (this.closed || this.terminalCode != 0)
 			return;
-		if (frame.getBytes(StandardCharsets.UTF_8).length > MESSAGE_BYTES) {
+		if (frame.getBytes(StandardCharsets.UTF_8).length > this.limits.messageBytes()) {
 			close(1009, "Message limit");
 			return;
 		}
-		if (this.queue.size() + (this.sending ? 1 : 0) >= CAPACITY) {
+		if (this.queue.size() + (this.sending ? 1 : 0) >= this.limits.queueFrames()) {
 			close(1013, "Slow consumer; reconnect");
 			return;
 		}
@@ -88,7 +97,7 @@ final class StreamConnection {
 
 	synchronized void heartbeat() {
 		long now = this.time.getAsLong();
-		if (this.sending && now - this.sendStarted >= 10_000_000_000L) {
+		if (this.sending && now - this.sendStarted >= this.limits.sendSeconds() * 1_000_000_000L) {
 			close(1013, "Send timeout; reconnect");
 			return;
 		}
@@ -106,6 +115,7 @@ final class StreamConnection {
 	synchronized void close(int code, String reason) {
 		if (this.closed) return;
 		this.closed = true;
+		this.queueDisconnect = code == 1013;
 		this.queue.clear();
 		this.removal.accept(this);
 		try { this.session.close(new CloseReason(CloseReason.CloseCodes.getCloseCode(code), reason)); }

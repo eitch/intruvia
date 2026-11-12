@@ -67,7 +67,7 @@ public final class EventStreamServlet extends HttpServlet {
 		response.setStatus(status);
 		response.setContentType("application/json");
 		response.getWriter().write(EventJson.write(new ApiError(new ApiError.Error(
-				status == 400 ? "invalid_request" : "viewer_request_denied", "Stream request rejected", UUID.randomUUID().toString()))));
+				status == 400 ? "invalid_request" : "viewer_request_denied", "Stream request rejected", li.intruvia.rest.ops.RequestIds.current()))));
 	}
 
 	public static final class StreamEndpoint extends Endpoint {

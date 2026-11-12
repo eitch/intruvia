@@ -21,7 +21,6 @@ import java.util.function.Supplier;
 public class IntruviaRestApplication extends ResourceConfig {
 	public IntruviaRestApplication() {
 		property("jersey.config.server.wadl.disableWadl", true);
-		register(HealthResource.class);
 	}
 
 	public IntruviaRestApplication(Supplier<PrivilegeHandler> handler, MachineIdentities identities) {

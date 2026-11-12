@@ -64,6 +64,25 @@ public class StreamConnectionTest {
 		assertEquals(1001, transport.close.getCloseCode().getCode());
 	}
 
+	@Test public void configuredQueueSizeAndDeadlineApplyToTransport() {
+		var transport = new Transport();
+		var connection = new StreamConnection(transport.session, "token", 0, ignored -> transport.removed.incrementAndGet(),
+				transport.time::get, new StreamLimits(1, 1024, 1, 250));
+		connection.offer("first");
+		connection.offer("second");
+		assertEquals(1013, transport.close.getCloseCode().getCode());
+		assertTrue(connection.queueDisconnect());
+		assertEquals(1, transport.removed.get());
+		var deadline = new Transport();
+		var waiting = new StreamConnection(deadline.session, "token", 0, ignored -> deadline.removed.incrementAndGet(),
+				deadline.time::get, new StreamLimits(1, 1024, 1, 250));
+		waiting.offer("first");
+		deadline.time.set(1_000_000_000L);
+		waiting.heartbeat();
+		assertEquals(1013, deadline.close.getCloseCode().getCode());
+		assertTrue(waiting.queueDisconnect());
+	}
+
 	private static final class Transport {
 		final List<String> sent = new ArrayList<>();
 		final AtomicLong time = new AtomicLong();

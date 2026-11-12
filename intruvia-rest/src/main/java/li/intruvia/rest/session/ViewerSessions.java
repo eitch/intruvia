@@ -113,6 +113,17 @@ public final class ViewerSessions {
 		return certificate;
 	}
 
+	public void requirePrivilege(Certificate certificate, String privilege) {
+		try {
+			if (!this.handler.get().validate(certificate, SOURCE).hasPrivilege(privilege, privilege))
+				throw ViewerHttp.failure(403);
+		} catch (StrolchNotAuthenticatedException e) {
+			throw ViewerHttp.failure(401);
+		} catch (PrivilegeException e) {
+			throw ViewerHttp.failure(403);
+		}
+	}
+
 	public void logout(Certificate certificate) { this.handler.get().invalidate(certificate); }
 
 	/** Servlet/WebSocket adapter: normalized lowercase header names, preserving duplicate values. */

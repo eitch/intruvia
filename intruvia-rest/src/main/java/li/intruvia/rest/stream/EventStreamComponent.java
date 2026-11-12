@@ -21,6 +21,14 @@ public final class EventStreamComponent extends StrolchComponent {
 	private final AtomicBoolean pending = new AtomicBoolean();
 	private ScheduledExecutorService scheduler;
 	private ViewerSessions viewers;
+	private StreamLimits limits = StreamLimits.DEFAULT;
+	private final java.util.concurrent.atomic.AtomicLong queueDisconnects = new java.util.concurrent.atomic.AtomicLong();
+	public long queueDisconnectCount() { return this.queueDisconnects.get(); }
+	public StreamLimits limits() { return this.limits; }
+	@Override public void initialize(li.strolch.runtime.configuration.ComponentConfiguration configuration) throws Exception {
+		this.limits = StreamLimits.load(configuration);
+		super.initialize(configuration);
+	}
 	public EventStreamComponent(ComponentContainer container, String name) { super(container, name); }
 	public void configure(ViewerSessions viewers) { this.viewers = viewers; }
 	public ViewerSessions viewers() { return this.viewers; }
@@ -30,7 +38,7 @@ public final class EventStreamComponent extends StrolchComponent {
 		if (this.viewers == null) throw new IllegalStateException("Viewer validator required");
 		super.start();
 		this.scheduler = Executors.newSingleThreadScheduledExecutor(task -> new Thread(task, "intruvia-event-stream"));
-		this.scheduler.scheduleWithFixedDelay(this::dispatch, 250, 250, TimeUnit.MILLISECONDS);
+		this.scheduler.scheduleWithFixedDelay(this::dispatch, this.limits.pollMillis(), this.limits.pollMillis(), TimeUnit.MILLISECONDS);
 		getComponent(EventStreamNotifications.class).listen(this::wakeup);
 	}
 
@@ -43,7 +51,11 @@ public final class EventStreamComponent extends StrolchComponent {
 	}
 
 	StreamConnection connect(Session session, String token, long after) {
-		var connection = new StreamConnection(session, token, after, this.connections::remove);
+		var connection = new StreamConnection(session, token, after, connectionClosed -> {
+			this.connections.remove(connectionClosed);
+			if (connectionClosed.queueDisconnect())
+				li.intruvia.rest.ops.RuntimeDiagnostics.increment(this.queueDisconnects);
+		}, System::nanoTime, this.limits);
 		this.connections.add(connection);
 		wakeup();
 		return connection;
@@ -94,7 +106,7 @@ public final class EventStreamComponent extends StrolchComponent {
 	private record Created(int version, String type, String sequence, SecurityEvent event) {}
 	private record Notice(int version, String type, String code) {}
 
-	private void shutdown() throws InterruptedException {
+	public void quiesce() throws InterruptedException {
 		getComponent(EventStreamNotifications.class).listen(() -> {});
 		var worker = this.scheduler;
 		if (worker == null) return;
@@ -103,6 +115,6 @@ public final class EventStreamComponent extends StrolchComponent {
 		for (var connection : this.connections) connection.close(1001, "Server shutdown");
 		this.scheduler = null;
 	}
-	@Override public void stop() throws Exception { shutdown(); super.stop(); }
-	@Override public void destroy() throws Exception { shutdown(); super.destroy(); }
+	@Override public void stop() throws Exception { quiesce(); super.stop(); }
+	@Override public void destroy() throws Exception { quiesce(); super.destroy(); }
 }
