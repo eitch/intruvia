@@ -1,0 +1,24 @@
+# SPDX-License-Identifier: AGPL-3.0-only
+[Unit]
+Description=Intruvia
+After=network.target
+
+[Service]
+Type=simple
+User=intruvia
+Group=intruvia
+UMask=0077
+WorkingDirectory=/var/lib/intruvia
+EnvironmentFile=/etc/intruvia/database.env
+ExecStart=/opt/java-25/bin/java -Dintruvia.log.dir=/var/lib/intruvia/logs -jar /opt/intruvia/intruvia-app-0.0.1.jar /var/lib/intruvia/runtime 8080
+TimeoutStopSec=120
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/intruvia
+
+[Install]
+WantedBy=multi-user.target

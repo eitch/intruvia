@@ -108,7 +108,7 @@ timestamped binaries. Do not rename local JARs to impersonate timestamped artifa
 
 The application binds only to loopback and now requires durable PostgreSQL storage.
 The ingestion HTTP endpoint, viewer sessions and snapshot viewer are available. The
-readiness endpoint remains pending. The packaged `production` environment rejects
+readiness endpoint is available at `/health/ready`. The packaged `production` environment rejects
 transient stores; there is no memory-only fallback.
 
 `mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
@@ -493,3 +493,11 @@ receipt-to-frame p95 was 29 ms. All 3,100 events committed and appeared. The bur
 phase alone had about 9.2 seconds p95, so this is not a one-second guarantee for
 each phase or request. See the [report](docs/verification/020-acceptance.txt) for
 raw measurements, failed attempts, hardware and receipt-population limits.
+
+## Deployment and recovery
+
+Follow the [installation and recovery guide](docs/DEPLOYMENT.md) for protected user/PAT
+provisioning, TLS/WSS proxying, service setup, GeoIP/Fail2ban operations and a coordinated
+PostgreSQL/runtime backup and restore. Deployment recipes are packaged in `docs/`.
+See [task 021 rehearsal evidence](docs/verification/021-acceptance.txt) for measured results
+and limits. Task 022 remains the release review.
