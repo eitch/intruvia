@@ -37,7 +37,7 @@ Jetty / JAX-RS → authentication → Fail2ban adapter → Strolch ingestion ser
                                        Vanilla JS map + recent-event list
 ```
 
-Use one application process and one Strolch realm. Run behind a TLS reverse proxy or configure Jetty TLS; bind only to loopback by default behind a proxy. No external broker or separate frontend server.
+Use one application process and one Strolch realm. Run behind a TLS reverse proxy or configure Jetty TLS; bind to loopback by default for standalone use. The Compose deployment explicitly binds on its trusted private network and publishes only the proxy, not Jetty or PostgreSQL. No external broker or separate frontend server.
 
 | Maven module | Responsibility |
 |---|---|
@@ -167,6 +167,8 @@ Unmapped events enter the list immediately with a reason and increment the unmap
 Default event retention: 30 days and maximum 100,000 events, whichever bound is reached first. A scheduled daily age sweep and admission-time capacity pruning remove only the oldest contiguous sequence prefix. Advance `minAfter` atomically with removal. Receipts survive at least 30 days from ingestion, independently of event capacity pruning; a duplicate whose event was pruned still returns the original id/sequence. After receipt expiry, the old producer timestamp is outside the seven-day acceptance window and is rejected. Bound receipt storage at 1,000,000 records; if full after expired-receipt cleanup, reject new ingestion with `429` rather than evicting unexpired receipts. Reassess defaults during capacity testing.
 
 Configure DB connection, realm, bind/proxy/TLS settings, Strolch technical users/PAT provisioning and stable server-identity mappings, viewer users, GeoIP path, time/size/rate/retention/queue limits through documented external configuration. Reject unsafe/malformed settings at startup. Never bundle production credentials. Production schema/model changes have versioned Strolch migrations and a documented backup/restore procedure.
+
+Support both the existing standalone Java distribution and a Compose bundle with a JAR-only application image, separately supplied runtime templates, PostgreSQL and a replaceable TLS proxy. First-start provisioning must initialize only an empty runtime and database, keep secrets protected, and fail closed on partial state; restarts and upgrades must preserve persistent state. Environment changes do not rotate initialized database credentials or existing users. The initial public origin is persisted in runtime `config/viewer.properties`; changing the Compose origin later requires coordinated stopped-app updates to that file and `.env`, DNS and proxy certificates. Protect runtime ownership and modes throughout. Offline privilege operations and application use must serialize access to privilege files. Back up and restore the whole database and matching runtime together. See the [deployment guide](DEPLOYMENT.md).
 
 `/health/live` exposes only process liveness; `/health/ready` reports readiness without sensitive data. DB failure makes readiness fail; unavailable GeoIP is degraded but ingestion-ready. Authenticated operator diagnostics show last successful GeoIP load, build age, ingest failures/duplicates, stream connections and queue disconnects. Use structured request IDs and bounded logs, excluding tokens and raw payloads. IPs appear only in protected event data and explicitly enabled restricted diagnostics. Do not expose generic Strolch write/management endpoints to viewers.
 

@@ -1,9 +1,285 @@
 # Intruvia installation and recovery
 
+## Compose deployment
+
+This is the container path; the existing [standalone Java installation](#standalone-installation)
+remains supported. Use Docker Engine and Compose on a trusted host. Obtain a versioned
+deployment tarball and its `.sha256` from your release owner. Verify the checksum
+before extracting it into a private directory; run the following commands from that
+directory. `repo.strolch.li` is the release registry, but no full Intruvia repository
+or published image has been supplied. Obtain the actual reference and registry access
+from the release owner; do not assume publication or public-CA validation has passed.
+
+For example, set `VERSION` to the downloaded release version and run:
+
+```bash
+: "${VERSION:?Set VERSION to the downloaded release version}"
+sha256sum -c "intruvia-deployment-${VERSION}.tar.gz.sha256"
+mkdir -m 0700 intruvia-deployment
+tar -xpzf "intruvia-deployment-${VERSION}.tar.gz" -C intruvia-deployment
+chmod 0700 intruvia-deployment
+cd intruvia-deployment
+```
+
+Preserving the archive modes (`-p`) keeps the read-only templates and database
+initializer readable by the container users even if your shell uses `umask 077`.
+
+1. Protect `.env` with mode `0600`. In a protected editor, check `INTRUVIA_IMAGE` is
+   the supplied explicit versioned image reference and set `INTRUVIA_PUBLIC_ORIGIN`
+   to the exact public HTTPS origin, without a path or trailing slash. Set independent
+   `POSTGRES_ADMIN_PASSWORD` and `INTRUVIA_DB_PASSWORD`: each must be 24–128 characters
+   from `[A-Za-z0-9_-]` and they must differ. Database and role names in `.env` must
+   start with a lowercase letter, contain only lowercase letters, digits or underscores,
+   be at most 63 characters, and not start with `pg_`; the application and admin roles
+   must differ and the database must not be `postgres`, `template0` or `template1`.
+   Treat `.env` and the containers' environments as sensitive; do not print resolved
+   Compose configuration or expose Docker access to untrusted users. Ensure shell
+   environment variables do not override the corresponding `.env` values in Compose.
+2. Ensure `secrets/` is owned by container UID/GID `10001:10001` and has mode `0700`.
+   With a protected editor create `secrets/viewer-password` as a regular file owned by
+   `10001:10001`, mode `0600` or `0400`, containing a strong password for the initial
+   `viewer` account. Avoid trailing whitespace. Never put this password in command
+   arguments, environment variables, shell history or logs. With rootless Docker or
+   user namespaces, adjust host ownership for the container's mapped UID/GID. The
+   directory is mounted read-write so successful initialization can remove the file.
+   For a fresh extraction on rootful Docker, one Bash example is:
+
+   ```bash
+   if (
+     set +x
+     set -C
+     umask 077
+     test ! -e secrets/viewer-password || exit 1
+     test ! -L secrets/viewer-password || exit 1
+     unset initial_viewer_password
+     IFS= read -r -s -p 'Initial viewer password: ' initial_viewer_password || exit 1
+     printf '\n'
+     test -n "$initial_viewer_password" || exit 1
+     printf '%s\n' "$initial_viewer_password" > secrets/viewer-password || exit 1
+     unset initial_viewer_password
+   ); then
+     sudo chown 10001:10001 secrets secrets/viewer-password &&
+       sudo chmod 0700 secrets && sudo chmod 0600 secrets/viewer-password
+   else
+     printf 'Password file was not created; ownership is unchanged.\n' >&2
+   fi
+   ```
+
+   Run the ownership commands only after the password-file creation succeeds. The
+   prompt is not echoed; do not enable shell tracing while handling the password.
+3. Configure DNS and firewall for the host and the exact HTTPS origin. The supplied
+   Caddy configuration is a simple replaceable HTTPS/WSS reverse proxy with automatic
+   TLS; the administrator owns DNS, certificate acquisition/renewal, proxy configuration
+   and verification. Only Caddy publishes ports 80 and 443; app and PostgreSQL publish
+   none. Compose's proxy and database networks and the Docker host are trusted: the
+   app binds `0.0.0.0` inside its network, and network peers can reach it. Restrict
+   Docker/network access and do not attach untrusted containers. The database network
+   is internal. Caddy blocks public health paths; monitor readiness from the trusted
+   network. Review proxy access/error logging and protect proxy state and TLS keys.
+4. Pull the images and start the services:
+
+   ```bash
+   docker compose pull
+   docker compose up -d
+   ```
+
+   PostgreSQL readiness gates app startup, and app readiness gates Caddy. On first
+   start the application initializes a new empty database and runtime with independent
+   privilege secrets, creates the enabled `viewer`, and removes the password file.
+   Sign in at the HTTPS origin and check WSS. The default has no producer mapping or
+   privileged token operator. Changing `.env` or supplying another viewer-password
+   file on restart does not replace existing users or passwords.
+
+Named volumes retain `postgres_data`, `runtime`, `app_logs`, `caddy_data` and
+`caddy_config` across restarts and image replacement. Protect Docker volumes and the
+host, including logs, runtime privilege files and proxy certificate state. Do not use
+`docker compose down --volumes` on an installation you intend to retain.
+
+### Change the public origin
+
+After initialization, changing `INTRUVIA_PUBLIC_ORIGIN` in `.env` alone does **not**
+rewrite the persistent `runtime/config/viewer.properties`. Pause ingress, stop the
+app with `docker compose stop app`, and confirm no app or offline privilege writer is
+running. Using a trusted maintenance environment with access to the runtime volume,
+edit `/var/lib/intruvia/runtime/config/viewer.properties` to set `origin` to the exact
+new HTTPS origin (no path or trailing slash), and update `.env` to the same value.
+Preserve owner `10001:10001`, mode `0600` for the runtime file, private runtime
+directories and mode `0600` for `.env`. Coordinate DNS, certificates and proxy
+configuration for the new name before restarting; the browser Origin and this value
+must match exactly, including any port. Use `docker compose up -d` to recreate services
+with the changed environment, then verify HTTPS, viewer login and WSS before reopening
+ingress. Neither this change nor a new environment value rotates existing users or
+credentials.
+
+### Offline users and PATs
+
+Pause ingress and stop the app (`docker compose stop app`) before any runtime edit or
+offline operation. Ensure no other application, editor or privilege writer uses the
+runtime. The container entrypoint takes the same runtime lock for each offline command;
+manual edits must also be performed only while all writers are stopped. Back up the
+matching database and runtime first. `secrets/` is the shared protected workspace:
+create separate owner-only password files there, owned by `10001:10001`, without
+placing passwords in arguments or environment. Outputs must not already exist. For
+example, generate a hash for a new operator or producer password with:
+
+```bash
+docker compose run --rm --no-deps app offline hash /run/secrets/new-password /run/secrets/new-password.hash
+```
+
+The initial `viewer` has only Viewer privileges, not token administration. Separately
+provision a trusted `token-admin` and one ingestion-only technical user per producer
+in the existing runtime privilege files using the [standalone Strolch role and user
+procedure](#provision-the-external-runtime-while-stopped), adapting its paths to the
+runtime volume. Preserve the existing viewer, SYSTEM agent, generated secrets and
+other users; do not copy fresh templates over them. Add the documented `Producer`
+and `TokenOperator` roles and use the generated hashes as password attributes. Set
+`machine-identities.conf` to the stable username-to-instance mapping, e.g.
+`producer-a=server-a`. Edit with a trusted maintenance environment while stopped;
+retain UID/GID `10001:10001`, owner-only file modes and private directories. The
+standalone source-mode tool is not inside the JAR-only image; use the container's
+offline commands instead. The referenced standalone source and architecture files
+are available in the source/Java distribution, not necessarily in the Compose bundle.
+
+Create a separate protected `secrets/operator-password` for the provisioned operator.
+Replace the example UTC validity dates with your policy's current window:
+
+```bash
+docker compose run --rm --no-deps app offline issue token-admin /run/secrets/operator-password \
+  producer-a initial 2026-11-12T00:00:00Z 2026-12-12T00:00:00Z /run/secrets/producer.pat
+docker compose run --rm --no-deps app offline revoke token-admin /run/secrets/operator-password OLD_TOKEN_ID
+```
+
+Issue creates a new mode-0600 file containing the one-time `tokenId:tokenValue` and
+persists the scoped `event:ingest` token. Transfer the PAT securely to the reporting
+host as a root-owned 0600 file; do not expose its contents in commands or logs. Revoke
+only an old token ID, the part before `:`, never the secret. For rotation issue a
+second token to a new file for the same owner, restart, securely replace the producer
+file and verify delivery; stop again, revoke the old ID and restart. Remove temporary
+password, hash and PAT files securely when no longer needed. A failed issue can have
+persisted an orphan token before output failed: inspect/revoke it with trusted Strolch
+tooling before retrying; never erase privilege files. Restart with `docker compose up -d`.
+
+### Backup, restore, credentials and upgrades
+
+Pause producer ingress, stop the app gracefully and verify it has exited; keep all
+other database and privilege-file writers stopped. Use `umask 077` and a private,
+encrypted backup location. The following captures the whole application database
+schema and data and its matching runtime, not selected tables, without putting passwords
+in arguments. This example deliberately omits object ownership and ACLs; PostgreSQL
+cluster-global roles and settings are not included. Separately back up and restore any
+site-specific roles, grants, ownership and database settings using administrator procedures.
+If the application role cannot read every database object, use an appropriately privileged
+backup role instead and verify the resulting restore:
+
+```bash
+docker compose exec -T db sh -c 'export PGPASSWORD="$INTRUVIA_DB_PASSWORD"; \
+  exec pg_dump -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" \
+  --format=custom --no-owner --no-acl' > /protected/backup/database.dump
+docker compose run --rm --no-deps -T --entrypoint tar app \
+  -C /var/lib/intruvia -czf - runtime > /protected/backup/runtime.tar.gz
+sha256sum /protected/backup/database.dump /protected/backup/runtime.tar.gz > /protected/backup/SHA256SUMS
+```
+
+Check every command's exit status; retain `.env`, proxy settings/state and the exact
+bundle/image identity separately in the encrypted backup set, and record time,
+release/JAR hashes and snapshot cursor/minAfter. Protect backups containing IP history,
+password/PAT hashes and privilege secrets. Back up or reprovision external MMDB files
+according to their license. Restart the app and reopen ingress only after readiness.
+
+Restore into a **fresh, isolated** Compose project with new empty database and runtime
+volumes, matching release/bundle and protected `.env`; keep the old installation and
+all writers stopped. Verify checksums. Start only the new `db`:
+
+```bash
+docker compose up -d db
+```
+
+Wait for its health check. Confirm the fresh runtime volume is empty and owned by
+`10001:10001` before extracting the trusted archive. Then restore the whole dump as
+the application role into its empty database and extract the matching runtime. Run
+each command separately and stop if it fails:
+
+```bash
+docker compose exec -T db sh -c 'export PGPASSWORD="$INTRUVIA_DB_PASSWORD"; \
+  exec pg_restore -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" \
+  --exit-on-error --single-transaction --no-owner --no-acl' < /protected/backup/database.dump
+docker compose run --rm --no-deps -T --entrypoint tar app \
+  -C /var/lib/intruvia/runtime --strip-components=1 --no-same-owner -xzf - < /protected/backup/runtime.tar.gz
+```
+
+Check both command exit statuses; preserve private modes and matching initialization
+markers. Never merge with an existing runtime or database. Restore configuration/proxy state as appropriate and
+ensure database credentials and public origin match the restored runtime. Start one
+app, verify readiness, login, snapshot IDs/cursors and an identical retry, then reconcile
+revocations and only reopen ingress after verification. An older backup may lose
+acknowledged events and receipts, resurrect revoked PATs and reuse sequences. Rotate
+potentially resurrected credentials and require all viewers to reload and sign in;
+even a cursor at or below restored head may follow a different history. No backup can
+recover later lost events, and Fail2ban has no persistent notification queue.
+
+PostgreSQL initialization environment values apply only to a new data directory:
+editing `.env` does **not** rotate existing database roles. During maintenance, use
+protected PostgreSQL administrative access and interactive `psql` `\password` for
+each role (using the actual admin and application role names), then update the
+corresponding `.env` values consistently and recreate the services; verify both
+credentials and readiness. Keep the two new passwords distinct and within the
+initialization constraints. Coordinate rotations with backups.
+Likewise, manage viewer passwords, users and PATs explicitly through protected Strolch
+procedures, not by changing bootstrap environment values.
+
+For an image upgrade, take and rehearse a matching backup, review release notes and
+schema compatibility, set the supplied new versioned `INTRUVIA_IMAGE`, then pull and
+recreate with `docker compose pull` and `docker compose up -d`. Preserve runtime and
+volumes; do not overwrite runtime with new templates. Perform any migration only as
+an explicitly documented maintenance operation. Roll back image, database and runtime
+as a matching set, not old code against an arbitrarily migrated schema.
+
+For optional GeoIP, provide a licensed MMDB through a protected readable mount and
+configure the runtime; use the staged update procedure in the source/Java distribution.
+Without one, GeoIP remains degraded but ingestion is ready. Install the bundled
+`integrations/fail2ban/` helper on each reporting host as an additive action; preserve
+the existing firewall action. Delivery is best effort (three attempts within 15 seconds,
+no persistent queue). Review the packaged integration guide before use.
+
+For initialization failures, preserve the entire database, runtime, logs and remaining
+password file. In particular, `.intruvia-initializing` means an interrupted or ambiguous
+initialization: never delete markers, staging data or schema objects to force a retry.
+Follow the bundled [initialization and recovery guide](deployment/compose-initialization-recovery.md);
+restore matching backups or, only for a disposable new installation, deliberately use
+a new empty database and runtime. Never reset an existing schema.
+
+### Release assembly
+
+The image contains only the preassembled application and dependency JARs; runtime
+templates and administrator documents are supplied separately by the deployment
+bundle. On the build machine, first Maven-assemble `intruvia-app/target/intruvia`, then
+the release owner supplies the full repository and versioned tag:
+
+```bash
+: "${IMAGE_REFERENCE:?Set the approved full versioned image reference}"
+: "${VERSION:?Set the release version}"
+: "${OUTPUT_DIRECTORY:?Set an existing output directory}"
+./build-and-push-docker.sh "$IMAGE_REFERENCE"
+scripts/build-deployment-tarball.sh "$VERSION" "$IMAGE_REFERENCE" "$OUTPUT_DIRECTORY"
+```
+
+Replace placeholders with the actual approved values. The push script builds from the
+already assembled distribution and pushes only the supplied versioned reference, never
+`latest`. The tarball builder requires a release version, explicit versioned image
+reference and existing output directory, and emits the tarball and SHA-256 file without
+overwriting existing artifacts. At image build, retain the printed hashes of the actual
+Strolch snapshot JARs; they identify the binaries used and do not prove compatibility
+with a different snapshot. The tarball builder verifies exact reviewed hashes for the
+environment and runtime templates: release owners must review every byte and deliberately
+update those baselines after intended template changes, never bypass them to ship secrets.
+
+## Standalone installation
+
 This guide describes one Intruvia process, one PostgreSQL database and a same-host
 TLS reverse proxy. Run as a dedicated unprivileged `intruvia` account. Paths and
 `intruvia.example.org` are examples; secrets below are placeholders, never usable
-credentials. Task 022 remains the release gate. The [task 021 rehearsal record](verification/021-acceptance.txt)
+credentials. Task 022 records the standalone MVP release review; the Compose bundle
+also requires task 023 acceptance and a published image. The [task 021 rehearsal record](verification/021-acceptance.txt)
 states exactly what has been exercised locally.
 
 ## Prepare the distribution and database
