@@ -1,0 +1,6 @@
+56d2cdfd7df79b3f06fc931fc8e9be334cfefa3d4ec4eee76a2a731fa9447e69  intruvia-app/target/intruvia/intruvia-app-0.0.1.jar
+b472974c7ce9def1f25f5d766296ccfc128289882e841fe357d43d9bc6441ea2  intruvia-app/target/intruvia/lib/intruvia-core-0.0.1.jar
+233c7740a11ad05af4cd96b312a62cd614cf358d587ca9ab0563129aae432b35  intruvia-app/target/intruvia/lib/intruvia-rest-0.0.1.jar
+5a473913893a101bba2940fae50116853f109276a412c08e113b4847fdbd0807  intruvia-app/target/intruvia/lib/intruvia-web-0.0.1.jar
+cbe0c4ae846372998b838251699c3f46600c5bc57e12e867a08fa141be06a4e5  intruvia-app/target/intruvia/runtime/config/StrolchConfiguration.xml
+2be9c1b7bdc137b4c6332c0fbc8db782333759d546554b9af478dc94d15a4be0  intruvia-app/target/intruvia/runtime/config/PrivilegeRoles.xml.example

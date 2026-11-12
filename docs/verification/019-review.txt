@@ -1,0 +1,15 @@
+JUnit reports: tests/failures/errors/skipped [85, 0, 0, 0]
+Packaged class/resource bytes equal target/classes: intruvia-core
+Packaged class/resource bytes equal target/classes: intruvia-rest
+Packaged class/resource bytes equal target/classes: intruvia-app
+All packaged runtime files equal source; no personal GeoIP path in template
+Framework/cache byte identity: strolch-agent-2.8.0-SNAPSHOT.jar 7ddd2b1c9a0dde4bc508448e135efa2938aafe3d23c0b8b9dc5d98022cf3e743
+Framework/cache byte identity: strolch-model-2.8.0-SNAPSHOT.jar 3e920906fa4e38225cecb8d22352861ac578f67aebd4bedfa209cb3d3965cb87
+Framework/cache byte identity: strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar cb868f5fd42b16b4725ce1eb4cafffb42bc7bfb19d024036e34a6cee253ec69a
+Framework/cache byte identity: strolch-privilege-2.8.0-SNAPSHOT.jar be621dbb353b792a9148339db518407d3e5c1d7ea8a6e33ee7e80ab592e71454
+Framework/cache byte identity: strolch-service-2.8.0-SNAPSHOT.jar 0a337294571b34d012af3b82ed6d67afc04d62170b7de5b1453dfca7a9f17370
+Framework/cache byte identity: strolch-utils-2.8.0-SNAPSHOT.jar 90884246ab0a8d7670540e71ca53124ba626d32ff9b6b40786fa5edaa94915a0
+Clean framework source HEAD: f8353080a3c8b140accbff6ee171c73deabb0f17
+Actual framework version: 2.8.0-SNAPSHOT; no timestamp-baseline equivalence claimed
+Changed Java files: tabs, <=160 columns, <1000 lines; new source SPDX headers checked
+Application/runtime and framework SHA-256 manifests generated

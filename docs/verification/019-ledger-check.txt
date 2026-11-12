@@ -1,0 +1,2 @@
+PASS: 22 rows; only 019 TODO -> DONE; DONE 19/TODO 3/IN_PROGRESS 0/BLOCKED 0
+PASS: current/date/counts and lowest eligible next task 020 agree; no other task started

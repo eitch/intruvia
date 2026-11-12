@@ -1,0 +1,121 @@
+Task 019 — Complete runtime configuration and diagnostics
+Date: 2026-11-12 (Europe/Zurich)
+Workspace: /home/eitch/src/git/intruvia
+Initial git status --short: empty. No commit/stage/push/deploy command invoked.
+Required project/framework guidelines (all seven, including Vanilla JavaScript),
+specification, backlog, ledger and README read. Exactly one task selected: no active
+row, lowest eligible TODO 019; dependencies 008/010/013/014 DONE. Ledger set
+IN_PROGRESS before implementation. Specification/backlog scope unchanged.
+
+Environment/local framework inspection:
+- Java /home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem
+- Maven /home/eitch/.sdkman/candidates/maven/3.10.0/bin/mvn
+- Inspected /home/eitch/.m2/repository/li/strolch and referenced source
+  /home/eitch/src/git/atx-dev/strolch, clean HEAD
+  f8353080a3c8b140accbff6ee171c73deabb0f17.
+- Actual resolved version: 2.8.0-SNAPSHOT. Offline cache suffices; no upstream
+  rebuild/edit or relabeling, no timestamped-baseline equivalence claimed.
+- Six packaged framework JARs equal installed snapshot bytes; exact SHA-256s in
+  019-strolch.sha256 and 019-review.txt. Application/runtime hashes in
+  019-artifacts.sha256. Distribution intruvia-app/target/intruvia/.
+- PostgreSQL image identity/digest and server version are printed at the start of
+  each full verification output. Disposable PostgreSQL 18.6; no production DB used.
+
+Exact common Maven environment prefix:
+JAVA_HOME=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem PATH=/home/eitch/.sdkman/candidates/java/25.0.5.0+8-tem/bin:/home/eitch/.sdkman/candidates/maven/3.10.0/bin:$PATH
+
+Commands (from workspace root, with that prefix):
+1. mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT package -DskipTests
+   > docs/verification/019-first-package.txt 2>&1
+   Exit 0; tests explicitly skipped for this early compilation/package check only.
+2. scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+   > docs/verification/019-first-verify.txt 2>&1
+   Exit 1: 35 integration tests, one failure: packaged health readiness 503.
+   Corrected concrete implementation lookup to the registered PersistenceHandler API.
+3. Same full command > docs/verification/019-second-verify.txt 2>&1
+   Exit 1: 38 integration tests, one failure/one error in new test assumptions:
+   immediate readiness after reconnect was too strict (pool must replace terminated
+   connections), and agent.container is cleared on destroy. Await recovery and retain
+   the component reference before close. Actual shutdown drained/committed successfully.
+4. Same full command > docs/verification/019-third-verify.txt 2>&1
+   Exit 0: 80 tests (42 unit/HTTP, 38 PostgreSQL/application), zero failures/errors/skips.
+5. Same full command > docs/verification/019-fourth-verify.txt 2>&1
+   Exit 1 at testCompile: isolated Logback LoggerContext is not AutoCloseable.
+   Changed test to explicit finally context.stop().
+6. Same full command > docs/verification/019-fifth-verify.txt 2>&1
+   Exit 1: new isolated logging test produced an empty file/no archive; standalone
+   LoggerContext lacked MDC adapter. Set LogbackMDCAdapter explicitly in the test.
+7. mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-app -am test -Dtest=OperationalLoggingTest -Dsurefire.failIfNoSpecifiedTests=false
+   > docs/verification/019-logging-focused.txt 2>&1
+   Exit 0: one focused test passes (other tests not requested).
+8. Same full command > docs/verification/019-final-verify.txt 2>&1
+   Exit 0: 84 tests (44 unit/HTTP, 40 PostgreSQL/application), zero failures/errors/skips.
+9. Final, after focused configured-queue/request-ID and pool-bound refinements:
+   scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+   > docs/verification/019-acceptance-verify.txt 2>&1
+   Exit 0: 85 tests (45 unit/HTTP, 40 PostgreSQL/application), zero failures/errors/skips,
+   all five reactor modules SUCCESS. Includes clean compilation and final packaging.
+
+Acceptance evidence:
+- RuntimeConfigurationTest: missing canonical files, missing/placeholder secrets,
+  malformed XML and DOCTYPE fail without values in errors; valid synthetic config passes.
+- RuntimeOperationsIT (5 actual PostgreSQL/Jetty/Strolch tests): missing DB username,
+  zero pool acquisition timeout and unbounded/malformed session lifetime fail preflight;
+  absent GeoIP leaves ready 200; disabling DB connections/terminating real pooled sessions
+  gives ready 503 while live stays 200, then ready recovers. Health exposes only UP/DOWN.
+- Diagnostics: no cookie 401, normal Viewer 403, Bearer even alongside cookie 401,
+  real operator cookie 200. Fixed safe response fields, no paths/URLs/passwords/subject IPs.
+  Real PAT ingestion 201/identical 200/conflict 409 yields operator counts 1/1/1.
+- API and stream rejection error.requestId equals X-Request-ID. Supplied request ID
+  ignored; successful ingestion response has a new parseable UUID.
+- Shutdown test holds a real PostgreSQL resources-table lock until a request is blocked
+  on the insert. close waits while GeoIP remains STARTED, readiness/new ingestion return
+  503. Releasing the lock yields 201; close finishes, reader DESTROYED; restart reads
+  committed stream head 1. Another test closes a real authenticated WebSocket with 1001
+  and leaves connectionCount 0. Existing ApplicationIT verifies executable SIGTERM,
+  packaged health/assets and idempotent close. Existing HTTP/persistence faults verify
+  rollback/no partial receipt/event/head and no acknowledgement of failed writes.
+- Production operational log is inspected after actual PAT/body/header processing:
+  no PAT, body canary, incoming-ID canary, DB URL or privilege secret canary.
+- OperationalLoggingTest runs the actual shipped Logback policy in isolated context
+  with scaled 1KB/3KB limits: emits fixed operational events, creates compressed
+  rollover archive, excludes third-party credential/payload canaries, each file <2KB.
+  It tests rotation with scaled thresholds, not a five-day retention soak.
+- StreamConnectionTest proves configured one-frame queue and one-second deadline
+  really close with 1013, with one removal and queue-disconnect indication. Existing
+  default queue, UTF-8 size, deadline, ping/pong and terminal-frame tests pass.
+- StreamLimitsTest rejects unknown/malformed/out-of-bounds values without echo;
+  GeoIP interval tests cover zero/negative/malformed/too-large values. No network GeoIP.
+- No frontend source changed; no new UI/browser test was needed or run.
+
+Artifact review/integrity commands (no Maven prefix needed):
+python3 docs/verification/019-review.py > docs/verification/019-review.txt 2>&1
+  Exit 0: exactly 85 passing JUnit reports, packaged class/resource equality for core/
+  rest/app, runtime-source equality, empty default GeoIP path, shipped logging bytes,
+  framework source/cache identities, Java tabs/line lengths/size and new SPDX checks.
+sha256sum -c docs/verification/019-artifacts.sha256 > docs/verification/019-artifact-integrity.txt 2>&1
+sha256sum -c docs/verification/019-strolch.sha256 > docs/verification/019-framework-integrity.txt 2>&1
+  Both exit 0; every entry OK.
+docker ps -a --filter 'name=intruvia-' --format '{{.Names}} {{.Status}}' > docs/verification/019-cleanup.txt
+  Exit 0; empty: all disposable test containers removed by verification script.
+
+Technical contract: docs/architecture/019-runtime-operations.md; usage in README.md.
+Sources: app RuntimeConfiguration, PersistenceConfiguration, RequestLifecycle,
+IntruviaApplication/logback/runtime templates; REST ops, health, shared request IDs,
+ViewerSessions operator check, bounded StreamLimits/StreamConnection/dispatcher;
+GeoIp configuration guards. No application dependency/toolchain added.
+
+Limitations/unrun:
+- No browser/capacity/release suite (020), deployment/TLS/proxy/restore rehearsal (021),
+  framework tests/rebuild, production credentials, actual five-day logging soak,
+  OS/network blackhole/power loss or forced-kill acceptance claim.
+- Readiness checks connectivity through the real pool, not synthetic writes/capacity;
+  one concurrent probe and pool acquisition/validation bounds can temporarily report DOWN.
+- Operator counters are approximate process-lifetime HTTP outcomes, not durable accounting.
+- Console retention/permissions are service-manager responsibilities. File cap excludes
+  active-file and temporary compression/cleanup overhead. No async log-event queue.
+- Request drain deadline failure leaves persistence alive for that call with admission
+  closed; external forced termination relies on DB rollback. No hung-request guarantee.
+- No failure or unrun check is claimed successful. No blocker remains.
+
+Final checks: python3 docs/verification/019-ledger-check.py > docs/verification/019-ledger-check.txt 2>&1 (exit 0), git diff --check (exit 0), final review and both checksum checks repeated successfully. Results in 019-final-checks.txt. Only task 019 changes ledger status; DONE 19/TODO 3/IN_PROGRESS 0/BLOCKED 0; next eligible 020 remains TODO. Generated text log whitespace trimmed only; failure facts preserved.

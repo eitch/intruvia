@@ -1,0 +1,6 @@
+intruvia-app/target/intruvia/intruvia-app-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-core-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-rest-0.0.1.jar: OK
+intruvia-app/target/intruvia/lib/intruvia-web-0.0.1.jar: OK
+intruvia-app/target/intruvia/runtime/config/StrolchConfiguration.xml: OK
+intruvia-app/target/intruvia/runtime/config/PrivilegeRoles.xml.example: OK

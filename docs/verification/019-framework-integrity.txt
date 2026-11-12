@@ -1,0 +1,6 @@
+intruvia-app/target/intruvia/lib/strolch-agent-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-model-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-persistence-postgresql-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-privilege-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-service-2.8.0-SNAPSHOT.jar: OK
+intruvia-app/target/intruvia/lib/strolch-utils-2.8.0-SNAPSHOT.jar: OK
