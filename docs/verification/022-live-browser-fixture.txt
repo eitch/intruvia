@@ -1,7 +1,7 @@
-2026-11-12 13:06:10,690 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
-2026-11-12 13:06:11,044 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:35303 (Strolch STARTED)
-BROWSER_FIXTURE=http://127.0.0.1:35303
-2026-11-12 13:06:11,863 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=760cb6ad-92b5-4b6f-b5e1-ee5bec88ce9e status=401
+2026-11-12 13:12:57,037 WARN  li.intruvia.core.geo.GeoIpComponent - GeoIP database could not be loaded; enrichment is UNAVAILABLE
+2026-11-12 13:12:57,447 INFO  li.intruvia.app.IntruviaApplication - Intruvia started: http://127.0.0.1:37107 (Strolch STARTED)
+BROWSER_FIXTURE=http://127.0.0.1:37107
+2026-11-12 13:12:58,438 WARN  li.intruvia.app.RequestLifecycle - request_failed requestId=2460fe86-50ab-4727-93fd-7e826179b254 status=401
 FIXTURE_DONE=1006
 FIXTURE_DONE=1007
 FIXTURE_DONE=1008
@@ -37,4 +37,4 @@ FIXTURE_DONE=1037
 FIXTURE_DONE=1038
 FIXTURE_DONE=1039
 FIXTURE_DONE=1040
-2026-11-12 13:06:27,478 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
+2026-11-12 13:13:13,249 INFO  li.intruvia.app.IntruviaApplication - Intruvia stopped: Jetty STOPPED; Strolch DESTROYED
