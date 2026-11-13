@@ -2,11 +2,21 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 set -euo pipefail
 
-if [[ $# != 1 || ! $1 =~ ^repo\.strolch\.li/.+:(v?[0-9][A-Za-z0-9_.-]*)$ ]]; then
-	printf 'Usage: %s repo.strolch.li/<repository>:<version>\n' "$0" >&2
+with_tests=false
+if [[ $# == 1 && $1 == --with-tests ]]; then
+	with_tests=true
+elif [[ $# != 0 ]]; then
+	printf 'Usage: %s [--with-tests]\n' "$0" >&2
 	exit 2
 fi
 root=$(cd "$(dirname "$0")" && pwd)
-image=$1
-"$root/scripts/build-deployment-image.sh" "$image" "$root/intruvia-app/target/intruvia"
-docker push "$image"
+source "$root/scripts/release-config.sh"
+
+if [[ $with_tests == true ]]; then
+	"$root/scripts/verify-postgresql.sh"
+else
+	mvn -B -f "$root/pom.xml" clean package -DskipTests
+fi
+"$root/scripts/build-deployment-image.sh" "$INTRUVIA_IMAGE_REFERENCE" "$root/intruvia-app/target/intruvia"
+docker push "$INTRUVIA_IMAGE_REFERENCE"
+printf 'Pushed %s\n' "$INTRUVIA_IMAGE_REFERENCE"

@@ -1,30 +1,120 @@
 # Intruvia installation and recovery
 
-## Compose deployment
+This guide covers both preparing an administrator handoff and installing or operating
+Intruvia. The standalone Java installation remains supported for hosts that do not use
+Compose.
 
-This is the container path; the existing [standalone Java installation](#standalone-installation)
-remains supported. Use Docker Engine and Compose on a trusted host. Obtain a versioned
-deployment tarball and its `.sha256` from your release owner. Verify the checksum
-before extracting it into a private directory; run the following commands from that
-directory. `repo.strolch.li` is the release registry, but no full Intruvia repository
-or published image has been supplied. Obtain the actual reference and registry access
-from the release owner; do not assume publication or public-CA validation has passed.
+**Choose your path:**
 
-For example, set `VERSION` to the downloaded release version and run:
+- **Release owner:** [build and package the versioned image and deployment bundle](#release-owner-build-and-package-a-deployment).
+- **Administrator:** [install a supplied Compose bundle](#compose-deployment); no Java, Maven or PostgreSQL installation is needed on the host.
+  - For later changes, jump to [public-origin changes](#change-the-public-origin), [offline users and PATs](#offline-users-and-pats), [backup and restore](#backup-and-restore), or [failed-start recovery](#recover-a-failed-first-start).
+- **Standalone operator:** continue to [standalone installation](#standalone-installation).
+
+## Release owner: build and package a deployment
+
+The administrator receives a tarball and its SHA-256 file; the tarball refers to a
+published image and contains the Compose configuration, protected environment file,
+allowlisted runtime templates and support documentation. The image itself contains only
+the prebuilt application and dependency JARs. Release scripts use the changeable
+`repo.strolch.li/intruvia` repository constant and derive the matching version from the
+root Maven POM, so the image and bundle stay aligned without operator-supplied variables.
+
+> **Release prerequisites:** task 023 still leaves Strolch snapshot provenance, registry
+> publication and pulling the published image unverified. Verify the approved Strolch
+> artifacts and their provenance, authenticate to `repo.strolch.li`, and complete the
+> registry pull and release acceptance checks before describing a bundle as deployable.
+
+The release commands require no image/version/output assignments. The root POM is the
+single source for the Intruvia release version; keep the POM and the repository constant
+in `scripts/release-config.sh` under review when preparing a release.
+
+### 1. Assemble the Maven distribution
+
+Use Java 25, Maven, Docker, Python 3 and reviewed Strolch artifacts available from the
+configured Maven repositories or local cache. By default, `./build-and-push-docker.sh`
+runs a clean Maven package with tests skipped, then assembles the image from
+`intruvia-app/target/intruvia`. This is a quicker packaging path, not release acceptance.
+
+For full PostgreSQL-backed Maven verification before building and pushing the image, use
+the opt-in flag:
 
 ```bash
-: "${VERSION:?Set VERSION to the downloaded release version}"
-sha256sum -c "intruvia-deployment-${VERSION}.tar.gz.sha256"
-mkdir -m 0700 intruvia-deployment
-tar -xpzf "intruvia-deployment-${VERSION}.tar.gz" -C intruvia-deployment
-chmod 0700 intruvia-deployment
+./build-and-push-docker.sh --with-tests
+```
+
+This runs `scripts/verify-postgresql.sh` and its clean Maven `verify` against a disposable
+PostgreSQL container. Review dependency sources and the build result, and record exact
+Strolch artifact hashes; hashes identify the built JARs but do not by themselves
+establish their source provenance. Run full verification and all release acceptance
+checks before handoff even if the image was initially built with tests skipped.
+
+### 2. Build and publish the versioned image
+
+Authenticate to the registry using the release owner's approved credentials. The
+script derives `repo.strolch.li/intruvia:<root-POM-version>`, builds and pushes that
+versioned reference, and prints SHA-256 hashes for the Strolch JARs used. The default
+command skips tests; use `--with-tests` to run the PostgreSQL-backed verification before
+the image build:
+
+```bash
+docker login repo.strolch.li
+./build-and-push-docker.sh
+# Or, for full PostgreSQL-backed verification before building and pushing:
+./build-and-push-docker.sh --with-tests
+```
+
+Retain the command output and confirm the image can be pulled by its versioned
+reference before proceeding. The image is assembled from JARs, not the application
+source tree; runtime templates are provided separately in the bundle.
+
+### 3. Create and hand off the administrator bundle
+
+After the image is published, create the administrator bundle with the matching POM
+version and image reference. The builder writes into
+`target/deployment-release/`, refuses to overwrite existing release files, and emits
+both the archive and its checksum:
+
+```bash
+scripts/build-deployment-tarball.sh
+```
+
+Run the deployment image, PostgreSQL, tarball and Compose acceptance checks before
+handoff; their commands and limits are recorded in the source repository's
+`docs/verification/023-acceptance.md` (that report is not part of the administrator bundle).
+Then give the administrator the `intruvia-deployment-<root-POM-version>.tar.gz` file,
+its matching `.sha256` file, the exact image reference and registry access instructions. Do not
+include a live `.env`, runtime directory, database, passwords or deployed data. The
+archive builder includes only reviewed distributable files and creates a protected
+`.env` containing `repo.strolch.li/intruvia:<root-POM-version>`.
+
+## Compose deployment
+
+This is the administrator's container path. Use Docker Engine and Compose on a trusted
+host. Obtain the versioned deployment tarball and its `.sha256` from the release owner.
+Release scripts target `repo.strolch.li/intruvia` and the root POM version, but registry
+publication, image pull and public-CA validation are not assumed to have passed.
+
+### Verify and unpack the bundle
+
+Run these commands from a directory containing exactly one supplied archive/checksum
+pair:
+
+```bash
+sha256sum -c intruvia-deployment-*.tar.gz.sha256 &&
+mkdir -m 0700 intruvia-deployment &&
+tar -xpzf intruvia-deployment-*.tar.gz -C intruvia-deployment &&
+chmod 0700 intruvia-deployment &&
 cd intruvia-deployment
 ```
 
 Preserving the archive modes (`-p`) keeps the read-only templates and database
 initializer readable by the container users even if your shell uses `umask 077`.
 
-1. Protect `.env` with mode `0600`. In a protected editor, check `INTRUVIA_IMAGE` is
+### Configure and start
+
+Complete the following four steps in order. Protect `.env` with mode `0600`. In a
+protected editor, check `INTRUVIA_IMAGE` is
    the supplied explicit versioned image reference and set `INTRUVIA_PUBLIC_ORIGIN`
    to the exact public HTTPS origin, without a path or trailing slash. Set independent
    `POSTGRES_ADMIN_PASSWORD` and `INTRUVIA_DB_PASSWORD`: each must be 24–128 characters
@@ -76,7 +166,9 @@ initializer readable by the container users even if your shell uses `umask 077`.
    Docker/network access and do not attach untrusted containers. The database network
    is internal. Caddy blocks public health paths; monitor readiness from the trusted
    network. Review proxy access/error logging and protect proxy state and TLS keys.
-4. Pull the images and start the services:
+4. If registry authentication is required, first run `docker login repo.strolch.li`
+   on the deployment host using the access instructions from the release owner. Pull
+   the images and start the services:
 
    ```bash
    docker compose pull
@@ -90,12 +182,16 @@ initializer readable by the container users even if your shell uses `umask 077`.
    privileged token operator. Changing `.env` or supplying another viewer-password
    file on restart does not replace existing users or passwords.
 
+### After startup
+
 Named volumes retain `postgres_data`, `runtime`, `app_logs`, `caddy_data` and
 `caddy_config` across restarts and image replacement. Protect Docker volumes and the
 host, including logs, runtime privilege files and proxy certificate state. Do not use
 `docker compose down --volumes` on an installation you intend to retain.
 
-### Change the public origin
+### Operate the Compose deployment
+
+#### Change the public origin
 
 After initialization, changing `INTRUVIA_PUBLIC_ORIGIN` in `.env` alone does **not**
 rewrite the persistent `runtime/config/viewer.properties`. Pause ingress, stop the
@@ -111,7 +207,7 @@ with the changed environment, then verify HTTPS, viewer login and WSS before reo
 ingress. Neither this change nor a new environment value rotates existing users or
 credentials.
 
-### Offline users and PATs
+#### Offline users and PATs
 
 Pause ingress and stop the app (`docker compose stop app`) before any runtime edit or
 offline operation. Ensure no other application, editor or privilege writer uses the
@@ -159,7 +255,9 @@ password, hash and PAT files securely when no longer needed. A failed issue can 
 persisted an orphan token before output failed: inspect/revoke it with trusted Strolch
 tooling before retrying; never erase privilege files. Restart with `docker compose up -d`.
 
-### Backup, restore, credentials and upgrades
+#### Backup and restore
+
+##### Create a coordinated backup
 
 Pause producer ingress, stop the app gracefully and verify it has exited; keep all
 other database and privilege-file writers stopped. Use `umask 077` and a private,
@@ -185,6 +283,8 @@ bundle/image identity separately in the encrypted backup set, and record time,
 release/JAR hashes and snapshot cursor/minAfter. Protect backups containing IP history,
 password/PAT hashes and privilege secrets. Back up or reprovision external MMDB files
 according to their license. Restart the app and reopen ingress only after readiness.
+
+##### Restore into a fresh project
 
 Restore into a **fresh, isolated** Compose project with new empty database and runtime
 volumes, matching release/bundle and protected `.env`; keep the old installation and
@@ -217,6 +317,8 @@ potentially resurrected credentials and require all viewers to reload and sign i
 even a cursor at or below restored head may follow a different history. No backup can
 recover later lost events, and Fail2ban has no persistent notification queue.
 
+#### Rotate database and application credentials
+
 PostgreSQL initialization environment values apply only to a new data directory:
 editing `.env` does **not** rotate existing database roles. During maintenance, use
 protected PostgreSQL administrative access and interactive `psql` `\password` for
@@ -227,12 +329,16 @@ initialization constraints. Coordinate rotations with backups.
 Likewise, manage viewer passwords, users and PATs explicitly through protected Strolch
 procedures, not by changing bootstrap environment values.
 
+#### Upgrade the application image
+
 For an image upgrade, take and rehearse a matching backup, review release notes and
 schema compatibility, set the supplied new versioned `INTRUVIA_IMAGE`, then pull and
 recreate with `docker compose pull` and `docker compose up -d`. Preserve runtime and
 volumes; do not overwrite runtime with new templates. Perform any migration only as
 an explicitly documented maintenance operation. Roll back image, database and runtime
 as a matching set, not old code against an arbitrarily migrated schema.
+
+#### Optional GeoIP and Fail2ban
 
 For optional GeoIP, provide a licensed MMDB through a protected readable mount and
 configure the runtime; use the staged update procedure in the source/Java distribution.
@@ -241,37 +347,14 @@ Without one, GeoIP remains degraded but ingestion is ready. Install the bundled
 the existing firewall action. Delivery is best effort (three attempts within 15 seconds,
 no persistent queue). Review the packaged integration guide before use.
 
+#### Recover a failed first start
+
 For initialization failures, preserve the entire database, runtime, logs and remaining
 password file. In particular, `.intruvia-initializing` means an interrupted or ambiguous
 initialization: never delete markers, staging data or schema objects to force a retry.
 Follow the bundled [initialization and recovery guide](deployment/compose-initialization-recovery.md);
 restore matching backups or, only for a disposable new installation, deliberately use
 a new empty database and runtime. Never reset an existing schema.
-
-### Release assembly
-
-The image contains only the preassembled application and dependency JARs; runtime
-templates and administrator documents are supplied separately by the deployment
-bundle. On the build machine, first Maven-assemble `intruvia-app/target/intruvia`, then
-the release owner supplies the full repository and versioned tag:
-
-```bash
-: "${IMAGE_REFERENCE:?Set the approved full versioned image reference}"
-: "${VERSION:?Set the release version}"
-: "${OUTPUT_DIRECTORY:?Set an existing output directory}"
-./build-and-push-docker.sh "$IMAGE_REFERENCE"
-scripts/build-deployment-tarball.sh "$VERSION" "$IMAGE_REFERENCE" "$OUTPUT_DIRECTORY"
-```
-
-Replace placeholders with the actual approved values. The push script builds from the
-already assembled distribution and pushes only the supplied versioned reference, never
-`latest`. The tarball builder requires a release version, explicit versioned image
-reference and existing output directory, and emits the tarball and SHA-256 file without
-overwriting existing artifacts. At image build, retain the printed hashes of the actual
-Strolch snapshot JARs; they identify the binaries used and do not prove compatibility
-with a different snapshot. The tarball builder verifies exact reviewed hashes for the
-environment and runtime templates: release owners must review every byte and deliberately
-update those baselines after intended template changes, never bypass them to ship secrets.
 
 ## Standalone installation
 
@@ -282,7 +365,7 @@ credentials. Task 022 records the standalone MVP release review; the Compose bun
 also requires task 023 acceptance and a published image. The [task 021 rehearsal record](verification/021-acceptance.txt)
 states exactly what has been exercised locally.
 
-## Prepare the distribution and database
+### Prepare the distribution and database
 
 Install Java 25, PostgreSQL 18 server/client tools, nginx with TLS support, Python 3
 on reporting hosts and Fail2ban there. Maven is needed only on the build machine.
@@ -330,7 +413,7 @@ use JDBC `sslmode=verify-full` and a configured trusted root certificate. The XM
 pool values are ignored when `db.useEnv=true`; the environment names above are case
 sensitive. [All settings and bounds](architecture/019-runtime-operations.md).
 
-## Provision the external runtime while stopped
+### Provision the external runtime while stopped
 
 Use `umask 077`. Copy `PrivilegeConfig.xml.example`, `PrivilegeRoles.xml.example`
 and `PrivilegeUsers.xml.example` in runtime/config to their `.xml` names. Retain
@@ -431,7 +514,7 @@ every request, including cached PATs. An already accepted request may finish.
 Disabling a user blocks all its PATs; privilege scope changes require reissue.
 Expired/revoked secrets cannot be recovered; issue replacements.
 
-## First start and TLS/WSS
+### First start and TLS/WSS
 
 Set `allowSchemaCreation=true` for the first start against the dedicated empty
 database. Keep allowSchemaDrop/allowDataInitOnSchemaCreate/allowSchemaMigration
@@ -467,7 +550,7 @@ A producer POST must create one event (201); repeating the same body must return
 the PAT file; do not put Authorization on a shell command line. The browser must
 not contain machine tokens or store session credentials in localStorage.
 
-## GeoIP, Fail2ban and retention
+### GeoIP, Fail2ban and retention
 
 Obtain your own licensed MaxMind City MMDB externally. Empty/missing databasePath
 keeps readiness UP but stores UNAVAILABLE geography. Configure an absolute readable
@@ -493,7 +576,7 @@ See [retention settings](architecture/013-retention.md); do not delete rows manu
 Readiness validates DB connectivity and may temporarily fail under pool saturation.
 Operator diagnostics require Viewer+Operator; counters reset on restart.
 
-## Consistent backup and restore
+### Consistent backup and restore
 
 Use PostgreSQL 18 client tools, an owner-only .pgpass/PGPASSFILE for credentials,
 and ordinary PGHOST/PGPORT/PGUSER/PGDATABASE environment settings. Backups contain

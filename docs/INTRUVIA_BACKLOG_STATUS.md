@@ -1,13 +1,13 @@
 # Intruvia — backlog status
 
-Updated: 2026-11-12 · Implementation state: tasks 001–022 complete; task 023 blocked pending release verification
+Updated: 2026-11-13 · Implementation state: tasks 001–022 complete; task 023 blocked on release verification
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
 ## Execution state
 
-- Current task: **None**; task **023 — Package a Compose deployment bundle** is BLOCKED on release prerequisites.
-- Next task: **023**, after the release owner supplies and publishes the full versioned image reference and resolves the outstanding provenance/acceptance checks.
+- Current task: **None**; task 023's local test-skipping workflow is implemented, but release verification remains blocked.
+- Next task: **023 — Package a Compose deployment bundle**, after snapshot provenance, publication, registry pull and remaining acceptance checks are addressed.
 - Completed: **22 / 23**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **1**.
 - Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance passed against the fixed local framework snapshot; historical custom-token results remain superseded. Task 006 validation is complete; task 007 enrichment is complete; task 008 replacement is complete; task 009 atomic ingestion is complete; task 010 ingestion HTTP is complete; task 011 viewer sessions is complete; task 012 snapshots/history is complete; task 013 retention/receipt cleanup is complete; task 014 ordered WebSocket delivery is complete; task 015 snapshot viewer is complete; task 016 live highlighting is complete; task 017 browser reconnect/resync is complete; task 018 Fail2ban notification integration is complete; task 019 runtime operations is complete; task 020 MVP/capacity verification is complete; task 021 deployment/recovery is complete; task 022 release review is complete.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
@@ -43,7 +43,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 020 | Verify the full MVP and capacity targets | 017, 018, 019 | DONE | [Report/limits](verification/020-acceptance.txt), [method](architecture/020-mvp-validation.md), [clean verify](verification/020-final-maven.txt), [capacity](verification/020-capacity.txt), [raw audit](verification/020-capacity-review.txt), [browser](verification/020-recovery.txt), [hashes](verification/020-artifacts.sha256). 87 Maven tests and browser/helper/action suites pass; 3100 commits, two browsers/identities, 100000 retained. Combined p95 951/961ms; burst-only p95 9171/9163ms (separate 1s burst target not met). |
 | 021 | Document and verify deployment and recovery | 018, 019 | DONE | [Guide](DEPLOYMENT.md), [design](architecture/021-deployment-recovery.md), [acceptance/limits](verification/021-acceptance.txt), [clean verify](verification/021-final-maven-retry.txt), [rehearsal](verification/021-rehearsal-final.txt), [browser](verification/021-restored-browser.png), [hashes](verification/021-artifacts.sha256). 87 Maven tests pass; fresh packaged runtime, TLS/WSS, scoped PAT rotation/revocation, whole-database/runtime restore and ahead-cursor browser resnapshot pass. |
 | 022 | Perform the MVP release review | 020, 021 | DONE | [Checklist/audit](verification/022-acceptance.md), [release notes](RELEASE_NOTES.md), [clean verify](verification/022-maven.txt), [browser](verification/022-browser.txt), [review](verification/022-review.txt), [source](verification/022-source.sha256), [dependencies](verification/022-dependencies.txt), [distribution](verification/022-artifacts.sha256), [archive](verification/022-archive.sha256). 87 Maven tests, all three browser suites and 10 helper tests pass; exact local snapshot and operational limits retained. |
-| 023 | Package a Compose deployment bundle | 022 | BLOCKED | [Local verification and release limits](verification/023-acceptance.md); full versioned image repository/publication, registry pull, snapshot provenance and different-binary upgrade verification remain. |
+| 023 | Package a Compose deployment bundle | 022 | BLOCKED | [Local verification and release limits](verification/023-acceptance.md); registry publication/pull, snapshot provenance and different-binary upgrade verification remain. |
 
 ## Execution log
 
@@ -687,3 +687,30 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Junie: IN_PROGRESS → BLOCKED. Counts DONE 22/TODO 0/IN_PROGRESS 0/BLOCKED 1; current task none, next 023 after blockers are resolved. Completed the administrator quick start, standalone-preserving guide, offline PAT/credential/origin procedures, coordinated recovery and relevant specification update. [Verification, exact commands, hashes, failures and limitations](verification/023-acceptance.md) records the local results; no commit, registry push or release publication was performed.
 - Final Java 25/Maven PostgreSQL regression passed all five modules and 54 integration tests; image, archive, PostgreSQL initializer and delayed-readiness Compose checks passed. The local Caddy-CA rehearsal passed HTTPS/WSS, viewer login, PAT issuance/revocation, ingestion, restart, image replacement and matching DB/runtime restore. The replacement image had a new ID but identical application binaries; no cross-version compatibility is claimed.
 - Blockers/next action: the release owner must supply the actual full versioned `repo.strolch.li` image reference and make the image available, verify registry authentication and `docker compose pull`, establish the provenance of the locally installed Strolch snapshot or build from an approved identifiable snapshot, and complete release acceptance including a genuine different-binary upgrade. Public DNS/CA issuance, rootless UID mapping and power-loss checks remain unrun; they are not claimed as passed. Continue no dependent release work until the blockers are addressed.
+
+### 2026-11-13 — task 023 release workflow resumed
+
+- Junie: BLOCKED → IN_PROGRESS per user request. The image repository is now the changeable project constant `repo.strolch.li/intruvia`; scripts will derive the version from the root Maven POM and require no release-variable assignments. Prior registry login remains required. Counts: DONE 22/TODO 0/IN_PROGRESS 1/BLOCKED 0.
+- This change does not claim publication or resolve provenance. Registry availability/authentication, pull of the resulting image, actual Strolch snapshot provenance and remaining release acceptance stay pending; no push is authorized as part of implementation verification.
+
+### 2026-11-13 — task 023 release automation implemented; release remains blocked
+
+- Junie: IN_PROGRESS → BLOCKED. The task table had remained BLOCKED during the interim resumption; the summary and table are now reconciled. Counts: DONE 22/TODO 0/IN_PROGRESS 0/BLOCKED 1.
+- Changes: centralized `repo.strolch.li/intruvia` and validated the root POM version; the no-argument image wrapper verifies/builds/pushes that reference and the no-argument archive builder stages the matching bundle under `target/deployment-release/`. Explicit archive arguments remain available for isolated rehearsals. Updated the release and administrator guides.
+- Checks: `bash -n build-and-push-docker.sh scripts/release-config.sh scripts/build-deployment-tarball.sh scripts/test-release-workflow.sh scripts/test-deployment-tarball.sh`, `scripts/test-release-workflow.sh` and `scripts/test-deployment-tarball.sh` passed. A first oversized-version test failed because a 129-character tag was accepted; validation was fixed and both suites passed. Selected-file IDE build passed; all 25 Bash documentation examples passed `bash -n`; `git diff --check` passed.
+- Unrun: the real no-argument Maven/image/push workflow, published-image pull, public-CA validation and a genuine different-binary upgrade. No image was pushed. Prior local Compose rehearsal evidence remains unchanged.
+- Blockers/next action: establish the provenance of the Strolch snapshot, authenticate to `repo.strolch.li`, run `./build-and-push-docker.sh` and `scripts/build-deployment-tarball.sh`, verify pulling the published image, and complete the remaining release acceptance checks before marking task 023 DONE.
+
+### 2026-11-13 — task 023 release test execution option started
+
+- Junie: BLOCKED → IN_PROGRESS per user request. The no-argument image wrapper currently runs PostgreSQL-backed Maven verification; the requested default is package-only with tests skipped, retaining full verification behind `--with-tests`. Counts: DONE 22/TODO 0/IN_PROGRESS 1/BLOCKED 0.
+- Scope: update the wrapper, isolated workflow test, release guidance and task 023 acceptance wording. Existing publication, snapshot provenance and upgrade blockers remain; no image push is authorized as part of implementation verification.
+
+### 2026-11-13 — task 023 release test execution option implemented; release remains blocked
+
+- Junie: IN_PROGRESS → BLOCKED. Counts: DONE 22/TODO 0/IN_PROGRESS 0/BLOCKED 1; current task none, next task 023 after its release blockers are addressed.
+- Changes: `build-and-push-docker.sh` now runs `mvn -B -f <root-pom> clean package -DskipTests` by default; `--with-tests` runs the existing PostgreSQL-backed `scripts/verify-postgresql.sh`. Invalid options fail before build or push. Updated the release guide and task 023 acceptance criteria; skipped tests explicitly do not satisfy release acceptance.
+- Checks: `bash -n build-and-push-docker.sh scripts/test-release-workflow.sh && scripts/test-release-workflow.sh` — exit 0; covers default and opt-in sequencing, invalid arguments, and package/verification/image/push failure short-circuiting without a real push. Java 25 command `mvn -B -f pom.xml clean package -DskipTests` — exit 0, all five Maven modules SUCCESS; test sources compiled and Surefire reported tests skipped. Confirmed the assembled distribution has one application JAR and 96 dependency JARs.
+- Documentation and tooling: Bash syntax passed for 26 README/deployment examples; `git diff --check` and `git diff --cached --check` passed; IDE selected-file build reported no problems.
+- Unrun: actual PostgreSQL-backed `--with-tests` publishing workflow (it would push after verification), image publication/pull, public-CA validation, and genuine different-binary upgrade. No image was pushed. Local Compose rehearsal evidence remains unchanged.
+- Blockers/next action: establish Strolch snapshot provenance, authenticate and publish to `repo.strolch.li/intruvia`, verify pulling the published image, and complete remaining release acceptance, including a genuine different-binary upgrade, before marking task 023 DONE.

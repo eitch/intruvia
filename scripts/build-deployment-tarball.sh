@@ -3,13 +3,23 @@
 set -euo pipefail
 export LC_ALL=C
 
-if [[ $# != 3 ]]; then
-	printf 'Usage: %s <release-version> <versioned-image-reference> <output-directory>\n' "$0" >&2
+root=$(cd "$(dirname "$0")/.." && pwd)
+if [[ $# == 0 ]]; then
+	source "$root/scripts/release-config.sh"
+	version=$INTRUVIA_RELEASE_VERSION
+	image=$INTRUVIA_IMAGE_REFERENCE
+	default_output=$root/target/deployment-release
+	mkdir -p -- "$default_output"
+	output=$(cd "$default_output" && pwd)
+elif [[ $# == 3 ]]; then
+	version=$1
+	image=$2
+	output=$(cd "$3" && pwd)
+else
+	printf 'Usage: %s [<release-version> <versioned-image-reference> <output-directory>]\n' "$0" >&2
 	exit 2
 fi
 
-version=$1
-image=$2
 if [[ ! $version =~ ^v?[0-9][A-Za-z0-9_.-]*$ || ${#version} -gt 128 ]]; then
 	printf 'Invalid release version\n' >&2
 	exit 2
@@ -54,8 +64,6 @@ for index in "${!components[@]}"; do
 	fi
 done
 
-root=$(cd "$(dirname "$0")/.." && pwd)
-output=$(cd "$3" && pwd)
 archive=intruvia-deployment-${version}.tar.gz
 checksum=$archive.sha256
 if [[ -e $output/$archive || -L $output/$archive || -e $output/$checksum || -L $output/$checksum ]]; then

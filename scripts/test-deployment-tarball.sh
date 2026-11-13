@@ -126,6 +126,8 @@ fixture=$work/fixture
 mkdir -p "$fixture/scripts" "$fixture/deployment/db" "$fixture/docs/deployment" \
 		"$fixture/intruvia-app/src/main/runtime/config" "$fixture/integrations/fail2ban"
 cp -p "$builder" "$fixture/scripts/"
+cp -p "$root/scripts/release-config.sh" "$fixture/scripts/"
+printf '%s\n' '<project xmlns="http://maven.apache.org/POM/4.0.0"><version>2.4.6-test</version></project>' > "$fixture/pom.xml"
 cp -p "$root/deployment/compose.yaml" "$root/deployment/Caddyfile" "$root/deployment/.env.example" "$fixture/deployment/"
 cp -p "$root/deployment/db/init.sh" "$fixture/deployment/db/"
 cp -p "$root/LICENSE" "$root/README.md" "$fixture/"
@@ -140,6 +142,16 @@ for file in README.md intruvia.py intruvia_notify.py jail.local.example; do
 	cp -p "$root/integrations/fail2ban/$file" "$fixture/integrations/fail2ban/"
 done
 fixture_builder=$fixture/scripts/build-deployment-tarball.sh
+"$fixture_builder"
+default_archive=$fixture/target/deployment-release/intruvia-deployment-2.4.6-test.tar.gz
+default_checksum=$default_archive.sha256
+[[ -f $default_archive && -f $default_checksum ]] || fail 'no-argument defaults did not create the POM-versioned bundle'
+(cd "$(dirname "$default_archive")" && sha256sum -c "$(basename "$default_checksum")")
+tar -xOzf "$default_archive" ./.env > "$work/default-env"
+grep -Fx 'INTRUVIA_IMAGE=repo.strolch.li/intruvia:2.4.6-test' "$work/default-env" > /dev/null ||
+	fail 'default image reference does not use the project repository and POM version'
+expect_failure "$fixture_builder"
+[[ -f $default_archive && -f $default_checksum ]] || fail 'refused default rebuild removed existing artifacts'
 mkdir -p "$fixture/deployment/secrets" "$fixture/intruvia-app/src/main/runtime/data"
 printf 'PRIVATE-SENTINEL\n' > "$fixture/deployment/.env"
 printf 'PRIVATE-SENTINEL\n' > "$fixture/deployment/secrets/password"

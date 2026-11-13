@@ -7,16 +7,16 @@ and [status ledger](docs/INTRUVIA_BACKLOG_STATUS.md) for scope and implementatio
 ## Compose quick start
 
 Use Docker Engine with Compose on a trusted host. Obtain the versioned deployment
-tarball and its checksum from your release owner; no full Intruvia image repository
-or published image has been supplied yet. Set `VERSION` to the downloaded release
-version, then verify and extract it:
+tarball and its checksum from your release owner. Release scripts use the changeable
+`repo.strolch.li/intruvia` repository constant and derive the version from the root
+Maven POM; an image has not yet been published or registry-pull verified. In a
+directory containing exactly that one archive/checksum pair, verify and extract it:
 
 ```bash
-: "${VERSION:?Set VERSION to the downloaded release version}"
-sha256sum -c "intruvia-deployment-${VERSION}.tar.gz.sha256"
-mkdir -m 0700 intruvia-deployment
-tar -xpzf "intruvia-deployment-${VERSION}.tar.gz" -C intruvia-deployment
-chmod 0700 intruvia-deployment
+sha256sum -c intruvia-deployment-*.tar.gz.sha256 &&
+mkdir -m 0700 intruvia-deployment &&
+tar -xpzf intruvia-deployment-*.tar.gz -C intruvia-deployment &&
+chmod 0700 intruvia-deployment &&
 cd intruvia-deployment
 ```
 
@@ -30,7 +30,9 @@ editor create `secrets/viewer-password` owned by `10001:10001`, mode `0600` or `
 containing a strong initial viewer password; do not put it in commands, environment
 variables or logs. On rootless Docker, account for UID/GID mapping. The
 [detailed guide](docs/DEPLOYMENT.md#compose-deployment) includes a protected
-password-file creation example. Then run:
+password-file creation example. If registry authentication is required, log in on
+the deployment host with `docker login repo.strolch.li` using the supplied credentials.
+Then run:
 
 ```bash
 docker compose pull
