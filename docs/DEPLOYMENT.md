@@ -1,7 +1,7 @@
 # Intruvia installation and recovery
 
 This guide is for administrators installing, operating, and recovering Intruvia.
-Developers preparing a release should use the [developer deployment guide](DEVELOPER_DEPLOYMENT.md).
+Developers preparing a release should use the [release procedure](RELEASE.md).
 
 **Choose your installation path:**
 

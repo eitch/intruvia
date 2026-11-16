@@ -10,10 +10,10 @@ and [status ledger](./INTRUVIA_BACKLOG_STATUS.md) track requirements and progres
 
 Administrators should follow the [installation and recovery guide](./DEPLOYMENT.md)
 for Compose or standalone setup, credentials, upgrades, backups and recovery.
-Developers preparing an image and administrator bundle should use the
-[developer deployment guide](./DEVELOPER_DEPLOYMENT.md).
-For GitHub source releases, the next Maven `-SNAPSHOT` transition and Mastodon
-announcement, see the [GitHub release procedure](./GITHUB_RELEASE.md).
+For the combined versioned image, administrator bundle, Git tag and GitHub release,
+see the [release procedure](./RELEASE.md). The separate
+[GitHub source-release procedure](./GITHUB_RELEASE.md) remains available for a
+source-only release and Mastodon announcement.
 
 ## Run the next implementation task
 
@@ -78,7 +78,7 @@ The retry checks the blocker again and preserves previous failure evidence.
 ## Development build and checks
 
 Use Java 25 and Maven from the repository root. For build, release and local run
-instructions, see the [developer deployment guide](./DEVELOPER_DEPLOYMENT.md).
+instructions, see the [release procedure](./RELEASE.md).
 For host installation and runtime provisioning, see the
 [administrator guide](./DEPLOYMENT.md#standalone-installation).
 

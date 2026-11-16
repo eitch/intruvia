@@ -1,9 +1,10 @@
 # GitHub source release procedure
 
-`scripts/create-github-release.sh` automates a source release, the next Maven
-`-SNAPSHOT` transition, and one Mastodon announcement. It publishes to the
-explicitly selected GitHub repository and Mastodon instance; it does not publish a
-Maven artifact, Docker image, or deployment tarball.
+For the recommended end-to-end release—including the versioned Docker image and
+administrator tarball—use [`scripts/release.sh`](RELEASE.md). The separate
+`scripts/create-github-release.sh` workflow below remains available for a source-only
+GitHub release, the next Maven `-SNAPSHOT` transition, and one Mastodon announcement.
+It does not publish a Maven artifact, Docker image, or deployment tarball.
 
 ## Release gates
 
@@ -16,7 +17,7 @@ Before running the script, the release owner must:
 2. Resolve and record any release blockers. Task 023's published `0.0.2` image was
    pulled, audited and upgraded from `0.0.1`; its digest, state-retention evidence and
    unrun environment-specific checks are recorded in `docs/verification/023-acceptance.md`.
-   This source-release script does not perform Docker image or deployment-bundle
+   This source-only workflow does not perform Docker image or deployment-bundle
    publication; do not infer those actions from a successful GitHub source release.
 3. Prepare reviewed GitHub release notes and the final Mastodon text as UTF-8 files.
    Mastodon text is limited to 500 characters by the script.
@@ -73,10 +74,9 @@ the requested next SNAPSHOT and that commit is pushed. The Mastodon post happens
 last. A Mastodon token is supplied to `curl` through standard input configuration,
 not as a command-line argument.
 
-GitHub automatically provides source archives for the tag. This procedure does not
-attach the deployment tarball or publish container images. Attach a bundle/checksum
-only after the separate task 023 acceptance and publication checks are complete;
-never infer their verification from a successful GitHub source release.
+GitHub automatically provides source archives for the tag. This separate procedure does
+not attach the deployment tarball or publish container images. Never infer those actions
+or their verification from a successful source release.
 
 ## Partial failure and recovery
 
