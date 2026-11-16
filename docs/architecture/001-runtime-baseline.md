@@ -47,7 +47,7 @@ for the eventual probe. The shell defaults to Zulu Java 27. Maven is `3.9.16`.
 | Component | Exact selection |
 |---|---|
 | Java | Temurin 25.0.4+7-LTS; compiler release 25 |
-| Strolch | `2.8.0-20260927.120822-2` for all used Strolch modules |
+| Strolch | `2.8.0-1` release for all used Strolch modules |
 | Jersey | 3.1.11 |
 | Jakarta REST | 3.1.0 |
 | Jetty server, EE10 servlet and EE10 Jakarta WebSocket implementation | 12.0.16 |
@@ -63,17 +63,19 @@ it is a compatibility baseline, not a claim that these are the newest releases.
 The initializer and EE10 WebSocket choice follow the
 [Jetty integration documentation](https://jetty.org/docs/jetty/12/programming-guide/server/websocket.html).
 
-Strolch is fetched from `https://repo.strolch.li/repository/strolch-snapshots/`
-using the timestamped version, never a moving version in dependency management.
-Maven displays and caches these artifacts under `2.8.0-SNAPSHOT`; the
-[SHA-256 inventory](../verification/001-dependencies.sha256) records both the
-resolved JARs and timestamped Strolch JARs/POMs, including the parent POM.
-All 150 entries were rechecked successfully. Preserve these checksums when carrying
-this baseline into the application build; a timestamped snapshot still depends on
-repository retention. The published artifacts do not establish a source commit;
-the local source revisions are integration references, not asserted binary provenance.
-The framework checkout observed on this continuation is
-`4c86d8d6d2062ab4e9e6c924c470e080464cffc7`; the earlier observation above is historical.
+The root and compatibility-probe POMs fetch Strolch `2.8.0-1` from
+`https://repo.strolch.li/repository/strolch-releases/`; snapshot resolution is disabled.
+The signed upstream tag points to `f5413cf19025f7ddb39517a4bf203dd1402388ba` and
+contains the source-reviewed baseline plus the PAT persistence fixes `ffe14854e56bcf6f1a319d10bbada4925ef62088`
+and `65393890d5a1e2b0902a1a9fc0b4d113371e87c6`. Fresh-cache resolution and the
+packaged JAR checksums are recorded in [Task 023 acceptance](../verification/023-acceptance.md)
+and [the release hash manifest](../verification/023-strolch-2.8.0-1.sha256).
+
+The [task 001 inventory](../verification/001-dependencies.sha256) and its 150 checksums
+remain historical evidence for the timestamped snapshot used at that time; they are not
+the current release's artifact identities. The 2026-09-28 local source observations above
+are likewise historical, not binary provenance for the published release. The framework
+checkout observed on a later continuation was `4c86d8d6d2062ab4e9e6c924c470e080464cffc7`.
 
 ## Persistence and fixture conventions
 
@@ -101,8 +103,10 @@ REST/persistence classes and PostgreSQL driver, identifies Jakarta API JARs, and
 asserts legacy `javax.servlet`, `javax.ws.rs` and `javax.websocket` classes are absent.
 This restriction concerns web APIs, not Java SE packages such as `javax.crypto`.
 
-The clean Java 25 verification passed: 2 tests, 0 failures/errors/skips. The empty
-JAR warning is expected because this project contains only probe tests.
+The original clean Java 25 verification passed: 2 tests, 0 failures/errors/skips. The
+same probe was rerun on 2026-11-16 against the published `2.8.0-1` JARs: 2 tests,
+0 failures/errors/skips. The empty JAR warning is expected because this project contains
+only probe tests.
 [Continuation evidence](../verification/001-resume-verification.txt) records exact
 commands and output; [earlier successful output](../verification/001-probe-success.txt)
 and [initial dependency failure](../verification/001-baseline-attempt.txt) are preserved.

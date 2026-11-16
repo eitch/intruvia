@@ -86,30 +86,17 @@ Run the PostgreSQL-backed verification with:
 scripts/verify-postgresql.sh
 ```
 
-### Locally installed Strolch artifacts
+### Strolch framework version
 
-The historical baseline uses a timestamped Strolch snapshot; the current POM selects
-`2.8.0-SNAPSHOT` for the required PAT lifecycle fix. Maven cannot satisfy an exact
-timestamped coordinate with an installed `2.8.0-SNAPSHOT`, even when its JARs are present.
-For development with the local framework referenced by AGENTS.md, use the existing
-version property override (offline mode uses the installed artifacts without a mirror):
-
-```bash
-scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
-```
-
-Use Java 25 as above. If the local artifacts need rebuilding, install the required
-framework modules and their reactor dependencies first:
-
-```bash
-mvn -f /home/eitch/src/git/atx-dev/strolch/pom.xml \
-    -pl strolch-service,strolch-persistence-postgresql -am install -DskipTests
-```
-
-The bootstrap command skips framework tests; Intruvia's full verification still runs.
-Omit `-o` when other dependencies need downloading. Record the override and artifact
-checksums with verification evidence: local snapshot results do not verify the original
-timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
+Intruvia pins Strolch `2.8.0-1` and resolves the published artifacts from
+`https://repo.strolch.li/repository/strolch-releases/`. Normal verification uses the
+POM's release coordinate; no local snapshot installation or version override is needed.
+The published release and checksums used in the PostgreSQL validation are recorded in
+[Task 023 acceptance](docs/verification/023-acceptance.md#strolch-280-1-release-validation).
+If your Maven cache previously received a locally installed framework artifact under
+the same release coordinate, use a fresh local repository for provenance checks, for
+example `scripts/verify-postgresql.sh -Dmaven.repo.local=/path/to/empty/repository`;
+a version string alone does not guarantee that cached bytes came from the release repo.
 
 `mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
 starts a loopback Docker PostgreSQL container, runs `mvn -B clean verify`, and removes
@@ -148,9 +135,9 @@ endpoint is exposed. See the [administrator guide](docs/DEPLOYMENT.md#offline-us
 for provisioning and rotation, and the [verified framework API and implementation
 details](docs/architecture/005-machine-authentication.md).
 
-Task 005 was verified using local Strolch `2.8.0-SNAPSHOT` with the upstream revocation
-fix; see [source/binary identities](docs/verification/005-resume-source-review.txt)
-and [full regression results](docs/verification/005-resume-acceptance.txt).
+The pinned Strolch release includes the upstream PAT persistence fixes. Its runtime and
+database compatibility results are recorded in
+[Task 023 acceptance](docs/verification/023-acceptance.md#strolch-280-1-release-validation).
 
 ## Fail2ban input validation
 
@@ -166,7 +153,7 @@ for limits, constructor configuration, digest format and trusted envelope mappin
 Run focused validation and contract tests without PostgreSQL using Java 25:
 
 ```bash
-mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-rest -am clean test
+mvn -B -pl intruvia-rest -am clean test
 ```
 
 ## Local GeoIP enrichment
@@ -191,8 +178,8 @@ conflict. An accepted retry bypasses timestamp-age rejection and new enrichment.
 
 The public POST endpoint delegates to this service. See the [service contract and locking
 protocol](docs/architecture/009-atomic-ingestion.md) for result handling and later
-retention integration. Run `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`
-with Java 25 for the real-database concurrency, rollback and retry checks.
+retention integration. Run `scripts/verify-postgresql.sh` with Java 25 for the
+real-database concurrency, rollback and retry checks.
 
 ## Fail2ban ingestion HTTP endpoint
 
@@ -222,7 +209,7 @@ unsupported. See [runtime settings and bounds](docs/architecture/010-ingestion-h
 for configuration details.
 
 See [HTTP design, setting bounds and checks](docs/architecture/010-ingestion-http.md).
-Verify with Java 25 and `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+Verify with Java 25 and `scripts/verify-postgresql.sh`.
 Receipt-capacity admission and ordered WebSocket delivery are available.
 
 ## Viewer sessions
@@ -243,7 +230,7 @@ headers and machine PATs cannot authenticate viewer routes.
 
 The login/map snapshot UI is available at `/`; the WebSocket endpoint is described below.
 Verify sessions and the full regression suite with Java 25 and
-`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+`scripts/verify-postgresql.sh`.
 
 ## Viewer snapshots and history
 
@@ -265,7 +252,7 @@ Malformed or ahead-of-head cursors and invalid limits return `400`. A cursor bel
 These routes require a valid viewer cookie and `event:read`; machine PATs and Bearer
 headers cannot authenticate reads. Responses are uncached. Automatic retention is available as described below. See [read contracts and consistency](docs/architecture/012-event-reads.md)
 and [v1 schemas](docs/api/v1.schema.json). Verify with Java 25 and
-`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+`scripts/verify-postgresql.sh`.
 
 
 ## Bounded event retention
@@ -284,8 +271,7 @@ capacity. Ordinary request-rate limits also remain in effect.
 
 Receipt lifetime cannot be less than 30 days. See the [administrator guide](docs/DEPLOYMENT.md)
 for runtime setup, and [retention settings, transaction semantics and verification](docs/architecture/013-retention.md).
-Run the full PostgreSQL suite with Java 25 and
-`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+Run the full PostgreSQL suite with Java 25 and `scripts/verify-postgresql.sh`.
 
 
 ## Ordered live event stream
@@ -310,8 +296,7 @@ Ping/pong detects dead connections. A 250 ms durable poll recovers a missed post
 wakeup. Upgrades share the REST global request bucket and Jetty connection cap.
 
 See the [protocol, lifecycle and recovery contract](docs/architecture/014-event-stream.md).
-Verify with Java 25 and
-`scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
+Verify with Java 25 and `scripts/verify-postgresql.sh`.
 Live browser highlighting and automatic recovery are available below.
 
 ## Snapshot viewer

@@ -10,11 +10,11 @@ Maven artifact, Docker image, or deployment tarball.
 Before running the script, the release owner must:
 
 1. Review `docs/verification/022-acceptance.md`, release notes, dependency pins,
-   resolved Strolch snapshot provenance and the exact release commit. The script's
+   the validated Strolch `2.8.0-1` release and the exact release commit. The script's
    Maven verification is not a substitute for the task 022 release review or an
    operator's release approval.
 2. Resolve and record any release blockers. Task 023's registry publication/pull,
-   Strolch provenance and different-binary upgrade checks remain separately tracked;
+   different-binary upgrade and remaining deployment checks are tracked separately;
    this source-release script does not pass or clear them. Do not represent an
    unverified image or bundle as part of this release.
 3. Prepare reviewed GitHub release notes and the final Mastodon text as UTF-8 files.

@@ -45,12 +45,13 @@ Do not expand scope or introduce unapproved dependencies/toolchains. If a requir
 decision, permission, or dependency is unavailable, record the blocker and stop.
 
 Before declaring Maven artifact resolution blocked, inspect the local Maven repository
-and the framework source referenced by AGENTS.md. An installed 2.8.0-SNAPSHOT does not
-satisfy an exact timestamped snapshot coordinate. Follow README.md's local Strolch
-build instructions: use -Dstrolch.version=2.8.0-SNAPSHOT and offline mode when cached
-dependencies suffice, or build/install the required framework reactor modules. Record
-the actual version, checksums and verification results; never relabel local artifacts
-as the timestamped baseline. Exhaust these local recovery paths before recording a blocker.
+and the framework source referenced by AGENTS.md. Intruvia pins Strolch 2.8.0-1 from
+the release repository in its root and probe POMs; use that version without a
+SNAPSHOT override or a local framework install. A local cache may contain different
+bytes installed under the same release coordinate, so verify provenance in a fresh
+Maven repository when uncertain and compare the packaged JAR checksums with the
+recorded release manifest. Record the actual version, repository, checksums and results;
+never relabel local artifacts or declare source provenance from a version string alone.
 
 Update the status ledger, counts, current/next task, date, and execution log.
 Record exact verification commands/results and file/artifact references. Mark

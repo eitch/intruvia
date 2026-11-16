@@ -9,10 +9,11 @@ allowlisted runtime templates, and support documentation; the image contains onl
 prebuilt application and dependency JARs. Release scripts use `repo.strolch.li/intruvia`
 and derive the matching version from the root Maven POM.
 
-> **Release prerequisites:** task 023 still leaves Strolch snapshot provenance, registry
-> publication and pulling the published image unverified. Verify the approved Strolch
-> artifacts and their provenance, authenticate to `repo.strolch.li`, and complete the
-> registry pull and release acceptance checks before describing a bundle as deployable.
+> **Release prerequisites:** Strolch `2.8.0-1` is now pinned and validated from the
+> published release repository, including its PAT persistence fixes. Task 023 remains
+> blocked on publishing the Intruvia image, pulling that exact image from the registry,
+> and completing the different-binary upgrade and other release acceptance checks. Do
+> not describe a bundle as deployable until those checks pass.
 
 The root POM is the single source for the release version. Review it and the repository
 constant in `scripts/release-config.sh`; no image, version, or output assignments are
@@ -20,8 +21,11 @@ required.
 
 ## 1. Assemble the Maven distribution
 
-Use Java 25, Maven, Docker, Python 3 and reviewed Strolch artifacts available from the
-configured Maven repositories or local cache. By default, `./build-and-push-docker.sh`
+Use Java 25, Maven, Docker, Python 3 and Strolch `2.8.0-1` from the configured Maven
+release repository. A local Maven cache may contain a locally installed artifact with
+the same version but different bytes; use a fresh local repository for release
+verification and assembly when provenance is uncertain. By default,
+`./build-and-push-docker.sh`
 runs a clean Maven package with tests skipped, then assembles the image from
 `intruvia-app/target/intruvia`. This is a quicker packaging path, not release acceptance.
 
@@ -36,7 +40,9 @@ This runs `scripts/verify-postgresql.sh` and its clean Maven `verify` against a 
 PostgreSQL container. Review dependency sources and the build result, and record exact
 Strolch artifact hashes; hashes identify the built JARs but do not by themselves
 establish their source provenance. Run full verification and all release acceptance
-checks before handoff even if the image was initially built with tests skipped.
+checks before handoff even if the image was initially built with tests skipped. For an
+isolated provenance check, pass `-Dmaven.repo.local=/path/to/empty/repository` to
+`scripts/verify-postgresql.sh`; see the release validation record for the exact method.
 
 ## 2. Build and publish the versioned image
 

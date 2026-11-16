@@ -426,14 +426,17 @@ The local rehearsal uses isolated containers.
 From the source root, with Java 25 and Maven on PATH:
 
 ```bash
-scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT
+scripts/verify-postgresql.sh
 ```
 
-Docker is needed for that disposable test database. For dependency cache recovery,
-follow [README local Strolch instructions](../README.md#locally-installed-strolch-artifacts).
-Archive the complete `intruvia-app/target/intruvia/` directory and SHA-256 manifest;
-keep its JAR, `lib/`, runtime template, integrations, and `docs/` together. Local
-snapshot hashes identify binaries but do not establish historical timestamped provenance.
+Docker is needed for that disposable test database. Intruvia pins Strolch `2.8.0-1`
+from the configured release repository; see the [README framework version and cache
+guidance](../README.md#strolch-framework-version). For a clean release-provenance check,
+use a fresh Maven local repository so previously installed artifacts with the same
+coordinate cannot shadow the published binaries. Archive the complete
+`intruvia-app/target/intruvia/` directory and SHA-256 manifest; keep its JAR, `lib/`,
+runtime template, integrations, and `docs/` together. The verified Strolch release
+hashes are recorded in [Task 023 acceptance](verification/023-acceptance.md).
 
 For a new installation, copy the release and runtime template separately:
 
