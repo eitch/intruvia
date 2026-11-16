@@ -167,7 +167,7 @@ copy_file "$root/LICENSE" "$bundle/LICENSE"
 copy_file "$root/intruvia-app/src/main/runtime/LICENSE-Strolch" "$bundle/LICENSE-Strolch"
 copy_file "$root/README.md" "$bundle/README.md"
 copy_file "$root/docs/DEPLOYMENT.md" "$bundle/docs/DEPLOYMENT.md"
-copy_file "$root/docs/DEVELOPER_DEPLOYMENT.md" "$bundle/docs/DEVELOPER_DEPLOYMENT.md"
+copy_file "$root/docs/RELEASE.md" "$bundle/docs/RELEASE.md"
 copy_file "$root/docs/deployment/compose-initialization-recovery.md" "$bundle/docs/deployment/compose-initialization-recovery.md"
 for file in README.md intruvia.py intruvia_notify.py jail.local.example; do
 	copy_file "$root/integrations/fail2ban/$file" "$bundle/integrations/fail2ban/$file"

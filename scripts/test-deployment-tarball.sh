@@ -33,7 +33,7 @@ printf '%s\n' \
 	'./db/init.sh' \
 	'./docs/' \
 	'./docs/DEPLOYMENT.md' \
-	'./docs/DEVELOPER_DEPLOYMENT.md' \
+	'./docs/RELEASE.md' \
 	'./docs/deployment/' \
 	'./docs/deployment/compose-initialization-recovery.md' \
 	'./integrations/' \
@@ -80,7 +80,7 @@ compare_file LICENSE LICENSE
 compare_file intruvia-app/src/main/runtime/LICENSE-Strolch LICENSE-Strolch
 compare_file README.md README.md
 compare_file docs/DEPLOYMENT.md docs/DEPLOYMENT.md
-compare_file docs/DEVELOPER_DEPLOYMENT.md docs/DEVELOPER_DEPLOYMENT.md
+compare_file docs/RELEASE.md docs/RELEASE.md
 compare_file docs/deployment/compose-initialization-recovery.md docs/deployment/compose-initialization-recovery.md
 for file in StrolchConfiguration.xml PrivilegeConfig.xml.example PrivilegeRoles.xml.example PrivilegeUsers.xml.example \
 		ingestion.properties.example; do
@@ -133,7 +133,7 @@ printf '%s\n' '<project xmlns="http://maven.apache.org/POM/4.0.0"><version>2.4.6
 cp -p "$root/deployment/compose.yaml" "$root/deployment/Caddyfile" "$root/deployment/.env.example" "$fixture/deployment/"
 cp -p "$root/deployment/db/init.sh" "$fixture/deployment/db/"
 cp -p "$root/LICENSE" "$root/README.md" "$fixture/"
-cp -p "$root/docs/DEPLOYMENT.md" "$root/docs/DEVELOPER_DEPLOYMENT.md" "$fixture/docs/"
+cp -p "$root/docs/DEPLOYMENT.md" "$root/docs/RELEASE.md" "$fixture/docs/"
 cp -p "$root/docs/deployment/compose-initialization-recovery.md" "$fixture/docs/deployment/"
 cp -p "$root/intruvia-app/src/main/runtime/LICENSE-Strolch" "$fixture/intruvia-app/src/main/runtime/"
 for file in StrolchConfiguration.xml PrivilegeConfig.xml.example PrivilegeRoles.xml.example PrivilegeUsers.xml.example \
