@@ -14,7 +14,9 @@ into a shell command. Start, stop, unban, reban and restored bans do not notify.
 ## Install on each reporting server
 
 First provision an ingestion-only Strolch technical user/PAT and a stable server
-mapping on Intruvia as described in the root README. Use one user per reporting
+mapping on Intruvia as described in the
+[administrator guide](../../docs/DEPLOYMENT.md#provision-the-external-runtime-while-stopped).
+Use one user per reporting
 server; do not add an instance ID to the notification payload.
 
 From this directory (also shipped under `intruvia/integrations/fail2ban/`), install:

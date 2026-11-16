@@ -430,8 +430,9 @@ scripts/verify-postgresql.sh
 ```
 
 Docker is needed for that disposable test database. Intruvia pins Strolch `2.8.0-1`
-from the configured release repository; see the [README framework version and cache
-guidance](../README.md#strolch-framework-version). For a clean release-provenance check,
+from the configured release repository; see the [developer reference framework
+version and cache guidance](DEVELOPMENT.md#strolch-framework-version). For a clean
+release-provenance check,
 use a fresh Maven local repository so previously installed artifacts with the same
 coordinate cannot shadow the published binaries. Archive the complete
 `intruvia-app/target/intruvia/` directory and SHA-256 manifest; keep its JAR, `lib/`,
