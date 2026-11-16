@@ -4,49 +4,14 @@ Intruvia is a self-hosted security-event viewer. See the
 [specification](docs/INTRUVIA_SPECIFICATION.md), [backlog](docs/INTRUVIA_BACKLOG.md),
 and [status ledger](docs/INTRUVIA_BACKLOG_STATUS.md) for scope and implementation progress.
 
-## Compose quick start
+## Deployment
 
-Use Docker Engine with Compose on a trusted host. Obtain the versioned deployment
-tarball and its checksum from your release owner. Release scripts use the changeable
-`repo.strolch.li/intruvia` repository constant and derive the version from the root
-Maven POM; an image has not yet been published or registry-pull verified. In a
-directory containing exactly that one archive/checksum pair, verify and extract it:
-
-```bash
-sha256sum -c intruvia-deployment-*.tar.gz.sha256 &&
-mkdir -m 0700 intruvia-deployment &&
-tar -xpzf intruvia-deployment-*.tar.gz -C intruvia-deployment &&
-chmod 0700 intruvia-deployment &&
-cd intruvia-deployment
-```
-
-From that directory, edit the mode-0600 `.env`: retain the explicit
-versioned `INTRUVIA_IMAGE`, set the exact public HTTPS `INTRUVIA_PUBLIC_ORIGIN` (no
-path or trailing slash), and set distinct 24–128 character database passwords using
-only `A-Za-z0-9_-`. Protect `.env` from other users.
-
-Ensure `secrets/` is owned by UID/GID `10001:10001` with mode `0700`. With a protected
-editor create `secrets/viewer-password` owned by `10001:10001`, mode `0600` or `0400`,
-containing a strong initial viewer password; do not put it in commands, environment
-variables or logs. On rootless Docker, account for UID/GID mapping. The
-[detailed guide](docs/DEPLOYMENT.md#compose-deployment) includes a protected
-password-file creation example. If registry authentication is required, log in on
-the deployment host with `docker login repo.strolch.li` using the supplied credentials.
-Then run:
-
-```bash
-docker compose pull
-docker compose up -d
-```
-
-First start initializes an empty database and runtime and consumes that password
-file. Sign in as `viewer` at the HTTPS origin. The viewer cannot administer PATs;
-provision a separate privileged operator and producer before ingestion. See the
-[Compose guide](docs/DEPLOYMENT.md#compose-deployment) for networking, certificate,
-offline credentials, recovery and backups, and for changing an initialized origin:
-editing `.env` alone does not update `runtime/config/viewer.properties`. Existing
-credentials and users are not rotated by changing environment values. The standalone
-Java distribution and instructions remain available below.
+Administrators should follow the [installation and recovery guide](docs/DEPLOYMENT.md)
+for Compose or standalone setup, credentials, upgrades, backups and recovery.
+Developers preparing an image and administrator bundle should use the
+[developer deployment guide](docs/DEVELOPER_DEPLOYMENT.md).
+For GitHub source releases, the next Maven `-SNAPSHOT` transition and Mastodon
+announcement, see the [GitHub release procedure](docs/GITHUB_RELEASE.md).
 
 ## Run the next implementation task
 
@@ -108,22 +73,18 @@ writes to `~/.m2/repository` while retaining the workspace filesystem sandbox.
 If Maven uses a custom local repository, set `MAVEN_REPOSITORY` to that absolute path.
 The retry checks the blocker again and preserves previous failure evidence.
 
-## Build and run the application
+## Development build and checks
 
-Use Java 25 and Maven (verified with Maven 3.9.16). From the repository root:
+Use Java 25 and Maven from the repository root. For build, release and local run
+instructions, see the [developer deployment guide](docs/DEVELOPER_DEPLOYMENT.md).
+For host installation and runtime provisioning, see the
+[administrator guide](docs/DEPLOYMENT.md#standalone-installation).
+
+Run the PostgreSQL-backed verification with:
 
 ```bash
-JAVA_HOME=/path/to/jdk-25 PATH=/path/to/jdk-25/bin:$PATH scripts/verify-postgresql.sh
-# Configure an external runtime and PostgreSQL as described below, then:
-/path/to/jdk-25/bin/java -jar intruvia-app/target/intruvia/intruvia-app-0.0.1.jar /path/to/runtime 8080
+scripts/verify-postgresql.sh
 ```
-
-Open `http://127.0.0.1:8080/` for the packaged viewer login and world-map snapshot.
-`http://127.0.0.1:8080/health/live` returns `{"status":"UP"}`.
-Stop with Ctrl+C or SIGTERM; Jetty stops before Strolch is stopped and destroyed.
-The port is optional (default 8080); `0` selects an ephemeral port printed in the log.
-The runtime path is required and can be absolute. Keep the application JAR, `lib/`
-and `runtime/` together when copying the assembled directory.
 
 ### Locally installed Strolch artifacts
 
@@ -150,11 +111,6 @@ Omit `-o` when other dependencies need downloading. Record the override and arti
 checksums with verification evidence: local snapshot results do not verify the original
 timestamped binaries. Do not rename local JARs to impersonate timestamped artifacts.
 
-The standalone application binds to loopback by default and requires durable PostgreSQL storage.
-The ingestion HTTP endpoint, viewer sessions and snapshot viewer are available. The
-readiness endpoint is available at `/health/ready`. The packaged `production` environment rejects
-transient stores; there is no memory-only fallback.
-
 `mvn verify` requires a disposable PostgreSQL service. `scripts/verify-postgresql.sh`
 starts a loopback Docker PostgreSQL container, runs `mvn -B clean verify`, and removes
 the container on exit. Each test provisions and drops a unique database. Docker and
@@ -164,23 +120,9 @@ Alternatively, supply `INTRUVIA_TEST_DB_URL`, `INTRUVIA_TEST_DB_USERNAME` and
 `INTRUVIA_TEST_DB_PASSWORD` for a dedicated test PostgreSQL role with CREATEDB and
 run `mvn -B clean verify`. Never point tests at production. No browser/Node build is required.
 
-For a persistent runtime, copy the packaged `runtime/` outside `target/`, copy its
-`config/Privilege*.xml.example` files to the corresponding `.xml` names, and replace
-both `CHANGE-ME` values in `PrivilegeConfig.xml` with independently generated secrets.
-Keep runtime configuration and the process environment protected; example roles contain
-a system agent and a Viewer role; provision viewer users as described below.
-Set `DB_URL` (a PostgreSQL JDBC URL),
-`DB_USERNAME` and `DB_PASSWORD` through protected service configuration, not command-line
-arguments. Use a dedicated empty database owned by the application role.
-
-On the first start only, set `allowSchemaCreation` to `true` in
-`config/StrolchConfiguration.xml`; after successful startup, stop the application and
-restore it to `false`. Strolch installs its pinned schema and the application runs model
-migration `0.0.1`. Keep `allowSchemaDrop` and `allowDataInitOnSchemaCreate` false.
-Schema upgrades require a backup and an explicit maintenance change to
-`allowSchemaMigration`; it defaults to false. Startup fails on an absent/incompatible
-schema when creation/migration is disabled. Model migration versions, events, receipts
-and stream state survive restart. See [persistence design and checks](docs/architecture/004-persistence.md).
+`mvn verify` and the application-level tests do not install or configure a persistent
+runtime. Follow the [administrator guide](docs/DEPLOYMENT.md) for runtime setup and
+first start.
 
 ## Event contracts (v1)
 
@@ -199,31 +141,12 @@ endpoint is `POST /api/v1/fail2ban/events`. Send `Authorization: Bearer <tokenId
 HTTPS. Tokens must have exactly the `event:ingest` privilege; viewer/session credentials
 and broad PATs are rejected.
 
-Provision one ENABLED Strolch technical user per server, with an ingestion-only role.
-Use supported Strolch management APIs to issue a scoped PAT and persist it. Store the
-returned secret directly in a protected producer file; never put it in arguments,
-logs or source control. See the [verified APIs, role configuration and rotation
-procedure](docs/architecture/005-machine-authentication.md).
-
-Create the optional external `runtime/config/machine-identities.conf` with mode `0600`
-(or `0400`), containing one username-to-stable-instance mapping per line:
-
-```text
-producer-a=server-a
-producer-b=server-b
-```
-
-It contains identities only, no credentials. Both names must match
-`[A-Za-z0-9][A-Za-z0-9._-]{0,127}`; duplicate users or instance IDs are rejected.
-Blank lines and `#` comments are allowed. Protect the runtime and parent directories.
-Missing mapping disables machine access; malformed/insecure files fail startup.
-Restart to change mappings.
-
-Rotate by issuing a replacement PAT for the same technical user, persisting it,
-switching the producer file, then revoking and persisting removal of the old PAT.
-The stable server ID is unchanged. Revocation, expiry and disabled owners are checked
-even for cached PATs, without an Intruvia restart. The obsolete custom TSV verifier
-is no longer loaded. No public token-administration endpoint is exposed.
+The authenticated Strolch username maps to a stable server identity; callers cannot
+choose that identity in the request. Revocation, expiry and disabled-user state are
+checked for cached PATs, without an Intruvia restart. No public token-administration
+endpoint is exposed. See the [administrator guide](docs/DEPLOYMENT.md#offline-users-and-pats)
+for provisioning and rotation, and the [verified framework API and implementation
+details](docs/architecture/005-machine-authentication.md).
 
 Task 005 was verified using local Strolch `2.8.0-SNAPSHOT` with the upstream revocation
 fix; see [source/binary identities](docs/verification/005-resume-source-review.txt)
@@ -248,32 +171,13 @@ mvn -B -o -Dstrolch.version=2.8.0-SNAPSHOT -pl intruvia-rest -am clean test
 
 ## Local GeoIP enrichment
 
-Task 007 provides a lifecycle-managed local MaxMind City reader. In your external
-`runtime/config/StrolchConfiguration.xml`, set the `GeoIp` component property:
-
-```xml
-<Properties><databasePath>/srv/intruvia/geoip/GeoLite2-City.mmdb</databasePath></Properties>
-```
-
-Supply your own licensed GeoLite2 City or GeoIP2 City database and keep it readable
-by the service account. No database, license key, download or per-event network
-lookup is bundled. The default empty path, missing file or failed load leaves
-GeoIP degraded (`UNAVAILABLE`) while the application starts. Private/reserved
-addresses yield `NON_PUBLIC`; missing records and lookup failures have distinct
-statuses. Partial locations remain unmapped, and legitimate zero coordinates are
-preserved. GeoIP is approximate network location, not a person's physical location.
-
-The reader keeps a reusable in-memory snapshot; budget heap for the database size.
-For live replacement, publish a complete file by atomic rename to
-`<databasePath>.staged`. Intruvia checks it every 60 seconds, validates every record,
-and atomically replaces the working database and reader. Failed updates retain the
-working reader; lookups continue during validation. Build/load time, age and the
-default 14-day stale flag are available through the component diagnostics API.
-Budget roughly three database sizes of heap during validation. See the
-[update procedure and external geoipupdate example](docs/architecture/008-geoip-replacement.md)
-for directory permissions, configuration, recovery and shutdown behavior.
-Enrichment is used by the ingestion service and public ingestion endpoint.
-See [policy, configuration, provenance and synthetic test fixtures](docs/architecture/007-geoip-enrichment.md).
+Task 007 provides a lifecycle-managed reader for a locally supplied MaxMind City
+database. Missing or unreadable data leaves GeoIP degraded (`UNAVAILABLE`) while the
+application starts; private/reserved addresses yield `NON_PUBLIC`, and missing records
+and lookup failures have distinct statuses. Partial locations remain unmapped, and
+legitimate zero coordinates are preserved. GeoIP is approximate network location, not
+a person's physical location. See the [administrator guide](docs/DEPLOYMENT.md#geoip-fail2ban-and-retention)
+for provisioning and updates, and the [enrichment policy and fixtures](docs/architecture/007-geoip-enrichment.md).
 
 ## Atomic ingestion service
 
@@ -294,8 +198,7 @@ with Java 25 for the real-database concurrency, rollback and retry checks.
 
 Send the v1 JSON payload from the [specification](docs/INTRUVIA_SPECIFICATION.md#4-fail2ban-api)
 to `POST /api/v1/fail2ban/events`, with `Content-Type: application/json` and the
-Strolch PAT Authorization header described above. Use HTTPS at the reverse proxy;
-the standalone application defaults to loopback. The request body must contain only the
+Strolch PAT Authorization header described above. The request body must contain only
 producer fields, never a server identity or geography. The certificate and protected
 mapping select the server identity, and the same certificate authorizes the service.
 
@@ -307,16 +210,16 @@ media failures return `400`, `401`, `403`, `413` and `415`; database failures re
 `503` without acknowledging success. Errors have `{error:{code,message,requestId}}`.
 Responses use `Cache-Control: no-store` and do not echo payloads or credentials.
 
-Optionally copy `runtime/config/ingestion.properties.example` to `ingestion.properties`
-in the external runtime. Defaults are a 16 KiB UTF-8 body, seven-day maximum event age,
-five-minute future allowance, and 10 requests/second with burst 100 per configured
-instance. All authenticated attempts, including retries and rejected payloads, consume
-that instance's bucket. PAT rotation shares the bucket. A separate global bucket allows
-100 API requests/second with burst 1000 before authentication; Jetty caps connections at
-256 with a 30-second idle timeout. Request-rate rejection returns `429` with integer
-`Retry-After` seconds; connection saturation pauses accepts. Reverse-proxy connection
-and request limits should also cover internet-facing traffic. No request queues or rate
-state are persisted; restart resets buckets. Compressed request bodies are unsupported.
+Defaults are a 16 KiB UTF-8 body, seven-day maximum event age, five-minute future
+allowance, and 10 requests/second with burst 100 per configured instance. All
+authenticated attempts, including retries and rejected payloads, consume that
+instance's bucket. PAT rotation shares the bucket. A separate global bucket allows
+100 API requests/second with burst 1000 before authentication; Jetty caps connections
+at 256 with a 30-second idle timeout. Request-rate rejection returns `429` with
+integer `Retry-After` seconds; connection saturation pauses accepts. No request queues
+or rate state are persisted; restart resets buckets. Compressed request bodies are
+unsupported. See [runtime settings and bounds](docs/architecture/010-ingestion-http.md)
+for configuration details.
 
 See [HTTP design, setting bounds and checks](docs/architecture/010-ingestion-http.md).
 Verify with Java 25 and `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
@@ -324,16 +227,11 @@ Receipt-capacity admission and ordered WebSocket delivery are available.
 
 ## Viewer sessions
 
-Copy `runtime/config/viewer.properties.example` to `viewer.properties` in your
-external runtime and set `origin=https://your-intruvia-host` (no trailing slash).
-Missing configuration disables viewer sessions. HTTP is allowed only for explicit
-loopback development origins. HTTPS origins receive Secure, HttpOnly,
-SameSite=Strict cookies restricted to `/api/v1`; no token belongs in browser storage.
-
-Provision an ENABLED Strolch user with the supplied `Viewer` role (`event:read`)
-and a Strolch password hash in protected external privilege configuration. Existing
-runtimes must also add the SessionHandler component and agent GetCertificates
-permission from the updated examples. See the [provisioning steps and HTTP contract](docs/architecture/011-viewer-sessions.md).
+Viewer sessions require the configured exact origin; missing configuration disables
+them. HTTP is allowed only for explicit loopback development origins. HTTPS origins
+receive Secure, HttpOnly, SameSite=Strict cookies restricted to `/api/v1`; no token
+belongs in browser storage. See the [administrator guide](docs/DEPLOYMENT.md#provision-the-external-runtime-while-stopped)
+for user/runtime provisioning and the [session contract](docs/architecture/011-viewer-sessions.md).
 
 The same-origin client logs in with `POST /api/v1/session`, JSON `{username,password}`,
 `Content-Type: application/json` and `X-Intruvia-CSRF: 1`; the browser sends Origin.
@@ -384,11 +282,8 @@ at 1,000,000 records. When no slot remains after expiry cleanup, new ingestion r
 are preserved. The delay recommends when to retry; it does not guarantee available
 capacity. Ordinary request-rate limits also remain in effect.
 
-Existing external runtimes must copy the Retention component from the packaged
-`runtime/config/StrolchConfiguration.xml` and add the agent's `event:retention`
-privilege from `PrivilegeRoles.xml.example`. Adjust the five Retention properties
-there and restart; malformed settings fail startup. Receipt lifetime cannot be less
-than 30 days. See [settings, transaction semantics and verification](docs/architecture/013-retention.md).
+Receipt lifetime cannot be less than 30 days. See the [administrator guide](docs/DEPLOYMENT.md)
+for runtime setup, and [retention settings, transaction semantics and verification](docs/architecture/013-retention.md).
 Run the full PostgreSQL suite with Java 25 and
 `scripts/verify-postgresql.sh -o -Dstrolch.version=2.8.0-SNAPSHOT`.
 
@@ -409,12 +304,10 @@ fully applied, deduplicating sequence/event IDs. An expired or ahead cursor prod
 expiry closes active sockets. Text/binary client commands are unsupported and close
 the connection.
 
-Existing runtimes must add both `StreamNotifications` and `EventStream` components
-from the packaged StrolchConfiguration.xml. Each connection is bounded to 1000
-pending/in-flight frames, 64 KiB per message and a 10-second send deadline; slow
-consumers disconnect and recover through replay. Ping/pong detects dead connections.
-A 250 ms durable poll recovers a missed post-commit wakeup. Upgrades share the REST
-global request bucket and Jetty connection cap.
+Each connection is bounded to 1000 pending/in-flight frames, 64 KiB per message and a
+10-second send deadline; slow consumers disconnect and recover through replay.
+Ping/pong detects dead connections. A 250 ms durable poll recovers a missed post-commit
+wakeup. Upgrades share the REST global request bucket and Jetty connection cap.
 
 See the [protocol, lifecycle and recovery contract](docs/architecture/014-event-stream.md).
 Verify with Java 25 and
@@ -458,17 +351,16 @@ verification procedure](docs/architecture/015-snapshot-viewer.md).
 
 ## Fail2ban notification action
 
-The distribution now includes `integrations/fail2ban/`: a Python 3 standard-library
-HTTPS notification helper and an additive Fail2ban Python action. Install the
-helper and action, provision a private root-owned PAT file, and append the action
-to each jail's existing action list. Keep the current firewall action and place
-notification last. Only new ban callbacks notify; unban/start/stop do not.
+The distribution includes `integrations/fail2ban/`: a Python 3 standard-library
+HTTPS notification helper and an additive Fail2ban Python action. Only new ban
+callbacks notify; unban/start/stop do not. See the
+[administrator guide](docs/DEPLOYMENT.md#geoip-fail2ban-and-retention) and
+[integration guide](integrations/fail2ban/README.md) for installation.
 
 **Delivery is best effort: events can be lost after three attempts within 15
 seconds during outages. There is no persistent offline queue.** Failed notification
 does not fail the normal ban action. TLS certificates are verified, and retries
 reuse the same event UUID/timestamp and JSON bytes. Tokens stay in the private file.
-See the [installation, rotation, retry policy and isolated test instructions](integrations/fail2ban/README.md).
 
 ## Runtime health and operator diagnostics
 
@@ -479,21 +371,20 @@ when GeoIP is unavailable. Only one readiness probe runs at a time; overlapping
 probes return DOWN. Monitor with a finite timeout and retry rather than treating
 one busy probe as a permanent outage.
 
-Provision an operator with both the `Viewer` and supplied `Operator` roles in
-protected Strolch configuration. After ordinary cookie login,
+The diagnostics route requires an account with both the `Viewer` and supplied
+`Operator` roles. See the [administrator guide](docs/DEPLOYMENT.md#provision-the-external-runtime-while-stopped)
+for provisioning. After ordinary cookie login,
 `GET /api/v1/diagnostics` reports process-lifetime ingestion created/duplicate/failure
 counters, active stream connections, slow-consumer disconnects, GeoIP load/build/age
 and stale/update status, and effective stream bounds. Ordinary viewers and machine
 PATs cannot read diagnostics. Responses are uncached and contain no credentials,
 IPs, instance names, payloads or filesystem paths. Counters reset on restart.
 
-Startup requires all four external runtime XML files, PostgreSQL URL/user/password,
-and nonblank privilege secretKey/secretSalt values replacing `CHANGE-ME`.
+The administrator guide covers required runtime files and deployment configuration.
 Missing optional identity/viewer files disable the corresponding access; missing
-GeoIP remains degraded. Configure ingestion limits in `ingestion.properties`,
-retention and GeoIP in `StrolchConfiguration.xml`, and the EventStream properties
-`queueFrames`, `messageBytes`, `sendSeconds`, `pollMillis` there (defaults
-1000, 65536, 10, 250). Session TTL/maximum lifetime are bounded to 1–1440 minutes.
+GeoIP remains degraded. EventStream defaults are 1000 queued frames, 65536 bytes,
+10 seconds to send, and a 250 ms poll. Session TTL/maximum lifetime are bounded to
+1–1440 minutes.
 See the [complete configuration and diagnostic contract](docs/architecture/019-runtime-operations.md)
 for ranges, database pool timeout settings and shutdown behavior.
 
@@ -501,20 +392,17 @@ Each API response carries a server-generated `X-Request-ID`; API error JSON uses
 the same ID. Incoming IDs are ignored. Default logs contain only fixed operational
 messages and at most one request-failure summary per second, with status/ID only.
 Framework/Jersey logging is disabled because it can contain connection or model
-values. The synchronous rolling file defaults to `logs/intruvia.log` relative to
-the working directory; set `-Dintruvia.log.dir=/protected/path` before `-jar` to
-choose a protected directory. Rollover uses 10 MB files, five days and a 50 MB
-archive cap (plus the active file and temporary rollover overhead). Protect that
-directory and configure service-manager console retention. Replacing the logging
-configuration can re-enable sensitive framework logs; review it before use.
+values. Replacing the logging configuration can re-enable sensitive framework logs;
+review it before use. See the [administrator guide](docs/DEPLOYMENT.md) for log and
+service-manager configuration.
 
 On SIGTERM/Ctrl+C, new API work is rejected, readiness fails, active API calls drain,
-then the stream, Jetty, Strolch jobs, GeoIP readers and persistence close. Allow at
-least 90 seconds in the service manager. If request drain exceeds 30 seconds,
-shutdown reports failure and leaves persistence running for that call; it does not
-destroy storage under active writes. Forced termination still relies on PostgreSQL
-transaction atomicity and durable replay. No delivery through a long producer outage
-is promised by the notification helper.
+then the stream, Jetty, Strolch jobs, GeoIP readers and persistence close. The
+administrator guide covers service-manager timeout configuration. If request drain
+exceeds 30 seconds, shutdown reports failure and leaves persistence running for that
+call; it does not destroy storage under active writes. Forced termination still relies
+on PostgreSQL transaction atomicity and durable replay. No delivery through a long
+producer outage is promised by the notification helper.
 
 ### Full MVP and capacity verification
 
@@ -528,9 +416,10 @@ the existence of this harness does not establish a passing capacity or release g
 The capacity fixture matches production environment-mode pool defaults: 10
 connections, 30,000 ms acquisition and 5,000 ms validation timeout. XML-credential
 runtimes instead use their XML pool settings; the template's 3,000 ms acquisition
-budget can reject requests during a concurrent burst. Configure a finite pool
-budget for your workload and allow for acquisition plus validation in readiness
-monitor timeouts. The validation report lists separate burst latency and failures.
+budget can reject requests during a concurrent burst. See the [administrator
+guide](docs/DEPLOYMENT.md) and [runtime operations
+contract](docs/architecture/019-runtime-operations.md) for pool and readiness-monitor
+configuration. The validation report lists separate burst latency and failures.
 
 Task 020's measured combined-workload p95 was 951/961 ms across the two browsers;
 receipt-to-frame p95 was 29 ms. All 3,100 events committed and appeared. The burst
@@ -538,11 +427,8 @@ phase alone had about 9.2 seconds p95, so this is not a one-second guarantee for
 each phase or request. See the [report](docs/verification/020-acceptance.txt) for
 raw measurements, failed attempts, hardware and receipt-population limits.
 
-## Deployment and recovery
+## Release evidence
 
-Follow the [installation and recovery guide](docs/DEPLOYMENT.md) for protected user/PAT
-provisioning, TLS/WSS proxying, service setup, GeoIP/Fail2ban operations and a coordinated
-PostgreSQL/runtime backup and restore. Deployment recipes are packaged in `docs/`.
 See [task 021 rehearsal evidence](docs/verification/021-acceptance.txt) for measured results
 and limits. See the [0.0.1 release notes](docs/RELEASE_NOTES.md) and
 [release acceptance checklist](docs/verification/022-acceptance.md) for the reviewed
