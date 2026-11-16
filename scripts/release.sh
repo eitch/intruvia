@@ -29,11 +29,11 @@ current_version=$(python3 "$root/scripts/update-maven-reactor-version.py" check 
 	fail 'Unable to read a consistent Maven reactor version'
 
 printf 'Current Maven version: %s\n' "$current_version"
-printf '%s\n' 'Choose the release type: major, minor, or updated (patch).'
+printf '%s\n' 'Choose the release type: major, minor, or patch.'
 read -r -p 'Release type: ' release_type || fail 'No release type was entered'
 case $release_type in
-	major|minor|updated) ;;
-	*) fail 'Release type must be major, minor, or updated' ;;
+	major|minor|patch) ;;
+	*) fail 'Release type must be major, minor, or patch' ;;
 esac
 
 if ! versions=$(python3 - "$current_version" "$release_type" <<'PY'
@@ -49,7 +49,7 @@ if kind == "major":
     major, minor, patch = major + 1, 0, 0
 elif kind == "minor":
     minor, patch = minor + 1, 0
-elif kind == "updated":
+elif kind == "patch":
     patch += 1
 else:
     raise SystemExit("Unsupported release type")

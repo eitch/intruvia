@@ -274,19 +274,19 @@ expected_tag=v1.3.0
 setup_project minor 1.2.3
 assert_success 1.3.0 1.3.1-SNAPSHOT v1.3.0
 
-release_type=updated
+release_type=patch
 expected_release=1.2.4
 expected_tag=v1.2.4
-setup_project updated 1.2.3
+setup_project patch 1.2.3
 assert_success 1.2.4 1.2.5-SNAPSHOT v1.2.4
 
-release_type=updated
+release_type=patch
 expected_release=1.2.4
 expected_tag=v1.2.4
 setup_project snapshot 1.2.3-SNAPSHOT
 assert_success 1.2.4 1.2.5-SNAPSHOT v1.2.4
 
-release_type=updated
+release_type=patch
 expected_release=1.2.4
 expected_tag=v1.2.4
 setup_project dirty 1.2.3
@@ -309,6 +309,13 @@ fi
 	fail 'invalid release type modified POMs'
 
 release_type=updated
+setup_project old-release-type 1.2.3
+expect_failure 'Release type must be major, minor, or patch'
+[[ ! -s $log ]] || fail 'old release type performed release actions'
+[[ $(python3 "$project/scripts/update-maven-reactor-version.py" check "$project") == 1.2.3 ]] ||
+	fail 'old release type modified POMs'
+
+release_type=patch
 setup_project existing-local-tag 1.2.3
 "$real_git" -C "$project" tag v1.2.4
 expect_failure 'Local Git tag v1.2.4 already exists'

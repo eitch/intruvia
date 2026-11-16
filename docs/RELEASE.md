@@ -20,7 +20,7 @@ From the repository root, run:
 scripts/release.sh
 ```
 
-The script reads the current root Maven version and asks whether this is a `major`, `minor`, or `updated` release. `updated` means a patch increment. It accepts a plain `MAJOR.MINOR.PATCH` version or that version with `-SNAPSHOT`, and increments the selected component from the current numeric version. For example, from `1.4.2-SNAPSHOT`, `minor` selects release `1.5.0`; after any successful release, the next development version is the next patch `-SNAPSHOT` (for example, `1.5.1-SNAPSHOT`).
+The script reads the current root Maven version and asks whether this is a `major`, `minor`, or `patch` release. It accepts a plain `MAJOR.MINOR.PATCH` version or that version with `-SNAPSHOT`, and increments the selected component from the current numeric version. For example, from `1.4.2-SNAPSHOT`, `minor` selects release `1.5.0`; after any successful release, the next development version is the next patch `-SNAPSHOT` (for example, `1.5.1-SNAPSHOT`).
 
 Before editing the POMs, the script prints the proposed Maven version, `vVERSION` tag, image reference, GitHub asset names and next `-SNAPSHOT` version. Confirm that the release gates have been reviewed, then type the exact proposed tag (for example `v1.5.0`) to authorize the release. Any other input cancels before release files are changed.
 
