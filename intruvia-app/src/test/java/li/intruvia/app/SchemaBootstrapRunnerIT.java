@@ -23,7 +23,7 @@ public class SchemaBootstrapRunnerIT {
 
 	private static final String CANARY = "bootstrap-secret-canary-42f3bc";
 	private static final String FAILURE = "Schema bootstrap failed; preserve the protected runtime and follow recovery instructions";
-	private static final Path JAR = Path.of("target/intruvia/intruvia-app-0.0.1.jar").toAbsolutePath();
+	private static final Path JAR = TestArtifacts.applicationJar();
 	private DatabaseFixture database;
 
 	@Before

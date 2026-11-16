@@ -257,6 +257,6 @@ public class FirstStartProvisionerIT {
 		return Files.createFile(path, PosixFilePermissions.asFileAttribute(RuntimeLock.FILE_PERMISSIONS));
 	}
 
-	private static Path jar() { return Path.of("target/intruvia/intruvia-app-0.0.1.jar").toAbsolutePath().normalize(); }
+	private static Path jar() { return TestArtifacts.applicationJar(); }
 	private static Path templates() { return Path.of("src/main/runtime").toAbsolutePath().normalize(); }
 }

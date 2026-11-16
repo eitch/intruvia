@@ -37,10 +37,11 @@ public class ApplicationIT {
 
 	@Test(timeout = 60000)
 	public void assembledApplicationServesPageAndHealthThenTerminates() throws Exception {
-		Path distribution = Path.of("target/intruvia").toAbsolutePath();
+		Path applicationJar = TestArtifacts.applicationJar();
+		Path distribution = applicationJar.getParent();
 		Path log = Path.of("target/application-smoke.log").toAbsolutePath();
 		ProcessBuilder builder = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin/java").toString(),
-				"-jar", distribution.resolve("intruvia-app-0.0.1.jar").toString(), this.database.runtime.toString(), "0")
+				"-jar", applicationJar.toString(), this.database.runtime.toString(), "0")
 				.directory(distribution.toFile()).redirectErrorStream(true).redirectOutput(log.toFile());
 		builder.environment().putAll(this.database.productionEnvironment());
 		builder.environment().put("INTRUVIA_BIND_ADDRESS", TEST_BIND_ADDRESS);
