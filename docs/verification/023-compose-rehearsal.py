@@ -30,7 +30,7 @@ ENV = {key: os.environ[key] for key in (
 		'DOCKER_TLS_VERIFY', 'XDG_RUNTIME_DIR', 'LANG') if key in os.environ}
 FILES = {
 		'.env', 'Caddyfile', 'LICENSE', 'LICENSE-Strolch', 'README.md', 'compose.yaml', 'db/init.sh',
-		'docs/DEPLOYMENT.md', 'docs/DEVELOPER_DEPLOYMENT.md', 'docs/deployment/compose-initialization-recovery.md',
+		'docs/DEPLOYMENT.md', 'docs/RELEASE.md', 'docs/deployment/compose-initialization-recovery.md',
 		'integrations/fail2ban/README.md', 'integrations/fail2ban/intruvia.py',
 		'integrations/fail2ban/intruvia_notify.py', 'integrations/fail2ban/jail.local.example',
 		'runtime-templates/config/StrolchConfiguration.xml', 'runtime-templates/config/PrivilegeConfig.xml.example',
