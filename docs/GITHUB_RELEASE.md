@@ -13,10 +13,11 @@ Before running the script, the release owner must:
    the validated Strolch `2.8.0-1` release and the exact release commit. The script's
    Maven verification is not a substitute for the task 022 release review or an
    operator's release approval.
-2. Resolve and record any release blockers. Task 023's registry publication/pull,
-   different-binary upgrade and remaining deployment checks are tracked separately;
-   this source-release script does not pass or clear them. Do not represent an
-   unverified image or bundle as part of this release.
+2. Resolve and record any release blockers. Task 023's published `0.0.2` image was
+   pulled, audited and upgraded from `0.0.1`; its digest, state-retention evidence and
+   unrun environment-specific checks are recorded in `docs/verification/023-acceptance.md`.
+   This source-release script does not perform Docker image or deployment-bundle
+   publication; do not infer those actions from a successful GitHub source release.
 3. Prepare reviewed GitHub release notes and the final Mastodon text as UTF-8 files.
    Mastodon text is limited to 500 characters by the script.
 4. Confirm the exact GitHub.com owner/repository, configured remote name and URL,

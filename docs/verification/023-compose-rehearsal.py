@@ -30,7 +30,7 @@ ENV = {key: os.environ[key] for key in (
 		'DOCKER_TLS_VERIFY', 'XDG_RUNTIME_DIR', 'LANG') if key in os.environ}
 FILES = {
 		'.env', 'Caddyfile', 'LICENSE', 'LICENSE-Strolch', 'README.md', 'compose.yaml', 'db/init.sh',
-		'docs/DEPLOYMENT.md', 'docs/deployment/compose-initialization-recovery.md',
+		'docs/DEPLOYMENT.md', 'docs/DEVELOPER_DEPLOYMENT.md', 'docs/deployment/compose-initialization-recovery.md',
 		'integrations/fail2ban/README.md', 'integrations/fail2ban/intruvia.py',
 		'integrations/fail2ban/intruvia_notify.py', 'integrations/fail2ban/jail.local.example',
 		'runtime-templates/config/StrolchConfiguration.xml', 'runtime-templates/config/PrivilegeConfig.xml.example',
@@ -121,6 +121,7 @@ def listener_port():
 class Rehearsal:
 	def __init__(self, directory, project, port, image, db_image, proxy_image, passwords):
 		self.directory = directory
+		self.image = image
 		self.project = project
 		self.port = port
 		self.origin = f'https://localhost:{port}'
@@ -311,70 +312,116 @@ def archive_member_hash(archive, name):
 		return hashlib.sha256(bundle.extractfile(name).read()).hexdigest()
 
 
+def distribution_artifacts(distribution):
+	applications = sorted(distribution.glob('intruvia-app-*.jar'))
+	libraries = sorted((distribution / 'lib').glob('*.jar'))
+	require(len(applications) == 1 and libraries and list((distribution / 'lib').glob('strolch-*.jar')),
+			'prebuilt distribution is missing its application or runtime libraries')
+	with zipfile.ZipFile(applications[0]) as jar:
+		names = set(jar.namelist())
+		require({'li/intruvia/app/DeploymentEntrypoint.class', 'PrivilegeTool.class'} <= names,
+				'prebuilt application JAR lacks container entrypoint or offline privilege tool')
+	return applications[0], libraries
+
+
+def audit_image_payload(image, distribution, name, identifier, work):
+	application, libraries = distribution_artifacts(distribution)
+	image_data = json.loads(run(['docker', 'image', 'inspect', image], timeout=30))[0]
+	require(image_data['Config']['User'] == '10001:10001', f'{name} image does not use expected unprivileged user')
+	print(f'{name.capitalize()} image: {image}; ID {image_data["Id"]}; registry digests {image_data.get("RepoDigests") or []}', flush=True)
+	container = f'intruvia-023-audit-{name}-{identifier}'
+	require(not run(['docker', 'container', 'ls', '--all', '--quiet', '--filter', f'name=^/{container}$'], timeout=30).strip(),
+			f'generated {name} audit container already exists')
+	run(['docker', 'create', '--name', container, image], timeout=30)
+	try:
+		copied = work / f'{name}-image-content'
+		copied.mkdir()
+		run(['docker', 'cp', f'{container}:/opt/intruvia/intruvia-app.jar', copied / 'intruvia-app.jar'], timeout=120)
+		run(['docker', 'cp', f'{container}:/opt/intruvia/lib', copied / 'lib'], timeout=120)
+		require(digest(application) == digest(copied / 'intruvia-app.jar'), f'{name} image application differs from its prebuilt JAR')
+		require({path.name: digest(path) for path in libraries} ==
+				{path.name: digest(path) for path in (copied / 'lib').iterdir()},
+				f'{name} image libraries differ from its prebuilt JARs')
+		print(f'PASS: {name} image app and all {len(libraries)} library JAR hashes match its prebuilt distribution', flush=True)
+		return image_data, copied / 'intruvia-app.jar'
+	finally:
+		run(['docker', 'container', 'rm', container], timeout=30)
+
+
 def main():
 	os.umask(0o077)
 	identifier = uuid.uuid4().hex
-	image = f'intruvia-023-{identifier}:1.0'
-	container = f'intruvia-023-audit-{identifier}'
-	version = '1.0-' + identifier
+	baseline_image = os.environ.get('INTRUVIA_BASELINE_IMAGE') or os.environ.get('INTRUVIA_REHEARSAL_IMAGE')
+	candidate_image = os.environ.get('INTRUVIA_CANDIDATE_IMAGE')
+	baseline_dist = Path(os.environ.get('INTRUVIA_BASELINE_DIST', DIST)).resolve()
+	candidate_dist_setting = os.environ.get('INTRUVIA_CANDIDATE_DIST')
+	candidate_dist = Path(candidate_dist_setting).resolve() if candidate_dist_setting else baseline_dist
+	version = os.environ.get('INTRUVIA_REHEARSAL_VERSION') or '1.0-' + identifier
+	require(not candidate_image or baseline_image is not None,
+			'a candidate upgrade requires an explicit baseline image')
+	require(not candidate_image or candidate_dist_setting is not None,
+			'a candidate upgrade requires INTRUVIA_CANDIDATE_DIST')
+	image = baseline_image or f'intruvia-023-{identifier}:1.0'
+	bundle_image = candidate_image or image
 	work = None
 	image_may_exist = False
-	container_created = False
 	preexisting_ids = set()
 	cleanup_errors = []
 	images = []
 	rehearsals = []
+	candidate_image_data = None
 	try:
-		applications = sorted(DIST.glob('intruvia-app-*.jar'))
-		libraries = sorted((DIST / 'lib').glob('*.jar'))
-		require(len(applications) == 1 and libraries and list((DIST / 'lib').glob('strolch-*.jar')),
-				'prebuilt distribution is missing its application or runtime libraries')
-		with zipfile.ZipFile(applications[0]) as jar:
-			names = set(jar.namelist())
-			require({'li/intruvia/app/DeploymentEntrypoint.class', 'PrivilegeTool.class'} <= names,
-					'prebuilt application JAR lacks container entrypoint or offline privilege tool')
-		print(f'Prebuilt application: {applications[0]} sha256:{digest(applications[0])}; {len(libraries)} libraries', flush=True)
+		application, libraries = distribution_artifacts(baseline_dist)
+		print(f'Baseline distribution: {baseline_dist}; application sha256:{digest(application)}; {len(libraries)} libraries', flush=True)
+		if candidate_image:
+			candidate_application, candidate_libraries = distribution_artifacts(candidate_dist)
+			print(f'Candidate distribution: {candidate_dist}; application sha256:{digest(candidate_application)}; '
+					f'{len(candidate_libraries)} libraries', flush=True)
 		run(['docker', 'info', '--format', '{{.ServerVersion}}'], timeout=30)
 		preexisting_ids = set(run(['docker', 'image', 'ls', '--all', '--no-trunc', '--quiet'], timeout=30).decode().splitlines())
-		require(not run(['docker', 'image', 'ls', '--quiet', image], timeout=30).strip(), 'generated image tag already exists')
-		require(not run(['docker', 'container', 'ls', '--all', '--quiet', '--filter', f'name=^/{container}$'], timeout=30).strip(),
-				'generated container name already exists')
+		if not baseline_image:
+			require(not run(['docker', 'image', 'ls', '--quiet', image], timeout=30).strip(), 'generated image tag already exists')
 		work = Path(tempfile.mkdtemp(prefix='intruvia-023-', dir=ROOT / 'target'))
-		print(f'Private workspace: {work}; local image: {image}', flush=True)
-		image_may_exist = True
-		build_output = run([ROOT / 'scripts/build-deployment-image.sh', image, DIST])
-		print('Build stdout SHA-256: ' + hashlib.sha256(build_output).hexdigest(), flush=True)
-		image_data = json.loads(run(['docker', 'image', 'inspect', image], timeout=30))[0]
+		print(f'Private workspace: {work}; baseline image: {image}; bundle image: {bundle_image}', flush=True)
+		if baseline_image:
+			print('Using the pre-pulled baseline image; it will not be modified or removed.', flush=True)
+		else:
+			image_may_exist = True
+			build_output = run([ROOT / 'scripts/build-deployment-image.sh', image, baseline_dist])
+			print('Build stdout SHA-256: ' + hashlib.sha256(build_output).hexdigest(), flush=True)
+		image_data, image_application = audit_image_payload(image, baseline_dist, 'baseline', identifier, work)
 		image_id = image_data['Id']
-		require(image_data['Config']['User'] == '10001:10001', 'image does not use expected unprivileged user')
-		print(f'Built local image ID: {image_id}', flush=True)
-		run(['docker', 'create', '--name', container, image], timeout=30)
-		container_created = True
-		copied = work / 'image-content'
-		copied.mkdir()
-		run(['docker', 'cp', f'{container}:/opt/intruvia/intruvia-app.jar', copied / 'intruvia-app.jar'], timeout=120)
-		run(['docker', 'cp', f'{container}:/opt/intruvia/lib', copied / 'lib'], timeout=120)
-		require(digest(applications[0]) == digest(copied / 'intruvia-app.jar'), 'image application differs from prebuilt JAR')
-		require({p.name: digest(p) for p in libraries} == {p.name: digest(p) for p in (copied / 'lib').iterdir()},
-				'image libraries differ from prebuilt JARs')
-		print('PASS: image app and all library JAR hashes match the prebuilt distribution', flush=True)
+		if candidate_image:
+			candidate_image_data, candidate_image_application = audit_image_payload(
+					candidate_image, candidate_dist, 'candidate', identifier, work)
+			require(candidate_image_data['Id'] != image_id, 'candidate upgrade has the same image ID as the baseline')
+			require(digest(candidate_image_application) != digest(image_application),
+					'candidate application JAR is byte-identical to the baseline; refusing a same-binary upgrade')
+			print(f'PASS: distinct application JARs; baseline sha256:{digest(image_application)}, '
+					f'candidate sha256:{digest(candidate_image_application)}', flush=True)
 		out = work / 'out'
 		out.mkdir()
 		extracted = work / 'extracted'
 		extracted.mkdir()
-		run([ROOT / 'scripts/build-deployment-tarball.sh', version, image, out])
-		inspect_archive(out / f'intruvia-deployment-{version}.tar.gz', image, extracted)
+		run([ROOT / 'scripts/build-deployment-tarball.sh', version, bundle_image, out])
+		inspect_archive(out / f'intruvia-deployment-{version}.tar.gz', bundle_image, extracted)
 		restored_dir = work / 'restored'
 		shutil.copytree(extracted, restored_dir)
 		db_image = f'intruvia-023-db-{identifier}:1.0'
 		proxy_image = f'intruvia-023-caddy-{identifier}:1.0'
-		upgrade_image = f'intruvia-023-upgrade-{identifier}:2.0'
-		for tag, base in [(db_image, 'postgres:18-bookworm'), (proxy_image, 'caddy:2'), (upgrade_image, image)]:
+		for tag, base in [(db_image, 'postgres:18-bookworm'), (proxy_image, 'caddy:2')]:
 			require(not run(['docker', 'image', 'ls', '--quiet', tag], timeout=30).strip(), 'generated image already exists')
 			images.append(tag)
-			derived_id = build_derived(tag, base, identifier)
-			if tag == upgrade_image:
-				require(derived_id != image_id, 'upgrade must have a genuinely new image ID')
+			build_derived(tag, base, identifier)
+		upgrade_image = candidate_image or f'intruvia-023-upgrade-{identifier}:2.0'
+		if candidate_image:
+			upgrade_image_id = candidate_image_data['Id']
+		else:
+			require(not run(['docker', 'image', 'ls', '--quiet', upgrade_image], timeout=30).strip(),
+					'generated upgrade image already exists')
+			images.append(upgrade_image)
+			upgrade_image_id = build_derived(upgrade_image, image, identifier)
+			require(upgrade_image_id != image_id, 'label-only upgrade must have a new image ID')
 		passwords = tuple(secrets.token_urlsafe(36) for _ in range(4))
 		REDACT.extend(passwords)
 		port = listener_port()
@@ -431,17 +478,27 @@ def main():
 		before_env = primary.env_file.read_text()
 		primary.env_file.write_text(before_env.replace('INTRUVIA_IMAGE=' + image, 'INTRUVIA_IMAGE=' + upgrade_image))
 		primary.wait()
-		require(primary.ingest(event, new, 200)['id'] == first['id'], 'upgrade lost persisted event')
+		after_upgrade_start = fingerprint(primary)
+		changed_tables = [table for table in before_db.keys() | after_upgrade_start.keys()
+				if before_db.get(table) != after_upgrade_start.get(table)]
+		require(not changed_tables, 'upgrade changed database state during startup in tables: ' + ', '.join(changed_tables))
+		upgrade_retry = primary.ingest(event, new, 200)
+		require(upgrade_retry['duplicate'] and upgrade_retry['id'] == first['id'] and
+				upgrade_retry['sequence'] == first['sequence'], 'upgrade lost persisted event or valid PAT')
+		primary.ingest(event, old, 401)
 		primary.websocket(primary.login())
 		cid = primary.compose('ps', '-q', 'app').decode().strip()
 		running_image = run(['docker', 'inspect', '--format', '{{.Image}}', cid], timeout=30).decode().strip()
-		require(running_image == derived_id, 'upgrade container image ID mismatch')
+		require(running_image == upgrade_image_id, 'upgrade container image ID mismatch')
 		primary.stop()
 		require(archive_member_hash(primary.runtime_archive(), 'runtime/config/PrivilegeConfig.xml') == before_privilege,
 				'upgrade changed runtime privilege secrets')
 		require(all(line in primary.env_file.read_text().splitlines() for line in before_env.splitlines() if not line.startswith('INTRUVIA_IMAGE=')),
 				'upgrade changed database credentials')
-		print('PASS: new image ID upgrade retained runtime privilege secrets, database credentials and persisted event', flush=True)
+		if candidate_image:
+			print('PASS: distinct application image upgrade retained event/receipt, valid and revoked PAT behavior, viewer login/WSS, database state, runtime privilege secrets and credentials', flush=True)
+		else:
+			print('PASS: label-only image replacement retained runtime state; this is not a different-binary upgrade', flush=True)
 		before_db = fingerprint(primary)
 		dump_command = 'export PGPASSWORD="$INTRUVIA_DB_PASSWORD"; exec pg_dump -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" --format=custom --no-owner --no-acl'
 		dump = primary.compose('exec', '-T', 'db', 'sh', '-c', dump_command)
@@ -449,7 +506,7 @@ def main():
 		for name, data in [('database.dump', dump), ('runtime.tar.gz', runtime)]:
 			(work / name).write_bytes(data)
 			print(f'Backup {name} sha256:{hashlib.sha256(data).hexdigest()}', flush=True)
-		restored.chown_secrets(image, '10001:10001')
+		restored.chown_secrets(upgrade_image, '10001:10001')
 		restored.compose('up', '-d', '--wait', '--wait-timeout', '180', 'db', timeout=240)
 		restore_command = 'export PGPASSWORD="$INTRUVIA_DB_PASSWORD"; exec pg_restore -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" --exit-on-error --single-transaction --no-owner --no-acl'
 		restored.compose('exec', '-T', 'db', 'sh', '-c', restore_command, input=dump)
@@ -465,12 +522,14 @@ def main():
 		restored.ingest(event, old, 401)
 		print('PASS: coordinated full backup restored to fresh project/database/runtime; table fingerprints, login, WSS, event and revocation preserved', flush=True)
 		print('Restore risk: later events and revocations can be lost; sequences can be reused and tokens resurrected.', flush=True)
-		print('UNRUN: registry publication, public CA and release verification.', flush=True)
+		if not candidate_image:
+			print('UNRUN: genuine different-binary upgrade.', flush=True)
+		print('UNRUN: public DNS/CA issuance, rootless UID mapping and power-loss behavior.', flush=True)
 	finally:
 		for rehearsal in reversed(rehearsals):
 			try:
 				rehearsal.compose('down', '--volumes', '--remove-orphans', timeout=240)
-				rehearsal.chown_secrets(image, f'{os.getuid()}:{os.getgid()}')
+				rehearsal.chown_secrets(rehearsal.image, f'{os.getuid()}:{os.getgid()}')
 			except (RuntimeError, OSError, subprocess.TimeoutExpired) as error:
 				cleanup_errors.append(f'project {rehearsal.project}: {error}')
 		for tag in reversed(images):
@@ -479,11 +538,6 @@ def main():
 					run(['docker', 'image', 'rm', '--no-prune', tag], timeout=30)
 			except (RuntimeError, OSError, subprocess.TimeoutExpired) as error:
 				cleanup_errors.append(f'image {tag}: {error}')
-		if container_created:
-			try:
-				run(['docker', 'container', 'rm', container], timeout=30)
-			except (RuntimeError, OSError, subprocess.TimeoutExpired) as error:
-				cleanup_errors.append(f'container {container}: {error}')
 		if image_may_exist:
 			try:
 				ids = run(['docker', 'image', 'ls', '--no-trunc', '--quiet', image], timeout=30).decode().splitlines()

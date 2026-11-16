@@ -9,15 +9,21 @@ allowlisted runtime templates, and support documentation; the image contains onl
 prebuilt application and dependency JARs. Release scripts use `repo.strolch.li/intruvia`
 and derive the matching version from the root Maven POM.
 
-> **Release prerequisites:** Strolch `2.8.0-1` is now pinned and validated from the
-> published release repository, including its PAT persistence fixes. Task 023 remains
-> blocked on publishing the Intruvia image, pulling that exact image from the registry,
-> and completing the different-binary upgrade and other release acceptance checks. Do
-> not describe a bundle as deployable until those checks pass.
+> **Release prerequisites:** Strolch `2.8.0-1` is pinned and validated from the
+> published release repository, including its PAT persistence fixes. The published
+> `repo.strolch.li/intruvia:0.0.2` image was pulled, audited and upgraded from `0.0.1`
+> with state preserved; Task 023 acceptance is recorded in
+> [the verification report](verification/023-acceptance.md). Public DNS/CA issuance,
+> rootless UID mapping and power-loss behavior remain unrun and are explicitly noted.
 
 The root POM is the single source for the release version. Review it and the repository
 constant in `scripts/release-config.sh`; no image, version, or output assignments are
 required.
+
+> **Version warning:** The `0.0.2` validation image was built and pushed from an
+> isolated copy; this checkout's POMs remain at `0.0.1`. Running the no-argument build
+> script from this checkout would target `0.0.1`, not `0.0.2`; do not run it until the
+> release version is intentionally advanced and reviewed.
 
 ## 1. Assemble the Maven distribution
 
