@@ -140,7 +140,7 @@ awk '
 				seen["INTRUVIA_DB_NAME"] != 1 || seen["INTRUVIA_DB_USERNAME"] != 1) exit 1
 	}
 ' "$stage/env.example" || { printf 'Unsafe or unexpected deployment environment template\n' >&2; exit 1; }
-matches_baseline "$stage/env.example" bd9cdb7c984420b2c729dc1780fbd6e061f744f6f11deafd10c72d75908a5a53 || {
+matches_baseline "$stage/env.example" 1ca01b4907c0a4dee1c63ca59ce1bc6aa13a8ae0c62326c2c46eab9453842ba2 || {
 	printf 'Unsafe or unexpected deployment environment template\n' >&2
 	exit 1
 }
