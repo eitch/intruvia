@@ -3,6 +3,7 @@ package li.intruvia.app;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.CharBuffer;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -33,17 +34,33 @@ public final class DeploymentEntrypoint {
 		if (!Files.isRegularFile(jar)) throw ProvisioningFiles.failure();
 		try (var lock = RuntimeLock.acquire(runtime)) {
 			if (args[3].equals("serve") && args.length == 4) {
-				Path password = Path.of(environment.getOrDefault("INTRUVIA_VIEWER_PASSWORD_FILE", "/run/secrets/viewer-password"));
-				FirstStartProvisioner.ensureInitialized(lock, runtime, templates, password,
+				char[] password = FirstStartProvisioner.ensureInitialized(lock, runtime, templates,
 						environment.get("INTRUVIA_PUBLIC_ORIGIN"), environment, jar);
+				if (password != null) displayPassword("Initial viewer password (shown once; save it now):", password);
 				IntruviaApplication.main(new String[]{runtime.toString(), Integer.toString(port)});
 				return 0;
 			}
 			if (!args[3].equals("offline")) throw ProvisioningFiles.failure();
 			FirstStartProvisioner.validateExisting(lock, runtime);
 			List<String> command = Arrays.asList(Arrays.copyOfRange(args, 4, args.length));
+			if (command.equals(List.of("reset-viewer-password"))) {
+				char[] password = FirstStartProvisioner.resetViewerPassword(lock, runtime, jar);
+				displayPassword("Replacement viewer password (shown once; save it now):", password);
+				return 0;
+			}
 			validateOffline(command);
 			return PrivilegeToolRunner.offline(jar, runtime.resolve("config"), command);
+		}
+	}
+
+	private static void displayPassword(String label, char[] password) {
+		try {
+			System.out.println(label);
+			System.out.append(CharBuffer.wrap(password));
+			System.out.println();
+			System.out.flush();
+		} finally {
+			Arrays.fill(password, '\0');
 		}
 	}
 

@@ -11,169 +11,100 @@ Developers preparing a release should use the [release procedure](RELEASE.md).
 
 ## Compose deployment
 
-This is the administrator's container path. Use Docker Engine and Compose on a trusted
-host. Get the exact bundle version and GitHub release tag from the release owner. The
-checksum detects transfer errors; it does not authenticate the publisher. Release scripts
-target `repo.strolch.li/intruvia` and the root POM version, but registry publication,
-image pull and public-CA validation are not assumed to have passed.
+This is the administrator's container path. Use Docker Engine and Compose. The checksum
+detects transfer errors; it does not authenticate the publisher. Release scripts target
+`repo.strolch.li/intruvia` and the root POM version, but registry publication, image pull
+and public-CA validation are not assumed to have passed.
+
+**Credential compatibility:** the published `0.0.2` image predates generated viewer
+passwords and still uses the old password-file behavior. Do not use that image with the
+file-free startup instructions below or create a plaintext viewer-password file as a
+workaround. Use this new workflow only with a versioned bundle and image that include
+task 025; no such release is claimed here. Existing installations and legacy files are
+preserved when upgraded, and the new application does not read or delete a legacy file.
+This change applies to the Compose lifecycle; the standalone JAR entrypoint and its
+external-runtime provisioning procedure remain unchanged.
 
 ### Download, verify and unpack the bundle
 
-Replace both values with those supplied by the release owner. Run this in a directory
-where the new download directory does not already exist:
+Obtain a bundle version confirmed by the release owner to include task 025, and set
+`INTRUVIA_VERSION` to that version. No compatible published release is claimed here.
+Run these commands from a new, empty working directory. They download and verify that
+bundle, extract it into `intruvia`, and generate both database passwords in its fresh
+`.env`. The commands require `wget`, `sha256sum`, GNU `tar` and GNU `sed`; macOS's
+built-in BSD `tar` and `sed` do not support the options used here, so use GNU versions.
 
 ```bash
-(
-  set -eu
-  VERSION='<bundle-version>'
-  RELEASE_TAG='<GitHub-release-tag>'
-  ARCHIVE="intruvia-deployment-${VERSION}.tar.gz"
-  RELEASE_URL="https://github.com/eitch/intruvia/releases/download/${RELEASE_TAG}"
+set -eu
+: "${INTRUVIA_VERSION:?Set a release version that includes task 025}"
+wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz
+wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256
+sha256sum -c "intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256"
 
-  mkdir -m 0700 "intruvia-download-${VERSION}"
-  cd "intruvia-download-${VERSION}"
-  curl -fL "$RELEASE_URL/$ARCHIVE" -o "$ARCHIVE"
-  curl -fL "$RELEASE_URL/$ARCHIVE.sha256" -o "$ARCHIVE.sha256"
-  sha256sum -c "$ARCHIVE.sha256"
-  mkdir -m 0700 bundle
-  tar -xpzf "$ARCHIVE" -C bundle
-  chmod 0700 bundle
-  cd bundle
-)
+tar -xpzf intruvia-deployment-$INTRUVIA_VERSION.tar.gz --one-top-level=intruvia
+chmod 0700 intruvia
+cd intruvia
+
+# Generate secure secrets (openssl ships with Git on Windows, standard on macOS/Linux)
+sed -i "s/POSTGRES_ADMIN_PASSWORD=/POSTGRES_ADMIN_PASSWORD=$(openssl rand -hex 16)/" .env
+sed -i "s/INTRUVIA_DB_PASSWORD=/INTRUVIA_DB_PASSWORD=$(openssl rand -hex 16)/" .env
 ```
 
-Preserving the archive modes (`-p`) keeps the read-only templates and database
-initializer readable by the container users even if your shell uses `umask 077`. Do not
-continue if either download or checksum verification fails.
+Run the password substitutions only once, immediately after extracting a fresh bundle
+and before editing `.env`. Rerunning them after the values are set can append to the
+existing passwords. Preserving archive modes (`-p`) keeps the read-only templates and
+database initializer readable by the container users even if your shell uses `umask 077`.
+Do not continue if either download or checksum verification fails.
 
 ### Configure and start
 
-Do these five steps in order:
+Do these three steps in order:
 
-1. Generate the two database passwords in the supplied `.env`. This command refuses to
-   replace non-empty passwords, generates both values before changing the file, and
-   atomically replaces `.env` with a mode-`0600` file. It requires Python 3 and OpenSSL.
-   If it fails, `.env` contents are unchanged; fix the reported issue before retrying.
-
-   ```bash
-   python3 - <<'PY'
-   import os
-   from pathlib import Path
-   import re
-   import subprocess
-   import tempfile
-
-   path = Path('.env')
-   if path.is_symlink() or not path.is_file():
-       raise SystemExit('.env must be a regular file')
-   lines = path.read_text().splitlines(keepends=True)
-   keys = ('POSTGRES_ADMIN_PASSWORD', 'INTRUVIA_DB_PASSWORD')
-   positions = {}
-   for index, line in enumerate(lines):
-       key, separator, value = line.rstrip('\r\n').partition('=')
-       if separator and key in keys:
-           if key in positions or value:
-               raise SystemExit(f'{key} must occur once and be blank; refusing to overwrite')
-           positions[key] = index
-   if set(positions) != set(keys):
-       raise SystemExit('Both blank database password settings must exist in .env')
-
-   passwords = {}
-   for key in keys:
-       result = subprocess.run(
-           ['openssl', 'rand', '-hex', '32'], check=True, capture_output=True, text=True
-       )
-       value = result.stdout.strip()
-       if not re.fullmatch(r'[0-9a-f]{64}', value):
-           raise SystemExit('OpenSSL returned an invalid random password')
-       passwords[key] = value
-   if passwords[keys[0]] == passwords[keys[1]]:
-       raise SystemExit('OpenSSL returned duplicate passwords; run the command again')
-
-   for key, value in passwords.items():
-       index = positions[key]
-       ending = '\r\n' if lines[index].endswith('\r\n') else '\n' if lines[index].endswith('\n') else ''
-       lines[index] = f'{key}={value}{ending}'
-   descriptor, temporary = tempfile.mkstemp(prefix='.env.', dir=path.parent)
-   try:
-       with os.fdopen(descriptor, 'w') as output:
-           os.fchmod(output.fileno(), 0o600)
-           output.writelines(lines)
-           output.flush()
-           os.fsync(output.fileno())
-       os.replace(temporary, path)
-   except BaseException:
-       try:
-           os.unlink(temporary)
-       except FileNotFoundError:
-           pass
-       raise
-   PY
-   ```
-
-2. Set `INTRUVIA_PUBLIC_ORIGIN` to the exact public HTTPS origin (no path or trailing
+1. Set `INTRUVIA_PUBLIC_ORIGIN` to the exact public HTTPS origin (no path or trailing
    slash) using a protected editor. The supplied `.env` already contains the versioned
    `INTRUVIA_IMAGE` reference. Then check the file permissions:
 
    ```bash
-   sudoedit .env && chmod 0600 .env
+   vi .env && chmod 0600 .env
    ```
 
-   Generated passwords are distinct 64-character hexadecimal values and meet the
-   Compose password requirements. Database and role names must start with a lowercase
-   letter, use only lowercase letters, digits, or underscores, be at most 63 characters,
-   and not start with `pg_`; roles must differ and the database cannot be `postgres`,
-   `template0`, or `template1`. Treat `.env` and container environments as sensitive:
-   do not print resolved Compose configuration or expose Docker access to untrusted
-  users. Ensure shell environment variables do not override `.env` values.
+   Treat `.env` and container environments as sensitive:
+   do not print resolved Compose configuration or expose Docker access to unauthorized
+   users. Ensure shell environment variables do not override `.env` values.
 
-3. Create the initial `viewer` password file in `secrets/`. Run the following commands
-   separately from the bundle directory. The first command creates an empty file only
-   when it does not already exist; if it fails, stop and do not replace the existing
-   file. Then enter a strong password without trailing whitespace in the protected
-   editor. Never put it in command arguments, environment variables, shell history, or
-   logs.
-
-   ```bash
-   (umask 077; set -C; : > secrets/viewer-password)
-   ```
-
-   ```bash
-   sudoedit secrets/viewer-password
-   ```
-
-   Set the directory and file to container UID/GID `10001:10001`; the directory must
-   be mode `0700` and the regular file mode `0600` (or `0400`). Run these only after
-   the password file exists and has been saved:
-
-   ```bash
-   sudo chown 10001:10001 secrets secrets/viewer-password &&
-   sudo chmod 0700 secrets &&
-   sudo chmod 0600 secrets/viewer-password
-   ```
-
-   With rootless Docker or user namespaces, use the host IDs mapped to container
-   `10001:10001`. The mounted directory is read-write so initialization can remove
-   the password file.
-4. Configure DNS and firewall for the exact HTTPS origin. You own DNS, certificate
+2. Configure DNS and firewall for the exact HTTPS origin. You own DNS, certificate
    acquisition/renewal, proxy configuration, and verification. Only Caddy publishes
-   ports 80 and 443; app and PostgreSQL publish none. Trust the Docker host and proxy/
-   database networks: the app binds `0.0.0.0` inside its network. Restrict Docker and
-   network access; do not attach untrusted containers. The database network is internal.
-   Caddy blocks public health paths; check readiness from the trusted network. Protect
-   proxy state/TLS keys and review proxy logs.
-5. If required, authenticate to the registry using the release owner's instructions.
-   Then pull and start services:
+   ports 80 and 443; app and PostgreSQL publish none. The app binds `0.0.0.0` inside its
+   network, so restrict Docker access and network membership to the deployment services.
+   Do not attach unrelated containers to the proxy or database networks. The database
+   network is internal. Caddy blocks public health paths; check readiness from the host
+   or an approved monitoring path. Protect proxy state/TLS keys and review proxy logs.
+3. If required, authenticate to the registry using the release owner's instructions.
+   Pull the image and start PostgreSQL, then start the app attached to this terminal:
 
-```bash
-   docker compose pull && docker compose up -d
-```
+   ```bash
+   docker compose pull
+   docker compose up -d --wait db
+   docker compose run --rm --no-deps -T app
+   ```
 
-   PostgreSQL readiness gates app startup; app readiness gates Caddy. On first start,
-   Intruvia initializes the empty database/runtime, creates the enabled `viewer`, and
-   removes the password file. Sign in over HTTPS and check WSS. No producer mapping or
-   token operator is provisioned by default. Editing `.env` or adding another password
-   file does not change existing users/passwords.
+   Keep the first `docker compose run` attached: the generated 256-bit viewer password
+   is printed once to the attached console only after initialization succeeds.
+   Save it in a protected password manager before leaving the terminal. The app uses
+   Docker's `none` logging driver, so Docker does not retain this output; do not expect
+   `docker compose logs` to recover it or any other app stdout/stderr. Protect the
+   terminal and any recording or monitoring system that could capture its output. The
+   application stores only Strolch's password
+   hash, and restarts do not regenerate or redisplay the password. After saving it,
+   press Ctrl+C to stop the attached one-off app, then start the app and proxy in the background:
+
+   ```bash
+   docker compose up -d app caddy
+   ```
+
+   PostgreSQL readiness gates app startup; app readiness gates Caddy. Sign in over
+   HTTPS and check WSS. No producer mapping or token operator is provisioned by default.
+   Editing `.env` does not rotate existing users/passwords.
 
 ### After startup
 
@@ -181,6 +112,27 @@ Named volumes retain `postgres_data`, `runtime`, `app_logs`, `caddy_data` and
 `caddy_config` across restarts and image replacement. Protect Docker volumes and the
 host, including logs, runtime privilege files and proxy certificate state. Do not use
 `docker compose down --volumes` on an installation you intend to retain.
+
+#### Recover a missed initial viewer password
+
+The initial password cannot be recovered from the initialized runtime or Docker logs.
+Stop the app before resetting it; the reset command takes the same runtime lock and
+fails without changing credentials if the app still owns it. Run the command in an
+attached terminal and protect the one-time output:
+
+```bash
+docker compose stop app
+docker compose run --rm --no-deps -T --entrypoint /usr/local/bin/intruvia-reset-viewer-password app
+docker compose up -d app caddy
+```
+
+The script replaces only the existing `viewer` password hash atomically and prints the
+replacement once. The previous password stops working. A missing or ambiguous viewer
+record is rejected; do not edit or delete the runtime marker to bypass that failure.
+This command requires an image containing task 025 and is not available in the published
+`0.0.2` image. A legacy `secrets/viewer-password` file from an older deployment is not
+read or removed by the new application; keep it protected and remove it manually under
+your secret-handling policy once it is no longer needed.
 
 ### Operate the Compose deployment
 
@@ -195,8 +147,8 @@ paused until the new origin is verified.
    docker compose stop app
    ```
 
-2. With a trusted maintenance environment, set the same exact HTTPS origin (no path or
-   trailing slash) in both files:
+2. While the app is stopped, set the same exact HTTPS origin (no path or trailing slash)
+   in both files:
 
    ```properties
    # /var/lib/intruvia/runtime/config/viewer.properties
@@ -240,7 +192,7 @@ The initial `viewer` cannot administer tokens. Follow the [standalone role/user
 procedure](#provision-the-external-runtime-while-stopped), adapting paths to the runtime
 volume. While stopped:
 
-1. Provision a trusted `token-admin` and one ingestion-only user per producer.
+1. Provision an authorized `token-admin` and one ingestion-only user per producer.
 2. Preserve the existing viewer, SYSTEM agent, generated secrets, and other users;
    never copy fresh templates over them. Add the `Producer` and `TokenOperator` roles
    and use the generated hashes as password attributes.
@@ -275,7 +227,7 @@ docker compose run --rm --no-deps app offline revoke token-admin /run/secrets/op
 For rotation, issue a second token for the same owner, restart, replace the producer
 file securely, and verify delivery. Stop the app, revoke the old ID, then restart.
 Remove temporary password, hash, and PAT files when no longer needed. A failed issue
-may persist an orphan token before output fails; inspect/revoke it with trusted Strolch
+may persist an orphan token before output fails; inspect/revoke it with authorized Strolch
 tooling before retrying. Never erase privilege files.
 
 #### Backup and restore
@@ -393,8 +345,8 @@ no persistent queue). Review the packaged integration guide before use.
 
 #### Recover a failed first start
 
-For initialization failures, preserve the entire database, runtime, logs and remaining
-password file. In particular, `.intruvia-initializing` means an interrupted or ambiguous
+For initialization failures, preserve the entire database, runtime, logs and any
+legacy password file. In particular, `.intruvia-initializing` means an interrupted or ambiguous
 initialization: never delete markers, staging data or schema objects to force a retry.
 Follow the bundled [initialization and recovery guide](deployment/compose-initialization-recovery.md);
 restore matching backups or, only for a disposable new installation, deliberately use
@@ -468,7 +420,7 @@ Create `/etc/intruvia/database.env` as root-owned mode `0600`, then edit it:
 ```bash
 sudo install -d -o root -g root -m 0755 /etc/intruvia
 sudo install -o root -g root -m 0600 /dev/null /etc/intruvia/database.env
-sudoedit /etc/intruvia/database.env
+vi /etc/intruvia/database.env
 ```
 
 ```text
@@ -511,8 +463,8 @@ Add these roles inside `PrivilegeRoles.xml`'s existing `<Roles>` element:
 Keep the supplied SYSTEM agent and its roles. Add ENABLED users with unique userId
 and username: `viewer` with `Viewer`, optionally `Operator` for diagnostics;
 `producer-a` with `Producer`; `token-admin` with `TokenOperator`. Do not assign viewer,
-agent or operator roles to producers. The token operator is a trusted offline
-credential administrator, never a browser user or PAT owner for ingestion.
+agent or operator roles to producers. The token operator is an offline credential
+administrator, never a browser user or PAT owner for ingestion.
 
 The included source-mode Java [PrivilegeTool](deployment/PrivilegeTool.java) uses
 the configured Strolch encryption and management APIs. It requires no compilation
@@ -540,7 +492,7 @@ operator, adjusting ID/name/role. Remove temporary plaintext password/hash files
 after provisioning. The tool writes outputs with CREATE_NEW and mode 0600; it
 never prints passwords or PATs. Protect its whole working directory. A failed
 issuance may have persisted a token before output failed; inspect/revoke the
-orphan through trusted Strolch tooling before retrying. Never erase privilege
+orphan through authorized Strolch tooling before retrying. Never erase privilege
 files to recover from such a failure.
 
 Copy viewer.properties.example to viewer.properties and set exactly

@@ -22,7 +22,7 @@ cleanup() {
 	if [[ "$compose_created" == true ]]; then compose down --volumes --remove-orphans >/dev/null 2>&1 || true; fi
 	if [[ "$image_created" == true && -d "$bundle/secrets" ]]; then
 		docker run --rm --user 0:0 --mount "type=bind,source=$bundle/secrets,target=/secret" \
-			--entrypoint sh "$image" -c 'rm -f /secret/viewer-password; chmod 0777 /secret' >/dev/null 2>&1 || true
+			--entrypoint sh "$image" -c 'chmod 0777 /secret' >/dev/null 2>&1 || true
 	fi
 	if [[ "$image_created" == true ]]; then docker image rm "$image" >/dev/null 2>&1 || true; fi
 	rm -rf -- "$work"
@@ -31,8 +31,7 @@ trap cleanup EXIT
 
 failure() {
 	local output
-	output=$(compose logs --no-color 2>&1 || true)
-	output=${output//compose-viewer-test-canary/[redacted]}
+	output=$(compose logs --no-color db 2>&1 || true)
 	output=${output//compose_admin_test_password_0123456789/[redacted]}
 	output=${output//compose_app_test_password_9876543210/[redacted]}
 	printf 'Compose startup check failed: %s\n%s\n' "$1" "$output" >&2
@@ -43,7 +42,17 @@ if docker image inspect "$image" >/dev/null 2>&1; then
 	printf 'Test image tag already exists\n' >&2
 	exit 1
 fi
-"$root/scripts/build-deployment-image.sh" "$image" "$root/intruvia-app/target/intruvia"
+version=$(sed -n 's/^version=//p' "$root/intruvia-app/target/maven-archiver/pom.properties")
+application="$root/intruvia-app/target/intruvia/intruvia-app-$version.jar"
+if [[ -z "$version" || ! -f "$application" || ! -d "$root/intruvia-app/target/intruvia/lib" ]]; then
+	printf 'Build the current app distribution before running the Compose startup check\n' >&2
+	exit 1
+fi
+distribution="$work/distribution"
+mkdir "$distribution"
+install -m 0644 "$application" "$distribution/"
+cp -R "$root/intruvia-app/target/intruvia/lib" "$distribution/"
+"$root/scripts/build-deployment-image.sh" "$image" "$distribution"
 image_created=true
 mkdir "$work/out" "$bundle"
 "$root/scripts/build-deployment-tarball.sh" 0.0.1-test "$image" "$work/out"
@@ -57,12 +66,10 @@ sed -i -e 's|^INTRUVIA_PUBLIC_ORIGIN=$|INTRUVIA_PUBLIC_ORIGIN=https://intruvia.e
 	-e 's|^INTRUVIA_DB_PASSWORD=$|INTRUVIA_DB_PASSWORD=compose_app_test_password_9876543210|' "$bundle/.env"
 chmod 0600 "$bundle/.env"
 umask 077
-printf '%s\n' 'compose-viewer-test-canary' > "$bundle/secrets/viewer-password"
 docker run --rm --user 0:0 --mount "type=bind,source=$bundle/secrets,target=/secret" --entrypoint sh "$image" -c '
 	set -eu
-	chown 10001:10001 /secret /secret/viewer-password
+	chown 10001:10001 /secret
 	chmod 700 /secret
-	chmod 600 /secret/viewer-password
 '
 compose config --quiet
 [[ -z $(compose ps --all -q) ]] || { printf 'Test project already exists\n' >&2; exit 1; }
@@ -73,10 +80,22 @@ for name in proxy database; do
 	if docker network inspect "${project}_$name" >/dev/null 2>&1; then printf 'Test network already exists\n' >&2; exit 1; fi
 done
 compose_created=true
-compose up -d --wait --wait-timeout 240 db app || failure 'services did not become ready'
+compose up -d --wait --wait-timeout 240 db || failure 'database did not become ready'
+startup_output=$(timeout --signal=INT --kill-after=180s 30s \
+	docker compose --project-name "$project" --project-directory "$bundle" --file "$bundle/compose.yaml" \
+	--file "$bundle/delay.override.yaml" --env-file "$bundle/.env" run --rm --no-deps -T app 2>&1 || true)
+if [[ ! "$startup_output" =~ Initial\ viewer\ password\ \(shown\ once\;\ save\ it\ now\):[[:space:]]*([0-9a-f]{64}) ]]; then
+	failure 'attached Compose first start did not display the initial password'
+fi
+startup_password=${BASH_REMATCH[1]}
+without_password=${startup_output//"$startup_password"/}
+[[ $((${#startup_output} - ${#without_password})) == 64 ]] || failure 'initial password was not printed exactly once'
+unset startup_output startup_password without_password
+compose up -d --wait --wait-timeout 240 db app || failure 'services did not become ready after attached first start'
 app=$(compose ps -q app)
 db=$(compose ps -q db)
 [[ -n "$app" && -n "$db" && -z $(docker port "$app") && -z $(docker port "$db") ]] || failure 'application or database port is published'
+[[ $(docker inspect --format '{{.HostConfig.LogConfig.Type}}' "$app") == none ]] || failure 'application Docker logging is not disabled'
 db_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$db")" +%s%N)
 delay_finished=$(compose exec -T db cat /var/lib/postgresql/.intruvia-delay-finished)
 app_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$app")" +%s%N)
@@ -106,7 +125,17 @@ after=$(compose exec -T app sha256sum /var/lib/intruvia/runtime/config/Privilege
 [[ "$before" == "$after" ]] || failure 'privilege files changed during restart'
 value=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT value FROM public.compose_test"')
 [[ "$value" == 42 ]] || failure 'database data did not persist'
-output=$(compose logs --no-color app db)
-[[ "$output" != *compose-viewer-test-canary* && "$output" != *compose_admin_test_password_0123456789* &&
-	"$output" != *compose_app_test_password_9876543210* ]] || failure 'credentials appeared in service logs'
-printf 'Delayed database readiness, private Compose startup and restart passed using image %s\n' "$(docker image inspect --format '{{.Id}}' "$image")"
+locked_output=$(compose run --rm -T --no-deps --entrypoint /usr/local/bin/intruvia-reset-viewer-password app 2>&1 || true)
+[[ "$locked_output" != *'Replacement viewer password'* ]] || failure 'reset exposed a password while the app was running'
+compose stop app >/dev/null
+reset_output=$(compose run --rm -T --no-deps --entrypoint /usr/local/bin/intruvia-reset-viewer-password app)
+[[ "$reset_output" =~ Replacement\ viewer\ password\ \(shown\ once\;\ save\ it\ now\):$'\n'([0-9a-f]{64})$ ]] ||
+	failure 'container password reset output was not available on the attached console'
+reset_password=${BASH_REMATCH[1]}
+[[ $(docker inspect --format '{{.HostConfig.LogConfig.Type}}' "$app") == none ]] || failure 'application Docker logging is enabled'
+compose up -d --wait --wait-timeout 180 app || failure 'application did not restart after reset'
+unset reset_output reset_password locked_output
+output=$(compose logs --no-color db)
+[[ "$output" != *compose_admin_test_password_0123456789* &&
+	"$output" != *compose_app_test_password_9876543210* ]] || failure 'database credentials appeared in service logs'
+printf 'Delayed database readiness, private Compose startup, restart and offline password reset passed using image %s\n' "$(docker image inspect --format '{{.Id}}' "$image")"

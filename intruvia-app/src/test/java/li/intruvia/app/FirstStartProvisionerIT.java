@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.*;
@@ -29,6 +30,10 @@ public class FirstStartProvisionerIT {
 	private static final String PASSWORD = "viewer-provisioning-canary";
 	private static final String ORIGIN = "https://intruvia.example.org";
 	private static final Pattern STARTED = Pattern.compile("Intruvia started on 127\\.0\\.0\\.1:(\\d+)");
+	private static final Pattern INITIAL_PASSWORD = Pattern.compile(
+			"Initial viewer password \\(shown once; save it now\\):\\R([0-9a-f]{64})\\R");
+	private static final Pattern REPLACEMENT_PASSWORD = Pattern.compile(
+			"Replacement viewer password \\(shown once; save it now\\):\\R([0-9a-f]{64})\\R");
 	@Rule public TemporaryFolder temporary = new TemporaryFolder();
 	private int logNumber;
 
@@ -38,13 +43,15 @@ public class FirstStartProvisionerIT {
 			Path runtime = directory("runtime");
 			Path secrets = directory("secrets");
 			Path logs = directory("logs");
-			Path password = privateFile(secrets.resolve("viewer-password"), PASSWORD);
+			Path legacyPassword = secrets.resolve("viewer-password");
 			Path output = secrets.resolve("offline-hash");
 			Path firstLog = log();
-			Process app = launch(runtime, password, logs, firstLog, database.environment(), "serve");
+			String initialPassword;
+			Process app = launch(runtime, logs, firstLog, database.environment(), "serve");
 			try {
 				int port = awaitReady(app, firstLog, runtime, database.environment());
-				assertFalse(Files.exists(password));
+				initialPassword = password(firstLog, INITIAL_PASSWORD);
+				assertFalse(Files.exists(legacyPassword));
 				assertTrue(Files.isRegularFile(runtime.resolve(FirstStartProvisioner.INITIALIZED)));
 				assertFalse(Files.exists(runtime.resolve(FirstStartProvisioner.INITIALIZING)));
 				assertFalse(Files.exists(runtime.resolve(".intruvia-bootstrap")));
@@ -64,27 +71,41 @@ public class FirstStartProvisionerIT {
 				assertEquals(64, secretsValues[1].length());
 				String users = Files.readString(config.resolve("PrivilegeUsers.xml"));
 				assertFalse(users.contains(PASSWORD));
+				assertFalse(users.contains(initialPassword));
 				assertTrue(users.contains("username=\"viewer\""));
 				assertTrue(users.contains("<State>ENABLED</State>"));
 				assertTrue(users.contains("<Role>Viewer</Role>"));
-				login(port);
+				assertRuntimeDoesNotContain(runtime, initialPassword);
+				assertFalse(Files.readString(Path.of("/proc", Long.toString(app.pid()), "cmdline"), StandardCharsets.UTF_8)
+						.contains(initialPassword));
+				assertFalse(Files.readString(Path.of("/proc", Long.toString(app.pid()), "environ"), StandardCharsets.UTF_8)
+						.contains(initialPassword));
+				login(port, initialPassword);
 				database.execute("CREATE TABLE public.provisioning_test (value integer)");
 				database.execute("INSERT INTO public.provisioning_test VALUES (42)");
 				Path offlinePassword = privateFile(secrets.resolve("offline-password"), PASSWORD);
 				Path blockedLog = log();
-				Process blocked = launch(runtime, password, logs, blockedLog, database.environment(),
+				Process blocked = launch(runtime, logs, blockedLog, database.environment(),
 						"offline", "hash", offlinePassword.toString(), output.toString());
 				assertTrue(blocked.waitFor(30, TimeUnit.SECONDS));
 				assertNotEquals(0, blocked.exitValue());
 				assertFalse(Files.exists(output));
 				assertNoSecrets(blockedLog, database.environment(), secretsValues);
 				assertNoSecrets(firstLog, database.environment(), secretsValues);
+				byte[] usersBeforeBlockedReset = Files.readAllBytes(config.resolve("PrivilegeUsers.xml"));
+				Path blockedResetLog = log();
+				Process blockedReset = launch(runtime, logs, blockedResetLog, database.environment(),
+						"offline", "reset-viewer-password");
+				assertTrue(blockedReset.waitFor(30, TimeUnit.SECONDS));
+				assertNotEquals(0, blockedReset.exitValue());
+				assertArrayEquals(usersBeforeBlockedReset, Files.readAllBytes(config.resolve("PrivilegeUsers.xml")));
+				assertPasswordNotPrinted(blockedResetLog);
 			} finally {
 				stop(app);
 			}
 			Path offlinePassword = secrets.resolve("offline-password");
 			Path offlineLog = log();
-			Process offline = launch(runtime, password, logs, offlineLog, database.environment(),
+			Process offline = launch(runtime, logs, offlineLog, database.environment(),
 					"offline", "hash", offlinePassword.toString(), output.toString());
 			assertTrue(offline.waitFor(60, TimeUnit.SECONDS));
 			assertEquals(0, offline.exitValue());
@@ -97,32 +118,55 @@ public class FirstStartProvisionerIT {
 			Path otherPassword = privateFile(secrets.resolve("other-password"), PASSWORD);
 			try (var lock = RuntimeLock.acquire(otherRuntime)) {
 				assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.ensureInitialized(lock, otherRuntime,
-						templates(), otherPassword, ORIGIN, database.environment(), jar()));
+						templates(), ORIGIN, database.environment(), jar()));
 			}
 			assertFalse(Files.exists(otherRuntime.resolve(FirstStartProvisioner.INITIALIZING)));
 			assertFalse(Files.exists(otherRuntime.resolve("config")));
 			assertEquals(PASSWORD, Files.readString(otherPassword));
 			assertEquals(42, database.integer("SELECT value FROM public.provisioning_test"));
 
-			privateFile(password, "preserve-new-password-file");
+			privateFile(legacyPassword, "preserve-new-password-file");
 			Path restartLog = log();
-			Process restart = launch(runtime, password, logs, restartLog, database.environment(), "serve");
+			Process restart = launch(runtime, logs, restartLog, database.environment(), legacyPassword, "serve");
 			try {
 				int port = awaitReady(restart, restartLog, runtime, database.environment());
 				assertArrayEquals(privilegeConfig, Files.readAllBytes(runtime.resolve("config/PrivilegeConfig.xml")));
 				assertArrayEquals(users, Files.readAllBytes(runtime.resolve("config/PrivilegeUsers.xml")));
-				assertEquals("preserve-new-password-file", Files.readString(password));
+				assertEquals("preserve-new-password-file", Files.readString(legacyPassword));
 				assertEquals(42, database.integer("SELECT value FROM public.provisioning_test"));
-				login(port);
+				assertPasswordNotPrinted(restartLog);
+				login(port, initialPassword);
 				assertNoSecrets(restartLog, database.environment(), privilegeSecrets(runtime.resolve("config/PrivilegeConfig.xml")));
 			} finally {
 				stop(restart);
+			}
+			Path usersFile = runtime.resolve("config/PrivilegeUsers.xml");
+			byte[] usersBeforeReset = Files.readAllBytes(usersFile);
+			Path resetLog = log();
+			Process reset = launch(runtime, logs, resetLog, database.environment(), "offline", "reset-viewer-password");
+			assertTrue(reset.waitFor(60, TimeUnit.SECONDS));
+			assertEquals(safeLog(resetLog, runtime, database.environment()), 0, reset.exitValue());
+			String replacementPassword = password(resetLog, REPLACEMENT_PASSWORD);
+			assertFalse(java.util.Arrays.equals(usersBeforeReset, Files.readAllBytes(usersFile)));
+			assertRuntimeDoesNotContain(runtime, initialPassword, replacementPassword);
+			assertFalse(Files.readString(usersFile).contains(initialPassword));
+			assertFalse(Files.readString(usersFile).contains(replacementPassword));
+			Path afterResetLog = log();
+			Process afterReset = launch(runtime, logs, afterResetLog, database.environment(), "serve");
+			try {
+				int port = awaitReady(afterReset, afterResetLog, runtime, database.environment());
+				assertPasswordNotPrinted(afterResetLog);
+				assertNotEquals(200, loginStatus(port, initialPassword));
+				assertEquals(200, loginStatus(port, replacementPassword));
+				assertEquals(42, database.integer("SELECT value FROM public.provisioning_test"));
+			} finally {
+				stop(afterReset);
 			}
 			byte[] savedUsers = Files.readAllBytes(runtime.resolve("config/PrivilegeUsers.xml"));
 			Files.move(runtime.resolve(FirstStartProvisioner.INITIALIZED), runtime.resolve(FirstStartProvisioner.INITIALIZING),
 					StandardCopyOption.ATOMIC_MOVE);
 			Path interruptedLog = log();
-			Process interrupted = launch(runtime, password, logs, interruptedLog, database.environment(), "serve");
+			Process interrupted = launch(runtime, logs, interruptedLog, database.environment(), "serve");
 			assertTrue(interrupted.waitFor(30, TimeUnit.SECONDS));
 			assertNotEquals(0, interrupted.exitValue());
 			assertArrayEquals(savedUsers, Files.readAllBytes(runtime.resolve("config/PrivilegeUsers.xml")));
@@ -131,16 +175,16 @@ public class FirstStartProvisionerIT {
 	}
 
 	@Test(timeout = 60000)
-	public void failedStagingLeavesMarkerAndDoesNotTouchTheDatabaseOrPassword() throws Exception {
+	public void failedStagingLeavesMarkerAndDoesNotTouchTheDatabaseOrLegacyPassword() throws Exception {
 		try (var database = new DeploymentDatabaseIT.ProbeDatabase()) {
 			Path runtime = directory("runtime");
 			Path password = privateFile(directory("secrets").resolve("viewer-password"), PASSWORD);
 			try (var lock = RuntimeLock.acquire(runtime)) {
 				assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.ensureInitialized(lock, runtime,
-						runtime.resolve("missing-templates"), password, ORIGIN, database.environment(), jar()));
+						runtime.resolve("missing-templates"), ORIGIN, database.environment(), jar()));
 				assertTrue(Files.exists(runtime.resolve(FirstStartProvisioner.INITIALIZING)));
 				assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.ensureInitialized(lock, runtime,
-						templates(), password, ORIGIN, database.environment(), jar()));
+						templates(), ORIGIN, database.environment(), jar()));
 			}
 			DeploymentDatabase.requireEmpty(database.environment());
 			assertEquals(PASSWORD, Files.readString(password));
@@ -148,7 +192,12 @@ public class FirstStartProvisionerIT {
 		}
 	}
 
-	private Process launch(Path runtime, Path password, Path logs, Path log, Map<String, String> database, String... arguments) throws Exception {
+	private Process launch(Path runtime, Path logs, Path log, Map<String, String> database, String... arguments) throws Exception {
+		return launch(runtime, logs, log, database, null, arguments);
+	}
+
+	private Process launch(Path runtime, Path logs, Path log, Map<String, String> database, Path legacyPassword,
+			String... arguments) throws Exception {
 		String classpath = jar() + File.pathSeparator + jar().getParent().resolve("lib/*");
 		var command = new ArrayList<>(List.of("/bin/sh", "-c", "umask 077; exec \"$@\"", "intruvia-test",
 				Path.of(System.getProperty("java.home"), "bin", "java").toString(), "-Dintruvia.log.dir=" + logs,
@@ -157,7 +206,8 @@ public class FirstStartProvisionerIT {
 		var builder = new ProcessBuilder(command).redirectErrorStream(true).redirectOutput(log.toFile());
 		builder.environment().putAll(database);
 		builder.environment().put("INTRUVIA_PUBLIC_ORIGIN", ORIGIN);
-		builder.environment().put("INTRUVIA_VIEWER_PASSWORD_FILE", password.toString());
+		if (legacyPassword != null) builder.environment().put("INTRUVIA_VIEWER_PASSWORD_FILE", legacyPassword.toString());
+		else builder.environment().remove("INTRUVIA_VIEWER_PASSWORD_FILE");
 		builder.environment().put("INTRUVIA_BIND_ADDRESS", "127.0.0.1");
 		return builder.start();
 	}
@@ -191,6 +241,8 @@ public class FirstStartProvisionerIT {
 					text += "\n" + Files.readString(file);
 			}
 		}
+		text = INITIAL_PASSWORD.matcher(text).replaceAll("Initial viewer password: [redacted]");
+		text = REPLACEMENT_PASSWORD.matcher(text).replaceAll("Replacement viewer password: [redacted]");
 		text = text.replace(PASSWORD, "[redacted]").replace(database.get("DB_PASSWORD"), "[redacted]")
 				.replace(database.get("DB_URL"), "[redacted]");
 		Path config = runtime.resolve("config/PrivilegeConfig.xml");
@@ -199,13 +251,40 @@ public class FirstStartProvisionerIT {
 		return text.substring(Math.max(0, text.length() - 4000));
 	}
 
-	private static void login(int port) throws Exception {
+	private static void login(int port, String password) throws Exception {
+		assertEquals(200, loginStatus(port, password));
+	}
+
+	private static int loginStatus(int port, String password) throws Exception {
 		try (var client = HttpClient.newHttpClient()) {
 			var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + "/api/v1/session"))
 					.header("Origin", ORIGIN).header("X-Intruvia-CSRF", "1").header("Content-Type", "application/json")
-					.POST(HttpRequest.BodyPublishers.ofString("{\"username\":\"viewer\",\"password\":\"" + PASSWORD + "\"}"))
+					.POST(HttpRequest.BodyPublishers.ofString("{\"username\":\"viewer\",\"password\":\"" + password + "\"}"))
 					.build();
-			assertEquals(200, client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode());
+			return client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
+		}
+	}
+
+	private static String password(Path log, Pattern pattern) throws Exception {
+		Matcher matcher = pattern.matcher(Files.readString(log, StandardCharsets.UTF_8));
+		assertTrue("one-time password output missing", matcher.find());
+		String password = matcher.group(1);
+		assertFalse("password output appeared more than once", matcher.find());
+		return password;
+	}
+
+	private static void assertPasswordNotPrinted(Path log) throws Exception {
+		String text = Files.readString(log, StandardCharsets.UTF_8);
+		assertFalse(INITIAL_PASSWORD.matcher(text).find());
+		assertFalse(REPLACEMENT_PASSWORD.matcher(text).find());
+	}
+
+	private static void assertRuntimeDoesNotContain(Path runtime, String... secrets) throws Exception {
+		try (var files = Files.walk(runtime)) {
+			for (Path file : files.filter(Files::isRegularFile).toList()) {
+				String content = new String(Files.readAllBytes(file), StandardCharsets.UTF_8);
+				for (String secret : secrets) assertFalse(file.toString(), content.contains(secret));
+			}
 		}
 	}
 

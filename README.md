@@ -47,6 +47,11 @@ standalone deployment paths, prerequisites, credentials, upgrades, backups, and
 recovery. To connect a server, follow the [Fail2ban integration guide](integrations/fail2ban/README.md)
 and add its notification action alongside the existing firewall action.
 
+For images containing task 025, Compose first start generates a viewer password in
+memory and prints it once to the attached console; if the output is missed, the guide
+documents the stopped-app password reset command. The published `0.0.2` image predates
+this change and does not support the file-free startup flow.
+
 ## Project links
 
 [Release notes](docs/RELEASE_NOTES.md) · [Developer reference](docs/DEVELOPMENT.md) ·

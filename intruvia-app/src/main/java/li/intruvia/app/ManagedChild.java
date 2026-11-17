@@ -8,12 +8,20 @@ final class ManagedChild {
 	private ManagedChild() {}
 
 	static int run(ProcessBuilder builder, long timeout, TimeUnit unit) throws IOException, InterruptedException {
+		return run(builder, null, timeout, unit);
+	}
+
+	static int run(ProcessBuilder builder, byte[] standardInput, long timeout, TimeUnit unit)
+			throws IOException, InterruptedException {
 		var owner = new Owner();
 		var hook = new Thread(owner::shutdown, "intruvia-privilege-child-shutdown");
 		boolean interrupted = false;
 		Runtime.getRuntime().addShutdownHook(hook);
 		try {
 			Process process = owner.start(builder);
+			try (var input = process.getOutputStream()) {
+				if (standardInput != null) input.write(standardInput);
+			}
 			if (!process.waitFor(timeout, unit)) throw ProvisioningFiles.failure();
 			return process.exitValue();
 		} catch (InterruptedException e) {

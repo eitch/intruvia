@@ -5,8 +5,6 @@ import li.intruvia.rest.session.ViewerConfiguration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -29,11 +27,12 @@ final class FirstStartProvisioner {
 
 	private FirstStartProvisioner() {}
 
-	static void ensureInitialized(RuntimeLock lock, Path runtime, Path templates, Path password, String origin,
+	static char[] ensureInitialized(RuntimeLock lock, Path runtime, Path templates, String origin,
 			Map<String, String> environment, Path applicationJar) {
+		char[] password = null;
+		boolean completed = false;
 		try {
 			runtime = runtime.toAbsolutePath().normalize();
-			password = password.toAbsolutePath().normalize();
 			if (!lock.holds(runtime)) throw ProvisioningFiles.failure();
 			Path initialized = runtime.resolve(INITIALIZED);
 			Path initializing = runtime.resolve(INITIALIZING);
@@ -42,19 +41,19 @@ final class FirstStartProvisioner {
 			if (done) {
 				validateExisting(lock, runtime);
 				DeploymentDatabase.requireInitialized(environment);
-				return;
+				return null;
 			}
 			try (var entries = Files.list(runtime)) {
-				if (entries.anyMatch(path -> !path.getFileName().toString().equals(RuntimeLock.FILE)))
+			if (entries.anyMatch(path -> !path.getFileName().toString().equals(RuntimeLock.FILE)))
 					throw ProvisioningFiles.failure();
 			}
 			validateOrigin(origin);
-			validatePassword(password);
 			DeploymentDatabase.requireEmpty(environment);
 			ProvisioningFiles.writeNew(initializing, "initializing\n".getBytes(StandardCharsets.UTF_8));
 			ProvisioningFiles.forceDirectory(runtime);
 			Path stage = runtime.resolve(".intruvia-staging");
 			ProvisioningFiles.directory(stage);
+			password = generateViewerPassword();
 			stageRuntime(stage, templates, password, origin, applicationJar);
 			for (String name : List.of("config", "data", "temp"))
 				ProvisioningFiles.moveNew(stage.resolve(name), runtime.resolve(name));
@@ -72,7 +71,8 @@ final class FirstStartProvisioner {
 			ProvisioningFiles.moveNew(marker, initialized);
 			Files.delete(initializing);
 			ProvisioningFiles.forceDirectory(runtime);
-			removePassword(password);
+			completed = true;
+			return password;
 		} catch (ConfigurationFailure e) {
 			throw e;
 		} catch (InterruptedException e) {
@@ -80,6 +80,37 @@ final class FirstStartProvisioner {
 			throw ProvisioningFiles.failure();
 		} catch (Exception e) {
 			throw ProvisioningFiles.failure();
+		} finally {
+			if (!completed && password != null) Arrays.fill(password, '\0');
+		}
+	}
+
+	static char[] resetViewerPassword(RuntimeLock lock, Path runtime, Path applicationJar) throws Exception {
+		char[] password = generateViewerPassword();
+		boolean updated = false;
+		try {
+			runtime = runtime.toAbsolutePath().normalize();
+			validateExisting(lock, runtime);
+			Path config = runtime.resolve("config");
+			Path users = config.resolve("PrivilegeUsers.xml");
+			RuntimeLock.requireFile(users);
+			String hash = PrivilegeToolRunner.hash(applicationJar, config, password, runtime);
+			byte[] current = Files.readAllBytes(users);
+			byte[] replacement;
+			try {
+				replacement = replaceViewerPassword(current, hash);
+			} finally {
+				Arrays.fill(current, (byte) 0);
+			}
+			try {
+				ProvisioningFiles.replaceStaged(users, replacement);
+			} finally {
+				Arrays.fill(replacement, (byte) 0);
+			}
+			updated = true;
+			return password;
+		} finally {
+			if (!updated) Arrays.fill(password, '\0');
 		}
 	}
 
@@ -102,32 +133,7 @@ final class FirstStartProvisioner {
 		}
 	}
 
-	private static void validatePassword(Path password) throws Exception {
-		RuntimeLock.requireDirectory(password.toAbsolutePath().normalize().getParent());
-		RuntimeLock.requireFile(password);
-		if (Files.size(password) == 0 || Files.size(password) > 4096) throw ProvisioningFiles.failure();
-		byte[] bytes = Files.readAllBytes(password);
-		CharBuffer chars = null;
-		try {
-			chars = StandardCharsets.UTF_8.newDecoder().decode(ByteBuffer.wrap(bytes));
-			int length = chars.limit();
-			while (length > 0 && Character.isWhitespace(chars.get(length - 1))) length--;
-			if (length == 0 || length > 1024) throw ProvisioningFiles.failure();
-		} finally {
-			Arrays.fill(bytes, (byte) 0);
-			if (chars != null && chars.hasArray()) Arrays.fill(chars.array(), '\0');
-		}
-	}
-
-	private static void removePassword(Path password) throws Exception {
-		if (!Files.exists(password, LinkOption.NOFOLLOW_LINKS)) return;
-		RuntimeLock.requireDirectory(password.toAbsolutePath().normalize().getParent());
-		RuntimeLock.requireFile(password);
-		Files.delete(password);
-		ProvisioningFiles.forceDirectory(password.toAbsolutePath().normalize().getParent());
-	}
-
-	private static void stageRuntime(Path stage, Path templates, Path password, String origin, Path applicationJar) throws Exception {
+	private static void stageRuntime(Path stage, Path templates, char[] password, String origin, Path applicationJar) throws Exception {
 		Path config = stage.resolve("config");
 		ProvisioningFiles.directory(config);
 		ProvisioningFiles.directory(stage.resolve("data"));
@@ -179,6 +185,24 @@ final class FirstStartProvisioner {
 		}
 	}
 
+	static char[] generateViewerPassword() {
+		byte[] bytes = new byte[32];
+		char[] password = new char[bytes.length * 2];
+		char[] hex = "0123456789abcdef".toCharArray();
+		RANDOM.nextBytes(bytes);
+		try {
+			for (int i = 0; i < bytes.length; i++) {
+				int value = bytes[i] & 0xff;
+				password[i * 2] = hex[value >>> 4];
+				password[i * 2 + 1] = hex[value & 0x0f];
+			}
+			return password;
+		} finally {
+			Arrays.fill(bytes, (byte) 0);
+			Arrays.fill(hex, '\0');
+		}
+	}
+
 	private static void validateViewerRole(byte[] bytes) throws Exception {
 		var roles = ProvisioningFiles.xml(bytes).getElementsByTagName("Role");
 		int viewers = 0;
@@ -209,6 +233,27 @@ final class FirstStartProvisioner {
 		append(document, roles, "Role", "Viewer");
 		user.appendChild(roles);
 		root.appendChild(user);
+		return ProvisioningFiles.xml(document);
+	}
+
+	static byte[] replaceViewerPassword(byte[] bytes, String hash) throws Exception {
+		if (hash == null || hash.isBlank()) throw ProvisioningFiles.failure();
+		Document document = ProvisioningFiles.xml(bytes);
+		Element root = document.getDocumentElement();
+		if (!root.getTagName().equals("Users")) throw ProvisioningFiles.failure();
+		var users = document.getElementsByTagName("User");
+		Element viewer = null;
+		for (int i = 0; i < users.getLength(); i++) {
+			Element user = (Element) users.item(i);
+			boolean viewerId = user.getAttribute("userId").equals("viewer");
+			boolean viewerName = user.getAttribute("username").equals("viewer");
+			if (!viewerId && !viewerName) continue;
+			if (!viewerId || !viewerName || viewer != null) throw ProvisioningFiles.failure();
+			viewer = user;
+		}
+		if (viewer == null || !viewer.hasAttribute("password") || viewer.getAttribute("password").isBlank())
+			throw ProvisioningFiles.failure();
+		viewer.setAttribute("password", hash);
 		return ProvisioningFiles.xml(document);
 	}
 

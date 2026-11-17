@@ -19,6 +19,7 @@ fi
 context=$(mktemp -d "$root/intruvia-app/target/deployment-image.XXXXXXXX")
 trap 'rm -rf -- "$context"' EXIT
 install -m 0644 "$root/deployment/Dockerfile" "$context/Dockerfile"
+install -m 0644 "$root/deployment/reset-viewer-password.sh" "$context/reset-viewer-password.sh"
 install -m 0644 "${application[0]}" "$context/intruvia-app.jar"
 mkdir -m 0755 "$context/lib"
 for library in "${libraries[@]}"; do

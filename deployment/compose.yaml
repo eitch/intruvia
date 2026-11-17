@@ -38,7 +38,6 @@ services:
     environment:
       INTRUVIA_BIND_ADDRESS: 0.0.0.0
       INTRUVIA_PUBLIC_ORIGIN: ${INTRUVIA_PUBLIC_ORIGIN:?Set the HTTPS origin in .env}
-      INTRUVIA_VIEWER_PASSWORD_FILE: /run/secrets/viewer-password
       DB_URL: jdbc:postgresql://db:5432/${INTRUVIA_DB_NAME:?Set INTRUVIA_DB_NAME in .env}
       DB_USERNAME: ${INTRUVIA_DB_USERNAME:?Set INTRUVIA_DB_USERNAME in .env}
       DB_PASSWORD: ${INTRUVIA_DB_PASSWORD:?Set INTRUVIA_DB_PASSWORD in .env}
@@ -59,6 +58,8 @@ services:
         target: /run/secrets
         bind:
           create_host_path: false
+    logging:
+      driver: none
     tmpfs:
       - /tmp:rw,noexec,nosuid,nodev,size=64m,mode=1777
     networks:

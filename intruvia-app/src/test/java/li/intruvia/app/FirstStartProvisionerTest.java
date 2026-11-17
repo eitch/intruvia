@@ -8,13 +8,13 @@ import org.junit.rules.TemporaryFolder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Arrays;
 import java.util.Map;
 
 import static org.junit.Assert.*;
 
 public class FirstStartProvisionerTest {
-	private static final String CANARY = "private-viewer-test-canary";
+	private static final String CANARY = "legacy-viewer-test-canary";
 	@Rule public TemporaryFolder temporary = new TemporaryFolder();
 
 	@Test
@@ -33,7 +33,7 @@ public class FirstStartProvisionerTest {
 		Path existing = directory("existing");
 		Path data = existing.resolve("existing-data");
 		Files.writeString(data, "preserve-me");
-		rejected(existing, password, "https://intruvia.example.org");
+		rejected(existing, "https://intruvia.example.org");
 		assertEquals("preserve-me", Files.readString(data));
 		assertEquals(CANARY, Files.readString(password));
 		assertFalse(Files.exists(existing.resolve(FirstStartProvisioner.INITIALIZING)));
@@ -42,28 +42,55 @@ public class FirstStartProvisionerTest {
 		Path marker = partial.resolve(FirstStartProvisioner.INITIALIZING);
 		Files.writeString(marker, "interrupted");
 		Files.setPosixFilePermissions(marker, RuntimeLock.FILE_PERMISSIONS);
-		rejected(partial, password, "https://intruvia.example.org");
+		rejected(partial, "https://intruvia.example.org");
 		assertEquals("interrupted", Files.readString(marker));
 		assertFalse(Files.exists(partial.resolve(FirstStartProvisioner.INITIALIZED)));
 		assertEquals(CANARY, Files.readString(password));
 	}
 
 	@Test
-	public void rejectsMissingOrUnsafePasswordAndInvalidOriginBeforeInitialization() throws Exception {
+	public void rejectsInvalidOriginBeforeInitializationAndGeneratesHighEntropyPassword() throws Exception {
 		Path secrets = directory("secrets");
 		Path password = password(secrets);
 		Path invalidOrigin = directory("invalid-origin");
-		rejected(invalidOrigin, password, "http://localhost");
+		rejected(invalidOrigin, "http://localhost");
 		assertFalse(Files.exists(invalidOrigin.resolve(FirstStartProvisioner.INITIALIZING)));
-		Path unsafe = directory("unsafe");
-		Files.setPosixFilePermissions(password, PosixFilePermissions.fromString("rw-r--r--"));
-		rejected(unsafe, password, "https://intruvia.example.org");
-		assertFalse(Files.exists(unsafe.resolve(FirstStartProvisioner.INITIALIZING)));
-		Files.setPosixFilePermissions(password, RuntimeLock.FILE_PERMISSIONS);
-		Files.delete(password);
-		Path missing = directory("missing");
-		rejected(missing, password, "https://intruvia.example.org");
-		assertFalse(Files.exists(missing.resolve(FirstStartProvisioner.INITIALIZING)));
+		assertEquals(CANARY, Files.readString(password));
+		char[] generated = FirstStartProvisioner.generateViewerPassword();
+		try {
+			assertEquals(64, generated.length);
+			assertTrue(new String(generated).matches("[0-9a-f]{64}"));
+		} finally {
+			Arrays.fill(generated, '\0');
+		}
+	}
+
+	@Test
+	public void replacesOnlyTheUniqueViewerPasswordAndSerializesXmlSafely() throws Exception {
+		String original = "<Users><User userId=\"viewer\" username=\"viewer\" password=\"old-hash\">"
+				+ "<Roles><Role>Viewer</Role></Roles></User><User userId=\"operator\" username=\"operator\" "
+				+ "password=\"keep-hash\"><Name>System &amp; Operations</Name></User></Users>";
+		byte[] replacement = FirstStartProvisioner.replaceViewerPassword(original.getBytes(StandardCharsets.UTF_8), "new&hash");
+		String serialized = new String(replacement, StandardCharsets.UTF_8);
+		assertTrue(serialized.contains("password=\"new&amp;hash\""));
+		var users = ProvisioningFiles.xml(replacement).getElementsByTagName("User");
+		assertEquals("new&hash", ((org.w3c.dom.Element) users.item(0)).getAttribute("password"));
+		assertEquals("keep-hash", ((org.w3c.dom.Element) users.item(1)).getAttribute("password"));
+		assertTrue(serialized.contains("System &amp; Operations"));
+	}
+
+	@Test
+	public void rejectsMissingAmbiguousOrMalformedViewerRecords() {
+		byte[] missing = "<Users><User userId=\"operator\" username=\"operator\" password=\"hash\"/></Users>"
+				.getBytes(StandardCharsets.UTF_8);
+		byte[] ambiguous = ("<Users><User userId=\"viewer\" username=\"viewer\" password=\"a\"/>"
+				+ "<User userId=\"viewer\" username=\"viewer\" password=\"b\"/></Users>")
+				.getBytes(StandardCharsets.UTF_8);
+		byte[] malformed = "<Users><User userId=\"viewer\" username=\"other\" password=\"a\"/></Users>"
+				.getBytes(StandardCharsets.UTF_8);
+		assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.replaceViewerPassword(missing, "new-hash"));
+		assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.replaceViewerPassword(ambiguous, "new-hash"));
+		assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.replaceViewerPassword(malformed, "new-hash"));
 	}
 
 	@Test
@@ -72,10 +99,10 @@ public class FirstStartProvisionerTest {
 		assertThrows(Exception.class, () -> ProvisioningFiles.xml(xml));
 	}
 
-	private void rejected(Path runtime, Path password, String origin) throws Exception {
+	private void rejected(Path runtime, String origin) throws Exception {
 		try (var lock = RuntimeLock.acquire(runtime)) {
 			var failure = assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.ensureInitialized(lock, runtime,
-					Path.of("unused-templates"), password, origin, Map.of(), Path.of("unused.jar")));
+					Path.of("unused-templates"), origin, Map.of(), Path.of("unused.jar")));
 			assertFalse(failure.getMessage().contains(CANARY));
 		}
 	}
