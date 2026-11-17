@@ -6,7 +6,7 @@ The older [GitHub source-release procedure](GITHUB_RELEASE.md) remains available
 
 ## Release gates and prerequisites
 
-Before starting a release, the release owner must review and resolve all product and operational release gates. In particular, review [task 022 release acceptance](verification/022-acceptance.md), [task 023 deployment acceptance](verification/023-acceptance.md), the release notes, dependency provenance, and any recorded limitations. The script's clean Maven verification does not substitute for these reviews or grant approval to release.
+Before starting a release, the release owner must review and resolve all product and operational release gates. In particular, consider the [0.0.1 MVP release acceptance](verification/022-acceptance.md), the [0.0.2 deployment verification](verification/023-acceptance.md), current release notes, dependency provenance, and any recorded limitations. These historical records do not replace review of the proposed release; the script's clean Maven verification does not grant approval to release.
 
 Use a release checkout on the intended branch with its configured upstream. The working tree must be clean, and the local branch must exactly match the remote branch. Confirm the Git remote identifies the intended GitHub.com repository. The command needs permission to push the branch and tag, push to `repo.strolch.li/intruvia`, and create GitHub releases.
 

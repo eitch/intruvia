@@ -51,8 +51,8 @@ Third-party components retain their respective licenses.
 
 ## Verified runtime baseline
 
-Task 001 pins Java 25, Strolch, Jersey and Jetty in an isolated compatibility probe.
-See the [baseline decision](./architecture/001-runtime-baseline.md) for exact
+The build pins Java 25, Strolch, Jersey and Jetty; an isolated compatibility probe
+verifies their integration. See the [baseline decision](./architecture/001-runtime-baseline.md) for exact
 versions, integration conventions and verification limits. Run it with Java 25:
 
 ```bash
@@ -94,7 +94,7 @@ Intruvia pins Strolch `2.8.0-1` and resolves the published artifacts from
 `https://repo.strolch.li/repository/strolch-releases/`. Normal verification uses the
 POM's release coordinate; no local snapshot installation or version override is needed.
 The published release and checksums used in the PostgreSQL validation are recorded in
-[Task 023 acceptance](./verification/023-acceptance.md#strolch-280-1-release-validation).
+the [Strolch 2.8.0-1 validation report](./verification/023-acceptance.md#strolch-280-1-release-validation).
 If your Maven cache previously received a locally installed framework artifact under
 the same release coordinate, use a fresh local repository for provenance checks, for
 example `scripts/verify-postgresql.sh -Dmaven.repo.local=/path/to/empty/repository`;
@@ -138,13 +138,13 @@ for provisioning and rotation, and the [verified framework API and implementatio
 details](./architecture/005-machine-authentication.md).
 
 The pinned Strolch release includes the upstream PAT persistence fixes. Its runtime and
-database compatibility results are recorded in
-[Task 023 acceptance](./verification/023-acceptance.md#strolch-280-1-release-validation).
+database compatibility results are recorded in the
+[Strolch 2.8.0-1 validation report](./verification/023-acceptance.md#strolch-280-1-release-validation).
 
 ## Fail2ban input validation
 
-Task 006 adds a strict, bounded JSON parser and canonical Fail2ban adapter. The
-public ingestion endpoint uses this parser. Inputs are limited to
+The public ingestion endpoint uses a strict, bounded JSON parser and canonical
+Fail2ban adapter. Inputs are limited to
 16 KiB by default; unknown/duplicate fields, invalid literals and malformed values
 are rejected. IPv4-mapped IPv6 becomes IPv4, timestamps become UTC, and equivalent
 payloads share a stable digest. Jail text remains plain data, with a 128-character
@@ -160,7 +160,7 @@ mvn -B -pl intruvia-rest -am clean test
 
 ## Local GeoIP enrichment
 
-Task 007 provides a lifecycle-managed reader for a locally supplied MaxMind City
+GeoIP enrichment uses a lifecycle-managed reader for a locally supplied MaxMind City
 database. Missing or unreadable data leaves GeoIP degraded (`UNAVAILABLE`) while the
 application starts; private/reserved addresses yield `NON_PUBLIC`, and missing records
 and lookup failures have distinct statuses. Partial locations remain unmapped, and
@@ -170,8 +170,8 @@ for provisioning and updates, and the [enrichment policy and fixtures](./archite
 
 ## Atomic ingestion service
 
-Task 009 provides a Strolch service for validated Fail2ban events. Application code
-invokes a fresh `IngestService` through the registered `ServiceHandler`, using the
+Validated Fail2ban events are processed by a Strolch service. Application code invokes
+a fresh `IngestService` through the registered `ServiceHandler`, using the
 producer's framework certificate and the protected identity mapping. It requires
 `event:ingest`; identity comes from the certificate username. GeoIP runs before the
 write transaction, and event, receipt and sequence commit atomically. Equal retries
@@ -397,8 +397,9 @@ The optional [MVP validation harness](./architecture/020-mvp-validation.md)
 uses the existing browser tooling and disposable PostgreSQL. It seeds 100,000
 retained events, submits events under two server identities, and measures two
 browser contexts during a five-minute 10 events/second workload plus a 100-event
-burst. Read the task-020 acceptance record and status ledger for actual results;
-the existence of this harness does not establish a passing capacity or release gate.
+burst. The [capacity test report](./verification/020-acceptance.txt) records the
+measured results and limits; the existence of this harness does not establish a
+passing capacity or release gate.
 
 The capacity fixture matches production environment-mode pool defaults: 10
 connections, 30,000 ms acquisition and 5,000 ms validation timeout. XML-credential
@@ -408,15 +409,15 @@ guide](./DEPLOYMENT.md) and [runtime operations
 contract](./architecture/019-runtime-operations.md) for pool and readiness-monitor
 configuration. The validation report lists separate burst latency and failures.
 
-Task 020's measured combined-workload p95 was 951/961 ms across the two browsers;
+The capacity test measured combined-workload p95 of 951/961 ms across the two browsers;
 receipt-to-frame p95 was 29 ms. All 3,100 events committed and appeared. The burst
 phase alone had about 9.2 seconds p95, so this is not a one-second guarantee for
-each phase or request. See the [report](./verification/020-acceptance.txt) for
+each phase or request. See the [capacity test report](./verification/020-acceptance.txt) for
 raw measurements, failed attempts, hardware and receipt-population limits.
 
 ## Release evidence
 
-See [task 021 rehearsal evidence](./verification/021-acceptance.txt) for measured results
-and limits. See the [0.0.1 release notes](./RELEASE_NOTES.md) and
-[release acceptance checklist](./verification/022-acceptance.md) for the reviewed
+See the [local HTTPS/WSS and restore rehearsal report](./verification/021-acceptance.txt)
+for measured results and limits. See the [0.0.1 MVP release review](./RELEASE_NOTES.md)
+and [0.0.1 release acceptance checklist](./verification/022-acceptance.md) for the reviewed
 artifact identity, verification and operational limits.

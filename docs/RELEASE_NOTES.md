@@ -2,9 +2,9 @@
 
 Review date: 2026-11-12. Application version: `0.0.1`.
 Source base: `d0e4d5a9f00a57b8399859c3bdd4a559892bbc09`, plus the uncommitted
-release-review documentation, packaging and verification files listed by task 022.
+release-review documentation, packaging and verification files in the reviewed tree.
 No release commit or tag was created. The final acceptance checklist is
-[task 022](verification/022-acceptance.md); the source, dependency and distribution
+[the release acceptance record](verification/022-acceptance.md); the source, dependency and distribution
 SHA-256 inventories in `docs/verification/022-*` identify the reviewed bytes.
 
 The MVP accepts Fail2ban ban observations using scoped Strolch PATs, commits events,
@@ -46,7 +46,7 @@ machines/JDKs. Each build must regenerate and verify its own inventory.
 
 ## Operational limits
 
-- The measured task-020 workload used 100,000 retained events, two browsers/server
+- The measured capacity workload used 100,000 retained events, two browsers/server
   identities, 10 events/s for five minutes and a concurrent 100-event burst. All
   3,100 events committed and appeared. Combined send-to-frame p95 was 951/961 ms;
   sustained-only 845/861 ms; **burst-only 9171/9163 ms**. There is no one-second
@@ -81,5 +81,5 @@ machines/JDKs. Each build must regenerate and verify its own inventory.
 Public deployment, host systemd/firewall installation, real DNS/CA issuance, remote DB
 TLS, licensed MaxMind download, large-database restore timing and OS power-loss tests
 were not performed. The isolated HTTPS/WSS/restore rehearsal and prior failures remain
-in task 021 evidence. No dependency vulnerability certification is claimed by this
+in the [local rehearsal report](verification/021-acceptance.txt). No dependency vulnerability certification is claimed by this
 functional release review. Deferred features remain those in specification section 1.

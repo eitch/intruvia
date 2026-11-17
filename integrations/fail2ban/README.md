@@ -112,4 +112,4 @@ Tests use only the standard library, an installed OpenSSL executable for tempora
 TLS certificates, and the real unpacked Fail2ban source for the smoke check. The
 smoke runs a temporary unprivileged polling jail/socket and a harmless marker
 action; it does not change the host firewall or running Fail2ban service. See
-[task design and evidence](../../docs/architecture/018-fail2ban-notifications.md).
+[design and verification notes](../../docs/architecture/018-fail2ban-notifications.md).

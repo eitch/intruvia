@@ -10,13 +10,15 @@ It does not publish a Maven artifact, Docker image, or deployment tarball.
 
 Before running the script, the release owner must:
 
-1. Review `docs/verification/022-acceptance.md`, release notes, dependency pins,
-   the validated Strolch `2.8.0-1` release and the exact release commit. The script's
-   Maven verification is not a substitute for the task 022 release review or an
+1. Review the [0.0.1 release acceptance record](docs/verification/022-acceptance.md),
+   current release notes, dependency pins, the validated Strolch `2.8.0-1` release and
+   the exact release commit. The script's Maven verification is not a substitute for
+   reviewing the release evidence or an
    operator's release approval.
-2. Resolve and record any release blockers. Task 023's published `0.0.2` image was
-   pulled, audited and upgraded from `0.0.1`; its digest, state-retention evidence and
-   unrun environment-specific checks are recorded in `docs/verification/023-acceptance.md`.
+2. Resolve and record any release blockers. The published `0.0.2` image was pulled,
+   audited and upgraded from `0.0.1`; its digest, state-retention evidence and unrun
+   environment-specific checks are recorded in the
+   [0.0.2 deployment verification record](docs/verification/023-acceptance.md).
    This source-only workflow does not perform Docker image or deployment-bundle
    publication; do not infer those actions from a successful GitHub source release.
 3. Prepare reviewed GitHub release notes and the final Mastodon text as UTF-8 files.

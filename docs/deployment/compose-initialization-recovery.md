@@ -5,9 +5,9 @@ have administrative, replication or row-security-bypass privileges, or membershi
 database writers stopped during initialization: the emptiness check is a point-in-time check, not a database-wide lock
 against unrelated clients.
 
-The runtime directory must be empty and owned by the container user (`10001:10001`) with mode `0700`. New images
-implementing task 025 need no viewer password file or password-file environment variable: they generate the initial
-credential in memory, store only the configured Strolch hash, and display the password once after successful
+The runtime directory must be empty and owned by the container user (`10001:10001`) with mode `0700`. Images with
+in-memory viewer-password generation need no viewer password file or password-file environment variable: they generate
+the initial credential in memory, store only the configured Strolch hash, and display the password once after successful
 initialization. Start the app with an attached `docker compose run --rm --no-deps -T app` after the database is ready;
 the Docker app logging driver is `none`, so Docker logs cannot recover the output. A later restart neither changes the
 viewer nor redisplays the password. The published

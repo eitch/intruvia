@@ -19,16 +19,19 @@ and public-CA validation are not assumed to have passed.
 **Credential compatibility:** the published `0.0.2` image predates generated viewer
 passwords and still uses the old password-file behavior. Do not use that image with the
 file-free startup instructions below or create a plaintext viewer-password file as a
-workaround. Use this new workflow only with a versioned bundle and image that include
-task 025; no such release is claimed here. Existing installations and legacy files are
-preserved when upgraded, and the new application does not read or delete a legacy file.
+workaround. Use this workflow only with a versioned bundle and image that support
+in-memory password generation and the reset command; no such release is claimed here.
+Existing installations and legacy files are preserved when upgraded, and the new
+application does not read or delete a legacy file.
 This change applies to the Compose lifecycle; the standalone JAR entrypoint and its
 external-runtime provisioning procedure remain unchanged.
 
 ### Download, verify and unpack the bundle
 
-Obtain a bundle version confirmed by the release owner to include task 025, and set
-`INTRUVIA_VERSION` to that version. No compatible published release is claimed here.
+Obtain a bundle version confirmed by the release owner to support the generated-password
+and reset workflow described below. Replace the version placeholder in the commands
+with that confirmed version before running them. No compatible published release is
+claimed here.
 Run these commands from a new, empty working directory. They download and verify that
 bundle, extract it into `intruvia`, and generate both database passwords in its fresh
 `.env`. The commands require `wget`, `sha256sum`, GNU `tar` and GNU `sed`; macOS's
@@ -36,7 +39,7 @@ built-in BSD `tar` and `sed` do not support the options used here, so use GNU ve
 
 ```bash
 set -eu
-: "${INTRUVIA_VERSION:?Set a release version that includes task 025}"
+export INTRUVIA_VERSION=REPLACE_WITH_COMPATIBLE_VERSION
 wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz
 wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256
 sha256sum -c "intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256"
@@ -129,8 +132,8 @@ docker compose up -d app caddy
 The script replaces only the existing `viewer` password hash atomically and prints the
 replacement once. The previous password stops working. A missing or ambiguous viewer
 record is rejected; do not edit or delete the runtime marker to bypass that failure.
-This command requires an image containing task 025 and is not available in the published
-`0.0.2` image. A legacy `secrets/viewer-password` file from an older deployment is not
+This command requires an image with generated viewer-password support and is not
+available in the published `0.0.2` image. A legacy `secrets/viewer-password` file from an older deployment is not
 read or removed by the new application; keep it protected and remove it manually under
 your secret-handling policy once it is no longer needed.
 
@@ -357,9 +360,11 @@ a new empty database and runtime. Never reset an existing schema.
 This guide describes one Intruvia process, one PostgreSQL database and a same-host
 TLS reverse proxy. Run as a dedicated unprivileged `intruvia` account. Paths and
 `intruvia.example.org` are examples; secrets below are placeholders, never usable
-credentials. Task 022 records the standalone MVP release review; the Compose bundle
-also requires task 023 acceptance and a published image. The [task 021 rehearsal record](verification/021-acceptance.txt)
-states exactly what has been exercised locally.
+credentials. Version `0.0.1` was reviewed for standalone installation; see the
+[MVP release review](RELEASE_NOTES.md). A Compose bundle requires its own deployment
+verification and a published compatible image; the [deployment verification record](verification/023-acceptance.md)
+documents the available evidence and checks that were not run. The [local rehearsal record](verification/021-acceptance.txt)
+states exactly what has been exercised.
 
 ### Prepare the distribution and database
 
@@ -389,7 +394,7 @@ use a fresh Maven local repository so previously installed artifacts with the sa
 coordinate cannot shadow the published binaries. Archive the complete
 `intruvia-app/target/intruvia/` directory and SHA-256 manifest; keep its JAR, `lib/`,
 runtime template, integrations, and `docs/` together. The verified Strolch release
-hashes are recorded in [Task 023 acceptance](verification/023-acceptance.md).
+hashes are recorded in the [Strolch release validation report](verification/023-acceptance.md).
 
 For a new installation, copy the release and runtime template separately:
 
@@ -716,5 +721,5 @@ Before upgrades take and rehearse a full backup, preserve runtime/config rather
 than overwriting it with templates, compare component changes, run migration only
 as an explicit maintenance operation and keep its evidence. Roll back code and
 database/runtime as a matching set; do not run old code on a migrated schema blindly.
-Task 020 measured combined workload p95 below one second but burst-only p95 around
-9.2 seconds; this is not a per-burst latency guarantee or release approval.
+Capacity testing measured combined-workload p95 below one second but burst-only p95
+around 9.2 seconds; this is not a per-burst latency guarantee or release approval.
