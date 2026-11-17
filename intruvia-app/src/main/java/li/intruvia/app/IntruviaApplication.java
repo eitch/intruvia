@@ -177,8 +177,9 @@ public final class IntruviaApplication implements AutoCloseable {
 	public static void main(String[] args) {
 		try { run(args); }
 		catch (Exception e) {
-			throw new IllegalStateException(e instanceof ConfigurationFailure ? e.getMessage() :
-					"Intruvia startup/runtime failed; check protected configuration and database availability");
+			StartupFailure failure = e instanceof StartupFailure startup ? startup : new StartupFailure("application startup", e);
+			StartupFailureLog.record(failure);
+			throw failure;
 		}
 	}
 

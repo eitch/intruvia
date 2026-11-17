@@ -31,6 +31,7 @@ final class FirstStartProvisioner {
 			Map<String, String> environment, Path applicationJar) {
 		char[] password = null;
 		boolean completed = false;
+		String stage = "initialization state validation";
 		try {
 			runtime = runtime.toAbsolutePath().normalize();
 			if (!lock.holds(runtime)) throw ProvisioningFiles.failure();
@@ -39,6 +40,7 @@ final class FirstStartProvisioner {
 			boolean done = Files.exists(initialized, LinkOption.NOFOLLOW_LINKS);
 			if (Files.exists(initializing, LinkOption.NOFOLLOW_LINKS)) throw ProvisioningFiles.failure();
 			if (done) {
+				stage = "existing installation validation";
 				validateExisting(lock, runtime);
 				DeploymentDatabase.requireInitialized(environment);
 				return null;
@@ -47,25 +49,34 @@ final class FirstStartProvisioner {
 			if (entries.anyMatch(path -> !path.getFileName().toString().equals(RuntimeLock.FILE)))
 					throw ProvisioningFiles.failure();
 			}
+			stage = "public origin validation";
 			validateOrigin(origin);
+			stage = "database empty-state verification";
 			DeploymentDatabase.requireEmpty(environment);
+			stage = "initialization marker creation";
 			ProvisioningFiles.writeNew(initializing, "initializing\n".getBytes(StandardCharsets.UTF_8));
 			ProvisioningFiles.forceDirectory(runtime);
-			Path stage = runtime.resolve(".intruvia-staging");
-			ProvisioningFiles.directory(stage);
+			stage = "runtime template staging";
+			Path staging = runtime.resolve(".intruvia-staging");
+			ProvisioningFiles.directory(staging);
 			password = generateViewerPassword();
-			stageRuntime(stage, templates, password, origin, applicationJar);
+			stage = "runtime template provisioning";
+			stageRuntime(staging, templates, password, origin, applicationJar);
 			for (String name : List.of("config", "data", "temp"))
-				ProvisioningFiles.moveNew(stage.resolve(name), runtime.resolve(name));
-			Files.delete(stage);
+				ProvisioningFiles.moveNew(staging.resolve(name), runtime.resolve(name));
+			Files.delete(staging);
 			ProvisioningFiles.forceDirectory(runtime);
+			stage = "staged runtime validation";
 			validateRuntime(runtime);
+			stage = "schema bootstrap staging";
 			Path bootstrap = runtime.resolve(".intruvia-bootstrap");
 			stageBootstrap(runtime, bootstrap);
+			stage = "PostgreSQL schema bootstrap";
 			SchemaBootstrapRunner.run(bootstrap, applicationJar, environment);
 			DeploymentDatabase.requireInitialized(environment);
 			deleteTree(bootstrap);
 			ProvisioningFiles.forceDirectory(runtime);
+			stage = "initialization marker commit";
 			Path marker = runtime.resolve(".intruvia-initialized.new");
 			ProvisioningFiles.writeNew(marker, MARKER);
 			ProvisioningFiles.moveNew(marker, initialized);
@@ -73,13 +84,11 @@ final class FirstStartProvisioner {
 			ProvisioningFiles.forceDirectory(runtime);
 			completed = true;
 			return password;
-		} catch (ConfigurationFailure e) {
-			throw e;
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
-			throw ProvisioningFiles.failure();
+			throw new StartupFailure(stage, e);
 		} catch (Exception e) {
-			throw ProvisioningFiles.failure();
+			throw new StartupFailure(stage, e);
 		} finally {
 			if (!completed && password != null) Arrays.fill(password, '\0');
 		}
@@ -125,11 +134,12 @@ final class FirstStartProvisioner {
 	}
 
 	static void validateOrigin(String origin) {
+		if (origin == null || origin.isBlank())
+			throw new ConfigurationFailure("INTRUVIA_PUBLIC_ORIGIN is required");
 		try {
-			if (origin == null || !origin.startsWith("https://")) throw ProvisioningFiles.failure();
 			new ViewerConfiguration(origin);
-		} catch (RuntimeException e) {
-			throw ProvisioningFiles.failure();
+		} catch (IllegalArgumentException e) {
+			throw new ConfigurationFailure("INTRUVIA_PUBLIC_ORIGIN must be an HTTP or HTTPS origin with a host and no credentials, path, query, or fragment");
 		}
 	}
 

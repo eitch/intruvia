@@ -63,8 +63,10 @@ Do not continue if either download or checksum verification fails.
 
 Do these three steps in order:
 
-1. Set `INTRUVIA_PUBLIC_ORIGIN` to the exact public HTTPS origin (no path or trailing
-   slash) using a protected editor. The supplied `.env` already contains the versioned
+1. Set `INTRUVIA_PUBLIC_ORIGIN` to the exact HTTP or HTTPS origin, with an optional
+   port and no credentials, path, trailing slash, query or fragment. For example,
+   `https://intruvia.example.org` for an exposed service, or `http://localhost` for
+   certificate-free local testing. The supplied `.env` already contains the versioned
    `INTRUVIA_IMAGE` reference. Then check the file permissions:
 
    ```bash
@@ -75,9 +77,14 @@ Do these three steps in order:
    do not print resolved Compose configuration or expose Docker access to unauthorized
    users. Ensure shell environment variables do not override `.env` values.
 
-2. Configure DNS and firewall for the exact HTTPS origin. You own DNS, certificate
-   acquisition/renewal, proxy configuration, and verification. Only Caddy publishes
-   ports 80 and 443; app and PostgreSQL publish none. The app binds `0.0.0.0` inside its
+2. TLS termination is the operator's responsibility; HTTPS is recommended for exposed
+   deployments. HTTP is accepted for local and private-network testing, but it does not
+   encrypt viewer credentials or session cookies; never expose an HTTP deployment to an
+   untrusted network. For a local-only test, use `http://localhost` and ensure the
+   published host port 80 is not reachable from outside the development machine. For an
+   exposed service, configure DNS, firewall and Caddy for the exact HTTPS origin, and
+   manage certificate acquisition/renewal and verification. Only Caddy publishes ports
+   80 and 443; app and PostgreSQL publish none. The app binds `0.0.0.0` inside its
    network, so restrict Docker access and network membership to the deployment services.
    Do not attach unrelated containers to the proxy or database networks. The database
    network is internal. Caddy blocks public health paths; check readiness from the host
@@ -105,8 +112,9 @@ Do these three steps in order:
    docker compose up -d app caddy
    ```
 
-   PostgreSQL readiness gates app startup; app readiness gates Caddy. Sign in over
-   HTTPS and check WSS. No producer mapping or token operator is provisioned by default.
+   PostgreSQL readiness gates app startup; app readiness gates Caddy. Sign in at the
+   configured origin and verify WebSocket connectivity (`wss://` for HTTPS, `ws://` for
+   HTTP). No producer mapping or token operator is provisioned by default.
    Editing `.env` does not rotate existing users/passwords.
 
 ### After startup
@@ -115,6 +123,21 @@ Named volumes retain `postgres_data`, `runtime`, `app_logs`, `caddy_data` and
 `caddy_config` across restarts and image replacement. Protect Docker volumes and the
 host, including logs, runtime privilege files and proxy certificate state. Do not use
 `docker compose down --volumes` on an installation you intend to retain.
+
+Startup and first-start provisioning failures are written to the protected persistent
+file `/var/log/intruvia/startup-failures.log` in the `app_logs` volume. It records the
+failed stage, safe diagnostic details and stack locations; it omits arbitrary exception
+messages and credentials. Docker's `none` logging driver still discards app stdout/stderr.
+To inspect the startup file without starting the app or its dependencies, run:
+
+```bash
+docker compose run --rm --no-deps -T --entrypoint sh app -c \
+  'cat /var/log/intruvia/startup-failures.log'
+```
+
+The generated viewer password is emitted only after successful initialization to the
+attached console; it is not written to this failure log. Keep the initialized runtime
+and database intact while investigating a failure; follow [failed-start recovery](#recover-a-failed-first-start).
 
 #### Recover a missed initial viewer password
 
@@ -150,8 +173,9 @@ paused until the new origin is verified.
    docker compose stop app
    ```
 
-2. While the app is stopped, set the same exact HTTPS origin (no path or trailing slash)
-   in both files:
+2. While the app is stopped, set the same exact HTTP or HTTPS origin (no credentials,
+   path, trailing slash, query or fragment) in both files. Use HTTPS for exposed services;
+   HTTP remains suitable for certificate-free local testing only:
 
    ```properties
    # /var/lib/intruvia/runtime/config/viewer.properties
@@ -707,9 +731,9 @@ include control/unban, offline queue, analytics, export, multi-tenancy and clust
 
 | Symptom | Check / action |
 |---|---|
-| Startup fails | Four required XML files, two non-placeholder privilege secrets, Java 25, DB credentials, schema flags/version and protected mapping permissions; errors omit secret values |
+| Startup fails | Inspect `/var/log/intruvia/startup-failures.log` in the persistent `app_logs` volume for the failed stage and safe stack details; verify HTTP/HTTPS origin syntax, required XML/privilege settings, DB health and schema flags without deleting runtime or database |
 | Ready 503 | DB network/authentication, finite pool acquisition/validation budget; retry a busy probe with a monitor timeout above 35 seconds for defaults |
-| Viewer 403 / WSS refused | Exact HTTPS origin including port, Origin/CSRF headers, Viewer role, Secure cookie, proxy upgrade headers; PATs cannot authenticate viewers |
+| Viewer 403 / WebSocket refused | Exact configured HTTP/HTTPS origin including port, Origin/CSRF headers, Viewer role, cookie Secure flag for HTTPS, proxy upgrade headers; PATs cannot authenticate viewers |
 | Ingestion 401 / 403 | PAT validity/owner enabled/revocation, exact event:ingest scope, stable mapping; viewer cookies never ingest |
 | 409 | Same producer UUID used with changed normalized payload; retries must reuse exact bytes |
 | 429 | Per-instance/global/proxy rate limit or receipt_capacity; honor Retry-After; do not delete unexpired receipts |

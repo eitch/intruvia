@@ -37,7 +37,7 @@ services:
     stop_grace_period: 180s
     environment:
       INTRUVIA_BIND_ADDRESS: 0.0.0.0
-      INTRUVIA_PUBLIC_ORIGIN: ${INTRUVIA_PUBLIC_ORIGIN:?Set the HTTPS origin in .env}
+      INTRUVIA_PUBLIC_ORIGIN: ${INTRUVIA_PUBLIC_ORIGIN:?Set the HTTP or HTTPS origin in .env}
       DB_URL: jdbc:postgresql://db:5432/${INTRUVIA_DB_NAME:?Set INTRUVIA_DB_NAME in .env}
       DB_USERNAME: ${INTRUVIA_DB_USERNAME:?Set INTRUVIA_DB_USERNAME in .env}
       DB_PASSWORD: ${INTRUVIA_DB_PASSWORD:?Set INTRUVIA_DB_PASSWORD in .env}
@@ -81,7 +81,7 @@ services:
       - "80:80"
       - "443:443"
     environment:
-      INTRUVIA_PUBLIC_ORIGIN: ${INTRUVIA_PUBLIC_ORIGIN:?Set the HTTPS origin in .env}
+      INTRUVIA_PUBLIC_ORIGIN: ${INTRUVIA_PUBLIC_ORIGIN:?Set the HTTP or HTTPS origin in .env}
     depends_on:
       app:
         condition: service_healthy

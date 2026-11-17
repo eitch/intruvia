@@ -17,8 +17,10 @@ public final class DeploymentEntrypoint {
 			int status = run(args, System.getenv());
 			if (status != 0) System.exit(status);
 		} catch (Exception e) {
-			System.err.println(e instanceof ConfigurationFailure ? e.getMessage() :
-					"Container startup failed; preserve the runtime and database and follow recovery instructions");
+			StartupFailure failure = e instanceof StartupFailure startup ? startup : new StartupFailure("container startup", e);
+			StartupFailureLog.record(failure);
+			System.err.println(failure.getMessage());
+			System.err.println("Startup diagnostics: " + StartupFailureLog.path());
 			System.exit(1);
 		}
 	}
@@ -32,7 +34,13 @@ public final class DeploymentEntrypoint {
 		Path jar = Path.of(DeploymentEntrypoint.class.getProtectionDomain().getCodeSource().getLocation().toURI())
 				.toAbsolutePath().normalize();
 		if (!Files.isRegularFile(jar)) throw ProvisioningFiles.failure();
-		try (var lock = RuntimeLock.acquire(runtime)) {
+		RuntimeLock lock;
+		try {
+			lock = RuntimeLock.acquire(runtime);
+		} catch (RuntimeException e) {
+			throw new StartupFailure("runtime lock acquisition", e);
+		}
+		try (lock) {
 			if (args[3].equals("serve") && args.length == 4) {
 				char[] password = FirstStartProvisioner.ensureInitialized(lock, runtime, templates,
 						environment.get("INTRUVIA_PUBLIC_ORIGIN"), environment, jar);

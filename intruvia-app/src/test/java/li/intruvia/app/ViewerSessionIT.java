@@ -112,23 +112,24 @@ public class ViewerSessionIT {
 
 	@Test(timeout = 60000)
 	public void expiryInvalidatesHttpAndSharedSocketValidator() throws Exception {
+		String httpOrigin = "http://intruvia.example.org:8080";
 		AtomicReference<Instant> time = new AtomicReference<>(Instant.now());
 		Clock clock = new Clock() {
 			@Override public ZoneId getZone() { return ZoneOffset.UTC; }
 			@Override public Clock withZone(ZoneId zone) { return this; }
 			@Override public Instant instant() { return time.get(); }
 		};
-		try (var database = database("http://localhost:8080"); var app = new IntruviaApplication(database.runtime, 0, clock);
+		try (var database = database(httpOrigin); var app = new IntruviaApplication(database.runtime, 0, clock);
 				var client = HttpClient.newHttpClient()) {
 			app.start();
 			var headers = headers();
-			headers.put("Origin", "http://localhost:8080");
+			headers.put("Origin", httpOrigin);
 			var login = check(send(client, app, "POST", LOGIN, headers), 200);
 			assertFalse(login.headers().firstValue("Set-Cookie").orElseThrow().contains("Secure"));
 			String cookie = cookie(login);
 			String token = cookie.substring(cookie.indexOf('=') + 1);
 			var sessions = new ViewerSessions(() -> app.agent().getContainer().getComponent(StrolchSessionHandler.class),
-					new ViewerConfiguration("http://localhost:8080"), clock);
+					new ViewerConfiguration(httpOrigin), clock);
 			var certificate = sessions.validateToken(token);
 			time.set(certificate.getLoginTime().toInstant().plusSeconds(1799));
 			check(send(client, app, "GET", "", Map.of("Cookie", cookie)), 200);

@@ -86,7 +86,7 @@ final class DeploymentDatabase {
 			else
 				result = 3;
 		} catch (SQLException | RuntimeException e) {
-			throw new ConfigurationFailure("Unable to verify PostgreSQL database safety");
+			throw new ConfigurationFailure("Unable to verify PostgreSQL database safety", e);
 		}
 		if (result == 0)
 			throw new ConfigurationFailure("Unable to verify PostgreSQL database safety");

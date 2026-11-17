@@ -34,8 +34,13 @@ final class SchemaBootstrapRunner {
 			Path log = Files.createTempFile(bootstrapRuntime, "schema-bootstrap-", ".log",
 					PosixFilePermissions.asFileAttribute(RuntimeLock.FILE_PERMISSIONS));
 			if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
-			ProcessBuilder builder = new ProcessBuilder(Path.of(System.getProperty("java.home"), "bin", "java").toString(),
-					"-jar", applicationJar.toAbsolutePath().toString(), bootstrapRuntime.toAbsolutePath().toString(), "0")
+			var command = new java.util.ArrayList<String>();
+			command.add(Path.of(System.getProperty("java.home"), "bin", "java").toString());
+			String logDirectory = System.getProperty("intruvia.log.dir");
+			if (logDirectory != null) command.add("-Dintruvia.log.dir=" + logDirectory);
+			command.addAll(java.util.List.of("-jar", applicationJar.toAbsolutePath().toString(),
+					bootstrapRuntime.toAbsolutePath().toString(), "0"));
+			ProcessBuilder builder = new ProcessBuilder(command)
 					.directory(bootstrapRuntime.toFile()).redirectErrorStream(true).redirectOutput(log.toFile());
 			builder.environment().clear();
 			if (environment != null) {
@@ -54,16 +59,18 @@ final class SchemaBootstrapRunner {
 				awaitReady(process, port);
 				if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
 				owner.requestStop();
-				if (!process.waitFor(STOP_TIMEOUT_SECONDS, TimeUnit.SECONDS) || process.exitValue() != 143 ||
-						!containsStopped(output))
-					throw failure();
+				if (!process.waitFor(STOP_TIMEOUT_SECONDS, TimeUnit.SECONDS))
+					throw failure("Schema bootstrap process did not stop within 120 seconds");
+				if (process.exitValue() != 143)
+					throw failure("Schema bootstrap process stopped with unexpected status " + process.exitValue());
+				if (!containsStopped(output)) throw failure("Schema bootstrap process did not confirm a clean shutdown");
 				if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
 			}
 		} catch (InterruptedException e) {
 			interrupted = true;
-			throw failure();
+			throw new ConfigurationFailure("Schema bootstrap failed; preserve the protected runtime and follow recovery instructions", e);
 		} catch (IOException | RuntimeException e) {
-			throw failure();
+			throw new ConfigurationFailure("Schema bootstrap failed; preserve the protected runtime and follow recovery instructions", e);
 		} finally {
 			interrupted |= owner.terminate(interrupted);
 			if (hookRegistered) {
@@ -98,18 +105,18 @@ final class SchemaBootstrapRunner {
 			String line;
 			while ((line = readLine(output)) != null) {
 				if (Thread.currentThread().isInterrupted()) throw new InterruptedException();
-				if (System.nanoTime() >= deadline) throw failure();
+				if (System.nanoTime() >= deadline) throw failure("Schema bootstrap did not become ready within 120 seconds");
 				var matcher = STARTED.matcher(line);
 				if (matcher.find()) {
 					int port = Integer.parseInt(matcher.group(1));
 					if (port > 0 && port <= 65535) return port;
-					throw failure();
+					throw failure("Schema bootstrap reported an invalid server port");
 				}
 			}
-			if (!process.isAlive()) throw failure();
+			if (!process.isAlive()) throw failure("Schema bootstrap process exited before readiness with status " + process.exitValue());
 			Thread.sleep(100);
 		}
-		throw failure();
+		throw failure("Schema bootstrap did not become ready within 120 seconds");
 	}
 
 	private static void awaitReady(Process process, int port) throws InterruptedException {
@@ -156,6 +163,10 @@ final class SchemaBootstrapRunner {
 
 	private static ConfigurationFailure failure() {
 		return new ConfigurationFailure("Schema bootstrap failed; preserve the protected runtime and follow recovery instructions");
+	}
+
+	private static ConfigurationFailure failure(String detail) {
+		return new ConfigurationFailure(detail + "; preserve the protected runtime and follow recovery instructions");
 	}
 
 	private static final class ProcessOwner {

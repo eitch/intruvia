@@ -5,6 +5,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,10 +20,12 @@ public class FirstStartProvisionerTest {
 	@Rule public TemporaryFolder temporary = new TemporaryFolder();
 
 	@Test
-	public void acceptsOnlyExactHttpsOrigins() {
+	public void acceptsExactHttpAndHttpsOrigins() {
 		FirstStartProvisioner.validateOrigin("https://intruvia.example.org");
 		FirstStartProvisioner.validateOrigin("https://localhost:8443");
-		for (String origin : new String[]{null, "", "http://localhost", "https://example.org/", "https://example.org?x=1",
+		FirstStartProvisioner.validateOrigin("http://localhost:8080");
+		FirstStartProvisioner.validateOrigin("http://intruvia.example.org:8080");
+		for (String origin : new String[]{null, "", "ftp://localhost", "https://example.org/", "https://example.org?x=1",
 				"https://user@example.org", "https://example.org:0", "https://*.example.org"})
 			assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.validateOrigin(origin));
 	}
@@ -53,9 +57,17 @@ public class FirstStartProvisionerTest {
 		Path secrets = directory("secrets");
 		Path password = password(secrets);
 		Path invalidOrigin = directory("invalid-origin");
-		rejected(invalidOrigin, "http://localhost");
+		try (var lock = RuntimeLock.acquire(invalidOrigin)) {
+			var failure = assertThrows(StartupFailure.class, () -> FirstStartProvisioner.ensureInitialized(lock, invalidOrigin,
+					Path.of("unused-templates"), "http://" + CANARY + "@intruvia.example.org", Map.of(), Path.of("unused.jar")));
+			assertEquals("public origin validation", failure.stage());
+			assertTrue(failure.getMessage(), failure.getMessage().contains("INTRUVIA_PUBLIC_ORIGIN"));
+			assertFalse(failure.getMessage().contains(CANARY));
+		}
 		assertFalse(Files.exists(invalidOrigin.resolve(FirstStartProvisioner.INITIALIZING)));
 		assertEquals(CANARY, Files.readString(password));
+		var invalid = assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.validateOrigin("https://example.org/path"));
+		assertTrue(invalid.getMessage().contains("HTTP or HTTPS"));
 		char[] generated = FirstStartProvisioner.generateViewerPassword();
 		try {
 			assertEquals(64, generated.length);
@@ -63,6 +75,43 @@ public class FirstStartProvisionerTest {
 		} finally {
 			Arrays.fill(generated, '\0');
 		}
+	}
+
+	@Test
+	public void logsStartupStageAndStackWithoutUntrustedExceptionMessages() throws Exception {
+		Path logs = directory("logs");
+		String previous = System.getProperty("intruvia.log.dir");
+		System.setProperty("intruvia.log.dir", logs.toString());
+		try {
+			var failure = new StartupFailure("database empty-state verification",
+					new ConfigurationFailure("Unable to verify PostgreSQL database safety", new IllegalStateException(CANARY)));
+			var trace = new StringWriter();
+			failure.printStackTrace(new PrintWriter(trace));
+			assertNull(failure.getCause());
+			assertFalse(trace.toString(), trace.toString().contains(CANARY));
+			StartupFailureLog.record(failure);
+			StartupFailureLog.record(failure);
+			Path log = logs.resolve("startup-failures.log");
+			String contents = Files.readString(log);
+			assertTrue(contents, contents.contains("stage=database empty-state verification"));
+			assertTrue(contents, contents.contains(IllegalStateException.class.getName()));
+			assertTrue(contents, contents.contains("FirstStartProvisionerTest"));
+			assertFalse(contents, contents.contains(CANARY));
+			assertEquals(1, contents.split(" ERROR stage=", -1).length - 1);
+			assertEquals(RuntimeLock.FILE_PERMISSIONS, Files.getPosixFilePermissions(log));
+		} finally {
+			if (previous == null) System.clearProperty("intruvia.log.dir");
+			else System.setProperty("intruvia.log.dir", previous);
+		}
+	}
+
+	@Test
+	public void startupFailureRetainsSpecificSafeNestedDiagnostic() {
+		var nested = new ConfigurationFailure("Schema bootstrap process exited before readiness with status 1",
+				new IllegalStateException(CANARY));
+		var failure = new StartupFailure("PostgreSQL schema bootstrap", new ConfigurationFailure("Schema bootstrap failed", nested));
+		assertTrue(failure.getMessage().contains("exited before readiness"));
+		assertFalse(failure.getMessage().contains(CANARY));
 	}
 
 	@Test

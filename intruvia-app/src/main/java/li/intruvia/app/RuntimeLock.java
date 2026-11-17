@@ -49,7 +49,7 @@ final class RuntimeLock implements AutoCloseable {
 			return new RuntimeLock(runtime, channel, lock);
 		} catch (IOException | OverlappingFileLockException | UnsupportedOperationException | SecurityException e) {
 			if (channel != null) try { channel.close(); } catch (IOException ignored) { }
-			throw failure();
+			throw failure(e);
 		} catch (ConfigurationFailure e) {
 			if (channel != null) try { channel.close(); } catch (IOException ignored) { }
 			throw e;
@@ -80,6 +80,10 @@ final class RuntimeLock implements AutoCloseable {
 
 	private static ConfigurationFailure failure() {
 		return new ConfigurationFailure("Runtime is locked or paths are not owner-only; preserve the runtime and follow recovery instructions");
+	}
+
+	private static ConfigurationFailure failure(Throwable cause) {
+		return new ConfigurationFailure("Runtime is locked or paths are not owner-only; preserve the runtime and follow recovery instructions", cause);
 	}
 
 	@Override

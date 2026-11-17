@@ -18,11 +18,10 @@ public record ViewerConfiguration(String origin) {
 			} catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException("Invalid viewer origin");
 			}
-			boolean loopback = Set.of("localhost", "127.0.0.1", "[::1]").contains(String.valueOf(uri.getHost()));
 			if (uri.getHost() == null || uri.getRawUserInfo() != null || uri.getRawQuery() != null || uri.getRawFragment() != null ||
-					!uri.getRawPath().isEmpty() || uri.getPort() == 0 || uri.getPort() > 65535 ||
-					!("https".equals(uri.getScheme()) || ("http".equals(uri.getScheme()) && loopback)))
-				throw new IllegalArgumentException("Viewer origin must be an HTTPS origin (HTTP allowed only on loopback)");
+					!uri.getRawPath().isEmpty() || uri.getRawAuthority().endsWith(":") || uri.getPort() == 0 || uri.getPort() > 65535 ||
+					!("https".equals(uri.getScheme()) || "http".equals(uri.getScheme())))
+				throw new IllegalArgumentException("Viewer origin must be an HTTP or HTTPS origin with a host and no credentials, path, query, or fragment");
 		}
 	}
 

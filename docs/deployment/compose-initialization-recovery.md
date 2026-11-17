@@ -13,6 +13,13 @@ the Docker app logging driver is `none`, so Docker logs cannot recover the outpu
 viewer nor redisplays the password. The published
 `0.0.2` image predates this behavior and must not be used with these file-free instructions.
 
+`INTRUVIA_PUBLIC_ORIGIN` accepts an exact HTTP or HTTPS origin with an optional port and no credentials, path, query,
+fragment or trailing slash. Use `http://localhost` for certificate-free local testing; HTTPS is recommended for exposed
+services because HTTP does not encrypt viewer credentials or session cookies. TLS termination is the operator's
+responsibility. Startup/provisioning diagnostics are kept in `/var/log/intruvia/startup-failures.log` on the persistent
+`app_logs` volume; the log records a stage and safe stack details, never arbitrary exception messages or credentials.
+It does not contain the one-time viewer password.
+
 If the output is missed, stop the app and run the packaged `/usr/local/bin/intruvia-reset-viewer-password` command via
 `docker compose run --rm --no-deps -T --entrypoint ... app`. It takes the runtime lock, replaces only the existing
 viewer hash atomically, and prints the replacement once to the attached console. It fails without changing credentials
@@ -27,8 +34,9 @@ migration and drop disabled; a separate protected temporary runtime is used for 
 ### If initialization fails
 
 1. Stop the application and all other database and privilege-file writers. Preserve the entire database, runtime, logs
-   and any legacy password file before investigating. Treat them as sensitive. The protected `.intruvia-staging` and
-   `.intruvia-bootstrap` directories may contain diagnostic logs and secrets.
+   and any legacy password file before investigating. Treat them as sensitive. Inspect the persistent app log at
+   `/var/log/intruvia/startup-failures.log` for the failed stage and safe stack details. The protected `.intruvia-staging`
+   and `.intruvia-bootstrap` directories may also contain diagnostic logs and secrets.
 2. If the runtime contains only `.intruvia.lock` and there is no `.intruvia-initializing` marker, correct the reported
    input, permission, connection or empty-database problem before retrying. Do not point initialization at an existing
    nonempty database or delete its contents.

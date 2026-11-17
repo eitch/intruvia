@@ -14,13 +14,14 @@ public class ViewerConfigurationTest {
 	@Test
 	public void validatesExplicitOriginAndSafeCookieMode() throws Exception {
 		for (String origin : List.of("https://intruvia.example.org", "https://intruvia.example.org:8443",
-				"http://localhost:8080", "http://127.0.0.1:8080", "http://[::1]:8080")) {
+				"http://intruvia.example.org", "http://intruvia.example.org:8080", "http://localhost:8080",
+				"http://localhost.evil:8080", "http://127.0.0.1:8080", "http://[::1]:8080")) {
 			var configuration = new ViewerConfiguration(origin);
 			assertEquals(origin.startsWith("https:"), configuration.secure());
 		}
-		for (String invalid : List.of("", "null", "*", "http://intruvia.example.org", "https://*.example.org",
+		for (String invalid : List.of("", "null", "*", "ftp://intruvia.example.org", "https://*.example.org",
 				"https://host/path", "https://host/", "https://host?query", "https://host#fragment", "https://user@host",
-				"https://host:0", "https://host:65536", "http://localhost.evil:8080", "file:///tmp/example"))
+				"http://host:", "http://[::1]:", "https://host:0", "https://host:65536", "file:///tmp/example"))
 			assertThrows(invalid, IllegalArgumentException.class, () -> new ViewerConfiguration(invalid));
 		var path = this.temporary.getRoot().toPath().resolve("viewer.properties");
 		assertNull(ViewerConfiguration.load(path).origin());

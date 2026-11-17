@@ -192,6 +192,40 @@ public class FirstStartProvisionerIT {
 		}
 	}
 
+	@Test(timeout = 60000)
+	public void entrypointPersistsSafeOriginAndDatabaseFailureDiagnostics() throws Exception {
+		try (var database = new DeploymentDatabaseIT.ProbeDatabase()) {
+			var invalidOrigin = new java.util.HashMap<>(database.environment());
+			invalidOrigin.put("INTRUVIA_PUBLIC_ORIGIN", "http://" + PASSWORD + "@localhost");
+			checkStartupFailure(directory("invalid-origin-runtime"), directory("invalid-origin-logs"), invalidOrigin,
+					"public origin validation", "INTRUVIA_PUBLIC_ORIGIN");
+			var invalidDatabase = new java.util.HashMap<>(database.environment());
+			invalidDatabase.put("DB_PASSWORD", PASSWORD);
+			checkStartupFailure(directory("invalid-database-runtime"), directory("invalid-database-logs"), invalidDatabase,
+					"database empty-state verification", "Unable to verify PostgreSQL database safety");
+			DeploymentDatabase.requireEmpty(database.environment());
+		}
+	}
+
+	private void checkStartupFailure(Path runtime, Path logs, Map<String, String> environment, String stage, String detail)
+			throws Exception {
+		Path console = log();
+		Process process = launch(runtime, logs, console, environment, "serve");
+		assertTrue(process.waitFor(30, TimeUnit.SECONDS));
+		assertNotEquals(0, process.exitValue());
+		assertFalse(Files.exists(runtime.resolve(FirstStartProvisioner.INITIALIZING)));
+		assertFalse(Files.exists(runtime.resolve(FirstStartProvisioner.INITIALIZED)));
+		Path diagnostic = logs.resolve("startup-failures.log");
+		assertEquals(RuntimeLock.FILE_PERMISSIONS, Files.getPosixFilePermissions(diagnostic));
+		String text = Files.readString(diagnostic);
+		assertTrue(text, text.contains("stage=" + stage));
+		assertTrue(text, text.contains(detail));
+		assertFalse(text, text.contains(PASSWORD));
+		assertFalse(text, text.contains(environment.get("DB_PASSWORD")));
+		assertFalse(Files.readString(console).contains(PASSWORD));
+		assertPasswordNotPrinted(console);
+	}
+
 	private Process launch(Path runtime, Path logs, Path log, Map<String, String> database, String... arguments) throws Exception {
 		return launch(runtime, logs, log, database, null, arguments);
 	}
@@ -205,7 +239,7 @@ public class FirstStartProvisionerIT {
 		command.addAll(List.of(arguments));
 		var builder = new ProcessBuilder(command).redirectErrorStream(true).redirectOutput(log.toFile());
 		builder.environment().putAll(database);
-		builder.environment().put("INTRUVIA_PUBLIC_ORIGIN", ORIGIN);
+		builder.environment().put("INTRUVIA_PUBLIC_ORIGIN", database.getOrDefault("INTRUVIA_PUBLIC_ORIGIN", ORIGIN));
 		if (legacyPassword != null) builder.environment().put("INTRUVIA_VIEWER_PASSWORD_FILE", legacyPassword.toString());
 		else builder.environment().remove("INTRUVIA_VIEWER_PASSWORD_FILE");
 		builder.environment().put("INTRUVIA_BIND_ADDRESS", "127.0.0.1");
