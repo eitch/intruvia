@@ -118,6 +118,12 @@ public class DeploymentDatabaseIT {
 			String canary = "secret_canary_" + UUID.randomUUID().toString().replace("-", "");
 			String url = database.url + "?ApplicationName=" + canary;
 			var invalid = Map.of("DB_URL", url, "DB_USERNAME", database.role, "DB_PASSWORD", canary);
+			String authenticationFailure = "PostgreSQL authentication failed; verify DB_USERNAME and DB_PASSWORD " +
+					"(INTRUVIA_DB_USERNAME and INTRUVIA_DB_PASSWORD in Compose) match the credentials stored in this database";
+			assertEquals(authenticationFailure,
+					assertThrows(ConfigurationFailure.class, () -> DeploymentDatabase.requireEmpty(invalid)).getMessage());
+			assertEquals(authenticationFailure,
+					assertThrows(ConfigurationFailure.class, () -> DeploymentDatabase.requireInitialized(invalid)).getMessage());
 			for (var failure : new ConfigurationFailure[]{
 					assertThrows(ConfigurationFailure.class, () -> DeploymentDatabase.requireEmpty(invalid)),
 					assertThrows(ConfigurationFailure.class, () -> DeploymentDatabase.requireInitialized(invalid)),

@@ -4,10 +4,13 @@ set -euo pipefail
 
 root=$(cd "$(dirname "$0")/.." && pwd)
 containers=()
+network="intruvia-compose-postgres-$$-$RANDOM"
 cleanup() {
 	for container in "${containers[@]}"; do docker rm -fv "$container" >/dev/null 2>&1 || true; done
+	docker network rm "$network" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
+docker network create "$network" >/dev/null
 export POSTGRES_USER=intruvia_admin
 export POSTGRES_DB=intruvia
 export POSTGRES_PASSWORD=admin_test_password_0123456789
@@ -15,7 +18,9 @@ export INTRUVIA_DB_USERNAME=intruvia
 export INTRUVIA_DB_PASSWORD=app_test_password_9876543210
 
 start_database() {
-	docker run --detach --network none \
+	local -a network_alias=()
+	if [[ $# -gt 0 ]]; then network_alias=(--network-alias "$1"); fi
+	docker run --detach --network "$network" "${network_alias[@]}" \
 		--env POSTGRES_USER --env POSTGRES_DB --env POSTGRES_PASSWORD \
 		--env INTRUVIA_DB_USERNAME --env INTRUVIA_DB_PASSWORD \
 		--mount "type=bind,source=$root/deployment/db/init.sh,target=/docker-entrypoint-initdb.d/10-intruvia.sh,readonly" \
@@ -31,11 +36,11 @@ failure() {
 	exit 1
 }
 
-container=$(start_database)
+container=$(start_database db)
 containers+=("$container")
 ready=false
 for _ in {1..120}; do
-	if docker exec "$container" sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT 1"' >/dev/null 2>&1; then
+	if docker exec "$container" sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT 1"' >/dev/null 2>&1; then
 		ready=true
 		break
 	fi
@@ -43,8 +48,10 @@ for _ in {1..120}; do
 	sleep 1
 done
 [[ "$ready" == true ]] || failure "$container"
-role=$(docker exec "$container" sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT NOT r.rolsuper AND NOT r.rolcreatedb AND NOT r.rolcreaterole AND NOT r.rolreplication AND NOT r.rolbypassrls AND d.datdba = r.oid FROM pg_roles r JOIN pg_database d ON d.datname = current_database() WHERE r.rolname = current_user"')
+role=$(docker exec "$container" sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT NOT r.rolsuper AND NOT r.rolcreatedb AND NOT r.rolcreaterole AND NOT r.rolreplication AND NOT r.rolbypassrls AND d.datdba = r.oid FROM pg_roles r JOIN pg_database d ON d.datname = current_database() WHERE r.rolname = current_user"')
 [[ "$role" == t ]] || failure "$container"
+if docker exec --env PGPASSWORD=known_wrong_test_password "$container" psql -X -h db -U "$INTRUVIA_DB_USERNAME" \
+	-d "$POSTGRES_DB" -tAc 'SELECT 1' >/dev/null 2>&1; then failure "$container"; fi
 scram=$(docker exec "$container" psql -X -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tAc "SELECT rolpassword LIKE 'SCRAM-SHA-256\$%' FROM pg_authid WHERE rolname = '$INTRUVIA_DB_USERNAME'")
 [[ "$scram" == t ]] || failure "$container"
 output=$(docker logs "$container" 2>&1)

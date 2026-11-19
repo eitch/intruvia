@@ -202,7 +202,8 @@ public class FirstStartProvisionerIT {
 			var invalidDatabase = new java.util.HashMap<>(database.environment());
 			invalidDatabase.put("DB_PASSWORD", PASSWORD);
 			checkStartupFailure(directory("invalid-database-runtime"), directory("invalid-database-logs"), invalidDatabase,
-					"database empty-state verification", "Unable to verify PostgreSQL database safety");
+					"database empty-state verification", "PostgreSQL authentication failed; verify DB_USERNAME and DB_PASSWORD " +
+							"(INTRUVIA_DB_USERNAME and INTRUVIA_DB_PASSWORD in Compose) match the credentials stored in this database");
 			DeploymentDatabase.requireEmpty(database.environment());
 		}
 	}

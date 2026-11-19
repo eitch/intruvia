@@ -19,7 +19,7 @@ services:
     networks:
       - database
     healthcheck:
-      test: ["CMD-SHELL", "PGPASSWORD=\"$$INTRUVIA_DB_PASSWORD\" psql -X -h 127.0.0.1 -U \"$$INTRUVIA_DB_USERNAME\" -d \"$$POSTGRES_DB\" -tAc 'SELECT 1' >/dev/null 2>&1"]
+      test: ["CMD-SHELL", "PGPASSWORD=\"$$INTRUVIA_DB_PASSWORD\" psql -X -h db -U \"$$INTRUVIA_DB_USERNAME\" -d \"$$POSTGRES_DB\" -tAc 'SELECT 1' >/dev/null 2>&1"]
       interval: 5s
       timeout: 5s
       retries: 24

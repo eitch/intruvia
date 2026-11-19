@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.Map;
 
 final class DeploymentDatabase {
+	private static final String AUTHENTICATION_FAILURE =
+			"PostgreSQL authentication failed; verify DB_USERNAME and DB_PASSWORD (INTRUVIA_DB_USERNAME and " +
+					"INTRUVIA_DB_PASSWORD in Compose) match the credentials stored in this database";
 
 	private static final String ROLE_CHECK = """
 			SELECT NOT r.rolsuper AND NOT r.rolcreatedb AND NOT r.rolcreaterole
@@ -85,7 +88,11 @@ final class DeploymentDatabase {
 				result = 2;
 			else
 				result = 3;
-		} catch (SQLException | RuntimeException e) {
+		} catch (SQLException e) {
+			if (isAuthenticationFailure(e))
+				throw new ConfigurationFailure(AUTHENTICATION_FAILURE);
+			throw new ConfigurationFailure("Unable to verify PostgreSQL database safety", e);
+		} catch (RuntimeException e) {
 			throw new ConfigurationFailure("Unable to verify PostgreSQL database safety", e);
 		}
 		if (result == 0)
@@ -94,6 +101,14 @@ final class DeploymentDatabase {
 			throw new ConfigurationFailure("PostgreSQL user must directly own the database and have no administrative role privileges");
 		if (result == 2)
 			throw new ConfigurationFailure(stateFailure);
+	}
+
+	private static boolean isAuthenticationFailure(SQLException exception) {
+		for (SQLException current = exception; current != null; current = current.getNextException()) {
+			String state = current.getSQLState();
+			if ("28000".equals(state) || "28P01".equals(state)) return true;
+		}
+		return false;
 	}
 
 	private static boolean missing(Map<String, String> environment, String name) {

@@ -34,6 +34,7 @@ failure() {
 	output=$(compose logs --no-color db 2>&1 || true)
 	output=${output//compose_admin_test_password_0123456789/[redacted]}
 	output=${output//compose_app_test_password_9876543210/[redacted]}
+	output=${output//compose_wrong_test_password_0123456789/[redacted]}
 	printf 'Compose startup check failed: %s\n%s\n' "$1" "$output" >&2
 	exit 1
 }
@@ -60,7 +61,7 @@ mkdir "$work/out" "$bundle"
 tar -xzf "$work/out/intruvia-deployment-0.0.1-test.tar.gz" -C "$bundle"
 printf '#!/bin/sh\nsleep 10\ndate +%%s%%N > /var/lib/postgresql/.intruvia-delay-finished\n' > "$bundle/db/00-delay.sh"
 chmod 0755 "$bundle/db/00-delay.sh"
-printf 'services:\n  db:\n    volumes:\n      - type: bind\n        source: ./db/00-delay.sh\n        target: /docker-entrypoint-initdb.d/00-delay.sh\n        read_only: true\n' > "$bundle/delay.override.yaml"
+printf 'services:\n  db:\n    healthcheck:\n      interval: 1s\n      timeout: 2s\n      retries: 3\n      start_period: 30s\n    volumes:\n      - type: bind\n        source: ./db/00-delay.sh\n        target: /docker-entrypoint-initdb.d/00-delay.sh\n        read_only: true\n' > "$bundle/delay.override.yaml"
 sed -i -e 's|^INTRUVIA_PUBLIC_ORIGIN=$|INTRUVIA_PUBLIC_ORIGIN=https://intruvia.example.org|' \
 	-e 's|^POSTGRES_ADMIN_PASSWORD=$|POSTGRES_ADMIN_PASSWORD=compose_admin_test_password_0123456789|' \
 	-e 's|^INTRUVIA_DB_PASSWORD=$|INTRUVIA_DB_PASSWORD=compose_app_test_password_9876543210|' "$bundle/.env"
@@ -110,10 +111,10 @@ compose exec -T app sh -c '
 		grep -Fq "<$flag>false</$flag>" /var/lib/intruvia/runtime/config/StrolchConfiguration.xml
 	done
 ' || failure 'runtime initialization or schema flags'
-role=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT NOT r.rolsuper AND NOT r.rolcreatedb AND NOT r.rolcreaterole AND d.datdba = r.oid FROM pg_roles r JOIN pg_database d ON d.datname = current_database() WHERE r.rolname = current_user"')
+role=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT NOT r.rolsuper AND NOT r.rolcreatedb AND NOT r.rolcreaterole AND d.datdba = r.oid FROM pg_roles r JOIN pg_database d ON d.datname = current_database() WHERE r.rolname = current_user"')
 [[ "$role" == t ]] || failure 'database role'
 before=$(compose exec -T app sha256sum /var/lib/intruvia/runtime/config/PrivilegeConfig.xml /var/lib/intruvia/runtime/config/PrivilegeUsers.xml)
-compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -c "CREATE TABLE public.compose_test (value integer); INSERT INTO public.compose_test VALUES (42)"' >/dev/null
+compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -v ON_ERROR_STOP=1 -c "CREATE TABLE public.compose_test (value integer); INSERT INTO public.compose_test VALUES (42)"' >/dev/null
 compose restart app >/dev/null
 healthy=false
 for _ in {1..120}; do
@@ -123,7 +124,7 @@ done
 [[ "$healthy" == true ]] || failure 'application did not become ready after restart'
 after=$(compose exec -T app sha256sum /var/lib/intruvia/runtime/config/PrivilegeConfig.xml /var/lib/intruvia/runtime/config/PrivilegeUsers.xml)
 [[ "$before" == "$after" ]] || failure 'privilege files changed during restart'
-value=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h 127.0.0.1 -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT value FROM public.compose_test"')
+value=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT value FROM public.compose_test"')
 [[ "$value" == 42 ]] || failure 'database data did not persist'
 locked_output=$(compose run --rm -T --no-deps --entrypoint /usr/local/bin/intruvia-reset-viewer-password app 2>&1 || true)
 [[ "$locked_output" != *'Replacement viewer password'* ]] || failure 'reset exposed a password while the app was running'
@@ -138,4 +139,19 @@ unset reset_output reset_password locked_output
 output=$(compose logs --no-color db)
 [[ "$output" != *compose_admin_test_password_0123456789* &&
 	"$output" != *compose_app_test_password_9876543210* ]] || failure 'database credentials appeared in service logs'
-printf 'Delayed database readiness, private Compose startup, restart and offline password reset passed using image %s\n' "$(docker image inspect --format '{{.Id}}' "$image")"
+compose stop app >/dev/null
+sed -i 's/^INTRUVIA_DB_PASSWORD=compose_app_test_password_9876543210$/INTRUVIA_DB_PASSWORD=compose_wrong_test_password_0123456789/' "$bundle/.env"
+if compose up -d --force-recreate --wait --wait-timeout 60 db >/dev/null 2>&1; then
+	failure 'database health accepted a changed password for the initialized volume'
+fi
+db=$(compose ps --all -q db)
+[[ -n "$db" && $(docker inspect --format '{{.State.Health.Status}}' "$db") == unhealthy ]] ||
+	failure 'database did not become unhealthy with the wrong password'
+if compose up -d --force-recreate --wait --wait-timeout 20 app >/dev/null 2>&1; then
+	failure 'app startup succeeded while database authentication was unhealthy'
+fi
+app=$(compose ps --all -q app)
+[[ -n "$app" && $(docker inspect --format '{{.State.Status}}' "$app") != running ]] ||
+	failure 'app started while database authentication was unhealthy'
+printf 'Network-authenticated database readiness, wrong-password health rejection, private Compose startup, restart and offline password reset passed using image %s\n' \
+	"$(docker image inspect --format '{{.Id}}' "$image")"

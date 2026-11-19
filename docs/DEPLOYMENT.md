@@ -112,10 +112,13 @@ Do these three steps in order:
    docker compose up -d app caddy
    ```
 
-   PostgreSQL readiness gates app startup; app readiness gates Caddy. Sign in at the
-   configured origin and verify WebSocket connectivity (`wss://` for HTTPS, `ws://` for
-   HTTP). No producer mapping or token operator is provisioned by default.
-   Editing `.env` does not rotate existing users/passwords.
+   PostgreSQL readiness authenticates to the `db` service over the private network with
+   the application role, and gates app startup; app readiness gates Caddy. Sign in at
+   the configured origin and verify WebSocket connectivity (`wss://` for HTTPS, `ws://`
+   for HTTP). No producer mapping or token operator is provisioned by default. Editing
+   `.env` does not rotate existing users or passwords stored in an initialized database;
+   if the DB healthcheck fails after a credential change, preserve the volume and follow
+   [database credential recovery](deployment/compose-initialization-recovery.md#repair-a-database-credential-mismatch).
 
 ### After startup
 

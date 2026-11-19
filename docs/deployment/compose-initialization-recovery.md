@@ -31,6 +31,39 @@ The application holds `.intruvia.lock` for its entire lifetime and offline privi
 not edit the privilege files or run another writer while either is active. The normal runtime keeps schema creation,
 migration and drop disabled; a separate protected temporary runtime is used for the one-time schema bootstrap.
 
+### Repair a database credential mismatch
+
+Compose's `db` healthcheck connects to hostname `db` over the private database network using `INTRUVIA_DB_USERNAME` and
+`INTRUVIA_DB_PASSWORD`, the same authentication route used by the app. If that check fails, dependent `docker compose up`
+startup remains blocked. Commands using `docker compose run --no-deps app` bypass the dependency health gate, but the app
+still authenticates to `db` and will fail startup until the mismatch is repaired. PostgreSQL's `POSTGRES_*` values and
+the bootstrap use of `INTRUVIA_DB_*` initialize a **new** data volume only; `INTRUVIA_DB_*` still configure app and
+healthcheck connections. Editing `INTRUVIA_DB_PASSWORD` does not change the role password in an existing
+`postgres_data` volume. Do not remove or recreate that volume to clear an authentication failure.
+Already extracted bundles and published or cached images are not changed by this source update. The corrected healthcheck
+requires the updated Compose file, and the actionable app diagnostic requires an image built with this code.
+
+If the value was changed accidentally, restore the existing password from the protected credential record. To
+intentionally set a new application-role password, stop app writers and connect as an authorized PostgreSQL administrator:
+
+```bash
+docker compose stop app
+docker compose exec db sh -c 'exec psql -X -U "$POSTGRES_USER" -d "$POSTGRES_DB"'
+```
+
+At the interactive `psql` prompt, use `\password APPLICATION_ROLE`, replacing `APPLICATION_ROLE` with the configured
+`INTRUVIA_DB_USERNAME`. Enter the new password at the prompts; do not put it in a command, shell history, or log. Update
+`INTRUVIA_DB_PASSWORD` in the protected `.env` to the same value, then recreate the DB container so its healthcheck
+receives the updated environment while retaining the existing volume:
+
+```bash
+docker compose up -d --force-recreate --wait db
+docker compose up -d app caddy
+```
+
+Do not change `POSTGRES_ADMIN_PASSWORD` expecting it to rotate the initialized admin role either. If the role cannot be
+reconciled safely, keep the database and runtime intact and use the coordinated backup/restore procedure.
+
 ### If initialization fails
 
 1. Stop the application and all other database and privilege-file writers. Preserve the entire database, runtime, logs
