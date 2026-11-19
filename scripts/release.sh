@@ -63,16 +63,37 @@ fi
 release_version=${versions%%$'\n'*}
 next_snapshot_version=${versions#*$'\n'}
 tag="v$release_version"
-image_repository=repo.strolch.li/intruvia
-image_reference="$image_repository:$release_version"
+if ! source "$root/scripts/release-config.sh"; then
+	fail 'Unable to load the configured image repository'
+fi
+image_repository=$INTRUVIA_IMAGE_REPOSITORY
+if ! image_tag_output=$(intruvia_image_tags_for_version "$release_version"); then
+	fail "Unable to derive Docker tags from release version $release_version"
+fi
+mapfile -t image_tags <<< "$image_tag_output"
+if [[ ${release_version,,} == *-snapshot ]]; then
+	expected_image_tag_count=3
+else
+	expected_image_tag_count=4
+fi
+if ((${#image_tags[@]} != expected_image_tag_count)); then
+	fail "Unable to derive the expected Docker tags from release version $release_version"
+fi
+image_references=()
+for image_tag in "${image_tags[@]}"; do
+	image_references+=("$image_repository:$image_tag")
+done
+image_reference=${image_references[2]}
+image_tag_list=$(printf '%s, ' "${image_references[@]}")
+image_tag_list=${image_tag_list%, }
 archive_name="intruvia-deployment-$release_version.tar.gz"
 checksum_name="$archive_name.sha256"
 output_directory="$root/target/deployment-release"
 archive_path="$output_directory/$archive_name"
 checksum_path="$output_directory/$checksum_name"
 
-printf '\nRelease plan:\n  Version: %s -> %s\n  Git tag: %s\n  Docker image: %s\n  GitHub assets: %s and %s\n  Next Maven version: %s\n' \
-	"$current_version" "$release_version" "$tag" "$image_reference" "$archive_name" "$checksum_name" \
+printf '\nRelease plan:\n  Version: %s -> %s\n  Git tag: %s\n  Docker tags: %s\n  GitHub assets: %s and %s\n  Next Maven version: %s\n' \
+	"$current_version" "$release_version" "$tag" "$image_tag_list" "$archive_name" "$checksum_name" \
 	"$next_snapshot_version"
 read -r -p 'Have you reviewed the release gates and acceptance evidence? Type yes to continue: ' gates_approved ||
 	fail 'Release-gate confirmation was not provided'
@@ -194,9 +215,6 @@ check_image_absent
 [[ ! -e $archive_path && ! -L $archive_path && ! -e $checksum_path && ! -L $checksum_path ]] ||
 	fail 'A local deployment release artifact already exists; move it aside only after review'
 
-if ! source "$root/scripts/release-config.sh"; then
-	fail 'Unable to load the configured image repository'
-fi
 [[ $INTRUVIA_IMAGE_REPOSITORY == "$image_repository" ]] || fail 'Release image repository differs from the project release configuration'
 
 if ! python3 "$root/scripts/update-maven-reactor-version.py" set "$root" "$current_version" "$release_version"; then
@@ -222,6 +240,14 @@ if ! "$root/scripts/build-deployment-image.sh" "$image_reference" "$distribution
 	fail "Failed to build Docker image $image_reference"
 fi
 completed_steps+=("Built Docker image $image_reference")
+for tagged_reference in "${image_references[@]}"; do
+	if [[ $tagged_reference != "$image_reference" ]]; then
+		if ! docker tag "$image_reference" "$tagged_reference"; then
+			fail "Unable to tag Docker image $tagged_reference"
+		fi
+		completed_steps+=("Tagged Docker image $tagged_reference")
+	fi
+done
 
 mkdir -p -- "$output_directory" || fail 'Unable to create the deployment release output directory'
 if ! "$root/scripts/build-deployment-tarball.sh" "$release_version" "$image_reference" "$output_directory"; then
@@ -254,10 +280,12 @@ fi
 completed_steps+=("Pushed release tag $tag")
 
 check_image_absent
-if ! docker push "$image_reference"; then
-	fail "Unable to push Docker image $image_reference"
-fi
-completed_steps+=("Pushed Docker image $image_reference")
+for tagged_reference in "${image_references[@]}"; do
+	if ! docker push "$tagged_reference"; then
+		fail "Unable to push Docker image $tagged_reference"
+	fi
+	completed_steps+=("Pushed Docker image $tagged_reference")
+done
 
 if ! gh release create "$tag" --repo "$github_repository" --verify-tag --generate-notes \
 	"$archive_path" "$checksum_path"; then

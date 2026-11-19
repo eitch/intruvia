@@ -90,9 +90,16 @@ case "${1:-} ${2:-}" in
 		printf 'manifest unknown: manifest unknown\n' >&2
 		exit 1
 		;;
+	'tag '* )
+		printf 'docker-tag %s %s\n' "$2" "$3" >> "$RELEASE_TEST_LOG"
+		[[ ${RELEASE_TEST_FAIL:-} != docker-tag-minor || $3 != *:1.2 ]] || exit 47
+		[[ ${RELEASE_TEST_FAIL:-} != docker-tag-latest || $3 != *:latest ]] || exit 49
+		;;
 	'push '*)
 		printf 'docker-push %s\n' "$2" >> "$RELEASE_TEST_LOG"
-		[[ ${RELEASE_TEST_FAIL:-} != docker-push ]]
+		[[ ${RELEASE_TEST_FAIL:-} != docker-push ]] || exit 48
+		[[ ${RELEASE_TEST_FAIL:-} != docker-push-minor || $2 != *:1.2 ]]
+		[[ ${RELEASE_TEST_FAIL:-} != docker-push-latest || $2 != *:latest ]]
 		;;
 	*) exit 46 ;;
 esac
@@ -250,10 +257,16 @@ assert_success() {
 	printf '%s\n' \
 		"verify $release_version" \
 		"image-build repo.strolch.li/intruvia:$release_version" \
+		"docker-tag repo.strolch.li/intruvia:$release_version repo.strolch.li/intruvia:${release_version%%.*}" \
+		"docker-tag repo.strolch.li/intruvia:$release_version repo.strolch.li/intruvia:${release_version%.*}" \
+		"docker-tag repo.strolch.li/intruvia:$release_version repo.strolch.li/intruvia:latest" \
 		"bundle $release_version repo.strolch.li/intruvia:$release_version" \
 		'git-push branch' \
 		'git-push tag' \
+		"docker-push repo.strolch.li/intruvia:${release_version%%.*}" \
+		"docker-push repo.strolch.li/intruvia:${release_version%.*}" \
 		"docker-push repo.strolch.li/intruvia:$release_version" \
+		'docker-push repo.strolch.li/intruvia:latest' \
 		"gh-create $tag" \
 		"gh-asset intruvia-deployment-$release_version.tar.gz" \
 		"gh-asset intruvia-deployment-$release_version.tar.gz.sha256" \
@@ -377,16 +390,28 @@ expect_failure 'Failed to build Docker image repo.strolch.li/intruvia:1.2.4'
 [[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4' ]] ||
 	fail 'image build failure continued to bundle or Git publication'
 
+test_fail=docker-tag-minor
+setup_project image-tag-failure 1.2.3
+expect_failure 'Unable to tag Docker image repo.strolch.li/intruvia:1.2'
+[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1.2' ]] ||
+	fail 'Docker tag failure continued to bundle or Git publication'
+
+test_fail=docker-tag-latest
+setup_project image-latest-tag-failure 1.2.3
+expect_failure 'Unable to tag Docker image repo.strolch.li/intruvia:latest'
+[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1.2\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:latest' ]] ||
+	fail 'latest-tag failure continued to bundle or Git publication'
+
 test_fail=bundle
 setup_project bundle-failure 1.2.3
 expect_failure 'Failed to build the administrator deployment tarball and checksum'
-[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\nbundle 1.2.4 repo.strolch.li/intruvia:1.2.4' ]] ||
+[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1.2\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:latest\nbundle 1.2.4 repo.strolch.li/intruvia:1.2.4' ]] ||
 	fail 'bundle failure continued to Git publication'
 
 test_fail=push-branch
 setup_project branch-push-failure 1.2.3
 expect_failure 'Unable to push release branch main'
-[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\nbundle 1.2.4 repo.strolch.li/intruvia:1.2.4\ngit-push branch' ]] || {
+[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1.2\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:latest\nbundle 1.2.4 repo.strolch.li/intruvia:1.2.4\ngit-push branch' ]] || {
 	printf 'Observed release-boundary log:\n%s\n' "$(<"$log")" >&2
 	fail 'release branch push failure proceeded to tag or image publication'
 }
@@ -394,22 +419,47 @@ expect_failure 'Unable to push release branch main'
 test_fail=push-tag
 setup_project tag-push-failure 1.2.3
 expect_failure 'Unable to push release tag v1.2.4'
-[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\nbundle 1.2.4 repo.strolch.li/intruvia:1.2.4\ngit-push branch\ngit-push tag' ]] ||
+[[ $(<"$log") == $'verify 1.2.4\nimage-build repo.strolch.li/intruvia:1.2.4\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:1.2\ndocker-tag repo.strolch.li/intruvia:1.2.4 repo.strolch.li/intruvia:latest\nbundle 1.2.4 repo.strolch.li/intruvia:1.2.4\ngit-push branch\ngit-push tag' ]] ||
 	fail 'tag push failure proceeded to image or GitHub publication'
 
 test_fail=docker-push
 setup_project docker-push-failure 1.2.3
-expect_failure 'Unable to push Docker image repo.strolch.li/intruvia:1.2.4'
+expect_failure 'Unable to push Docker image repo.strolch.li/intruvia:1'
 [[ -n $("$real_git" -C "$project" ls-remote --tags --refs origin refs/tags/v1.2.4) ]] ||
 	fail 'expected the source tag to have been published before the image failure'
 [[ $(<"$log") != *'gh-create'* ]] || fail 'GitHub release was created after image push failed'
+
+test_fail=docker-push-minor
+setup_project docker-push-minor-failure 1.2.3
+expect_failure 'Unable to push Docker image repo.strolch.li/intruvia:1.2'
+[[ $(<"$output") == *'Pushed Docker image repo.strolch.li/intruvia:1'* ]] ||
+	fail 'partial image-push failure did not report the completed major tag'
+[[ $(<"$output") != *'Pushed Docker image repo.strolch.li/intruvia:1.2.4'* ]] ||
+	fail 'partial image-push failure incorrectly reported the patch tag as pushed'
+[[ $(<"$log") == *'docker-push repo.strolch.li/intruvia:1'* && $(<"$log") == *'docker-push repo.strolch.li/intruvia:1.2'* ]] ||
+	fail 'partial image-push failure did not stop at the minor tag'
+[[ $(<"$log") != *'docker-push repo.strolch.li/intruvia:1.2.4'* ]] ||
+	fail 'partial image-push failure continued to the patch tag'
+
+test_fail=docker-push-latest
+setup_project docker-push-latest-failure 1.2.3
+expect_failure 'Unable to push Docker image repo.strolch.li/intruvia:latest'
+for pushed_tag in 1 1.2 1.2.4; do
+	[[ $(<"$output") == *"Pushed Docker image repo.strolch.li/intruvia:$pushed_tag"* ]] ||
+		fail "latest-push failure did not report completed tag $pushed_tag"
+done
+[[ $(<"$output") != *'Pushed Docker image repo.strolch.li/intruvia:latest'* ]] ||
+	fail 'latest-push failure incorrectly reported latest as pushed'
+[[ $(<"$log") == *'docker-push repo.strolch.li/intruvia:latest'* ]] ||
+	fail 'latest-push failure was not reached after version pushes'
+[[ $(<"$log") != *'gh-create'* ]] || fail 'GitHub release was created after latest push failed'
 
 test_fail=github
 setup_project github-failure 1.2.3
 expect_failure 'Unable to create GitHub release v1.2.4 with the deployment assets'
 [[ -n $("$real_git" -C "$project" ls-remote --tags --refs origin refs/tags/v1.2.4) ]] ||
 	fail 'expected the source tag to have been published before GitHub failure'
-[[ $(<"$log") == *'docker-push repo.strolch.li/intruvia:1.2.4'* ]] || fail 'image push did not precede GitHub release failure'
+[[ $(<"$log") == *'docker-push repo.strolch.li/intruvia:1.2.4'* ]] || fail 'full-version image push did not precede GitHub release failure'
 [[ $(python3 "$project/scripts/update-maven-reactor-version.py" check "$project") == 1.2.4 ]] ||
 	fail 'GitHub failure unexpectedly advanced the Maven version'
 

@@ -47,6 +47,12 @@ standalone deployment paths, prerequisites, credentials, upgrades, backups, and
 recovery. To connect a server, follow the [Fail2ban integration guide](integrations/fail2ban/README.md)
 and add its notification action alongside the existing firewall action.
 
+Docker releases use major, major.minor, and full patch-version tags; versions
+without a `-SNAPSHOT` suffix also publish as `latest`. Snapshot builds retain
+`-SNAPSHOT` on each version tag and never publish `latest`. The `latest` tag is
+mutable and follows the most recently published non-SNAPSHOT version, so release
+older versions only when you intend to move `latest` backward.
+
 On Compose images that include generated-password support, first start creates a viewer
 password in memory and prints it once to the attached console. If the output is missed,
 the guide documents a stopped-app password reset command. The published `0.0.2` image

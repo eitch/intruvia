@@ -18,5 +18,12 @@ else
 	mvn -B -f "$root/pom.xml" clean package -DskipTests
 fi
 "$root/scripts/build-deployment-image.sh" "$INTRUVIA_IMAGE_REFERENCE" "$root/intruvia-app/target/intruvia"
-docker push "$INTRUVIA_IMAGE_REFERENCE"
-printf 'Pushed %s\n' "$INTRUVIA_IMAGE_REFERENCE"
+for image_reference in "${INTRUVIA_IMAGE_REFERENCES[@]}"; do
+	if [[ $image_reference != "$INTRUVIA_IMAGE_REFERENCE" ]]; then
+		docker tag "$INTRUVIA_IMAGE_REFERENCE" "$image_reference"
+	fi
+done
+for image_reference in "${INTRUVIA_IMAGE_REFERENCES[@]}"; do
+	docker push "$image_reference"
+	printf 'Pushed %s\n' "$image_reference"
+done

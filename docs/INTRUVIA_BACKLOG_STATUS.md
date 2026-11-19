@@ -1,6 +1,6 @@
 # Intruvia — backlog status
 
-Updated: 2026-11-19 · Implementation state: tasks 001–026 are complete
+Updated: 2026-11-19 · Tasks 001–027 are complete
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
@@ -8,8 +8,8 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 
 - Current task: **None**.
 - Next task: **None**.
-- Completed: **26 / 26**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
-- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance originally passed against a local framework snapshot; the published 2.8.0-1 release now contains the verified PAT persistence fixes. Historical custom-token results remain superseded. Tasks 001–026 are complete; task 023's published-image, upgrade and deployment-guide evidence is retained, and its Compose database-authentication defect is repaired. No published release containing tasks 025–026 is claimed.
+- Completed: **27 / 27**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance originally passed against a local framework snapshot; the published 2.8.0-1 release now contains the verified PAT persistence fixes. Historical custom-token results remain superseded. Tasks 001–027 are complete; task 027 now publishes `latest` only for non-SNAPSHOT image versions. Task 023's published-image, upgrade and deployment-guide evidence is retained, and its Compose database-authentication defect is repaired. No published release containing tasks 025–027 is claimed.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence was originally verified with a local snapshot override and the full PostgreSQL suite was revalidated against published Strolch 2.8.0-1 during task 023; the ingestion HTTP endpoint, viewer sessions, snapshot/history reads and ordered WebSocket stream are verified; snapshot viewer and live highlighting are verified; browser reconnect/resync is verified; deployment/recovery and release review are verified.
 
@@ -47,6 +47,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 024 | Automate GitHub source releases and announcements | 022 | DONE | [Operator procedures](GITHUB_RELEASE.md), [unified release guide](RELEASE.md), `../scripts/create-github-release.sh`, `../scripts/release.sh` and isolated release tests; source-release evidence and release-type correction checks recorded below. Deployment acceptance is recorded separately in task 023. |
 | 025 | Generate and recover viewer passwords without plaintext files | 023 | DONE | Generated viewer credential, protected one-time console output, runtime-locked reset and compatibility guide; PostgreSQL-backed Maven verification and local Compose startup/reset smoke passed. See execution log below; published `0.0.2` does not contain this change. |
 | 026 | Allow HTTP origins and persist actionable startup diagnostics | 023, 025 | DONE | HTTP/HTTPS origin and cookie tests, safe persistent startup diagnostics, packaged-entrypoint failure checks, PostgreSQL-backed Maven verify and HTTP Compose/Caddy configuration checks passed; see execution log below. |
+| 027 | Publish version-qualified Docker tags | 023, 024 | DONE | Both workflows publish major, minor and full-version tags, plus mutable `latest` only for non-SNAPSHOT versions; SNAPSHOT suffix detection is case-insensitive. Stable/SNAPSHOT/qualified versions and tag/push failures are covered. Prior and follow-up evidence is retained below. |
 
 ## Execution log
 
@@ -846,3 +847,32 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Failed check retained: the first Compose startup smoke exited 1 because its test-only healthcheck override set `start_period: 0s`, marking the intentionally delayed 10-second database initialization unhealthy. Restored a 30-second start grace and extended the deliberate wrong-password wait to 60 seconds; subsequent Compose smoke runs passed.
 - Final checks: `bash -n scripts/verify-compose-postgres.sh scripts/verify-compose-startup.sh` — exit 0; `INTRUVIA_IMAGE=intruvia:test INTRUVIA_PUBLIC_ORIGIN=http://localhost POSTGRES_ADMIN_USERNAME=admin POSTGRES_ADMIN_PASSWORD=dummy INTRUVIA_DB_NAME=intruvia INTRUVIA_DB_USERNAME=intruvia INTRUVIA_DB_PASSWORD=dummy docker compose -f deployment/compose.yaml config --quiet` — exit 0; `git diff --check` — exit 0.
 - Unrun/not changed: no unfiltered full PostgreSQL integration suite, published image build/push or release was performed. No user database, credential, running app, runtime or published image was accessed or changed; only isolated disposable test resources were used.
+
+### 2026-11-19 — task 027 started
+
+- Junie: TODO → IN_PROGRESS. Verified tasks 023 and 024 are DONE and task 027 depends on both. Counts: DONE 26, TODO 0, IN_PROGRESS 1, BLOCKED 0; current task 027, next task none.
+- Scope: publish one built image as major, minor and full-version tags from both Docker publication workflows; preserve version qualifiers on every tag and never use `latest`. Keep unified-release full-version immutability preflight and report already completed tag pushes after a partial failure.
+- Initial `git status --short` — exit 0, clean worktree. Implementation and acceptance checks pending; no image was built or pushed.
+
+### 2026-11-19 — task 027 completed
+
+- Junie: IN_PROGRESS → DONE after the version-tagging acceptance checks passed. Tasks 001–027 are complete; counts: DONE 27 / 27, TODO 0, IN_PROGRESS 0, BLOCKED 0; current and next task none. Dependencies 023 and 024 are DONE.
+- Changes: `scripts/release-config.sh` strictly derives the major, major.minor and full-version Docker tags, preserving qualifiers on all three. `build-and-push-docker.sh` and `scripts/release.sh` build once, tag aliases and push every reference; no path creates or pushes `latest`. The unified workflow keeps its full-version registry preflight and reports successful earlier pushes on a later failure. Updated `README.md` and `docs/RELEASE.md` with the tag policy and partial-recovery guidance.
+- Verification: `bash -n build-and-push-docker.sh scripts/release-config.sh scripts/release.sh scripts/test-release-workflow.sh scripts/test-unified-release.sh` — exit 0. `scripts/test-release-workflow.sh` — exit 0; stable and `-SNAPSHOT` three-tag publication, no `latest`, invalid versions, and tag/push failures verified with Docker doubles. `bash scripts/test-unified-release.sh` — exit 0; major/minor/full release tags, full-version preflight, tag failure and partial-push reporting verified with isolated Git repositories and publication doubles.
+- Additional checks: `source scripts/release-config.sh && printf '%s\n' "${INTRUVIA_IMAGE_REFERENCES[@]}"` — exit 0; current `0.0.7-SNAPSHOT` POM derived `repo.strolch.li/intruvia:0-SNAPSHOT`, `repo.strolch.li/intruvia:0.0-SNAPSHOT`, and `repo.strolch.li/intruvia:0.0.7-SNAPSHOT`. `git diff --check` — exit 0.
+- Test corrections: the first standalone run exposed a stale invalid-version fixture still substituting the prior `2.3.4-test` version; the first unified run exposed expected logs that omitted the new local alias tags. Both fixtures were corrected, and both complete suites passed afterward. The final status-ledger edit caused `git diff --check` to exit 2 with `docs/INTRUVIA_BACKLOG_STATUS.md:865: new blank line at EOF`; the extra blank line was removed before final whitespace verification.
+- Unrun/not changed: no actual Docker image build, registry push, unified release, PostgreSQL/Maven suite, or GitHub publication was performed. All workflow tests used isolated fixtures and command doubles; no user runtime or published image was accessed or changed.
+
+### 2026-11-19 — task 027 reopened for stable `latest` tag
+
+- Junie: DONE → IN_PROGRESS at the user's request to publish `latest` for fixed versions while ensuring SNAPSHOT versions never receive it. Tasks 023 and 024 remain DONE and satisfy task 027 dependencies. Counts: DONE 26 / 27, TODO 0, IN_PROGRESS 1, BLOCKED 0; current task 027, next task none.
+- Prior task 027 implementation, tests and completion evidence above are retained. Updated scope: add and push `latest` for non-SNAPSHOT versions in both standalone and unified release workflows; keep all three version-derived tags; omit `latest` for case-insensitive `-SNAPSHOT` suffixes. Verification pending; no actual image build or publication is authorized.
+
+### 2026-11-19 — task 027 stable `latest` tag follow-up completed
+
+- Junie: IN_PROGRESS → DONE after the follow-up acceptance checks passed. Counts: DONE 27 / 27, TODO 0, IN_PROGRESS 0, BLOCKED 0; current and next task none. Dependencies 023 and 024 remain DONE; earlier task 027 completion evidence above is retained.
+- Changes: shared tag derivation now appends `latest` to the three version-derived tags unless the version ends in `-SNAPSHOT` (case-insensitive). Both workflows tag and push `latest` last for eligible versions; unified full-version preflight and completed-push reporting remain intact. README and release guidance document `latest` mutability and recovery.
+- Verification: `bash -n build-and-push-docker.sh scripts/release-config.sh scripts/release.sh scripts/test-release-workflow.sh scripts/test-unified-release.sh` — exit 0. `scripts/test-release-workflow.sh` — exit 0; stable, qualified non-SNAPSHOT, standard and mixed-case SNAPSHOT tag sets, order, and latest tag/push failures passed with command doubles. `bash scripts/test-unified-release.sh` — exit 0; four-tag stable publication, full-version preflight, tag failure and latest partial-push reporting passed in isolated repositories.
+- Additional checks: `source scripts/release-config.sh && ... intruvia_image_tags_for_version 0.0.8 ...` — exit 0, stable tags `0`, `0.0`, `0.0.8`, `latest`; current `0.0.7-SNAPSHOT` POM tags are `0-SNAPSHOT`, `0.0-SNAPSHOT`, `0.0.7-SNAPSHOT`, without `latest`. `git diff --check` — exit 0.
+- Test correction retained: the first unified suite rerun failed because bundle/branch/tag failure expectations omitted the new local `latest` tag step. Updated those expected logs; the complete suite passed on rerun. No assertion was weakened.
+- Unrun/not changed: no actual Docker image build, registry push, unified release, Maven/PostgreSQL suite, or GitHub publication was performed. All workflow tests used isolated fixtures and command doubles; no user runtime or published image was accessed or changed.
