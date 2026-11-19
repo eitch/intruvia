@@ -16,8 +16,8 @@ viewer nor redisplays the password. The published
 `INTRUVIA_PUBLIC_ORIGIN` accepts an exact HTTP or HTTPS origin with an optional port and no credentials, path, query,
 fragment or trailing slash. Use `http://localhost` for certificate-free local testing; HTTPS is recommended for exposed
 services because HTTP does not encrypt viewer credentials or session cookies. TLS termination is the operator's
-responsibility. Startup/provisioning diagnostics are kept in `/var/log/intruvia/startup-failures.log` on the persistent
-`app_logs` volume; the log records a stage and safe stack details, never arbitrary exception messages or credentials.
+responsibility. Startup/provisioning diagnostics are kept in `/var/log/intruvia/startup-failures.log`, backed by the
+bundle's `state/app-logs` directory; the log records a stage and safe stack details, never arbitrary exception messages or credentials.
 It does not contain the one-time viewer password.
 
 If the output is missed, stop the app and run the packaged `/usr/local/bin/intruvia-reset-viewer-password` command via
@@ -31,15 +31,90 @@ The application holds `.intruvia.lock` for its entire lifetime and offline privi
 not edit the privilege files or run another writer while either is active. The normal runtime keeps schema creation,
 migration and drop disabled; a separate protected temporary runtime is used for the one-time schema bootstrap.
 
+### Migrate an existing named-volume installation
+
+The new bundle uses protected, bundle-relative directories and never discovers or copies an older Compose installation's
+named volumes. Do not start it against the empty packaged directories until migration is complete. This migration must be
+offline, backed up, and performed with all application and database writers stopped; keep the old volumes intact until
+the new installation has been verified.
+
+1. Make and verify a coordinated database/runtime backup as described in the
+   [deployment guide](../DEPLOYMENT.md#backup-and-restore). In the old bundle, record the Compose project name and the
+   actual volume names used for `/var/lib/postgresql`, `/var/lib/intruvia/runtime`, `/var/log/intruvia`, `/data` and
+   `/config`. They are usually `<project>_postgres_data`, `<project>_runtime`, `<project>_app_logs`,
+   `<project>_caddy_data` and `<project>_caddy_config`; inspect the old containers and `docker volume ls` rather than
+   relying on these defaults.
+2. Stop and remove the old containers without removing their volumes:
+
+   ```bash
+   docker compose stop app caddy db
+   docker compose down
+   ```
+
+   Do not add `--volumes` or `-v`. Keep the old bundle directory and its protected configuration.
+3. Extract the new archive into a separate protected directory. From that new bundle, carry over the existing public
+   origin and database names/credentials into `.env`, but retain the new bundle's versioned `INTRUVIA_IMAGE` reference;
+   set `.env` to mode `0600`. Merge any intentional old `Caddyfile` changes into the new bundle's `Caddyfile`. Copy the
+   old bundle's `secrets/` contents to the new `secrets/` directory, preserving ownership and modes. For example, with
+   `OLD_BUNDLE` set to the absolute old bundle path:
+
+   ```bash
+   set -euo pipefail
+   OLD_BUNDLE=/absolute/path/to/old/bundle
+   docker run --rm --user 0:0 \
+     --mount "type=bind,source=$OLD_BUNDLE/secrets,target=/source,readonly" \
+     --mount "type=bind,source=$PWD/secrets,target=/destination" \
+     --entrypoint sh postgres:18-bookworm -ec 'cp -a /source/. /destination/'
+   chmod 0600 .env
+   ```
+
+   Do not copy the old database or runtime over a running service.
+4. Set the following variables to the **actual** old names. Run these commands from the new bundle root; the packaged
+   target directories already exist. The copy container runs as root so `cp -a` preserves numeric ownership, modes and
+   timestamps from the stopped volumes:
+
+   ```bash
+   set -euo pipefail
+   OLD_POSTGRES_VOLUME=oldproject_postgres_data
+   OLD_RUNTIME_VOLUME=oldproject_runtime
+   OLD_APP_LOGS_VOLUME=oldproject_app_logs
+   OLD_CADDY_DATA_VOLUME=oldproject_caddy_data
+   OLD_CADDY_CONFIG_VOLUME=oldproject_caddy_config
+
+   copy_volume() {
+     docker run --rm --user 0:0 \
+       --mount "type=volume,source=$1,target=/source,readonly" \
+       --mount "type=bind,source=$PWD/$2,target=/destination" \
+       --entrypoint sh postgres:18-bookworm -ec 'cp -a /source/. /destination/'
+   }
+   copy_volume "$OLD_POSTGRES_VOLUME" state/postgres
+   copy_volume "$OLD_RUNTIME_VOLUME" state/runtime
+   copy_volume "$OLD_APP_LOGS_VOLUME" state/app-logs
+   copy_volume "$OLD_CADDY_DATA_VOLUME" state/caddy-data
+   copy_volume "$OLD_CADDY_CONFIG_VOLUME" state/caddy-config
+   ```
+
+   Replace every example volume name before running. Stop if a source volume is missing or a copy command fails. Verify
+   each source/destination pair's file contents and numeric owners/modes before starting Compose; keep the backup and old
+   volumes unchanged.
+5. From the new bundle, run `docker compose config --quiet`, start PostgreSQL and wait for its health check, then start
+   the app and proxy. Verify application readiness, viewer login, expected history and proxy certificates. The new
+   `prepare-state` service changes only the runtime, app-log and secrets directory ownership/mode to the application
+   user; it does not recursively change copied files. Keep the previous named volumes until verification and a fresh
+   backup are complete. Do not start the old stack again against a second copy of the data.
+
+If the old volume names or data layout are uncertain, stop and restore from the verified backup into a fresh bundle
+instead of guessing or deleting data.
+
 ### Repair a database credential mismatch
 
 Compose's `db` healthcheck connects to hostname `db` over the private database network using `INTRUVIA_DB_USERNAME` and
 `INTRUVIA_DB_PASSWORD`, the same authentication route used by the app. If that check fails, dependent `docker compose up`
 startup remains blocked. Commands using `docker compose run --no-deps app` bypass the dependency health gate, but the app
 still authenticates to `db` and will fail startup until the mismatch is repaired. PostgreSQL's `POSTGRES_*` values and
-the bootstrap use of `INTRUVIA_DB_*` initialize a **new** data volume only; `INTRUVIA_DB_*` still configure app and
+the bootstrap use of `INTRUVIA_DB_*` initialize a **new** `state/postgres` directory only; `INTRUVIA_DB_*` still configure app and
 healthcheck connections. Editing `INTRUVIA_DB_PASSWORD` does not change the role password in an existing
-`postgres_data` volume. Do not remove or recreate that volume to clear an authentication failure.
+database directory. Do not remove or recreate it to clear an authentication failure.
 Already extracted bundles and published or cached images are not changed by this source update. The corrected healthcheck
 requires the updated Compose file, and the actionable app diagnostic requires an image built with this code.
 
@@ -54,7 +129,7 @@ docker compose exec db sh -c 'exec psql -X -U "$POSTGRES_USER" -d "$POSTGRES_DB"
 At the interactive `psql` prompt, use `\password APPLICATION_ROLE`, replacing `APPLICATION_ROLE` with the configured
 `INTRUVIA_DB_USERNAME`. Enter the new password at the prompts; do not put it in a command, shell history, or log. Update
 `INTRUVIA_DB_PASSWORD` in the protected `.env` to the same value, then recreate the DB container so its healthcheck
-receives the updated environment while retaining the existing volume:
+receives the updated environment while retaining `state/postgres`:
 
 ```bash
 docker compose up -d --force-recreate --wait db

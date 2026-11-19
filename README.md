@@ -47,6 +47,10 @@ standalone deployment paths, prerequisites, credentials, upgrades, backups, and
 recovery. To connect a server, follow the [Fail2ban integration guide](integrations/fail2ban/README.md)
 and add its notification action alongside the existing firewall action.
 
+Compose bundles include protected local directories for database, runtime, logs and
+proxy state instead of Docker named volumes. Existing named-volume installations need
+the explicit offline migration in the [recovery guide](docs/deployment/compose-initialization-recovery.md#migrate-an-existing-named-volume-installation).
+
 Docker releases use major, major.minor, and full patch-version tags; versions
 without a `-SNAPSHOT` suffix also publish as `latest`. Snapshot builds retain
 `-SNAPSHOT` on each version tag and never publish `latest`. The `latest` tag is

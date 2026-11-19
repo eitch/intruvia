@@ -116,19 +116,28 @@ Do these three steps in order:
    the application role, and gates app startup; app readiness gates Caddy. Sign in at
    the configured origin and verify WebSocket connectivity (`wss://` for HTTPS, `ws://`
    for HTTP). No producer mapping or token operator is provisioned by default. Editing
-   `.env` does not rotate existing users or passwords stored in an initialized database;
-   if the DB healthcheck fails after a credential change, preserve the volume and follow
+    `.env` does not rotate existing users or passwords stored in an initialized database;
+    if the DB healthcheck fails after a credential change, preserve `state/postgres` and follow
    [database credential recovery](deployment/compose-initialization-recovery.md#repair-a-database-credential-mismatch).
 
 ### After startup
 
-Named volumes retain `postgres_data`, `runtime`, `app_logs`, `caddy_data` and
-`caddy_config` across restarts and image replacement. Protect Docker volumes and the
-host, including logs, runtime privilege files and proxy certificate state. Do not use
-`docker compose down --volumes` on an installation you intend to retain.
+The bundle includes these persistent, bundle-relative directories before first start:
+`state/postgres`, `state/runtime`, `state/app-logs`, `state/caddy-data` and
+`state/caddy-config`. Compose uses bind mounts only; it does not create Docker named
+volumes. Keep the whole bundle directory on protected storage and include these paths
+in backups. The one-shot `prepare-state` service sets `state/runtime`, `state/app-logs`
+and `secrets/` to owner `10001:10001` and mode `0700` before PostgreSQL starts; it
+changes only the directories themselves, not their contents. PostgreSQL prepares its
+own data directory. Do not move or delete the bundle while services use it.
+
+Existing installations still using named volumes are not migrated automatically.
+Follow the [offline named-volume migration](deployment/compose-initialization-recovery.md#migrate-an-existing-named-volume-installation)
+before starting this bundle with existing data. The old volumes remain untouched by
+the new Compose configuration.
 
 Startup and first-start provisioning failures are written to the protected persistent
-file `/var/log/intruvia/startup-failures.log` in the `app_logs` volume. It records the
+file `/var/log/intruvia/startup-failures.log` in `state/app-logs`. It records the
 failed stage, safe diagnostic details and stack locations; it omits arbitrary exception
 messages and credentials. Docker's `none` logging driver still discards app stdout/stderr.
 To inspect the startup file without starting the app or its dependencies, run:
@@ -219,8 +228,8 @@ docker compose run --rm --no-deps app offline hash /run/secrets/new-password /ru
 ```
 
 The initial `viewer` cannot administer tokens. Follow the [standalone role/user
-procedure](#provision-the-external-runtime-while-stopped), adapting paths to the runtime
-volume. While stopped:
+procedure](#provision-the-external-runtime-while-stopped), adapting paths to the
+`state/runtime` directory. While stopped:
 
 1. Provision an authorized `token-admin` and one ingestion-only user per producer.
 2. Preserve the existing viewer, SYSTEM agent, generated secrets, and other users;
@@ -291,17 +300,17 @@ only after readiness.
 
 ##### Restore into a fresh project
 
-Restore into a **fresh, isolated** Compose project with new empty database and runtime
-volumes, matching release/bundle, and protected `.env`. Keep the old installation and
-all writers stopped. Verify checksums, then start only the new `db`:
+Restore into a **fresh, isolated** Compose project with empty `state/postgres` and
+`state/runtime` directories, matching release/bundle, and protected `.env`. Keep the old
+installation and all writers stopped. Verify checksums, then start only the new `db`:
 
 ```bash
 docker compose up -d db
 ```
 
-Wait for the database health check. Confirm the new runtime volume is empty and owned
-by `10001:10001`. Restore the whole dump as the application role into its empty database,
-then extract the matching runtime. Run each command separately; stop if one fails:
+Wait for the database health check. Confirm the new `state/runtime` directory is empty
+and owned by `10001:10001`. Restore the whole dump as the application role into its empty
+database, then extract the matching runtime. Run each command separately; stop if one fails:
 
 ```bash
 docker compose exec -T db sh -c 'export PGPASSWORD="$INTRUVIA_DB_PASSWORD"; \
@@ -360,9 +369,9 @@ For an image upgrade:
    docker compose up -d
    ```
 
-Preserve runtime and volumes; never overwrite runtime with templates. Perform
-migrations only as documented maintenance. Roll back image, database, and runtime as
-a matching set; do not run old code against an arbitrarily migrated schema.
+Preserve `state/runtime` and the other local state directories; never overwrite runtime
+with templates. Perform migrations only as documented maintenance. Roll back image,
+database, and runtime as a matching set; do not run old code against an arbitrarily migrated schema.
 
 #### Optional GeoIP and Fail2ban
 
@@ -734,7 +743,7 @@ include control/unban, offline queue, analytics, export, multi-tenancy and clust
 
 | Symptom | Check / action |
 |---|---|
-| Startup fails | Inspect `/var/log/intruvia/startup-failures.log` in the persistent `app_logs` volume for the failed stage and safe stack details; verify HTTP/HTTPS origin syntax, required XML/privilege settings, DB health and schema flags without deleting runtime or database |
+| Startup fails | Inspect `/var/log/intruvia/startup-failures.log` in `state/app-logs` for the failed stage and safe stack details; verify HTTP/HTTPS origin syntax, required XML/privilege settings, DB health and schema flags without deleting runtime or database |
 | Ready 503 | DB network/authentication, finite pool acquisition/validation budget; retry a busy probe with a monitor timeout above 35 seconds for defaults |
 | Viewer 403 / WebSocket refused | Exact configured HTTP/HTTPS origin including port, Origin/CSRF headers, Viewer role, cookie Secure flag for HTTPS, proxy upgrade headers; PATs cannot authenticate viewers |
 | Ingestion 401 / 403 | PAT validity/owner enabled/revocation, exact event:ingest scope, stable mapping; viewer cookies never ingest |

@@ -8,6 +8,7 @@ mkdir -p "$root/target"
 work=$(mktemp -d "$root/target/unified-release-test.XXXXXXXX")
 trap 'rm -rf -- "$work"' EXIT
 real_git=$(command -v git)
+release_options=()
 bin="$work/bin"
 mkdir -p "$bin"
 
@@ -107,7 +108,12 @@ EOF
 
 cat > "$bin/mvn" <<'EOF'
 #!/usr/bin/env bash
-exit 0
+set -euo pipefail
+version=$(python3 "$PWD/scripts/update-maven-reactor-version.py" check "$PWD")
+printf 'package %s\n' "$version" >> "$RELEASE_TEST_LOG"
+[[ ${RELEASE_TEST_FAIL:-} != package ]] || exit 1
+mkdir -p "$PWD/intruvia-app/target/intruvia"
+printf 'fixture distribution\n' > "$PWD/intruvia-app/target/intruvia/intruvia-app-$version.jar"
 EOF
 cat > "$bin/java" <<'EOF'
 #!/usr/bin/env bash
@@ -221,7 +227,7 @@ invoke_release() (
 	export RELEASE_TEST_IMAGE_EXISTS="${image_exists:-}"
 	export RELEASE_TEST_EXISTING_RELEASES="${existing_releases:-}"
 	printf '%s\n' "$release_type" "${gate_confirmation:-yes}" "${tag_approval:-$expected_tag}" | \
-		"$project/scripts/release.sh"
+		"$project/scripts/release.sh" "${release_options[@]}"
 )
 
 expect_failure() {
@@ -239,6 +245,7 @@ expect_failure() {
 
 assert_success() {
 	local release_version=$1 next_version=$2 tag=$3
+	local build_step
 	invoke_release > "$output" 2>&1 || {
 		printf '%s\n' "$(<"$output")" >&2
 		fail "release $tag did not complete"
@@ -254,8 +261,17 @@ assert_success() {
 	remote_tag=$("$real_git" --git-dir="$bare" rev-parse "refs/tags/$tag")
 	[[ $remote_tag == $("$real_git" -C "$project" rev-parse "refs/tags/$tag") ]] || fail 'release tag was not pushed'
 	[[ $("$real_git" -C "$project" rev-parse "$tag^{commit}") == "$release_commit" ]] || fail 'release tag commit changed'
+	if [[ ${release_options[0]:-} == --with-tests ]]; then
+		build_step="verify $release_version"
+		[[ $(<"$output") == *'Maven build: PostgreSQL-backed verification (--with-tests)'* ]] ||
+			fail 'release plan did not identify opt-in PostgreSQL verification'
+	else
+		build_step="package $release_version"
+		[[ $(<"$output") == *'Maven build: clean package -DskipTests (tests skipped)'* ]] ||
+			fail 'release plan did not identify the default package-only build'
+	fi
 	printf '%s\n' \
-		"verify $release_version" \
+		"$build_step" \
 		"image-build repo.strolch.li/intruvia:$release_version" \
 		"docker-tag repo.strolch.li/intruvia:$release_version repo.strolch.li/intruvia:${release_version%%.*}" \
 		"docker-tag repo.strolch.li/intruvia:$release_version repo.strolch.li/intruvia:${release_version%.*}" \
@@ -278,9 +294,25 @@ assert_success() {
 release_type=major
 expected_release=2.0.0
 expected_tag=v2.0.0
+release_options=()
 setup_project major 1.2.3
 assert_success 2.0.0 2.0.1-SNAPSHOT v2.0.0
 
+release_options=(--invalid)
+setup_project invalid-option 1.2.3
+if invoke_release > "$output" 2>&1; then
+	fail 'unknown release option was accepted'
+fi
+[[ $(<"$output") == *'Usage: '* ]] || fail 'unknown option did not show release usage'
+[[ ! -s $log ]] || fail 'unknown option performed release actions'
+release_options=(--with-tests unexpected)
+if invoke_release > "$output" 2>&1; then
+	fail 'extra release option was accepted with --with-tests'
+fi
+[[ $(<"$output") == *'Usage: '* ]] || fail 'extra option did not show release usage'
+[[ ! -s $log ]] || fail 'extra option performed release actions'
+
+release_options=(--with-tests)
 release_type=minor
 expected_release=1.3.0
 expected_tag=v1.3.0
@@ -384,6 +416,13 @@ expect_failure 'PostgreSQL-backed Maven verification at 1.2.4 failed'
 	fail 'failed verification unexpectedly changed the release version back'
 [[ ! -s $log || $(<"$log") == 'verify 1.2.4' ]] || fail 'verification failure continued into image/bundle steps'
 
+release_options=()
+test_fail=package
+setup_project package-failure 1.2.3
+expect_failure 'Maven clean package at 1.2.4 failed'
+[[ $(<"$log") == 'package 1.2.4' ]] || fail 'package failure continued into image/bundle steps'
+
+release_options=(--with-tests)
 test_fail=image-build
 setup_project image-build-failure 1.2.3
 expect_failure 'Failed to build Docker image repo.strolch.li/intruvia:1.2.4'

@@ -86,6 +86,9 @@ bundle=$stage/bundle
 mkdir -m 0755 "$bundle" "$bundle/db" "$bundle/docs" "$bundle/docs/deployment" \
 		"$bundle/runtime-templates" "$bundle/runtime-templates/config" "$bundle/integrations" "$bundle/integrations/fail2ban"
 mkdir -m 0700 "$bundle/secrets"
+mkdir -m 0700 "$bundle/state"
+mkdir -m 0755 "$bundle/state/postgres"
+mkdir -m 0700 "$bundle/state/runtime" "$bundle/state/app-logs" "$bundle/state/caddy-data" "$bundle/state/caddy-config"
 
 copy_file() {
 	local source=$1 destination=$2

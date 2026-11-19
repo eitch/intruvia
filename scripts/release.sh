@@ -5,6 +5,7 @@ export LC_ALL=C
 
 root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 completed_steps=()
+with_tests=false
 
 fail() {
 	printf 'ERROR: %s\n' "$1" >&2
@@ -16,8 +17,10 @@ fail() {
 	exit 1
 }
 
-if (($#)); then
-	printf 'Usage: %s\n' "$0" >&2
+if (($# == 1)) && [[ $1 == --with-tests ]]; then
+	with_tests=true
+elif (($# != 0)); then
+	printf 'Usage: %s [--with-tests]\n' "$0" >&2
 	exit 2
 fi
 
@@ -92,9 +95,14 @@ output_directory="$root/target/deployment-release"
 archive_path="$output_directory/$archive_name"
 checksum_path="$output_directory/$checksum_name"
 
-printf '\nRelease plan:\n  Version: %s -> %s\n  Git tag: %s\n  Docker tags: %s\n  GitHub assets: %s and %s\n  Next Maven version: %s\n' \
+if [[ $with_tests == true ]]; then
+	release_build_mode='PostgreSQL-backed verification (--with-tests)'
+else
+	release_build_mode='clean package -DskipTests (tests skipped)'
+fi
+printf '\nRelease plan:\n  Version: %s -> %s\n  Git tag: %s\n  Docker tags: %s\n  GitHub assets: %s and %s\n  Maven build: %s\n  Next Maven version: %s\n' \
 	"$current_version" "$release_version" "$tag" "$image_tag_list" "$archive_name" "$checksum_name" \
-	"$next_snapshot_version"
+	"$release_build_mode" "$next_snapshot_version"
 read -r -p 'Have you reviewed the release gates and acceptance evidence? Type yes to continue: ' gates_approved ||
 	fail 'Release-gate confirmation was not provided'
 [[ $gates_approved == yes ]] || fail 'Release gates were not confirmed'
@@ -229,13 +237,20 @@ changed_paths=$(git -C "$root" diff --name-only)
 [[ $changed_paths == "$expected_paths" ]] || fail 'Only the five Maven POM versions may change during release preparation'
 git -C "$root" diff --check || fail 'Release-version POM diff contains whitespace errors'
 
-if ! "$root/scripts/verify-postgresql.sh"; then
-	fail "PostgreSQL-backed Maven verification at $release_version failed"
+if [[ $with_tests == true ]]; then
+	if ! "$root/scripts/verify-postgresql.sh"; then
+		fail "PostgreSQL-backed Maven verification at $release_version failed"
+	fi
+	completed_steps+=("Passed PostgreSQL-backed Maven verification at $release_version")
+else
+	if ! mvn -B -f "$root/pom.xml" clean package -DskipTests; then
+		fail "Maven clean package at $release_version failed"
+	fi
+	completed_steps+=("Packaged release version $release_version with Maven clean package -DskipTests; tests were skipped")
 fi
-completed_steps+=("Passed PostgreSQL-backed Maven verification at $release_version")
 
 distribution="$root/intruvia-app/target/intruvia"
-[[ -d $distribution ]] || fail 'Maven verification did not produce the assembled application distribution'
+[[ -d $distribution ]] || fail 'Maven build did not produce the assembled application distribution'
 if ! "$root/scripts/build-deployment-image.sh" "$image_reference" "$distribution"; then
 	fail "Failed to build Docker image $image_reference"
 fi

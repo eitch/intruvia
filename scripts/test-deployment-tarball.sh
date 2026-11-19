@@ -49,6 +49,12 @@ printf '%s\n' \
 	'./runtime-templates/config/PrivilegeUsers.xml.example' \
 	'./runtime-templates/config/StrolchConfiguration.xml' \
 	'./runtime-templates/config/ingestion.properties.example' \
+	'./state/' \
+	'./state/app-logs/' \
+	'./state/caddy-config/' \
+	'./state/caddy-data/' \
+	'./state/postgres/' \
+	'./state/runtime/' \
 	'./secrets/' | sort > "$work/expected"
 diff -u "$work/expected" "$work/actual" || fail 'archive contents differ from the allowlist'
 tar --numeric-owner -tvzf "$work/out/$archive" | awk '$2 != "0/0" { exit 1 }' || fail 'archive ownership is not 0/0'
@@ -56,12 +62,21 @@ tar --numeric-owner -tvzf "$work/out/$archive" | awk '$2 != "0/0" { exit 1 }' ||
 bundle=$work/extracted
 [[ $(stat -c %a "$bundle/.env") == 600 ]] || fail '.env is not mode 0600'
 [[ $(stat -c %a "$bundle/secrets") == 700 ]] || fail 'secrets directory is not mode 0700'
+[[ $(stat -c %a "$bundle/state") == 700 ]] || fail 'state directory is not mode 0700'
+[[ $(stat -c %a "$bundle/state/postgres") == 755 ]] || fail 'PostgreSQL directory is not traversable by its container user'
+for directory in "$bundle/state/runtime" "$bundle/state/app-logs" "$bundle/state/caddy-data" \
+		"$bundle/state/caddy-config"; do
+	[[ $(stat -c %a "$directory") == 700 ]] || fail "protected state directory is not mode 0700: ${directory#"$bundle/"}"
+done
 [[ $(stat -c %a "$bundle/runtime-templates") == 755 && $(stat -c %a "$bundle/runtime-templates/config") == 755 ]] ||
 	fail 'templates are not traversable after protected extraction'
-shopt -s dotglob nullglob
-secret_files=("$bundle/secrets/"*)
-shopt -u dotglob nullglob
-[[ ${#secret_files[@]} == 0 ]] || fail 'secrets directory is not empty'
+for directory in "$bundle/secrets" "$bundle/state/postgres" "$bundle/state/runtime" "$bundle/state/app-logs" \
+		"$bundle/state/caddy-data" "$bundle/state/caddy-config"; do
+	shopt -s dotglob nullglob
+	contents=("$directory/"*)
+	shopt -u dotglob nullglob
+	[[ ${#contents[@]} == 0 ]] || fail "protected directory is not empty: ${directory#"$bundle/"}"
+done
 sed "s|^INTRUVIA_IMAGE=$|INTRUVIA_IMAGE=$image|" "$root/deployment/.env.example" > "$work/expected-env"
 cmp "$work/expected-env" "$bundle/.env" || fail 'environment changed beyond the image reference'
 for key in POSTGRES_ADMIN_PASSWORD INTRUVIA_DB_PASSWORD INTRUVIA_PUBLIC_ORIGIN; do

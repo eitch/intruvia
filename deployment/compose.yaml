@@ -1,4 +1,40 @@
 services:
+  prepare-state:
+    image: ${INTRUVIA_IMAGE:?Set the versioned Intruvia image in .env}
+    user: "0:0"
+    read_only: true
+    restart: "no"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - CHOWN
+      - DAC_OVERRIDE
+      - FOWNER
+    network_mode: none
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        chown 10001:10001 /var/lib/intruvia/runtime /var/log/intruvia /run/secrets
+        chmod 0700 /var/lib/intruvia/runtime /var/log/intruvia /run/secrets
+    volumes:
+      - type: bind
+        source: ./state/runtime
+        target: /var/lib/intruvia/runtime
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./state/app-logs
+        target: /var/log/intruvia
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./secrets
+        target: /run/secrets
+        bind:
+          create_host_path: false
+
   db:
     image: postgres:18-bookworm
     restart: unless-stopped
@@ -9,7 +45,11 @@ services:
       INTRUVIA_DB_USERNAME: ${INTRUVIA_DB_USERNAME:?Set INTRUVIA_DB_USERNAME in .env}
       INTRUVIA_DB_PASSWORD: ${INTRUVIA_DB_PASSWORD:?Set INTRUVIA_DB_PASSWORD in .env}
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - type: bind
+        source: ./state/postgres
+        target: /var/lib/postgresql
+        bind:
+          create_host_path: false
       - type: bind
         source: ./db/init.sh
         target: /docker-entrypoint-initdb.d/10-intruvia.sh
@@ -18,6 +58,9 @@ services:
           create_host_path: false
     networks:
       - database
+    depends_on:
+      prepare-state:
+        condition: service_completed_successfully
     healthcheck:
       test: ["CMD-SHELL", "PGPASSWORD=\"$$INTRUVIA_DB_PASSWORD\" psql -X -h db -U \"$$INTRUVIA_DB_USERNAME\" -d \"$$POSTGRES_DB\" -tAc 'SELECT 1' >/dev/null 2>&1"]
       interval: 5s
@@ -45,8 +88,16 @@ services:
       db:
         condition: service_healthy
     volumes:
-      - runtime:/var/lib/intruvia/runtime
-      - app_logs:/var/log/intruvia
+      - type: bind
+        source: ./state/runtime
+        target: /var/lib/intruvia/runtime
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./state/app-logs
+        target: /var/log/intruvia
+        bind:
+          create_host_path: false
       - type: bind
         source: ./runtime-templates
         target: /opt/intruvia/templates
@@ -92,8 +143,16 @@ services:
         read_only: true
         bind:
           create_host_path: false
-      - caddy_data:/data
-      - caddy_config:/config
+      - type: bind
+        source: ./state/caddy-data
+        target: /data
+        bind:
+          create_host_path: false
+      - type: bind
+        source: ./state/caddy-config
+        target: /config
+        bind:
+          create_host_path: false
     networks:
       - proxy
 
@@ -101,10 +160,3 @@ networks:
   proxy:
   database:
     internal: true
-
-volumes:
-  postgres_data:
-  runtime:
-  app_logs:
-  caddy_data:
-  caddy_config:

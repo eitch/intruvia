@@ -20,9 +20,9 @@ compose() {
 
 cleanup() {
 	if [[ "$compose_created" == true ]]; then compose down --volumes --remove-orphans >/dev/null 2>&1 || true; fi
-	if [[ "$image_created" == true && -d "$bundle/secrets" ]]; then
-		docker run --rm --user 0:0 --mount "type=bind,source=$bundle/secrets,target=/secret" \
-			--entrypoint sh "$image" -c 'chmod 0777 /secret' >/dev/null 2>&1 || true
+	if [[ "$image_created" == true && -d "$work" ]]; then
+		docker run --rm --user 0:0 --mount "type=bind,source=$work,target=/test" \
+			--entrypoint sh "$image" -c 'rm -rf /test/* /test/.[!.]* /test/..?*' >/dev/null 2>&1 || true
 	fi
 	if [[ "$image_created" == true ]]; then docker image rm "$image" >/dev/null 2>&1 || true; fi
 	rm -rf -- "$work"
@@ -59,7 +59,7 @@ mkdir "$work/out" "$bundle"
 "$root/scripts/build-deployment-tarball.sh" 0.0.1-test "$image" "$work/out"
 (cd "$work/out" && sha256sum -c intruvia-deployment-0.0.1-test.tar.gz.sha256)
 tar -xzf "$work/out/intruvia-deployment-0.0.1-test.tar.gz" -C "$bundle"
-printf '#!/bin/sh\nsleep 10\ndate +%%s%%N > /var/lib/postgresql/.intruvia-delay-finished\n' > "$bundle/db/00-delay.sh"
+printf '#!/bin/sh\nsleep 10\ndate +%%s%%N > "$PGDATA/.intruvia-delay-finished"\n' > "$bundle/db/00-delay.sh"
 chmod 0755 "$bundle/db/00-delay.sh"
 printf 'services:\n  db:\n    healthcheck:\n      interval: 1s\n      timeout: 2s\n      retries: 3\n      start_period: 30s\n    volumes:\n      - type: bind\n        source: ./db/00-delay.sh\n        target: /docker-entrypoint-initdb.d/00-delay.sh\n        read_only: true\n' > "$bundle/delay.override.yaml"
 sed -i -e 's|^INTRUVIA_PUBLIC_ORIGIN=$|INTRUVIA_PUBLIC_ORIGIN=https://intruvia.example.org|' \
@@ -67,21 +67,59 @@ sed -i -e 's|^INTRUVIA_PUBLIC_ORIGIN=$|INTRUVIA_PUBLIC_ORIGIN=https://intruvia.e
 	-e 's|^INTRUVIA_DB_PASSWORD=$|INTRUVIA_DB_PASSWORD=compose_app_test_password_9876543210|' "$bundle/.env"
 chmod 0600 "$bundle/.env"
 umask 077
-docker run --rm --user 0:0 --mount "type=bind,source=$bundle/secrets,target=/secret" --entrypoint sh "$image" -c '
-	set -eu
-	chown 10001:10001 /secret
-	chmod 700 /secret
-'
 compose config --quiet
+compose config --format json > "$work/compose.json" || failure 'Compose configuration could not be resolved'
+python3 - "$work/compose.json" "$bundle" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+configuration = json.loads(Path(sys.argv[1]).read_text())
+bundle = Path(sys.argv[2]).resolve()
+state = bundle / "state"
+expected = {
+    "prepare-state": {
+        ("/var/lib/intruvia/runtime", state / "runtime"),
+        ("/var/log/intruvia", state / "app-logs"),
+        ("/run/secrets", bundle / "secrets"),
+    },
+    "db": {
+        ("/var/lib/postgresql", state / "postgres"),
+        ("/docker-entrypoint-initdb.d/10-intruvia.sh", bundle / "db/init.sh"),
+        ("/docker-entrypoint-initdb.d/00-delay.sh", bundle / "db/00-delay.sh"),
+    },
+    "app": {
+        ("/var/lib/intruvia/runtime", state / "runtime"),
+        ("/var/log/intruvia", state / "app-logs"),
+        ("/opt/intruvia/templates", bundle / "runtime-templates"),
+        ("/run/secrets", bundle / "secrets"),
+    },
+    "caddy": {
+        ("/etc/caddy/Caddyfile", bundle / "Caddyfile"),
+        ("/data", state / "caddy-data"),
+        ("/config", state / "caddy-config"),
+    },
+}
+if configuration.get("volumes"):
+    raise SystemExit("Compose still declares named volumes")
+for service, expected_mounts in expected.items():
+    actual_mounts = set()
+    for mount in configuration["services"][service].get("volumes", []):
+        if mount.get("type") != "bind":
+            raise SystemExit(f"{service} has a non-bind mount at {mount.get('target')}")
+        actual_mounts.add((mount["target"], Path(mount["source"]).resolve()))
+    if actual_mounts != {(target, source.resolve()) for target, source in expected_mounts}:
+        raise SystemExit(f"{service} bind mounts differ: {actual_mounts!r}")
+PY
 [[ -z $(compose ps --all -q) ]] || { printf 'Test project already exists\n' >&2; exit 1; }
-for name in postgres_data runtime app_logs caddy_data caddy_config; do
-	if docker volume inspect "${project}_$name" >/dev/null 2>&1; then printf 'Test volume already exists\n' >&2; exit 1; fi
-done
 for name in proxy database; do
 	if docker network inspect "${project}_$name" >/dev/null 2>&1; then printf 'Test network already exists\n' >&2; exit 1; fi
 done
 compose_created=true
 compose up -d --wait --wait-timeout 240 db || failure 'database did not become ready'
+prepare_state=$(compose ps --all -q prepare-state)
+[[ -n "$prepare_state" && $(docker inspect --format '{{.State.Status}}:{{.State.ExitCode}}' "$prepare_state") == exited:0 ]] ||
+	failure 'application state ownership was not prepared before database startup'
 startup_output=$(timeout --signal=INT --kill-after=180s 30s \
 	docker compose --project-name "$project" --project-directory "$bundle" --file "$bundle/compose.yaml" \
 	--file "$bundle/delay.override.yaml" --env-file "$bundle/.env" run --rm --no-deps -T app 2>&1 || true)
@@ -98,7 +136,7 @@ db=$(compose ps -q db)
 [[ -n "$app" && -n "$db" && -z $(docker port "$app") && -z $(docker port "$db") ]] || failure 'application or database port is published'
 [[ $(docker inspect --format '{{.HostConfig.LogConfig.Type}}' "$app") == none ]] || failure 'application Docker logging is not disabled'
 db_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$db")" +%s%N)
-delay_finished=$(compose exec -T db cat /var/lib/postgresql/.intruvia-delay-finished)
+delay_finished=$(compose exec -T db sh -c 'cat "$PGDATA/.intruvia-delay-finished"')
 app_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$app")" +%s%N)
 [[ "$delay_finished" =~ ^[0-9]+$ ]] || failure 'database delay marker missing'
 (( delay_finished - db_started >= 9000000000 && app_started >= delay_finished )) || failure 'application started before delayed database initialization finished'
@@ -107,6 +145,10 @@ compose exec -T app sh -c '
 	test ! -e /run/secrets/viewer-password
 	test -f /var/lib/intruvia/runtime/.intruvia-initialized
 	test ! -e /var/lib/intruvia/runtime/.intruvia-initializing
+	for path in /var/lib/intruvia/runtime /var/log/intruvia /run/secrets; do
+		test "$(stat -c %u:%g "$path")" = 10001:10001
+		test "$(stat -c %a "$path")" = 700
+	done
 	for flag in allowSchemaCreation allowSchemaMigration allowSchemaDrop runMigrationsOnStart pollMigrations; do
 		grep -Fq "<$flag>false</$flag>" /var/lib/intruvia/runtime/config/StrolchConfiguration.xml
 	done

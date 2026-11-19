@@ -1,6 +1,6 @@
 # Intruvia release procedure
 
-This guide is for release owners. Administrators should use the [installation and recovery guide](DEPLOYMENT.md), not this document. The recommended one-command workflow is `scripts/release.sh`: it updates the Maven reactor, verifies and assembles the application, builds the versioned Docker image and administrator tarball, commits the release POM versions and pushes an annotated Git tag, pushes the image and creates a GitHub release with the tarball and checksum, then advances the Maven reactor to the next `-SNAPSHOT` version.
+This guide is for release owners. Administrators should use the [installation and recovery guide](DEPLOYMENT.md), not this document. The recommended one-command workflow is `scripts/release.sh`: by default it assembles the application with Maven tests skipped, while `--with-tests` opts into PostgreSQL-backed verification; either mode builds the versioned Docker image and administrator tarball, commits the release POM versions and pushes an annotated Git tag, pushes the image and creates a GitHub release with the tarball and checksum, then advances the Maven reactor to the next `-SNAPSHOT` version.
 
 The older [GitHub source-release procedure](GITHUB_RELEASE.md) remains available for a source-only GitHub release and Mastodon announcement. It is separate and does not publish the image or administrator bundle.
 
@@ -10,7 +10,7 @@ Before starting a release, the release owner must review and resolve all product
 
 Use a release checkout on the intended branch with its configured upstream. The working tree must be clean, and the local branch must exactly match the remote branch. Confirm the Git remote identifies the intended GitHub.com repository. The command needs permission to push the branch and tag, push to `repo.strolch.li/intruvia`, and create GitHub releases.
 
-Required tools are Bash, Git, Python 3, Java 25, Maven 3.10, Docker, `sha256sum`, and GitHub CLI (`gh`) authenticated to the intended GitHub account. Docker must be running, logged in to `repo.strolch.li`, and able to run the project's PostgreSQL 18 verification container. Configure the Git author and committer identity before starting. Serialize releases and enforce immutable full-version tags in the registry; major, minor and `latest` aliases are intentionally mutable. Publishing an older version can move `latest` backward. The script checks the full-version image before publication, but cannot make an external registry's tag creation atomic with its preflight.
+Required tools are Bash, Git, Python 3, Java 25, Maven 3.10, Docker, `sha256sum`, and GitHub CLI (`gh`) authenticated to the intended GitHub account. Docker must be running and logged in to `repo.strolch.li`; when using `--with-tests`, it must also be able to run the project's PostgreSQL 18 verification container. Configure the Git author and committer identity before starting. Serialize releases and enforce immutable full-version tags in the registry; major, minor and `latest` aliases are intentionally mutable. Publishing an older version can move `latest` backward. The script checks the full-version image before publication, but cannot make an external registry's tag creation atomic with its preflight.
 
 ## Version selection and run
 
@@ -20,13 +20,21 @@ From the repository root, run:
 scripts/release.sh
 ```
 
+This default release assembles the distribution with `mvn clean package -DskipTests`. To run the PostgreSQL-backed Maven verification instead, opt in explicitly:
+
+```bash
+scripts/release.sh --with-tests
+```
+
+Skipping tests in the release command does not waive product or operational release gates. Complete the required acceptance checks separately and do not publish until all applicable gates pass.
+
 The script reads the current root Maven version and asks whether this is a `major`, `minor`, or `patch` release. It accepts a plain `MAJOR.MINOR.PATCH` version or that version with `-SNAPSHOT`, and increments the selected component from the current numeric version. For example, from `1.4.2-SNAPSHOT`, `minor` selects release `1.5.0`; after any successful release, the next development version is the next patch `-SNAPSHOT` (for example, `1.5.1-SNAPSHOT`).
 
-Before editing the POMs, the script prints the proposed Maven version, `vVERSION` tag, Docker image tags, GitHub asset names and next `-SNAPSHOT` version. For version `1.5.0`, the image tags are `1`, `1.5`, `1.5.0` and `latest`. Confirm that the release gates have been reviewed, then type the exact proposed tag (for example `v1.5.0`) to authorize the release. Any other input cancels before release files are changed.
+Before editing the POMs, the script prints the selected Maven build mode, proposed Maven version, `vVERSION` tag, Docker image tags, GitHub asset names and next `-SNAPSHOT` version. For version `1.5.0`, the image tags are `1`, `1.5`, `1.5.0` and `latest`. Confirm that the release gates have been reviewed, then type the exact proposed tag (for example `v1.5.0`) to authorize the release. Any other input cancels before release files are changed.
 
 After approval, the script verifies the clean synchronized branch, remote/repository identity, GitHub authentication, absence of the local/remote tag and GitHub release, absence of the versioned registry image and local output artifacts, and Docker availability. It then:
 
-1. Sets all five Maven POM versions to the selected release version and runs `scripts/verify-postgresql.sh`.
+1. Sets all five Maven POM versions to the selected release version and rebuilds the distribution with `mvn clean package -DskipTests` by default, or runs `scripts/verify-postgresql.sh` when invoked with `--with-tests`.
 2. Builds `repo.strolch.li/intruvia:VERSION` once from the assembled distribution, tags the image with the major, major.minor and `latest` aliases, and creates `target/deployment-release/intruvia-deployment-VERSION.tar.gz` plus its `.sha256` file.
 3. Verifies the archive checksum, commits the release POM versions, creates an annotated `vVERSION` tag, and pushes the release branch and tag without force.
 4. Pushes the major, major.minor, full-version and `latest` Docker tags, then creates the GitHub release using generated release notes and attaches the tarball and checksum. It verifies both asset names are listed.
@@ -42,7 +50,7 @@ Git, the container registry and GitHub cannot participate in one transaction. Th
 
 | Failure point | Before another attempt |
 |---|---|
-| Version edit or Maven verification | Inspect all five POMs and Maven output. Resolve the cause and deliberately restore or continue the release-version edit. No image, tag or GitHub release has been published yet. |
+| Version edit, Maven packaging or verification | Inspect all five POMs and Maven output. Resolve the cause and deliberately restore or continue the release-version edit. No image, tag or GitHub release has been published yet. |
 | Image build or bundle creation | Inspect the local distribution, Docker image and `target/deployment-release/`. The tarball builder refuses to replace an existing artifact. Remove or move artifacts only after verifying they belong to this failed attempt. |
 | Release commit, tag or Git push | Inspect local and remote branch/tag state. Complete only a missing operation after confirming the exact commit and ref; never overwrite a ref. |
 | Docker image tag or push | The release branch and tag may already be public, and earlier version aliases may have pushed successfully. Inspect all four references, including mutable `latest`, and the completed-step report before retrying; do not overwrite the full-version tag. |
@@ -56,4 +64,4 @@ bash -n scripts/release.sh scripts/test-unified-release.sh
 bash scripts/test-unified-release.sh
 ```
 
-For the retained separate source-only workflow, see [GitHub source release](GITHUB_RELEASE.md). For image and administrator bundle details, the combined script invokes the reviewed helpers `scripts/build-deployment-image.sh` and `scripts/build-deployment-tarball.sh` after PostgreSQL-backed verification.
+For the retained separate source-only workflow, see [GitHub source release](GITHUB_RELEASE.md). For image and administrator bundle details, the combined script invokes the reviewed helpers `scripts/build-deployment-image.sh` and `scripts/build-deployment-tarball.sh` after the selected Maven build step.
