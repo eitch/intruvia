@@ -119,6 +119,23 @@ Intruvia attributes the event to the machine ID mapped to the token, not to an i
 in the request. Keep the host clock synchronized: timestamps more than five minutes in
 the future or seven days old are rejected.
 
+### Configure the MaxMind GeoIP database
+
+Compose does not include a database. Obtain your own licensed GeoLite2 City or GeoIP2
+City MMDB. After first start, stop the app and place it at
+`state/runtime/geoip/GeoLite2-City.mmdb` on the host. Ensure the directory and file are
+accessible to app UID `10001`; the app needs write access to the directory for staged
+updates. In `state/runtime/config/StrolchConfiguration.xml`, set the `GeoIp` component's
+`databasePath` to its container path and restart the app:
+
+```xml
+<databasePath>/var/lib/intruvia/runtime/geoip/GeoLite2-City.mmdb</databasePath>
+```
+
+Without a usable database, the app remains ready and accepts events, but GeoIP enrichment
+is unavailable. For later updates, follow the [staged update procedure](architecture/008-geoip-replacement.md);
+never overwrite the active database in place.
+
 ### Persistent data
 
 The bundle includes these persistent, bundle-relative directories before first start:
