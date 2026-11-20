@@ -38,12 +38,15 @@ public final class AdministrationResource {
 	private static final String TOKEN_OPERATOR = "TokenOperator";
 	private static final String PRODUCER = "Producer";
 	private static final String INGEST = MachineAuthenticationFilter.INGEST;
+	private static final ZonedDateTime PRACTICAL_NON_EXPIRY = ZonedDateTime.of(9999, 12, 31, 23, 59, 59, 0,
+			ZoneOffset.UTC);
 	private static final SecureRandom RANDOM = new SecureRandom();
 	private final ViewerSessions sessions;
 	private final Supplier<PrivilegeHandler> handlers;
 	private final MachineIdentities identities;
 
-	public AdministrationResource(ViewerSessions sessions, Supplier<PrivilegeHandler> handlers, MachineIdentities identities) {
+	public AdministrationResource(ViewerSessions sessions, Supplier<PrivilegeHandler> handlers,
+			MachineIdentities identities) {
 		this.sessions = sessions;
 		this.handlers = handlers;
 		this.identities = identities;
@@ -54,10 +57,14 @@ public final class AdministrationResource {
 	public Response users(@Context SecurityContext security) {
 		Certificate certificate = administrator(security);
 		try {
-			List<Map<String, Object>> users = this.handlers.get().getUsers(certificate).stream()
+			List<Map<String, Object>> users = this.handlers
+					.get()
+					.getUsers(certificate)
+					.stream()
 					.filter(user -> user.getUserState() != UserState.SYSTEM && user.getUserState() != UserState.REMOTE)
 					.sorted(Comparator.comparing(UserRep::getUsername))
-					.map(AdministrationResource::userView).toList();
+					.map(AdministrationResource::userView)
+					.toList();
 			return IngestHttp.json(200, Map.of("users", users));
 		} catch (RuntimeException e) {
 			throw ViewerHttp.failure(503);
@@ -66,7 +73,8 @@ public final class AdministrationResource {
 
 	@POST
 	@Path("users")
-	public Response createUser(@Context HttpHeaders headers, @Context SecurityContext security, java.io.InputStream body) {
+	public Response createUser(@Context HttpHeaders headers, @Context SecurityContext security,
+			java.io.InputStream body) {
 		Certificate certificate = administrator(headers, security);
 		Map<String, String> fields = AdminRequest.read(headers, body,
 				Set.of("username", "firstName", "lastName", "password", "kind"));
@@ -76,14 +84,17 @@ public final class AdministrationResource {
 		String lastName = AdminRequest.text(fields, "lastName", 128);
 		String kind = fields.get("kind");
 		String rawPassword = fields.get("password");
-		if (rawPassword == null || rawPassword.isBlank() || rawPassword.length() > 1024 || kind == null ||
-				(!kind.equals("viewer") && !kind.equals("administrator")))
+		if (rawPassword == null
+				|| rawPassword.isBlank()
+				|| rawPassword.length() > 1024
+				|| kind == null
+				|| (!kind.equals("viewer") && !kind.equals("administrator")))
 			throw ViewerHttp.failure(400);
 		Set<String> roles = kind.equals("administrator") ? Set.of(VIEWER, ADMIN_ROLE, TOKEN_OPERATOR) : Set.of(VIEWER);
 		char[] password = rawPassword.toCharArray();
 		try {
-			UserRep user = new UserRep("", username, firstName, lastName, UserState.ENABLED, Set.of(), roles,
-					Locale.UK, Map.of(), null);
+			UserRep user = new UserRep("", username, firstName, lastName, UserState.ENABLED, Set.of(), roles, Locale.UK,
+					Map.of(), null);
 			UserRep created = this.handlers.get().addUser(certificate, user, password);
 			return IngestHttp.json(201, userView(created));
 		} catch (RuntimeException e) {
@@ -107,8 +118,10 @@ public final class AdministrationResource {
 		char[] password = rawPassword.toCharArray();
 		try {
 			UserRep user = this.handlers.get().getUser(certificate, username);
-			if (user == null || user.getUserState() == UserState.SYSTEM || user.getUserState() == UserState.REMOTE ||
-					user.getRoles().contains(PRODUCER))
+			if (user == null
+					|| user.getUserState() == UserState.SYSTEM
+					|| user.getUserState() == UserState.REMOTE
+					|| user.getRoles().contains(PRODUCER))
 				throw ViewerHttp.failure(404);
 			return IngestHttp.json(200, userView(this.handlers.get().setUserPassword(certificate, username, password)));
 		} catch (ViewerException e) {
@@ -135,12 +148,16 @@ public final class AdministrationResource {
 		try {
 			PrivilegeHandler handler = this.handlers.get();
 			UserRep user = handler.getUser(certificate, username);
-			if (user == null || user.getUserState() == UserState.SYSTEM || user.getUserState() == UserState.REMOTE ||
-					user.getRoles().contains(PRODUCER) ||
-					(certificate.getUsername().equals(username) && state == UserState.DISABLED))
+			if (user == null
+					|| user.getUserState() == UserState.SYSTEM
+					|| user.getUserState() == UserState.REMOTE
+					|| user.getRoles().contains(PRODUCER)
+					|| (certificate.getUsername().equals(username) && state == UserState.DISABLED))
 				throw ViewerHttp.failure(409);
-			if (user.getRoles().contains(ADMIN_ROLE) && user.getUserState() == UserState.ENABLED && state == UserState.DISABLED &&
-					activeAdministrators(handler.getUsers(certificate)) <= 1)
+			if (user.getRoles().contains(ADMIN_ROLE)
+					&& user.getUserState() == UserState.ENABLED
+					&& state == UserState.DISABLED
+					&& activeAdministrators(handler.getUsers(certificate)) <= 1)
 				throw ViewerHttp.failure(409);
 			return IngestHttp.json(200, userView(handler.setUserState(certificate, username, state)));
 		} catch (ViewerException e) {
@@ -159,10 +176,13 @@ public final class AdministrationResource {
 		try {
 			PrivilegeHandler handler = this.handlers.get();
 			UserRep user = handler.getUser(certificate, username);
-			if (user == null) throw ViewerHttp.failure(404);
-			if (user.getUserState() == UserState.SYSTEM || user.getUserState() == UserState.REMOTE ||
-					user.getRoles().contains(PRODUCER) || user.getRoles().contains(ADMIN_ROLE) ||
-					certificate.getUsername().equals(username))
+			if (user == null)
+				throw ViewerHttp.failure(404);
+			if (user.getUserState() == UserState.SYSTEM || user.getUserState() == UserState.REMOTE || user
+					.getRoles()
+					.contains(PRODUCER) || user.getRoles().contains(ADMIN_ROLE) || certificate
+					.getUsername()
+					.equals(username))
 				throw ViewerHttp.failure(409);
 			handler.removeUser(certificate, username);
 			return Response.noContent().header("Cache-Control", "no-store").build();
@@ -181,15 +201,19 @@ public final class AdministrationResource {
 			PrivilegeHandler handler = this.handlers.get();
 			Map<String, UserRep> producers = new HashMap<>();
 			for (UserRep user : handler.getUsers(certificate))
-				if (user.getRoles().contains(PRODUCER)) producers.put(user.getUsername(), user);
+				if (user.getRoles().contains(PRODUCER))
+					producers.put(user.getUsername(), user);
 			Set<String> usernames = new java.util.TreeSet<>(this.identities.instances().keySet());
 			usernames.addAll(producers.keySet());
 			List<Map<String, Object>> machines = new ArrayList<>();
 			for (String username : usernames) {
 				UserRep user = producers.get(username);
-				List<Map<String, Object>> tokens = user == null ? List.of() : handler.getPersonalAccessTokens(certificate, username)
-						.stream().sorted(Comparator.comparing(PersonalAccessTokenRep::name))
-						.map(AdministrationResource::tokenView).toList();
+				List<Map<String, Object>> tokens = user == null ? List.of() : handler
+						.getPersonalAccessTokens(certificate, username)
+						.stream()
+						.sorted(Comparator.comparing(PersonalAccessTokenRep::name))
+						.map(AdministrationResource::tokenView)
+						.toList();
 				Map<String, Object> machine = new HashMap<>();
 				machine.put("username", username);
 				machine.put("instanceId", this.identities.instances().getOrDefault(username, ""));
@@ -205,7 +229,8 @@ public final class AdministrationResource {
 
 	@POST
 	@Path("machines")
-	public Response createMachine(@Context HttpHeaders headers, @Context SecurityContext security, java.io.InputStream body) {
+	public Response createMachine(@Context HttpHeaders headers, @Context SecurityContext security,
+			java.io.InputStream body) {
 		Certificate certificate = administrator(headers, security);
 		Map<String, String> fields = AdminRequest.read(headers, body,
 				Set.of("username", "instanceId", "tokenName", "validDays"));
@@ -218,7 +243,8 @@ public final class AdministrationResource {
 			throw ViewerHttp.failure(409);
 		PrivilegeHandler handler = this.handlers.get();
 		try {
-			if (handler.getUser(certificate, username) != null) throw ViewerHttp.failure(409);
+			if (handler.getUser(certificate, username) != null)
+				throw ViewerHttp.failure(409);
 		} catch (ViewerException e) {
 			throw e;
 		} catch (RuntimeException e) {
@@ -228,15 +254,16 @@ public final class AdministrationResource {
 		String tokenId = null;
 		boolean userCreated = false;
 		try {
-			UserRep machine = new UserRep("", username, username, "Machine", UserState.ENABLED, Set.of(), Set.of(PRODUCER),
-					Locale.UK, Map.of(), null);
+			UserRep machine = new UserRep("", username, username, "Machine", UserState.ENABLED, Set.of(),
+					Set.of(PRODUCER), Locale.UK, Map.of(), null);
 			handler.addUser(certificate, machine, machinePassword);
 			userCreated = true;
 			IssuedToken issued = issueToken(handler, certificate, username, tokenName, validDays);
 			tokenId = issued.id();
 			this.identities.setInstance(username, instanceId);
-			return IngestHttp.json(201, Map.of("username", username, "instanceId", instanceId,
-					"tokenId", issued.id(), "token", issued.value()));
+			return IngestHttp.json(201,
+					Map.of("username", username, "instanceId", instanceId, "tokenId", issued.id(), "token",
+							issued.value()));
 		} catch (ViewerException e) {
 			rollbackMachine(handler, certificate, username, tokenId, userCreated);
 			throw e;
@@ -282,11 +309,13 @@ public final class AdministrationResource {
 		try {
 			PrivilegeHandler handler = this.handlers.get();
 			UserRep user = handler.getUser(certificate, username);
-			if (user != null && !user.getRoles().contains(PRODUCER)) throw ViewerHttp.failure(409);
+			if (user != null && !user.getRoles().contains(PRODUCER))
+				throw ViewerHttp.failure(409);
 			if (user != null && !handler.getPersonalAccessTokens(certificate, username).isEmpty())
 				throw ViewerHttp.failure(409);
 			this.identities.remove(username);
-			if (user != null) handler.removeUser(certificate, username);
+			if (user != null)
+				handler.removeUser(certificate, username);
 			return Response.noContent().header("Cache-Control", "no-store").build();
 		} catch (ViewerException e) {
 			throw e;
@@ -322,13 +351,17 @@ public final class AdministrationResource {
 			@Context HttpHeaders headers, @Context SecurityContext security) {
 		Certificate certificate = administrator(headers, security);
 		username = username(username);
-		if (tokenId == null || !tokenId.matches("[0-9a-fA-F-]{36}")) throw ViewerHttp.failure(404);
+		if (tokenId == null || !tokenId.matches("[0-9a-fA-F-]{36}"))
+			throw ViewerHttp.failure(404);
 		try {
 			requireProducer(certificate, username);
 			PrivilegeHandler handler = this.handlers.get();
-			boolean exists = handler.getPersonalAccessTokens(certificate, username).stream()
+			boolean exists = handler
+					.getPersonalAccessTokens(certificate, username)
+					.stream()
 					.anyMatch(token -> token.tokenId().equals(tokenId));
-			if (!exists) throw ViewerHttp.failure(404);
+			if (!exists)
+				throw ViewerHttp.failure(404);
 			handler.removePersonalAccessToken(certificate, tokenId);
 			return Response.noContent().header("Cache-Control", "no-store").build();
 		} catch (ViewerException e) {
@@ -359,7 +392,8 @@ public final class AdministrationResource {
 
 	private void requireMappedProducer(Certificate certificate, String username) {
 		requireProducer(certificate, username);
-		if (!this.identities.instances().containsKey(username)) throw ViewerHttp.failure(409);
+		if (!this.identities.instances().containsKey(username))
+			throw ViewerHttp.failure(409);
 	}
 
 	private static Map<String, Object> userView(UserRep user) {
@@ -379,23 +413,27 @@ public final class AdministrationResource {
 	}
 
 	private static int activeAdministrators(List<UserRep> users) {
-		return (int) users.stream().filter(user -> user.getUserState() == UserState.ENABLED &&
-				user.getRoles().contains(ADMIN_ROLE)).count();
+		return (int) users
+				.stream()
+				.filter(user -> user.getUserState() == UserState.ENABLED && user.getRoles().contains(ADMIN_ROLE))
+				.count();
 	}
 
 	private static String username(String value) {
-		if (value == null || !value.matches("[A-Za-z0-9][A-Za-z0-9._-]{2,127}")) throw ViewerHttp.failure(400);
+		if (value == null || !value.matches("[A-Za-z0-9][A-Za-z0-9._-]{2,127}"))
+			throw ViewerHttp.failure(400);
 		return value;
 	}
 
 	private static String instanceId(String value) {
-		if (!MachineIdentities.validId(value)) throw ViewerHttp.failure(400);
+		if (!MachineIdentities.validId(value))
+			throw ViewerHttp.failure(400);
 		return value;
 	}
 
 	private static String tokenName(String value) {
-		if (value == null || value.isBlank() || value.length() > 64 ||
-				value.chars().anyMatch(Character::isISOControl)) throw ViewerHttp.failure(400);
+		if (value == null || value.isBlank() || value.length() > 64 || value.chars().anyMatch(Character::isISOControl))
+			throw ViewerHttp.failure(400);
 		return value.strip();
 	}
 
@@ -403,7 +441,7 @@ public final class AdministrationResource {
 			String name, int validDays) {
 		ZonedDateTime now = ZonedDateTime.now(ZoneOffset.UTC);
 		String value = handler.createPersonalAccessToken(certificate, username, name, now.minusMinutes(1),
-				now.plusDays(validDays), Set.of(PRODUCER), Set.of(INGEST));
+				validDays == 0 ? PRACTICAL_NON_EXPIRY : now.plusDays(validDays), Set.of(PRODUCER), Set.of(INGEST));
 		String[] parts = value.split(":", 2);
 		if (parts.length != 2 || parts[0].isBlank() || parts[1].isBlank())
 			throw ViewerHttp.failure(503);
@@ -428,15 +466,22 @@ public final class AdministrationResource {
 		}
 	}
 
-	private static void rollbackMachine(PrivilegeHandler handler, Certificate certificate, String username, String tokenId,
-			boolean userCreated) {
+	private static void rollbackMachine(PrivilegeHandler handler, Certificate certificate, String username,
+			String tokenId, boolean userCreated) {
 		if (tokenId != null) {
-			try { handler.removePersonalAccessToken(certificate, tokenId); } catch (RuntimeException ignored) { }
+			try {
+				handler.removePersonalAccessToken(certificate, tokenId);
+			} catch (RuntimeException ignored) {
+			}
 		}
 		if (userCreated) {
-			try { handler.removeUser(certificate, username); } catch (RuntimeException ignored) { }
+			try {
+				handler.removeUser(certificate, username);
+			} catch (RuntimeException ignored) {
+			}
 		}
 	}
 
-	private record IssuedToken(String id, String value) {}
+	private record IssuedToken(String id, String value) {
+	}
 }

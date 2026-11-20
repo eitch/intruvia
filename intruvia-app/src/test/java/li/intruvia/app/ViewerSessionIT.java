@@ -27,7 +27,7 @@ public class ViewerSessionIT {
 	@Test(timeout = 60000)
 	public void cookiesCsrfAuthorizationAndLogoutUseFrameworkSession() throws Exception {
 		try (var database = database(ORIGIN); var app = new IntruviaApplication(database.runtime, 0);
-				var client = HttpClient.newHttpClient()) {
+			 var client = HttpClient.newHttpClient()) {
 			app.start();
 			check(send(client, app, "GET", "", Map.of()), 401);
 			check(send(client, app, "POST", LOGIN, Map.of("Content-Type", "application/json")), 403);
@@ -54,11 +54,13 @@ public class ViewerSessionIT {
 			String token = cookie.substring(cookie.indexOf('=') + 1);
 			assertEquals(Set.of("username"), JsonParser.parseString(login.body()).getAsJsonObject().keySet());
 			assertFalse(login.body().contains(token));
-			var sessions = new ViewerSessions(() -> app.agent().getContainer().getComponent(StrolchSessionHandler.class),
+			var sessions = new ViewerSessions(
+					() -> app.agent().getContainer().getComponent(StrolchSessionHandler.class),
 					new ViewerConfiguration(ORIGIN), Clock.systemUTC());
 			var certificate = sessions.validateToken(token);
 			assertEquals("viewer", certificate.getUsername());
-			assertEquals(Set.of("event:read"), app.agent().getPrivilegeHandler().validate(certificate).getPrivileges().keySet());
+			assertEquals(Set.of("event:read"),
+					app.agent().getPrivilegeHandler().validate(certificate).getPrivileges().keySet());
 			check(send(client, app, "GET", "", Map.of("Cookie", cookie)), 200);
 			check(send(client, app, "GET", "", Map.of("Cookie", cookie, "Origin", "https://evil.example")), 403);
 			check(send(client, app, "GET", "", Map.of("Cookie", cookie + "; " + cookie)), 401);
@@ -70,20 +72,36 @@ public class ViewerSessionIT {
 			var denied = handler.authenticate("denied", "viewer-test-password".toCharArray(), "intruvia-viewer",
 					li.strolch.privilege.model.Usage.ANY, false);
 			check(send(client, app, "GET", "", Map.of("Cookie", "IntruviaSession=" + denied.getAuthToken())), 403);
-			var duplicateOrigin = HttpRequest.newBuilder(URI.create(base(app) + "/session"))
-					.header("Origin", ORIGIN).header("Origin", ORIGIN).header("X-Intruvia-CSRF", "1")
-					.header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(LOGIN)).build();
+			var duplicateOrigin = HttpRequest
+					.newBuilder(URI.create(base(app) + "/session"))
+					.header("Origin", ORIGIN)
+					.header("Origin", ORIGIN)
+					.header("X-Intruvia-CSRF", "1")
+					.header("Content-Type", "application/json")
+					.POST(HttpRequest.BodyPublishers.ofString(LOGIN))
+					.build();
 			check(client.send(duplicateOrigin, HttpResponse.BodyHandlers.ofString()), 403);
-			var duplicateCsrf = HttpRequest.newBuilder(URI.create(base(app) + "/session"))
-					.header("Origin", ORIGIN).header("X-Intruvia-CSRF", "1").header("X-Intruvia-CSRF", "1")
-					.header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(LOGIN)).build();
+			var duplicateCsrf = HttpRequest
+					.newBuilder(URI.create(base(app) + "/session"))
+					.header("Origin", ORIGIN)
+					.header("X-Intruvia-CSRF", "1")
+					.header("X-Intruvia-CSRF", "1")
+					.header("Content-Type", "application/json")
+					.POST(HttpRequest.BodyPublishers.ofString(LOGIN))
+					.build();
 			check(client.send(duplicateCsrf, HttpResponse.BodyHandlers.ofString()), 403);
-			var preflight = HttpRequest.newBuilder(URI.create(base(app) + "/session"))
-					.header("Origin", "https://evil.example").header("Access-Control-Request-Method", "POST")
+			var preflight = HttpRequest
+					.newBuilder(URI.create(base(app) + "/session"))
+					.header("Origin", "https://evil.example")
+					.header("Access-Control-Request-Method", "POST")
 					.header("Access-Control-Request-Headers", "X-Intruvia-CSRF, Content-Type")
-					.method("OPTIONS", HttpRequest.BodyPublishers.noBody()).build();
-			assertFalse(client.send(preflight, HttpResponse.BodyHandlers.ofString()).headers()
-					.firstValue("Access-Control-Allow-Origin").isPresent());
+					.method("OPTIONS", HttpRequest.BodyPublishers.noBody())
+					.build();
+			assertFalse(client
+					.send(preflight, HttpResponse.BodyHandlers.ofString())
+					.headers()
+					.firstValue("Access-Control-Allow-Origin")
+					.isPresent());
 			var owner = handler.authenticate("issuer", "viewer-test-password".toCharArray(), false);
 			String pat = handler.createPersonalAccessToken(owner, "viewer-test", ZonedDateTime.now().minusMinutes(1),
 					ZonedDateTime.now().plusMinutes(5), Set.of(), Set.of("event:read"));
@@ -91,10 +109,14 @@ public class ViewerSessionIT {
 			for (String credential : List.of(pat, patCertificate.getAuthToken())) {
 				check(send(client, app, "GET", "", Map.of("Authorization", "Bearer " + credential)), 401);
 				check(send(client, app, "GET", "", Map.of("Cookie", "IntruviaSession=" + credential)), 401);
-				check(send(client, app, "GET", "", Map.of("Cookie", cookie, "Authorization", "Bearer " + credential)), 401);
+				check(send(client, app, "GET", "", Map.of("Cookie", cookie, "Authorization", "Bearer " + credential)),
+						401);
 			}
-			var ingest = HttpRequest.newBuilder(URI.create(base(app) + "/fail2ban/events"))
-					.header("Cookie", cookie).POST(HttpRequest.BodyPublishers.ofString("{}")).build();
+			var ingest = HttpRequest
+					.newBuilder(URI.create(base(app) + "/fail2ban/events"))
+					.header("Cookie", cookie)
+					.POST(HttpRequest.BodyPublishers.ofString("{}"))
+					.build();
 			assertEquals(401, client.send(ingest, HttpResponse.BodyHandlers.ofString()).statusCode());
 			check(send(client, app, "DELETE", "", Map.of("Cookie", cookie, "Origin", ORIGIN)), 403);
 			check(send(client, app, "GET", "", Map.of("Cookie", cookie)), 200);
@@ -124,23 +146,28 @@ public class ViewerSessionIT {
 				String viewerCookie = cookie(check(send(client, app, "POST", LOGIN, headers()), 200));
 				check(adminSend(client, app, "GET", "/admin/users", "", Map.of("Cookie", viewerCookie)), 403);
 				check(adminSend(client, app, "GET", "/admin/users", "", Map.of()), 401);
-				check(adminSend(client, app, "POST", "/admin/users", "{}", Map.of("Cookie", viewerCookie,
-						"Content-Type", "application/json")), 403);
+				check(adminSend(client, app, "POST", "/admin/users", "{}",
+						Map.of("Cookie", viewerCookie, "Content-Type", "application/json")), 403);
 
 				String adminCookie = cookie(check(send(client, app, "POST",
 						"{\"username\":\"admin\",\"password\":\"" + ADMIN_PASSWORD + "\"}", headers()), 200));
 				var createViewer = adminSend(client, app, "POST", "/admin/users",
-						"{\"username\":\"viewer.new\",\"firstName\":\"New\",\"lastName\":\"Viewer\"," +
-						"\"password\":\"new-viewer-test-password\",\"kind\":\"viewer\"}", headers("Cookie", adminCookie));
+						"{\"username\":\"viewer.new\",\"firstName\":\"New\",\"lastName\":\"Viewer\","
+								+ "\"password\":\"new-viewer-test-password\",\"kind\":\"viewer\"}",
+						headers("Cookie", adminCookie));
 				check(createViewer, 201);
 				assertFalse(createViewer.body().contains("new-viewer-test-password"));
 				check(adminSend(client, app, "PUT", "/admin/users/viewer.new/password",
 						"{\"password\":\"configured-viewer-test-password\"}", headers("Cookie", adminCookie)), 200);
-				check(send(client, app, "POST", "{\"username\":\"viewer.new\",\"password\":" +
-						"\"configured-viewer-test-password\"}", headers()), 200);
+				check(send(client, app, "POST",
+						"{\"username\":\"viewer.new\",\"password\":" + "\"configured-viewer-test-password\"}",
+						headers()), 200);
 
+				check(adminSend(client, app, "POST", "/admin/machines",
+						"{\"username\":\"invalid-days\",\"instanceId\":\"invalid-days-id\",\"tokenName\":\"invalid\",\"validDays\":3651}",
+						headers("Cookie", adminCookie)), 400);
 				var createMachine = check(adminSend(client, app, "POST", "/admin/machines",
-						"{\"username\":\"ingest.east\",\"instanceId\":\"edge-east\",\"tokenName\":\"fail2ban-east\",\"validDays\":30}",
+						"{\"username\":\"ingest.east\",\"instanceId\":\"edge-east\",\"tokenName\":\"fail2ban-east\",\"validDays\":3650}",
 						headers("Cookie", adminCookie)), 201);
 				var machine = JsonParser.parseString(createMachine.body()).getAsJsonObject();
 				machineToken = machine.get("token").getAsString();
@@ -149,47 +176,90 @@ public class ViewerSessionIT {
 				var machineCertificate = handler.authenticatePersonalAccessToken(machineToken, "intruvia-ingest");
 				assertEquals("ingest.east", machineCertificate.getUsername());
 				assertEquals(Set.of("event:ingest"), handler.validate(machineCertificate).getPrivileges().keySet());
-				var machineList = check(adminSend(client, app, "GET", "/admin/machines", "", headers("Cookie", adminCookie)), 200);
+				var machineList = check(
+						adminSend(client, app, "GET", "/admin/machines", "", headers("Cookie", adminCookie)), 200);
 				assertFalse(machineList.body().contains(machineToken));
 				assertTrue(machineList.body().contains("edge-east"));
+				var initialTokenMetadata = JsonParser
+						.parseString(machineList.body())
+						.getAsJsonObject()
+						.getAsJsonArray("machines")
+						.get(0)
+						.getAsJsonObject()
+						.getAsJsonArray("tokens")
+						.get(0)
+						.getAsJsonObject();
+				assertEquals("fail2ban-east", initialTokenMetadata.get("name").getAsString());
+				assertTrue(Instant
+						.parse(initialTokenMetadata.get("validTo").getAsString())
+						.isAfter(Instant.now().plus(Duration.ofDays(3649))));
 				check(adminSend(client, app, "PUT", "/admin/machines/ingest.east", "{\"instanceId\":\"edge-west\"}",
 						headers("Cookie", adminCookie)), 200);
-				assertEquals("ingest.east=edge-west\n", Files.readString(database.runtime.resolve("config/machine-identities.conf")));
+				assertEquals("ingest.east=edge-west\n",
+						Files.readString(database.runtime.resolve("config/machine-identities.conf")));
 				assertEquals(Set.of(java.nio.file.attribute.PosixFilePermission.OWNER_READ,
-						java.nio.file.attribute.PosixFilePermission.OWNER_WRITE),
+								java.nio.file.attribute.PosixFilePermission.OWNER_WRITE),
 						Files.getPosixFilePermissions(database.runtime.resolve("config/machine-identities.conf")));
 				check(ingest(client, app, machineToken), 400);
 
 				Map<String, String> noCsrf = Map.of("Cookie", adminCookie, "Content-Type", "application/json");
 				check(adminSend(client, app, "POST", "/admin/machines/ingest.east/tokens",
 						"{\"name\":\"rotation-east\",\"validDays\":30}", noCsrf), 403);
+				check(adminSend(client, app, "POST", "/admin/machines/ingest.east/tokens",
+						"{\"name\":\"invalid\",\"validDays\":3651}", headers("Cookie", adminCookie)), 400);
 				var rotate = check(adminSend(client, app, "POST", "/admin/machines/ingest.east/tokens",
-						"{\"name\":\"rotation-east\",\"validDays\":30}", headers("Cookie", adminCookie)), 201);
+						"{\"name\":\"rotation-east\",\"validDays\":0}", headers("Cookie", adminCookie)), 201);
 				replacementToken = JsonParser.parseString(rotate.body()).getAsJsonObject().get("token").getAsString();
-				var replacementCertificate = handler.authenticatePersonalAccessToken(replacementToken, "intruvia-ingest");
+				var replacementCertificate = handler.authenticatePersonalAccessToken(replacementToken,
+						"intruvia-ingest");
 				assertEquals(Set.of("event:ingest"), handler.validate(replacementCertificate).getPrivileges().keySet());
+				var rotatedMachines = JsonParser
+						.parseString(check(adminSend(client, app, "GET", "/admin/machines", "",
+								headers("Cookie", adminCookie)), 200).body())
+						.getAsJsonObject()
+						.getAsJsonArray("machines");
+				var rotationMetadata = rotatedMachines
+						.get(0)
+						.getAsJsonObject()
+						.getAsJsonArray("tokens")
+						.get(1)
+						.getAsJsonObject();
+				assertEquals("rotation-east", rotationMetadata.get("name").getAsString());
+				assertEquals("9999-12-31T23:59:59Z", rotationMetadata.get("validTo").getAsString());
 				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east/tokens/" + machineTokenId, "",
 						headers("Cookie", adminCookie)), 204);
 				check(ingest(client, app, machineToken), 401);
-				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east", "", headers("Cookie", adminCookie)), 409);
+				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east", "",
+						headers("Cookie", adminCookie)), 409);
 			}
 
 			try (var app = new IntruviaApplication(database.runtime, 0)) {
 				app.start();
 				String adminCookie = cookie(check(send(client, app, "POST",
 						"{\"username\":\"admin\",\"password\":\"" + ADMIN_PASSWORD + "\"}", headers()), 200));
-				var machines = check(adminSend(client, app, "GET", "/admin/machines", "", headers("Cookie", adminCookie)), 200);
+				var machines = check(
+						adminSend(client, app, "GET", "/admin/machines", "", headers("Cookie", adminCookie)), 200);
 				assertTrue(machines.body().contains("edge-west"));
 				assertFalse(machines.body().contains(replacementToken));
 				check(ingest(client, app, replacementToken), 400);
-				var machine = JsonParser.parseString(machines.body()).getAsJsonObject().getAsJsonArray("machines")
-						.get(0).getAsJsonObject();
-				String tokenId = machine.getAsJsonArray("tokens").get(0).getAsJsonObject().get("tokenId").getAsString();
+				var machine = JsonParser
+						.parseString(machines.body())
+						.getAsJsonObject()
+						.getAsJsonArray("machines")
+						.get(0)
+						.getAsJsonObject();
+				var tokenMetadata = machine.getAsJsonArray("tokens").get(0).getAsJsonObject();
+				assertEquals("rotation-east", tokenMetadata.get("name").getAsString());
+				assertEquals("9999-12-31T23:59:59Z", tokenMetadata.get("validTo").getAsString());
+				String tokenId = tokenMetadata.get("tokenId").getAsString();
 				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east/tokens/" + tokenId, "",
 						headers("Cookie", adminCookie)), 204);
-				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east", "", headers("Cookie", adminCookie)), 204);
+				check(ingest(client, app, replacementToken), 401);
+				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east", "",
+						headers("Cookie", adminCookie)), 204);
 				assertEquals("", Files.readString(database.runtime.resolve("config/machine-identities.conf")));
-				check(adminSend(client, app, "DELETE", "/admin/users/viewer.new", "", headers("Cookie", adminCookie)), 204);
+				check(adminSend(client, app, "DELETE", "/admin/users/viewer.new", "", headers("Cookie", adminCookie)),
+						204);
 			}
 		}
 	}
@@ -199,12 +269,23 @@ public class ViewerSessionIT {
 		String httpOrigin = "http://intruvia.example.org:8080";
 		AtomicReference<Instant> time = new AtomicReference<>(Instant.now());
 		Clock clock = new Clock() {
-			@Override public ZoneId getZone() { return ZoneOffset.UTC; }
-			@Override public Clock withZone(ZoneId zone) { return this; }
-			@Override public Instant instant() { return time.get(); }
+			@Override
+			public ZoneId getZone() {
+				return ZoneOffset.UTC;
+			}
+
+			@Override
+			public Clock withZone(ZoneId zone) {
+				return this;
+			}
+
+			@Override
+			public Instant instant() {
+				return time.get();
+			}
 		};
 		try (var database = database(httpOrigin); var app = new IntruviaApplication(database.runtime, 0, clock);
-				var client = HttpClient.newHttpClient()) {
+			 var client = HttpClient.newHttpClient()) {
 			app.start();
 			var headers = headers();
 			headers.put("Origin", httpOrigin);
@@ -212,7 +293,8 @@ public class ViewerSessionIT {
 			assertFalse(login.headers().firstValue("Set-Cookie").orElseThrow().contains("Secure"));
 			String cookie = cookie(login);
 			String token = cookie.substring(cookie.indexOf('=') + 1);
-			var sessions = new ViewerSessions(() -> app.agent().getContainer().getComponent(StrolchSessionHandler.class),
+			var sessions = new ViewerSessions(
+					() -> app.agent().getContainer().getComponent(StrolchSessionHandler.class),
 					new ViewerConfiguration(httpOrigin), clock);
 			var certificate = sessions.validateToken(token);
 			time.set(certificate.getLoginTime().toInstant().plusSeconds(1799));
@@ -228,7 +310,7 @@ public class ViewerSessionIT {
 	@Test(timeout = 60000)
 	public void missingConfigurationDisablesViewerSessions() throws Exception {
 		try (var database = new DatabaseFixture(); var app = new IntruviaApplication(database.runtime, 0);
-				var client = HttpClient.newHttpClient()) {
+			 var client = HttpClient.newHttpClient()) {
 			app.start();
 			check(send(client, app, "POST", LOGIN, headers()), 503);
 			check(send(client, app, "GET", "", Map.of()), 503);
@@ -239,8 +321,11 @@ public class ViewerSessionIT {
 		var database = new DatabaseFixture();
 		Files.writeString(database.runtime.resolve("config/viewer.properties"), "origin=" + origin + "\n");
 		var encryption = new DefaultEncryptionHandler();
-		encryption.initialize(Map.of("hashAlgorithm", "PBKDF2WithHmacSHA512", "hashIterations", "10000", "hashKeyLength", "256"));
-		String password = encryption.hashPassword("viewer-test-password".toCharArray(), encryption.nextSalt()).toString();
+		encryption.initialize(
+				Map.of("hashAlgorithm", "PBKDF2WithHmacSHA512", "hashIterations", "10000", "hashKeyLength", "256"));
+		String password = encryption
+				.hashPassword("viewer-test-password".toCharArray(), encryption.nextSalt())
+				.toString();
 		var users = database.runtime.resolve("config/PrivilegeUsers.xml");
 		String xml = Files.readString(users);
 		for (String name : List.of("viewer", "denied", "issuer", "disabled", "policydenied"))
@@ -266,7 +351,8 @@ public class ViewerSessionIT {
 
 	static void addAdministrator(DatabaseFixture database) throws Exception {
 		var encryption = new DefaultEncryptionHandler();
-		encryption.initialize(Map.of("hashAlgorithm", "PBKDF2WithHmacSHA512", "hashIterations", "10000", "hashKeyLength", "256"));
+		encryption.initialize(
+				Map.of("hashAlgorithm", "PBKDF2WithHmacSHA512", "hashIterations", "10000", "hashKeyLength", "256"));
 		String hash = encryption.hashPassword(ADMIN_PASSWORD.toCharArray(), encryption.nextSalt()).toString();
 		Path users = database.runtime.resolve("config/PrivilegeUsers.xml");
 		Files.writeString(users, Files.readString(users).replace("</Users>", """
@@ -275,14 +361,19 @@ public class ViewerSessionIT {
 				""".formatted(hash)));
 	}
 
-	private static String base(IntruviaApplication app) { return "http://127.0.0.1:" + app.port() + "/api/v1"; }
+	private static String base(IntruviaApplication app) {
+		return "http://127.0.0.1:" + app.port() + "/api/v1";
+	}
+
 	private static String cookie(HttpResponse<String> response) {
 		return response.headers().firstValue("Set-Cookie").orElseThrow().split(";", 2)[0];
 	}
 
 	private static Map<String, String> headers(String... extra) {
-		var headers = new HashMap<>(Map.of("Origin", ORIGIN, "X-Intruvia-CSRF", "1", "Content-Type", "application/json"));
-		for (int i = 0; i < extra.length; i += 2) headers.put(extra[i], extra[i + 1]);
+		var headers = new HashMap<>(
+				Map.of("Origin", ORIGIN, "X-Intruvia-CSRF", "1", "Content-Type", "application/json"));
+		for (int i = 0; i < extra.length; i += 2)
+			headers.put(extra[i], extra[i + 1]);
 		return headers;
 	}
 
@@ -290,11 +381,12 @@ public class ViewerSessionIT {
 			Map<String, String> headers) throws Exception {
 		var request = HttpRequest.newBuilder(URI.create(base(app) + "/session")).timeout(Duration.ofSeconds(10));
 		headers.forEach(request::header);
-		return client.send(request.method(method, HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString());
+		return client.send(request.method(method, HttpRequest.BodyPublishers.ofString(body)).build(),
+				HttpResponse.BodyHandlers.ofString());
 	}
 
-	private static HttpResponse<String> adminSend(HttpClient client, IntruviaApplication app, String method, String path,
-			String body, Map<String, String> headers) throws Exception {
+	private static HttpResponse<String> adminSend(HttpClient client, IntruviaApplication app, String method,
+			String path, String body, Map<String, String> headers) throws Exception {
 		var request = HttpRequest.newBuilder(URI.create(base(app) + path)).timeout(Duration.ofSeconds(10));
 		headers.forEach(request::header);
 		var publisher = (method.equals("GET") || method.equals("DELETE")) && body.isEmpty() ?
@@ -302,10 +394,14 @@ public class ViewerSessionIT {
 		return client.send(request.method(method, publisher).build(), HttpResponse.BodyHandlers.ofString());
 	}
 
-	private static HttpResponse<String> ingest(HttpClient client, IntruviaApplication app, String token) throws Exception {
-		var request = HttpRequest.newBuilder(URI.create(base(app) + "/fail2ban/events"))
-				.header("Authorization", "Bearer " + token).header("Content-Type", "application/json")
-				.POST(HttpRequest.BodyPublishers.ofString("{}")).build();
+	private static HttpResponse<String> ingest(HttpClient client, IntruviaApplication app, String token)
+			throws Exception {
+		var request = HttpRequest
+				.newBuilder(URI.create(base(app) + "/fail2ban/events"))
+				.header("Authorization", "Bearer " + token)
+				.header("Content-Type", "application/json")
+				.POST(HttpRequest.BodyPublishers.ofString("{}"))
+				.build();
 		return client.send(request, HttpResponse.BodyHandlers.ofString());
 	}
 

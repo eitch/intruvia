@@ -48,10 +48,18 @@
 					<ul id="admin-users" class="admin-list"></ul>
 				</section>
 				<section class="admin-card" aria-labelledby="machines-title"><h3 id="machines-title">Machines and ingestion tokens</h3>
-					<form id="create-machine-form"><label>Machine username<input name="username" required minlength="3" maxlength="128" autocomplete="off"></label>
-						<label>Instance ID<input name="instanceId" required maxlength="128" autocomplete="off"></label>
-						<label>Token name<input name="tokenName" required maxlength="64" value="fail2ban"></label>
-						<label>Token validity (days)<input name="validDays" type="number" min="1" max="365" value="365" required></label>
+					<form id="create-machine-form"><label>Machine ID<input name="machineId" required minlength="3" maxlength="128"
+							pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,127}" autocomplete="off"></label>
+						<p class="caption">This stable ID defaults the machine username and instance ID; the token name defaults to its first 64 characters.</p>
+						<details><summary>Advanced overrides</summary>
+							<label>Machine username override (optional)<input name="username" minlength="3" maxlength="128"
+								pattern="[A-Za-z0-9][A-Za-z0-9._-]{2,127}" autocomplete="off"></label>
+							<label>Instance ID override (optional)<input name="instanceId" maxlength="128"
+								pattern="[A-Za-z0-9][A-Za-z0-9._-]{0,127}" autocomplete="off"></label>
+							<label>Token name override (optional)<input name="tokenName" maxlength="64"></label>
+						</details>
+						<label>Token validity (days; 0 = practical non-expiry)<input name="validDays" type="number" min="0" max="3650" value="365" required></label>
+						<p class="caption">Practical non-expiry uses a finite framework limit of 9999-12-31 UTC. Long-lived tokens remain revocable.</p>
 						<button type="submit">Add machine</button></form>
 					<ul id="admin-machines" class="admin-list"></ul>
 				</section>

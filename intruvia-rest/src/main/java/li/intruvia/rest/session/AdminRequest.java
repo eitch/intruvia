@@ -17,13 +17,15 @@ import java.util.Map;
 import java.util.Set;
 
 final class AdminRequest {
-	private AdminRequest() {}
+	private AdminRequest() {
+	}
 
 	static Map<String, String> read(HttpHeaders headers, InputStream body, Set<String> allowed) {
 		MediaType media = headers.getMediaType();
-		if (media == null || !media.isCompatible(MediaType.APPLICATION_JSON_TYPE) ||
-				!media.getParameters().getOrDefault("charset", "UTF-8").equalsIgnoreCase("UTF-8") ||
-				headers.getHeaderString("Content-Encoding") != null)
+		if (media == null || !media.isCompatible(MediaType.APPLICATION_JSON_TYPE) || !media
+				.getParameters()
+				.getOrDefault("charset", "UTF-8")
+				.equalsIgnoreCase("UTF-8") || headers.getHeaderString("Content-Encoding") != null)
 			throw ViewerHttp.failure(415);
 		try {
 			byte[] bytes = body.readNBytes(8193);
@@ -37,8 +39,9 @@ final class AdminRequest {
 				while (reader.hasNext()) {
 					String key = reader.nextName();
 					JsonToken value = reader.peek();
-					if (!allowed.contains(key) || fields.containsKey(key) ||
-							(value != JsonToken.STRING && value != JsonToken.NUMBER))
+					if (!allowed.contains(key) || fields.containsKey(key) || (
+							value != JsonToken.STRING
+									&& value != JsonToken.NUMBER))
 						throw ViewerHttp.failure(400);
 					fields.put(key, reader.nextString());
 				}
@@ -59,7 +62,9 @@ final class AdminRequest {
 
 	static String text(Map<String, String> fields, String name, int maximum) {
 		String value = fields.get(name);
-		if (value == null || value.isBlank() || value.length() > maximum || value.chars().anyMatch(Character::isISOControl))
+		if (value == null || value.isBlank() || value.length() > maximum || value
+				.chars()
+				.anyMatch(Character::isISOControl))
 			throw ViewerHttp.failure(400);
 		return value.strip();
 	}
@@ -70,7 +75,7 @@ final class AdminRequest {
 			throw ViewerHttp.failure(400);
 		try {
 			int days = Integer.parseInt(value);
-			if (days < 1 || days > 3650)
+			if (days < 0 || days > 3650)
 				throw ViewerHttp.failure(400);
 			return days;
 		} catch (NumberFormatException e) {

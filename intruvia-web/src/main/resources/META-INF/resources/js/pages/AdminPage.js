@@ -63,11 +63,14 @@ export default class AdminPage {
 		const button = form.querySelector('button[type="submit"]');
 		button.disabled = true;
 		try {
+			const machineId = values.get('machineId');
 			const result = await api.createMachine({
-				username: values.get('username'), instanceId: values.get('instanceId'), tokenName: values.get('tokenName'),
+				username: values.get('username') || machineId, instanceId: values.get('instanceId') || machineId,
+				tokenName: values.get('tokenName') || machineId.slice(0, 64),
 				validDays: Number(values.get('validDays'))
 			}, this.controller.signal);
 			form.reset();
+			form.querySelector('details').open = false;
 			this.revealToken(result.token);
 			this.status.textContent = `Machine ${result.username} is ready. Copy its token now.`;
 			await this.load(`Machine ${result.username} is ready. Copy its token now; it cannot be shown again.`);
@@ -175,7 +178,9 @@ export default class AdminPage {
 			for (const token of machine.tokens) {
 				const tokenItem = document.createElement('li');
 				const tokenDetails = document.createElement('span');
-				tokenDetails.textContent = `${token.name} · expires ${new Date(token.validTo).toLocaleString()} · ${token.privileges.join(', ')}`;
+				const expiry = token.validTo === '9999-12-31T23:59:59Z' ?
+					'practically does not expire (through 9999-12-31 UTC)' : `expires ${new Date(token.validTo).toLocaleString()}`;
+				tokenDetails.textContent = `${token.name} · ${expiry} · ${token.privileges.join(', ')}`;
 				const revoke = this.button('Revoke token');
 				revoke.addEventListener('click', () => this.perform(async () => {
 					if (!window.confirm(`Revoke the token ${token.name} for ${machine.username}?`)) return;
@@ -196,9 +201,10 @@ export default class AdminPage {
 			const days = document.createElement('input');
 			days.type = 'number';
 			days.required = true;
-			days.min = '1';
-			days.max = '365';
+			days.min = '0';
+			days.max = '3650';
 			days.value = '365';
+			days.title = 'Enter 0 for practical non-expiry; maximum 3650 days.';
 			days.setAttribute('aria-label', `New token validity in days for ${machine.username}`);
 			const rotate = this.button('Create another token');
 			rotate.type = 'submit';
