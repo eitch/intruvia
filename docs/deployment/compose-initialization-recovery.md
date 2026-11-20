@@ -5,13 +5,11 @@ have administrative, replication or row-security-bypass privileges, or membershi
 database writers stopped during initialization: the emptiness check is a point-in-time check, not a database-wide lock
 against unrelated clients.
 
-The runtime directory must be empty and owned by the container user (`10001:10001`) with mode `0700`. Images with
-in-memory viewer-password generation need no viewer password file or password-file environment variable: they generate
-the initial credential in memory, store only the configured Strolch hash, and display the password once after successful
-initialization. Start the app with an attached `docker compose run --rm --no-deps -T app` after the database is ready;
-the Docker app logging driver is `none`, so Docker logs cannot recover the output. A later restart neither changes the
-viewer nor redisplays the password. The published
-`0.0.2` image predates this behavior and must not be used with these file-free instructions.
+The runtime directory must be empty and owned by the container user (`10001:10001`) with mode `0700`. The application
+generates the initial viewer password in memory, stores only the configured Strolch hash, and displays the password once
+after successful initialization. Start the app with an attached `docker compose run --rm --no-deps -T app` after the
+database is ready; the Docker app logging driver is `none`, so Docker logs cannot recover the output. A later restart
+neither changes the viewer nor redisplays the password.
 
 `INTRUVIA_PUBLIC_ORIGIN` accepts an exact HTTP or HTTPS origin with an optional port and no credentials, path, query,
 fragment or trailing slash. Use `http://localhost` for certificate-free local testing; HTTPS is recommended for exposed

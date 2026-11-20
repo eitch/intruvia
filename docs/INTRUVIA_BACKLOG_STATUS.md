@@ -1,6 +1,6 @@
 # Intruvia — backlog status
 
-Updated: 2026-11-20 · Task 023 first-install administration acceptance retry completed
+Updated: 2026-11-20 · Task 028 deployment-guide revision complete
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
@@ -8,8 +8,8 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 
 - Current task: **None — all numbered tasks are complete**.
 - Next task: **None — backlog complete**.
-- Completed: **27 / 27**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
-- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance originally passed against a local framework snapshot; the published 2.8.0-1 release now contains the verified PAT persistence fixes. Historical custom-token results remain superseded. Tasks 001–027 retain completion evidence; task 023's first-install administration follow-up now also passes Maven/PostgreSQL and browser acceptance. Task 027 publishes `latest` only for non-SNAPSHOT image versions. Task 024's unified release packages with tests skipped by default and offers PostgreSQL-backed verification through `--with-tests`. No published release containing tasks 025–027 is claimed.
+- Completed: **28 / 28**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance originally passed against a local framework snapshot; the published 2.8.0-1 release now contains the verified PAT persistence fixes. Historical custom-token results remain superseded. Tasks 001–027 retain completion evidence; task 028's initial completion and this documentation follow-up are recorded in the execution log. Task 023's first-install administration follow-up also passes Maven/PostgreSQL and browser acceptance. Task 027 publishes `latest` only for non-SNAPSHOT image versions. Task 024's unified release packages with tests skipped by default and offers PostgreSQL-backed verification through `--with-tests`.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence was originally verified with a local snapshot override and the full PostgreSQL suite was revalidated against published Strolch 2.8.0-1 during task 023; the ingestion HTTP endpoint, viewer sessions, snapshot/history reads and ordered WebSocket stream are verified; snapshot viewer and live highlighting are verified; browser reconnect/resync is verified; deployment/recovery and release review are verified.
 
@@ -48,6 +48,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 025 | Generate and recover initial account passwords without plaintext files | 023 | DONE | Generated initial credential, protected one-time console output, runtime-locked reset and compatibility guide; historical viewer-baseline verification is retained and fresh-install administrator semantics are updated under task 023. See execution log below; published `0.0.2` does not contain this change. |
 | 026 | Allow HTTP origins and persist actionable startup diagnostics | 023, 025 | DONE | HTTP/HTTPS origin and cookie tests, safe persistent startup diagnostics, packaged-entrypoint failure checks, PostgreSQL-backed Maven verify and HTTP Compose/Caddy configuration checks passed; see execution log below. |
 | 027 | Publish version-qualified Docker tags | 023, 024 | DONE | Both workflows publish major, minor and full-version tags, plus mutable `latest` only for non-SNAPSHOT versions; SNAPSHOT suffix detection is case-insensitive. Stable/SNAPSHOT/qualified versions and tag/push failures are covered. Prior and follow-up evidence is retained below. |
+| 028 | Simplify deployment onboarding and Fail2ban setup | 018, 021 | DONE | Prior installer and packaging evidence plus this follow-up's direct setup guidance, private credential generation, link/anchor, shell syntax and whitespace checks; see execution log. |
 
 ## Execution log
 
@@ -932,3 +933,30 @@ A failed check keeps the task incomplete. If a previously completed task needs r
 - Deployment checks: `for script in scripts/build-deployment-tarball.sh scripts/test-deployment-tarball.sh scripts/verify-compose-startup.sh docs/verification/023-run-admin-browser.sh; do bash -n "$script" || exit; done && bash scripts/test-deployment-tarball.sh && bash scripts/verify-compose-startup.sh` — exit 0; archive checksums/allowlist/protected bind directories, Compose fresh start, restart and persistent state passed. Full IDE rebuild succeeded with no problems; `git diff --check` passed after this ledger update.
 - Corrected failed attempts: initial PostgreSQL admin operations exposed incorrect Strolch privilege policy and preassigned user IDs; fixed without weakening assertions. Browser runner initially hit SDKMAN `ZSH_VERSION` under nounset and a stale repeated-status wait; both harness issues were fixed, then the complete browser scenario passed. No assertions were weakened.
 - Unrun/not changed: no browser walkthrough against a published Compose image, live legacy-volume migration, registry image build/push, release or production deployment was performed. Only isolated disposable test databases/containers were used; no existing installation or user runtime was touched.
+
+### 2026-11-20 — task 028 started
+
+- Junie: TODO → IN_PROGRESS after confirming dependencies 018 and 021 are DONE. Counts: DONE 27 / 28, TODO 0, IN_PROGRESS 1, BLOCKED 0; current task 028, no next task while active.
+- Scope: clarify development/release availability, reorder deployment documentation around a fresh start and easy-to-find troubleshooting, document and package a guarded Fail2ban setup command, and verify secret/action/file preservation. No supported release, existing installation, or production deployment is claimed.
+- Baseline: `git status --short` was clean before task changes. Implementation and acceptance checks are pending.
+
+### 2026-11-20 — task 028 completed
+
+- Junie: IN_PROGRESS → DONE after the documentation, installer, test and packaging checks passed. Dependencies 018 and 021 remain DONE. Counts: DONE 28 / 28, TODO 0, IN_PROGRESS 0, BLOCKED 0; current and next task none.
+- Changes: README and deployment/developer guidance now state that Intruvia is in development with no supported installation, compatible published Compose image or installed deployment to upgrade. The Compose happy path builds/verifies a local-only bundle, links to troubleshooting before operational/recovery material, and proceeds to scoped-token Fail2ban onboarding. Added a guarded default-action jail installer, preserved the manual/custom-action path, and included the installer in deployment archives.
+- Verification: SDKMAN-initialized `java -version`/`mvn -version` — OpenJDK 25.0.5 and Maven 3.10.0. `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s integrations/fail2ban/tests -v` — exit 0, 19 tests passed. `bash scripts/test-deployment-tarball.sh` — exit 0, allowlist/checksum/content comparisons including `install.py` passed. `PYTHONDONTWRITEBYTECODE=1 python3 integrations/fail2ban/install.py --help` — exit 0. `bash -n scripts/build-deployment-tarball.sh scripts/test-deployment-tarball.sh`, interactive token-command syntax check, `git diff --check`, and local Markdown link/anchor check over README and three guides — all exit 0. The first shell check without SDKMAN initialization reported `java: command not found` (exit 127); sourcing SDKMAN exposed the required installed toolchain.
+- Regression found and fixed: the first installer `--help` run failed because `argparse` interpreted the literal `%(action_)s` as a format placeholder. Escaped the percent in the help text and added `test_cli_help_formats_default_action`; the complete 19-test suite and CLI help then passed. No assertion was weakened.
+- Unrun/not changed: no `mvn clean package`, Docker image build/push, release, live Fail2ban host setup or production deployment was performed. The real Fail2ban action smoke requires an unpacked Fail2ban 1.1.0 tree; neither `fail2ban-client` nor its Python module is installed here. Existing helper/HTTP/TLS tests passed; no user host, jail, token, database or runtime was changed.
+
+### 2026-11-20 — task 028 reopened for deployment-guide revision
+
+- Junie: DONE → IN_PROGRESS at the user's request to remove development-status/version discussion and focus deployment instructions on the successful setup path, with edge cases and failures at the end. Dependencies 018 and 021 remain DONE; the previous task 028 implementation and verification evidence are retained above. Counts: DONE 27 / 28, TODO 0, IN_PROGRESS 1, BLOCKED 0; current task 028, no next task while active.
+- Revised scope: make the deployment instructions direct and actionable, correctly generate distinct database credentials for a fresh bundle, keep secure setup cautions beside relevant steps, and put recovery/troubleshooting after normal deployment and producer onboarding. Preserve the existing guarded Fail2ban setup and manual alternative.
+- Review finding: the archive builder leaves `POSTGRES_ADMIN_PASSWORD` and `INTRUVIA_DB_PASSWORD` empty and only inserts the image reference; the prior guide text incorrectly said passwords were already generated. No implementation or production environment changes were made for this follow-up.
+
+### 2026-11-20 — task 028 deployment-guide follow-up completed
+
+- Junie: IN_PROGRESS → DONE after the revised documentation acceptance passed. Dependencies 018 and 021 remain DONE; the initial task 028 evidence and implementation remain recorded above. Counts: DONE 28 / 28, TODO 0, IN_PROGRESS 0, BLOCKED 0; current and next task none.
+- Changes: deployment instructions now lead with the actionable Compose build, configuration, startup and Fail2ban onboarding path; the standalone procedure is clearly an alternative. Fresh blank database passwords are generated as distinct private values without terminal output, and reset/recovery/troubleshooting procedures follow the successful setup path. Removed development/compatibility availability commentary and corrected the changed standalone anchor.
+- Verification: inline Python documentation validation — exit 0; checked local Markdown paths/anchors in seven documents, parsed all Bash/shell fenced examples, and executed the documented password setup in a temporary fresh-bundle fixture. It produced two distinct 64-character hexadecimal passwords in a mode-`0600` `.env`, then refused a second run without changing the file. The Compose → Fail2ban → troubleshooting order and absence of obsolete development/version availability language were checked. `git diff --check` — exit 0.
+- Unrun/not changed: no Maven build, Docker image/bundle build, live Fail2ban setup or real host deployment was performed for this documentation-only follow-up. The initial task's Fail2ban unit tests, archive checks and installer CLI verification remain recorded above; no live host configuration was changed.

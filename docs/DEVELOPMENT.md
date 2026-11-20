@@ -2,16 +2,15 @@
 
 This document collects contributor-focused build, verification, architecture, and
 implementation notes. For a product overview, see the [root README](../README.md);
-for installation and operations, see the [administrator guide](./DEPLOYMENT.md).
+for deployment and recovery, see the [deployment guide](./DEPLOYMENT.md).
 The [implementation specification](./INTRUVIA_SPECIFICATION.md), [backlog](./INTRUVIA_BACKLOG.md),
 and [status ledger](./INTRUVIA_BACKLOG_STATUS.md) track requirements and progress.
 
 ## Deployment
 
-Administrators should follow the [installation and recovery guide](./DEPLOYMENT.md)
-for Compose or standalone setup, credentials, upgrades, backups and recovery.
-For the combined versioned image, administrator bundle, Git tag and GitHub release,
-see the [release procedure](./RELEASE.md). The separate
+Follow the [deployment and recovery guide](./DEPLOYMENT.md) for the Compose or standalone
+path, credentials, backups and recovery. The [release procedure](./RELEASE.md) describes
+how to prepare an image, administrator bundle, Git tag and GitHub release. The separate
 [GitHub source-release procedure](./GITHUB_RELEASE.md) remains available for a
 source-only release and Mastodon announcement.
 
@@ -79,8 +78,8 @@ The retry checks the blocker again and preserves previous failure evidence.
 
 Use Java 25 and Maven from the repository root. For build, release and local run
 instructions, see the [release procedure](./RELEASE.md).
-For host installation and runtime provisioning, see the
-[administrator guide](./DEPLOYMENT.md#standalone-installation).
+For standalone deployment and runtime provisioning, see the
+[administrator guide](./DEPLOYMENT.md#standalone-deployment-advanced).
 
 Run the PostgreSQL-backed verification with:
 
@@ -133,7 +132,7 @@ and broad PATs are rejected.
 The authenticated Strolch username maps to a stable server identity; callers cannot
 choose that identity in the request. Revocation, expiry and disabled-user state are
 checked for cached PATs, without an Intruvia restart. No public token-administration
-endpoint is exposed. See the [administrator guide](./DEPLOYMENT.md#offline-users-and-pats)
+endpoint is exposed. See the [administrator guide](./DEPLOYMENT.md#manage-viewer-users-machines-and-tokens)
 for provisioning and rotation, and the [verified framework API and implementation
 details](./architecture/005-machine-authentication.md).
 
@@ -219,7 +218,7 @@ Receipt-capacity admission and ordered WebSocket delivery are available.
 Viewer sessions require the configured exact origin; missing configuration disables
 them. HTTP is allowed only for explicit loopback development origins. HTTPS origins
 receive Secure, HttpOnly, SameSite=Strict cookies restricted to `/api/v1`; no token
-belongs in browser storage. See the [administrator guide](./DEPLOYMENT.md#provision-the-external-runtime-while-stopped)
+belongs in browser storage. See the [administrator guide](./DEPLOYMENT.md#manage-viewer-users-machines-and-tokens)
 for user/runtime provisioning and the [session contract](./architecture/011-viewer-sessions.md).
 
 The same-origin client logs in with `POST /api/v1/session`, JSON `{username,password}`,
@@ -359,7 +358,7 @@ probes return DOWN. Monitor with a finite timeout and retry rather than treating
 one busy probe as a permanent outage.
 
 The diagnostics route requires an account with both the `Viewer` and supplied
-`Operator` roles. See the [administrator guide](./DEPLOYMENT.md#provision-the-external-runtime-while-stopped)
+`Operator` roles. See the [administrator guide](./DEPLOYMENT.md#manage-viewer-users-machines-and-tokens)
 for provisioning. After ordinary cookie login,
 `GET /api/v1/diagnostics` reports process-lifetime ingestion created/duplicate/failure
 counters, active stream connections, slow-consumer disconnects, GeoIP load/build/age
@@ -418,6 +417,6 @@ raw measurements, failed attempts, hardware and receipt-population limits.
 ## Release evidence
 
 See the [local HTTPS/WSS and restore rehearsal report](./verification/021-acceptance.txt)
-for measured results and limits. See the [0.0.1 MVP release review](./RELEASE_NOTES.md)
-and [0.0.1 release acceptance checklist](./verification/022-acceptance.md) for the reviewed
-artifact identity, verification and operational limits.
+for measured results and limits. The historical MVP review and acceptance checklist
+([review](./RELEASE_NOTES.md), [checklist](./verification/022-acceptance.md)) are
+development records, not evidence of a supported release or an installed deployment.

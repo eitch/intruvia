@@ -1,75 +1,54 @@
-# Intruvia installation and recovery
+# Intruvia deployment and recovery
 
-This guide is for administrators installing, operating, and recovering Intruvia.
-Developers preparing a release should use the [release procedure](RELEASE.md).
-
-**Choose your installation path:**
-
-- **Administrator:** [install a supplied Compose bundle](#compose-deployment); no Java, Maven or PostgreSQL installation is needed on the host.
-  - For later changes, jump to [access management](#manage-viewer-users-machines-and-tokens), [public-origin changes](#change-the-public-origin), [backup and restore](#backup-and-restore), or [failed-start recovery](#recover-a-failed-first-start).
-- **Standalone operator:** continue to [standalone installation](#standalone-installation).
+Follow the [Compose deployment](#compose-deployment) steps in order, then
+[connect a Fail2ban host](#connect-a-fail2ban-host). The standalone procedure is an
+alternative to Compose; routine operations follow setup. Find
+[troubleshooting and recovery](#troubleshooting-and-recovery) at the end.
 
 ## Compose deployment
 
-This is the administrator's container path. Use Docker Engine and Compose. The checksum
-detects transfer errors; it does not authenticate the publisher. Release scripts target
-`repo.strolch.li/intruvia` and the root POM version, but registry publication, image pull
-and public-CA validation are not assumed to have passed.
+Build the application image and bundle on the Docker host where you will run Intruvia.
+The host needs JDK 25+, Maven 3.10+, Docker Engine and Compose. Verify `java -version`
+and `mvn -version` before building. The bundle contains Compose configuration and
+supporting files, not the application image; use the same Docker host for the build and
+the deployment.
 
-**Credential compatibility:** the published `0.0.2` image predates generated initial
-administrator passwords and still uses the old password-file behavior. Do not use that
-image with the file-free startup instructions below or create a plaintext viewer-password
-file as a workaround. Use this workflow only with a versioned bundle and image that
-support in-memory password generation and the reset command; no such release is claimed here.
-Existing installations and legacy files are preserved when upgraded, and the new
-application does not read or delete a legacy file.
-This change applies to the Compose lifecycle; the standalone JAR entrypoint and its
-external-runtime provisioning procedure remain unchanged.
+### Build and unpack the deployment bundle
 
-### Download, verify and unpack the bundle
-
-Obtain a bundle version confirmed by the release owner to support the generated-password
-and reset workflow described below. Replace the version placeholder in the commands
-with that confirmed version before running them. No compatible published release is
-claimed here.
-Run these commands from a new, empty working directory. They download and verify that
-bundle, extract it into `intruvia`, and generate both database passwords in its fresh
-`.env`. The commands require `wget`, `sha256sum`, GNU `tar` and GNU `sed`; macOS's
-built-in BSD `tar` and `sed` do not support the options used here, so use GNU versions.
+From the project root, build the application and image, create a bundle, and extract it
+into a new directory. Use a new numeric bundle ID if you build another bundle; the
+builder will not overwrite an existing archive or checksum.
 
 ```bash
 set -eu
-export INTRUVIA_VERSION=REPLACE_WITH_COMPATIBLE_VERSION
-wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz
-wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256
-sha256sum -c "intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256"
-
-tar -xpzf intruvia-deployment-$INTRUVIA_VERSION.tar.gz --one-top-level=intruvia
-chmod 0700 intruvia
-cd intruvia
-
-# Generate secure secrets (openssl ships with Git on Windows, standard on macOS/Linux)
-sed -i "s/POSTGRES_ADMIN_PASSWORD=/POSTGRES_ADMIN_PASSWORD=$(openssl rand -hex 16)/" .env
-sed -i "s/INTRUVIA_DB_PASSWORD=/INTRUVIA_DB_PASSWORD=$(openssl rand -hex 16)/" .env
+image=localhost/intruvia:deployment-1
+bundle_id=1
+mvn -B clean package
+scripts/build-deployment-image.sh "$image" intruvia-app/target/intruvia
+mkdir -p target/deployment
+scripts/build-deployment-tarball.sh "$bundle_id" "$image" target/deployment
+(cd target/deployment && sha256sum -c "intruvia-deployment-$bundle_id.tar.gz.sha256")
+mkdir -m 0700 intruvia-deployment
+tar -xpzf "target/deployment/intruvia-deployment-$bundle_id.tar.gz" -C intruvia-deployment
+cd intruvia-deployment
 ```
 
-Run the password substitutions only once, immediately after extracting a fresh bundle
-and before editing `.env`. Rerunning them after the values are set can append to the
-existing passwords. Preserving archive modes (`-p`) keeps the read-only templates and
-database initializer readable by the container users even if your shell uses `umask 077`.
-Do not continue if either download or checksum verification fails.
+Keep `.env` private. Do not run these commands in a directory containing data from an
+existing deployment; see [backup and restore](#backup-and-restore) before replacing or
+migrating deployment data.
 
 ### Configure and start
 
-Do these three steps in order:
+Complete each step in order:
 
 1. Set `INTRUVIA_PUBLIC_ORIGIN` to the exact HTTP or HTTPS origin, with an optional
    port and no credentials, path, trailing slash, query or fragment. For example,
    `https://intruvia.example.org` for an exposed service, or `http://localhost` for
-   certificate-free local testing. The supplied `.env` already contains the versioned
-   `INTRUVIA_IMAGE` reference. Then check the file permissions:
+   local use. The generated `.env` already contains the image reference. Then check
+   the file permissions:
 
    ```bash
+   umask 077
    vi .env && chmod 0600 .env
    ```
 
@@ -77,11 +56,67 @@ Do these three steps in order:
    do not print resolved Compose configuration or expose Docker access to unauthorized
    users. Ensure shell environment variables do not override `.env` values.
 
-2. TLS termination is the operator's responsibility; HTTPS is recommended for exposed
-   deployments. HTTP is accepted for local and private-network testing, but it does not
+2. The fresh bundle leaves the two database passwords empty. Generate distinct values
+   without printing them to the terminal or putting them in shell history. Run this once
+   from the bundle root as the owner of `.env`:
+
+   ```bash
+   python3 - <<'PY'
+   import os
+   import secrets
+   import stat
+   import tempfile
+   from pathlib import Path
+
+   path = Path(".env")
+   metadata = path.lstat()
+   if not stat.S_ISREG(metadata.st_mode) or metadata.st_mode & 0o077:
+       raise SystemExit(".env must be a regular file with private permissions")
+
+   lines = path.read_text(encoding="utf-8").splitlines()
+   keys = ("POSTGRES_ADMIN_PASSWORD", "INTRUVIA_DB_PASSWORD")
+   indices = {}
+   for key in keys:
+       matches = [i for i, line in enumerate(lines) if line.startswith(key + "=")]
+       if len(matches) != 1 or lines[matches[0]] != key + "=":
+           raise SystemExit(f"{key} must appear once and be empty in a fresh bundle")
+       indices[key] = matches[0]
+
+   passwords = []
+   while len(passwords) < len(keys):
+       password = secrets.token_hex(32)
+       if password not in passwords:
+           passwords.append(password)
+   for key, password in zip(keys, passwords):
+       lines[indices[key]] = f"{key}={password}"
+
+   fd, temporary = tempfile.mkstemp(prefix=".env.", dir=path.parent)
+   try:
+       os.fchmod(fd, 0o600)
+       with os.fdopen(fd, "w", encoding="utf-8") as output:
+           output.write("\n".join(lines) + "\n")
+           output.flush()
+           os.fsync(output.fileno())
+       os.replace(temporary, path)
+   finally:
+       if os.path.exists(temporary):
+           os.unlink(temporary)
+   PY
+   ```
+
+   The command refuses to overwrite a non-empty password field and atomically saves
+   two distinct 256-bit values with mode `0600`. Now edit `.env` to set the exact public
+   origin and verify its permissions again:
+
+   ```bash
+   vi .env && chmod 0600 .env
+   ```
+
+3. TLS termination is the operator's responsibility; use HTTPS for exposed
+   deployments. HTTP is accepted for local and private-network use, but it does not
    encrypt viewer credentials or session cookies; never expose an HTTP deployment to an
-   untrusted network. For a local-only test, use `http://localhost` and ensure the
-   published host port 80 is not reachable from outside the development machine. For an
+   untrusted network. For local-only access, use `http://localhost` and ensure the
+   published host port 80 is not reachable from outside the host. For an
    exposed service, configure DNS, firewall and Caddy for the exact HTTPS origin, and
    manage certificate acquisition/renewal and verification. Only Caddy publishes ports
    80 and 443; app and PostgreSQL publish none. The app binds `0.0.0.0` inside its
@@ -89,11 +124,10 @@ Do these three steps in order:
    Do not attach unrelated containers to the proxy or database networks. The database
    network is internal. Caddy blocks public health paths; check readiness from the host
    or an approved monitoring path. Protect proxy state/TLS keys and review proxy logs.
-3. If required, authenticate to the registry using the release owner's instructions.
-   Pull the image and start PostgreSQL, then start the app attached to this terminal:
+4. Start PostgreSQL, then start the app attached to this terminal. The image was built
+   locally above; do not run `docker compose pull`.
 
    ```bash
-   docker compose pull
    docker compose up -d --wait db
    docker compose run --rm --no-deps -T app
    ```
@@ -120,19 +154,46 @@ Do these three steps in order:
    for HTTP). Choose **Manage access** to create viewer accounts, add machines and stable
    instance IDs, issue scoped ingestion tokens, and rotate or revoke them. The account
    and mapping changes take effect immediately; the plaintext value of each newly issued
-   token is shown only once. Editing `.env` does not rotate existing users or passwords
-   stored in an initialized database; if the DB healthcheck fails after a credential
-   change, preserve `state/postgres` and follow
-   [database credential recovery](deployment/compose-initialization-recovery.md#repair-a-database-credential-mismatch).
+   token is shown only once. See [troubleshooting and recovery](#troubleshooting-and-recovery)
+   before changing bootstrap credentials on an initialized database.
 
-No additional runtime file edits are needed for viewer or machine setup. Existing
-initialized installations retain their current users, roles and machine mappings; an
-upgrade never promotes an existing viewer to administrator. Do not copy fresh privilege
-templates over an initialized runtime. For existing installs that need an administrator,
-use the documented, stopped-runtime Strolch administration procedure rather than editing
-the active database or replacing configuration.
+### Connect a Fail2ban host
 
-### After startup
+After the first administrator login, use **Manage access** to create a machine for each
+reporting server, assign its stable instance ID, and issue a token with only the
+`event:ingest` scope. Copy the `tokenId:tokenValue` shown once using a protected channel;
+never put it in a command argument, URL, shell history, or jail file.
+
+On the Fail2ban host, create the PAT file interactively as root (the default Fail2ban
+service user). `umask 077` and `noclobber` protect the new file and prevent replacing an
+existing token file:
+
+```bash
+sudo bash -c 'set -euo pipefail; umask 077; set -o noclobber; read -r -s -p "Paste the one-time token: " token; printf "\n"; printf "%s\n" "$token" > /etc/fail2ban/intruvia.pat; unset token'
+```
+
+Transfer the `integrations/fail2ban/` directory from the source checkout or deployment
+bundle to the Fail2ban host. Confirm that the named jail is already enabled and its
+effective action is the standard `%(action_)s`; this one-line setup does not enable jails
+or change filters, ports, ban times, or unban behavior. Then run this single command from
+the bundle/source directory, replacing the example HTTPS host and jail name:
+
+```bash
+sudo python3 integrations/fail2ban/install.py --jail sshd --endpoint https://intruvia.example.org/api/v1/fail2ban/events --confirm-default-action
+```
+
+The installer validates the existing configuration and active jail, refuses custom jail
+actions or pre-existing target files, appends the notification after the existing
+firewall action, validates and reloads Fail2ban, and rolls back only its own new files if
+validation/reload fails. It never reads or prints the PAT value. For Fail2ban running as
+a dedicated account, run `sudo chown ACCOUNT /etc/fail2ban/intruvia.pat` and add
+`--service-user ACCOUNT` to the installer command. Custom action lists or private CA trust require the
+[manual integration procedure](../integrations/fail2ban/README.md).
+
+Confirm both actions are active with `sudo fail2ban-client get sshd actions`. Test only
+with a disposable jail; the notification is best-effort and has no offline queue.
+
+### Persistent data
 
 The bundle includes these persistent, bundle-relative directories before first start:
 `state/postgres`, `state/runtime`, `state/app-logs`, `state/caddy-data` and
@@ -142,49 +203,6 @@ in backups. The one-shot `prepare-state` service sets `state/runtime`, `state/ap
 and `secrets/` to owner `10001:10001` and mode `0700` before PostgreSQL starts; it
 changes only the directories themselves, not their contents. PostgreSQL prepares its
 own data directory. Do not move or delete the bundle while services use it.
-
-Existing installations still using named volumes are not migrated automatically.
-Follow the [offline named-volume migration](deployment/compose-initialization-recovery.md#migrate-an-existing-named-volume-installation)
-before starting this bundle with existing data. The old volumes remain untouched by
-the new Compose configuration.
-
-Startup and first-start provisioning failures are written to the protected persistent
-file `/var/log/intruvia/startup-failures.log` in `state/app-logs`. It records the
-failed stage, safe diagnostic details and stack locations; it omits arbitrary exception
-messages and credentials. Docker's `none` logging driver still discards app stdout/stderr.
-To inspect the startup file without starting the app or its dependencies, run:
-
-```bash
-docker compose run --rm --no-deps -T --entrypoint sh app -c \
-  'cat /var/log/intruvia/startup-failures.log'
-```
-
-The generated administrator password is emitted only after successful initialization to the
-attached console; it is not written to this failure log. Keep the initialized runtime
-and database intact while investigating a failure; follow [failed-start recovery](#recover-a-failed-first-start).
-
-#### Recover a missed initial administrator password
-
-The initial password cannot be recovered from the initialized runtime or Docker logs.
-Stop the app before resetting it; the reset command takes the same runtime lock and
-fails without changing credentials if the app still owns it. Run the command in an
-attached terminal and protect the one-time output:
-
-```bash
-docker compose stop app
-docker compose run --rm --no-deps -T --entrypoint /usr/local/bin/intruvia-reset-viewer-password app
-docker compose up -d app caddy
-```
-
-The reset tool atomically replaces the initial login account's password hash and prints
-the replacement once. On a new installation that account is `admin`; on an older runtime
-without the initial `Admin` role, the historical `viewer` account is selected instead.
-The previous password stops working. A missing or ambiguous account is rejected; do not
-edit or delete the runtime marker to bypass that failure. This command requires an image
-with generated administrator-password support and is not
-available in the published `0.0.2` image. A legacy `secrets/viewer-password` file from an older deployment is not
-read or removed by the new application; keep it protected and remove it manually under
-your secret-handling policy once it is no longer needed.
 
 ### Operate the Compose deployment
 
@@ -201,7 +219,7 @@ paused until the new origin is verified.
 
 2. While the app is stopped, set the same exact HTTP or HTTPS origin (no credentials,
    path, trailing slash, query or fragment) in both files. Use HTTPS for exposed services;
-   HTTP remains suitable for certificate-free local testing only:
+   HTTP remains suitable for certificate-free local access only:
 
    ```properties
    # /var/lib/intruvia/runtime/config/viewer.properties
@@ -238,32 +256,6 @@ The browser administration endpoints require the initial administrator session a
 the same exact-origin/CSRF checks as other session-changing requests. Viewer-only
 accounts cannot manage users, machines, or tokens. The `admin` account created on a
 fresh install also has viewer access, so it can immediately sign in to the map.
-
-#### Offline credential recovery (advanced)
-
-Use the protected offline commands only for break-glass recovery or an explicitly
-planned maintenance operation; routine user, machine, mapping, and token changes belong
-in the UI. Before an offline command, pause ingress, stop the app, back up the matching
-database and runtime, and use an owner-only password file in `secrets/` (owned by
-`10001:10001`). Never put passwords in command arguments or environment variables. The
-initial administrator has the `TokenOperator` role; do not add roles or users by editing
-the initialized privilege files.
-
-For example, with a protected password file for an enabled token operator, issue a
-scoped token into a new protected file and revoke by token ID (the portion before `:`):
-
-```bash
-docker compose run --rm --no-deps app offline issue admin /run/secrets/admin-password \
-  producer-a fail2ban 2026-11-19T00:00:00Z 2026-12-19T00:00:00Z /run/secrets/producer.pat
-docker compose run --rm --no-deps app offline revoke admin /run/secrets/admin-password OLD_TOKEN_ID
-```
-
-Use the dates required by your policy. The issuance output is a one-time `tokenId:tokenValue`;
-transfer the value securely and never expose it in commands or logs. A failed issue may
-persist an orphan token before output fails; inspect/revoke it through authorized Strolch
-tooling before retrying. Offline token commands do not configure a machine mapping; use
-the UI for that. Never copy fresh templates over an initialized runtime or erase
-privilege files.
 
 #### Backup and restore
 
@@ -352,23 +344,6 @@ Bootstrap values apply only to a new PostgreSQL data directory; editing `.env` d
 Manage viewer passwords, users, machines, and PATs through the browser administration
 panel or a protected offline Strolch procedure, not bootstrap environment values.
 
-#### Upgrade the application image
-
-For an image upgrade:
-
-1. Take and rehearse a matching backup; review release notes and schema compatibility.
-2. Set `INTRUVIA_IMAGE` to the supplied versioned reference in `.env`.
-3. Pull and recreate:
-
-   ```bash
-   docker compose pull
-   docker compose up -d
-   ```
-
-Preserve `state/runtime` and the other local state directories; never overwrite runtime
-with templates. Perform migrations only as documented maintenance. Roll back image,
-database, and runtime as a matching set; do not run old code against an arbitrarily migrated schema.
-
 #### Optional GeoIP and Fail2ban
 
 For optional GeoIP, provide a licensed MMDB through a protected readable mount and
@@ -378,25 +353,12 @@ Without one, GeoIP remains degraded but ingestion is ready. Install the bundled
 the existing firewall action. Delivery is best effort (three attempts within 15 seconds,
 no persistent queue). Review the packaged integration guide before use.
 
-#### Recover a failed first start
+## Standalone deployment (advanced)
 
-For initialization failures, preserve the entire database, runtime, logs and any
-legacy password file. In particular, `.intruvia-initializing` means an interrupted or ambiguous
-initialization: never delete markers, staging data or schema objects to force a retry.
-Follow the bundled [initialization and recovery guide](deployment/compose-initialization-recovery.md);
-restore matching backups or, only for a disposable new installation, deliberately use
-a new empty database and runtime. Never reset an existing schema.
-
-## Standalone installation
-
-This guide describes one Intruvia process, one PostgreSQL database and a same-host
-TLS reverse proxy. Run as a dedicated unprivileged `intruvia` account. Paths and
-`intruvia.example.org` are examples; secrets below are placeholders, never usable
-credentials. Version `0.0.1` was reviewed for standalone installation; see the
-[MVP release review](RELEASE_NOTES.md). A Compose bundle requires its own deployment
-verification and a published compatible image; the [deployment verification record](verification/023-acceptance.md)
-documents the available evidence and checks that were not run. The [local rehearsal record](verification/021-acceptance.txt)
-states exactly what has been exercised.
+Use this path to run one Intruvia process with PostgreSQL and a same-host TLS reverse
+proxy, without Compose. Run it as a dedicated unprivileged `intruvia` account.
+Paths and `intruvia.example.org` are examples; secrets below are placeholders, never usable
+credentials. For the standard first-start path, use [Compose deployment](#compose-deployment).
 
 ### Prepare the distribution and database
 
@@ -410,25 +372,18 @@ Install and configure these host prerequisites using your OS procedures:
 
 Create the service account and install host services using your OS procedures; this
 guide does not install them. The browser needs no Node build or internet map provider.
-The local rehearsal uses isolated containers.
-
-From the source root, with Java 25 and Maven on PATH:
+Build the application distribution from the project root with JDK 25+ and Maven 3.10+:
 
 ```bash
-scripts/verify-postgresql.sh
+mvn -B clean package
 ```
 
-Docker is needed for that disposable test database. Intruvia pins Strolch `2.8.0-1`
-from the configured release repository; see the [developer reference framework
-version and cache guidance](DEVELOPMENT.md#strolch-framework-version). For a clean
-release-provenance check,
-use a fresh Maven local repository so previously installed artifacts with the same
-coordinate cannot shadow the published binaries. Archive the complete
-`intruvia-app/target/intruvia/` directory and SHA-256 manifest; keep its JAR, `lib/`,
-runtime template, integrations, and `docs/` together. The verified Strolch release
-hashes are recorded in the [Strolch release validation report](verification/023-acceptance.md).
+Copy the complete `intruvia-app/target/intruvia/` directory to the host; keep its JAR,
+`lib/`, runtime template, integrations and documentation together. On the host, create
+the service account and install the distribution into a protected application directory.
+Use an authenticated transfer and verify the transferred files before starting services.
 
-For a new installation, copy the release and runtime template separately:
+For a new standalone deployment, prepare the build output and runtime template:
 
 ```bash
 sudo install -d -o root -g root -m 0755 /opt/intruvia
@@ -550,7 +505,7 @@ policy (the dates here are syntax examples, replace before running):
 ```bash
 java --class-path 'lib/*' docs/deployment/PrivilegeTool.java \
   /var/lib/intruvia/runtime/config issue token-admin /protected/operator-password \
-  producer-a initial 2026-11-12T00:00:00Z 2026-12-12T00:00:00Z /protected/producer.pat
+  producer-a initial REPLACE_WITH_START_UTC REPLACE_WITH_EXPIRY_UTC /protected/producer.pat
 ```
 
 The tool always requests only `event:ingest`, persists `PrivilegeTokens.xml` and
@@ -606,7 +561,7 @@ needed.
 
 Before enabling the [systemd example](deployment/intruvia.service.example):
 
-- Adjust Java, release, and runtime paths; it sets the umask, restart policy, and
+- Adjust Java, application, and runtime paths; it sets the umask, restart policy, and
   120-second shutdown budget.
 - Configure bounded journal retention. The application rotates logs at 10 MB, five
   days, or 50 MB total; do not enable framework SQL/request logging in production.
@@ -735,7 +690,7 @@ lose notifications independently of backups. Retention also deliberately loses o
 history. The [specification's deferred features](INTRUVIA_SPECIFICATION.md#explicitly-deferred)
 include control/unban, offline queue, analytics, export, multi-tenancy and clustering.
 
-## Troubleshooting and upgrades
+## Troubleshooting and recovery
 
 | Symptom | Check / action |
 |---|---|
@@ -749,9 +704,69 @@ include control/unban, offline queue, analytics, export, multi-tenancy and clust
 | Stream disconnect / gap | Session expiry, queue/deadline, retention or restored head; reauthenticate/resnapshot and inspect operator diagnostics |
 | No notifications | Confirm additive action, private token file, HTTPS trust and helper logs; no replay queue exists |
 
-Before upgrades take and rehearse a full backup, preserve runtime/config rather
-than overwriting it with templates, compare component changes, run migration only
-as an explicit maintenance operation and keep its evidence. Roll back code and
-database/runtime as a matching set; do not run old code on a migrated schema blindly.
-Capacity testing measured combined-workload p95 below one second but burst-only p95
-around 9.2 seconds; this is not a per-burst latency guarantee or release approval.
+### Inspect startup diagnostics
+
+Startup and first-start provisioning failures are written to the protected persistent
+file `/var/log/intruvia/startup-failures.log` in `state/app-logs`. It records the failed
+stage, safe diagnostic details and stack locations; it omits arbitrary exception messages
+and credentials. Docker's `none` logging driver discards app stdout/stderr. Read the log
+without starting the app or its dependencies:
+
+```bash
+docker compose run --rm --no-deps -T --entrypoint sh app -c \
+  'cat /var/log/intruvia/startup-failures.log'
+```
+
+Keep the database and runtime intact while investigating. In particular,
+`.intruvia-initializing` means initialization was interrupted or is ambiguous; never
+delete markers, staging data or schema objects to force a retry. Follow the bundled
+[initialization and recovery guide](deployment/compose-initialization-recovery.md),
+restore a matching database/runtime backup, or deliberately create new empty state only
+for a disposable new deployment.
+
+### Recover a missed initial administrator password
+
+The initial `admin` password cannot be recovered from the initialized runtime or Docker
+logs. Stop the app before resetting it; the reset command takes the runtime lock and
+fails without changing credentials if the app still owns it. Protect the one-time output:
+
+```bash
+docker compose stop app
+docker compose run --rm --no-deps -T --entrypoint /usr/local/bin/intruvia-reset-viewer-password app
+docker compose up -d app caddy
+```
+
+The reset tool atomically replaces the initial login account's password hash and prints
+the replacement once. The previous password stops working. A missing or ambiguous account
+is rejected; do not edit or delete the runtime marker to bypass that failure.
+
+### Repair database credentials
+
+Bootstrap values apply only to a new PostgreSQL data directory; editing `.env` does not
+rotate initialized roles. Preserve `state/postgres` and use the bundled
+[database credential recovery procedure](deployment/compose-initialization-recovery.md#repair-a-database-credential-mismatch).
+
+### Offline credential recovery (advanced)
+
+Use offline commands only for break-glass recovery or planned maintenance; routine user,
+machine, mapping and token changes belong in **Manage access**. Pause ingress, stop the
+app, back up the matching database and runtime, and use an owner-only password file in
+`secrets/` owned by `10001:10001`. Never put passwords in command arguments or environment
+variables. Do not edit initialized privilege files; the initial administrator has the
+`TokenOperator` role.
+
+With a protected password file for an enabled token operator, issue a scoped token to a
+new protected file or revoke it by token ID (the portion before `:`):
+
+```bash
+docker compose run --rm --no-deps app offline issue admin /run/secrets/admin-password \
+  producer-a fail2ban REPLACE_WITH_START_UTC REPLACE_WITH_EXPIRY_UTC /run/secrets/producer.pat
+docker compose run --rm --no-deps app offline revoke admin /run/secrets/admin-password OLD_TOKEN_ID
+```
+
+Replace the UTC values with dates required by your policy. The one-time `tokenId:tokenValue`
+must be transferred securely and never exposed in commands or logs. A failed issue may
+persist an orphan token before output fails; inspect/revoke it through authorized Strolch
+tooling before retrying. Offline token commands do not configure a machine mapping; use
+the UI for that. Never copy fresh templates over an initialized runtime or erase
+privilege files.
