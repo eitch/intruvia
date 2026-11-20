@@ -120,21 +120,29 @@ compose up -d --wait --wait-timeout 240 db || failure 'database did not become r
 prepare_state=$(compose ps --all -q prepare-state)
 [[ -n "$prepare_state" && $(docker inspect --format '{{.State.Status}}:{{.State.ExitCode}}' "$prepare_state") == exited:0 ]] ||
 	failure 'application state ownership was not prepared before database startup'
-startup_output=$(timeout --signal=INT --kill-after=180s 30s \
-	docker compose --project-name "$project" --project-directory "$bundle" --file "$bundle/compose.yaml" \
-	--file "$bundle/delay.override.yaml" --env-file "$bundle/.env" run --rm --no-deps -T app 2>&1 || true)
+if ! startup_output=$(compose run --rm --no-deps -T app 2>&1); then
+	unset startup_output
+	failure 'attached Compose first start command failed'
+fi
 if [[ ! "$startup_output" =~ Initial\ administrator\ password\ \(shown\ once\;\ save\ it\ now\):[[:space:]]*([0-9a-f]{64}) ]]; then
+	unset startup_output
 	failure 'attached Compose first start did not display the initial administrator password'
 fi
 startup_password=${BASH_REMATCH[1]}
 without_password=${startup_output//"$startup_password"/}
 [[ $((${#startup_output} - ${#without_password})) == 64 ]] || failure 'initial password was not printed exactly once'
 unset startup_output startup_password without_password
-compose up -d --wait --wait-timeout 240 db app || failure 'services did not become ready after attached first start'
+compose up -d || failure 'services could not be started after attached first start'
 app=$(compose ps -q app)
 db=$(compose ps -q db)
 [[ -n "$app" && -n "$db" && -z $(docker port "$app") && -z $(docker port "$db") ]] || failure 'application or database port is published'
 [[ $(docker inspect --format '{{.HostConfig.LogConfig.Type}}' "$app") == none ]] || failure 'application Docker logging is not disabled'
+healthy=false
+for _ in {1..120}; do
+	if [[ $(docker inspect --format '{{.State.Health.Status}}' "$app") == healthy ]]; then healthy=true; break; fi
+	sleep 1
+done
+[[ "$healthy" == true ]] || failure 'application did not become ready after attached first start'
 db_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$db")" +%s%N)
 delay_finished=$(compose exec -T db sh -c 'cat "$PGDATA/.intruvia-delay-finished"')
 app_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$app")" +%s%N)

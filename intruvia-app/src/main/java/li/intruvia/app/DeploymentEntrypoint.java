@@ -44,7 +44,10 @@ public final class DeploymentEntrypoint {
 			if (args[3].equals("serve") && args.length == 4) {
 				char[] password = FirstStartProvisioner.ensureInitialized(lock, runtime, templates,
 						environment.get("INTRUVIA_PUBLIC_ORIGIN"), environment, jar);
-				if (password != null) displayPassword("Initial administrator password (shown once; save it now):", password);
+				if (password != null) {
+					displayPassword("Initial administrator password (shown once; save it now):", password);
+					return 0;
+				}
 				IntruviaApplication.main(new String[]{runtime.toString(), Integer.toString(port)});
 				return 0;
 			}

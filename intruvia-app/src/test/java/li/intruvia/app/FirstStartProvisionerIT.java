@@ -46,15 +46,26 @@ public class FirstStartProvisionerIT {
 			Path legacyPassword = secrets.resolve("viewer-password");
 			Path output = secrets.resolve("offline-hash");
 			Path firstLog = log();
-			String initialPassword;
-			Process app = launch(runtime, logs, firstLog, database.environment(), "serve");
+			Process firstStart = launch(runtime, logs, firstLog, database.environment(), "serve");
 			try {
-				int port = awaitReady(app, firstLog, runtime, database.environment());
-				initialPassword = password(firstLog, INITIAL_PASSWORD);
-				assertFalse(Files.exists(legacyPassword));
-				assertTrue(Files.isRegularFile(runtime.resolve(FirstStartProvisioner.INITIALIZED)));
-				assertFalse(Files.exists(runtime.resolve(FirstStartProvisioner.INITIALIZING)));
-				assertFalse(Files.exists(runtime.resolve(".intruvia-bootstrap")));
+				assertTrue("first-start provisioning did not exit", firstStart.waitFor(30, TimeUnit.SECONDS));
+			} finally {
+				if (firstStart.isAlive()) {
+					firstStart.destroyForcibly();
+					firstStart.waitFor();
+				}
+			}
+			assertEquals(0, firstStart.exitValue());
+			String initialPassword = password(firstLog, INITIAL_PASSWORD);
+			assertFalse(STARTED.matcher(Files.readString(firstLog)).find());
+			assertFalse(Files.exists(legacyPassword));
+			assertTrue(Files.isRegularFile(runtime.resolve(FirstStartProvisioner.INITIALIZED)));
+			assertFalse(Files.exists(runtime.resolve(FirstStartProvisioner.INITIALIZING)));
+			assertFalse(Files.exists(runtime.resolve(".intruvia-bootstrap")));
+			Path serverLog = log();
+			Process app = launch(runtime, logs, serverLog, database.environment(), "serve");
+			try {
+				int port = awaitReady(app, serverLog, runtime, database.environment());
 				Path config = runtime.resolve("config");
 				assertEquals(RuntimeLock.DIRECTORY_PERMISSIONS, Files.getPosixFilePermissions(config));
 				for (String name : List.of("StrolchConfiguration.xml", "PrivilegeConfig.xml", "PrivilegeRoles.xml",
