@@ -1,6 +1,6 @@
 # Intruvia — backlog status
 
-Updated: 2026-11-20 · Task 030 machine-first provisioning and token validity
+Updated: 2026-11-20 · Task 024 unified release workflow repair
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
@@ -44,7 +44,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 021 | Document and verify deployment and recovery | 018, 019 | DONE | [Guide](DEPLOYMENT.md), [design](architecture/021-deployment-recovery.md), [acceptance/limits](verification/021-acceptance.txt), [clean verify](verification/021-final-maven-retry.txt), [rehearsal](verification/021-rehearsal-final.txt), [browser](verification/021-restored-browser.png), [hashes](verification/021-artifacts.sha256). 87 Maven tests pass; fresh packaged runtime, TLS/WSS, scoped PAT rotation/revocation, whole-database/runtime restore and ahead-cursor browser resnapshot pass. |
 | 022 | Perform the MVP release review | 020, 021 | DONE | [Checklist/audit](verification/022-acceptance.md), [release notes](RELEASE_NOTES.md), [clean verify](verification/022-maven.txt), [browser](verification/022-browser.txt), [review](verification/022-review.txt), [source](verification/022-source.sha256), [dependencies](verification/022-dependencies.txt), [distribution](verification/022-artifacts.sha256), [archive](verification/022-archive.sha256). 87 Maven tests, all three browser suites and 10 helper tests pass; exact local snapshot and operational limits retained. |
 | 023 | Package a Compose deployment bundle | 022 | DONE | First-install administration acceptance passed with JDK 25.0.5/Maven 3.10.0, PostgreSQL, real Chromium browser flows, packaged tarball and Compose startup/restart smoke. [Browser evidence](verification/023-admin-browser.txt); prior release, upgrade, bind-storage, auth and recovery evidence is retained. |
-| 024 | Automate GitHub source releases and announcements | 022 | DONE | [Operator procedures](GITHUB_RELEASE.md), [unified release guide](RELEASE.md), `../scripts/create-github-release.sh`, `../scripts/release.sh` and isolated release tests; source-release evidence and release-type correction checks recorded below. Deployment acceptance is recorded separately in task 023. |
+| 024 | Automate GitHub source releases and announcements | 022 | DONE | Prior source-only release and release-type correction evidence retained below. Unified workflow follow-up now releases patch SNAPSHOTs at their existing numeric version and uses one default-yes approval; syntax and all three release workflow suites pass, with no external publication. |
 | 025 | Generate and recover initial account passwords without plaintext files | 023 | DONE | Generated initial credential, protected one-time console output, runtime-locked reset and compatibility guide; historical viewer-baseline verification is retained and fresh-install administrator semantics are updated under task 023. See execution log below; published `0.0.2` does not contain this change. |
 | 026 | Allow HTTP origins and persist actionable startup diagnostics | 023, 025 | DONE | HTTP/HTTPS origin and cookie tests, safe persistent startup diagnostics, packaged-entrypoint failure checks, PostgreSQL-backed Maven verify and HTTP Compose/Caddy configuration checks passed; see execution log below. |
 | 027 | Publish version-qualified Docker tags | 023, 024 | DONE | Both workflows publish major, minor and full-version tags, plus mutable `latest` only for non-SNAPSHOT versions; SNAPSHOT suffix detection is case-insensitive. Stable/SNAPSHOT/qualified versions and tag/push failures are covered. Prior and follow-up evidence is retained below. |
@@ -53,6 +53,22 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 030 | Machine-first provisioning and long-lived tokens | 005, 023, 029 | DONE | Machine-ID defaults, optional overrides, 3650-day/practical non-expiring PAT issuance and rotation, browser flows, and PostgreSQL restart/revocation lifecycle passed; see execution log. |
 
 ## Execution log
+
+### 2026-11-20 — task 024 reopened for unified release workflow repair
+
+- Junie: DONE → IN_PROGRESS at the user's request. Dependency 022 remains DONE; no other task is active. Counts: DONE 29, TODO 0, IN_PROGRESS 1, BLOCKED 0; current task 024, next task none.
+- Scope: keep patch releases from `-SNAPSHOT` versions on that patch number, retain plain-version and major/minor increments, and replace the two release confirmations with one default-yes approval after displaying the actual plan. Update isolated unified-release tests and operator/backlog documentation; do not publish externally.
+- Prior task 024 source-release and release-type correction records remain historical and are not replaced.
+
+### 2026-11-20 — task 024 unified release follow-up completed
+
+- Junie: IN_PROGRESS → DONE after the follow-up acceptance criteria passed. Dependency 022 remains DONE; counts: DONE 30 / 30, TODO 0, IN_PROGRESS 0, BLOCKED 0; current and next task none.
+- Changes: patch from `MAJOR.MINOR.PATCH-SNAPSHOT` now releases that numeric version; patch from a plain version increments; major/minor behavior is retained; every release prepares the next patch `-SNAPSHOT`. The combined release script displays the build, version transition, Git branch/tag pushes, Docker image pushes and GitHub assets before one `[Y/n]` approval; Enter/yes proceeds, while no, invalid input and EOF stop without changing POMs or Git refs. Source-only release workflow remains separate.
+- Toolchain: SDKMAN-initialized `java -version` reported OpenJDK 25.0.5.0+8; `mvn -version` reported Maven 3.10.0 using that JDK.
+- Baseline reproduction: temporarily restored the old two-confirmation prompt and ran `bash scripts/test-unified-release.sh`; it failed as expected at the old second prompt (`Release approval was not provided`) after only one response. The corrected single-prompt implementation was restored before final verification.
+- Intermediate failures retained: the first sequential-release test failed because the disposable fixture ignored only root `/target/`, leaving nested Maven outputs unignored; changed the fixture to ignore `target/` at every module depth and reran successfully. `git diff --check` initially flagged space-before-tab indentation in new test assertions; corrected it and the final whitespace check passed.
+- Final checks: `bash -n scripts/release.sh scripts/test-unified-release.sh scripts/create-github-release.sh scripts/test-github-release.sh scripts/test-release-workflow.sh` — exit 0; `bash scripts/test-unified-release.sh` — passed, including sequential snapshot patches, Enter/yes approval, no/invalid/EOF cancellation with unchanged POMs and local/remote refs, and existing publication preflights; `bash scripts/test-github-release.sh` — passed; `bash scripts/test-release-workflow.sh` — passed; `git diff --check` — exit 0.
+- Unrun: full `mvn clean verify` (no application Java changes; targeted shell regressions cover this workflow); no live GitHub release, Git push, or registry publication was attempted.
 
 ### 2026-11-20 — task 030 started
 
