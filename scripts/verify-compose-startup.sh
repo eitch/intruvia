@@ -123,8 +123,8 @@ prepare_state=$(compose ps --all -q prepare-state)
 startup_output=$(timeout --signal=INT --kill-after=180s 30s \
 	docker compose --project-name "$project" --project-directory "$bundle" --file "$bundle/compose.yaml" \
 	--file "$bundle/delay.override.yaml" --env-file "$bundle/.env" run --rm --no-deps -T app 2>&1 || true)
-if [[ ! "$startup_output" =~ Initial\ viewer\ password\ \(shown\ once\;\ save\ it\ now\):[[:space:]]*([0-9a-f]{64}) ]]; then
-	failure 'attached Compose first start did not display the initial password'
+if [[ ! "$startup_output" =~ Initial\ administrator\ password\ \(shown\ once\;\ save\ it\ now\):[[:space:]]*([0-9a-f]{64}) ]]; then
+	failure 'attached Compose first start did not display the initial administrator password'
 fi
 startup_password=${BASH_REMATCH[1]}
 without_password=${startup_output//"$startup_password"/}
@@ -169,10 +169,10 @@ after=$(compose exec -T app sha256sum /var/lib/intruvia/runtime/config/Privilege
 value=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT value FROM public.compose_test"')
 [[ "$value" == 42 ]] || failure 'database data did not persist'
 locked_output=$(compose run --rm -T --no-deps --entrypoint /usr/local/bin/intruvia-reset-viewer-password app 2>&1 || true)
-[[ "$locked_output" != *'Replacement viewer password'* ]] || failure 'reset exposed a password while the app was running'
+[[ "$locked_output" != *'Replacement account password'* ]] || failure 'reset exposed a password while the app was running'
 compose stop app >/dev/null
 reset_output=$(compose run --rm -T --no-deps --entrypoint /usr/local/bin/intruvia-reset-viewer-password app)
-[[ "$reset_output" =~ Replacement\ viewer\ password\ \(shown\ once\;\ save\ it\ now\):$'\n'([0-9a-f]{64})$ ]] ||
+[[ "$reset_output" =~ Replacement\ account\ password\ \(shown\ once\;\ save\ it\ now\):$'\n'([0-9a-f]{64})$ ]] ||
 	failure 'container password reset output was not available on the attached console'
 reset_password=${BASH_REMATCH[1]}
 [[ $(docker inspect --format '{{.HostConfig.LogConfig.Type}}' "$app") == none ]] || failure 'application Docker logging is enabled'

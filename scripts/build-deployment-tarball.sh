@@ -156,7 +156,7 @@ for file in StrolchConfiguration.xml PrivilegeConfig.xml.example PrivilegeRoles.
 	case $file in
 		StrolchConfiguration.xml) baseline=cbe0c4ae846372998b838251699c3f46600c5bc57e12e867a08fa141be06a4e5 ;;
 		PrivilegeConfig.xml.example) baseline=e7a5e7bed622b06ff8165cc9150b0fd122f45e11b3d8489d3a4cacbcf35b4549 ;;
-		PrivilegeRoles.xml.example) baseline=2be9c1b7bdc137b4c6332c0fbc8db782333759d546554b9af478dc94d15a4be0 ;;
+		PrivilegeRoles.xml.example) baseline=2cb6a8764ed0c3411ffa775db7d381ee1351c153b3da13154777c370ac6fbeb2 ;;
 		PrivilegeUsers.xml.example) baseline=3b76ded939ac3a624f0b9fef65c9f66d031c597e23a4455923e017bf51bc20f5 ;;
 		ingestion.properties.example) baseline=567c91635a6dee400719e5e1a1c4c558e8375ec87f9f83774661c96987a5c958 ;;
 		*) printf 'Missing reviewed runtime template baseline: %s\n' "$file" >&2; exit 1 ;;
