@@ -137,12 +137,20 @@ This does not rotate existing users or credentials.
 
 For fresh installations, use **Manage access** in the browser. Create viewer accounts,
 set or reset their passwords, enable or disable accounts, and remove accounts that are
-no longer needed. Add each machine with a unique username and stable instance ID; the
-application creates an ingestion-only Strolch user and issues a token limited to
-`event:ingest`. The instance mapping is saved immediately, so no runtime file edit or
-restart is required. Rotate tokens before expiry, securely transfer each newly displayed
-token to its producer, and revoke old tokens after the producer has switched. Plaintext
-PAT values are shown only once and are never included in the machine list.
+no longer needed. Add each machine with a stable, human-readable machine ID; by default
+it becomes both the unique Strolch username and the instance ID, while the token name uses
+the first 64 characters. Optional advanced overrides let you change those values
+independently. Keep the machine ID and instance mapping stable: instance IDs attribute
+events and participate in retry deduplication. The application creates an ingestion-only
+Strolch user and issues a token limited to `event:ingest`. The mapping is saved
+immediately, so no runtime file edit or restart is required.
+
+Tokens can be valid for 1–3650 days. Enter `0` for practical non-expiry: Strolch requires
+an expiry, so Intruvia stores the finite sentinel `9999-12-31 23:59:59 UTC`, not a truly
+infinite lifetime. Long-lived tokens increase exposure if a host is compromised and
+remain revocable; securely transfer each newly displayed token, and revoke old tokens
+after a replacement is installed. Plaintext PAT values are shown only once and are never
+included in the machine list.
 
 The browser administration endpoints require the initial administrator session and
 the same exact-origin/CSRF checks as other session-changing requests. Viewer-only

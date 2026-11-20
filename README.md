@@ -44,9 +44,12 @@ Map assets are bundled, so the viewer does not require an external tile service,
 
 Follow the [deployment guide](docs/DEPLOYMENT.md) to download and start the release bundle with Compose.
 After the first administrator login, use **Manage access** to create a machine and issue
-its one-time, `event:ingest` token. Copy the displayed installation command and run it on
-the Fail2ban host, then paste the token at the prompt. See the [Fail2ban integration guide](integrations/fail2ban/README.md)
-for custom configurations. Never replace the jail's existing firewall action or put the
+its one-time, `event:ingest` token. Enter a stable machine ID; it defaults the username and
+instance ID, with optional advanced overrides. Tokens may last up to 3650 days; `0` uses
+the practical finite expiry `9999-12-31 23:59:59 UTC` and remains revocable. Copy the
+displayed installation command and run it on the Fail2ban host, then paste the token at
+the prompt. See the [Fail2ban integration guide](integrations/fail2ban/README.md) for
+custom configurations. Never replace the jail's existing firewall action or put the
 token in a command argument or URL.
 
 ## Project links
