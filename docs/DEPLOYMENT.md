@@ -2,160 +2,73 @@
 
 Follow the [Compose deployment](#compose-deployment) steps in order, then
 [connect a Fail2ban host](#connect-a-fail2ban-host). The standalone procedure is an
-alternative to Compose; routine operations follow setup. Find
-[troubleshooting and recovery](#troubleshooting-and-recovery) at the end.
+alternative to Compose. Operational exceptions and
+[troubleshooting and recovery](#troubleshooting-and-recovery) are at the end.
 
 ## Compose deployment
 
-Build the application image and bundle on the Docker host where you will run Intruvia.
-The host needs JDK 25+, Maven 3.10+, Docker Engine and Compose. Verify `java -version`
-and `mvn -version` before building. The bundle contains Compose configuration and
-supporting files, not the application image; use the same Docker host for the build and
-the deployment.
-
-### Build and unpack the deployment bundle
-
-From the project root, build the application and image, create a bundle, and extract it
-into a new directory. Use a new numeric bundle ID if you build another bundle; the
-builder will not overwrite an existing archive or checksum.
+Set `INTRUVIA_VERSION` to the release version to deploy. Run these commands in the
+directory where you want a new `intruvia/` folder; the archive includes the matching
+Compose configuration and application image reference.
 
 ```bash
-set -eu
-image=localhost/intruvia:deployment-1
-bundle_id=1
-mvn -B clean package
-scripts/build-deployment-image.sh "$image" intruvia-app/target/intruvia
-mkdir -p target/deployment
-scripts/build-deployment-tarball.sh "$bundle_id" "$image" target/deployment
-(cd target/deployment && sha256sum -c "intruvia-deployment-$bundle_id.tar.gz.sha256")
-mkdir -m 0700 intruvia-deployment
-tar -xpzf "target/deployment/intruvia-deployment-$bundle_id.tar.gz" -C intruvia-deployment
-cd intruvia-deployment
+export INTRUVIA_VERSION=XXX
+wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz
+wget https://github.com/eitch/intruvia/releases/download/v$INTRUVIA_VERSION/intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256
+sha256sum -c "intruvia-deployment-$INTRUVIA_VERSION.tar.gz.sha256"
+
+tar -xpzf intruvia-deployment-$INTRUVIA_VERSION.tar.gz --one-top-level=intruvia
+chmod 0700 intruvia
+cd intruvia
+
+# Run only once for a fresh bundle; OpenSSL is included with Git for Windows and standard on macOS/Linux.
+sed -i "s/POSTGRES_ADMIN_PASSWORD=/POSTGRES_ADMIN_PASSWORD=$(openssl rand -hex 16)/" .env
+sed -i "s/INTRUVIA_DB_PASSWORD=/INTRUVIA_DB_PASSWORD=$(openssl rand -hex 16)/" .env
 ```
 
-Keep `.env` private. Do not run these commands in a directory containing data from an
-existing deployment; see [backup and restore](#backup-and-restore) before replacing or
-migrating deployment data.
+The two `sed` commands are for a fresh bundle whose database password fields are empty;
+do not rerun them or use them on an existing deployment. Keep `.env` private. Do not
+extract over existing data; see [backup and restore](#backup-and-restore) before replacing
+or migrating a deployment.
 
-### Configure and start
+Edit the existing `INTRUVIA_PUBLIC_ORIGIN=` line in `.env` to the exact origin, such as
+`https://intruvia.example.org` (public service) or `http://localhost` (local use). Use no
+credentials, path, trailing slash, query or fragment. For public HTTPS, point DNS at this
+host and allow inbound ports 80 and 443 for the bundled proxy. Never expose plain HTTP to
+an untrusted network. Protect the terminal and `.env`; do not print resolved Compose
+configuration or grant Docker access to unauthorized users. Then pull the image paired
+with this release and prepare the database:
 
-Complete each step in order:
+```bash
+vi .env
+chmod 0600 .env
+docker compose pull
+docker compose up -d --wait db
+```
 
-1. Set `INTRUVIA_PUBLIC_ORIGIN` to the exact HTTP or HTTPS origin, with an optional
-   port and no credentials, path, trailing slash, query or fragment. For example,
-   `https://intruvia.example.org` for an exposed service, or `http://localhost` for
-   local use. The generated `.env` already contains the image reference. Then check
-   the file permissions:
+Run the first start attached to the terminal. It initializes the empty runtime and
+database, prints the initial `admin` password once, and exits successfully; save that
+password in a protected password manager before continuing. Docker does not retain app
+stdout/stderr, so `docker compose logs` cannot recover the password. If this command
+fails, or its output is missed, use the [troubleshooting and recovery](#troubleshooting-and-recovery)
+instructions rather than deleting runtime or database state.
 
-   ```bash
-   umask 077
-   vi .env && chmod 0600 .env
-   ```
+```bash
+docker compose run --rm --no-deps -T app
+```
 
-   Treat `.env` and container environments as sensitive:
-   do not print resolved Compose configuration or expose Docker access to unauthorized
-   users. Ensure shell environment variables do not override `.env` values.
+Start the full deployment:
 
-2. The fresh bundle leaves the two database passwords empty. Generate distinct values
-   without printing them to the terminal or putting them in shell history. Run this once
-   from the bundle root as the owner of `.env`:
+```bash
+docker compose up -d
+```
 
-   ```bash
-   python3 - <<'PY'
-   import os
-   import secrets
-   import stat
-   import tempfile
-   from pathlib import Path
-
-   path = Path(".env")
-   metadata = path.lstat()
-   if not stat.S_ISREG(metadata.st_mode) or metadata.st_mode & 0o077:
-       raise SystemExit(".env must be a regular file with private permissions")
-
-   lines = path.read_text(encoding="utf-8").splitlines()
-   keys = ("POSTGRES_ADMIN_PASSWORD", "INTRUVIA_DB_PASSWORD")
-   indices = {}
-   for key in keys:
-       matches = [i for i, line in enumerate(lines) if line.startswith(key + "=")]
-       if len(matches) != 1 or lines[matches[0]] != key + "=":
-           raise SystemExit(f"{key} must appear once and be empty in a fresh bundle")
-       indices[key] = matches[0]
-
-   passwords = []
-   while len(passwords) < len(keys):
-       password = secrets.token_hex(32)
-       if password not in passwords:
-           passwords.append(password)
-   for key, password in zip(keys, passwords):
-       lines[indices[key]] = f"{key}={password}"
-
-   fd, temporary = tempfile.mkstemp(prefix=".env.", dir=path.parent)
-   try:
-       os.fchmod(fd, 0o600)
-       with os.fdopen(fd, "w", encoding="utf-8") as output:
-           output.write("\n".join(lines) + "\n")
-           output.flush()
-           os.fsync(output.fileno())
-       os.replace(temporary, path)
-   finally:
-       if os.path.exists(temporary):
-           os.unlink(temporary)
-   PY
-   ```
-
-   The command refuses to overwrite a non-empty password field and atomically saves
-   two distinct 256-bit values with mode `0600`. Now edit `.env` to set the exact public
-   origin and verify its permissions again:
-
-   ```bash
-   vi .env && chmod 0600 .env
-   ```
-
-3. TLS termination is the operator's responsibility; use HTTPS for exposed
-   deployments. HTTP is accepted for local and private-network use, but it does not
-   encrypt viewer credentials or session cookies; never expose an HTTP deployment to an
-   untrusted network. For local-only access, use `http://localhost` and ensure the
-   published host port 80 is not reachable from outside the host. For an
-   exposed service, configure DNS, firewall and Caddy for the exact HTTPS origin, and
-   manage certificate acquisition/renewal and verification. Only Caddy publishes ports
-   80 and 443; app and PostgreSQL publish none. The app binds `0.0.0.0` inside its
-   network, so restrict Docker access and network membership to the deployment services.
-   Do not attach unrelated containers to the proxy or database networks. The database
-   network is internal. Caddy blocks public health paths; check readiness from the host
-   or an approved monitoring path. Protect proxy state/TLS keys and review proxy logs.
-4. Start PostgreSQL, then start the app attached to this terminal. The image was built
-   locally above; do not run `docker compose pull`.
-
-   ```bash
-   docker compose up -d --wait db
-   docker compose run --rm --no-deps -T app
-   ```
-
-   Keep the first `docker compose run` attached: the generated 256-bit administrator password
-   is printed once to the attached console only after initialization succeeds.
-   Save it in a protected password manager before leaving the terminal. The app uses
-   Docker's `none` logging driver, so Docker does not retain this output; do not expect
-   `docker compose logs` to recover it or any other app stdout/stderr. Protect the
-   terminal and any recording or monitoring system that could capture its output. The
-   application stores only Strolch's password
-   hash, and restarts do not regenerate or redisplay the password. The initial `admin`
-   account can view events and manage user accounts, machines and ingestion tokens.
-   After saving the password,
-   press Ctrl+C to stop the attached one-off app, then start the app and proxy in the background:
-
-   ```bash
-   docker compose up -d app caddy
-   ```
-
-   PostgreSQL readiness authenticates to the `db` service over the private network with
-   the application role, and gates app startup; app readiness gates Caddy. Sign in at
-   the configured origin and verify WebSocket connectivity (`wss://` for HTTPS, `ws://`
-   for HTTP). Choose **Manage access** to create viewer accounts, add machines and stable
-   instance IDs, issue scoped ingestion tokens, and rotate or revoke them. The account
-   and mapping changes take effect immediately; the plaintext value of each newly issued
-   token is shown only once. See [troubleshooting and recovery](#troubleshooting-and-recovery)
-   before changing bootstrap credentials on an initialized database.
+Sign in at the configured origin with the saved administrator password. Only the proxy
+publishes ports 80 and 443; the app and PostgreSQL stay on private Docker networks. Use
+**Manage access** to create viewer accounts, add machines and stable instance IDs, issue
+scoped ingestion tokens, and rotate or revoke them. Each new token is displayed once.
+See [troubleshooting and recovery](#troubleshooting-and-recovery) before changing
+credentials on an initialized database.
 
 ### Connect a Fail2ban host
 

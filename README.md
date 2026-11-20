@@ -42,7 +42,7 @@ Map assets are bundled, so the viewer does not require an external tile service,
 
 ## Get started
 
-Follow the [deployment guide](docs/DEPLOYMENT.md) to build and start Intruvia with Compose.
+Follow the [deployment guide](docs/DEPLOYMENT.md) to download and start the release bundle with Compose.
 After the first administrator login, use **Manage access** to create a machine and issue
 its one-time, `event:ingest` token, then follow the [Fail2ban integration guide](integrations/fail2ban/README.md)
 to install its additive notification action. Never replace the jail's existing firewall
