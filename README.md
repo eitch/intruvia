@@ -57,11 +57,13 @@ without a `-SNAPSHOT` suffix also publish as `latest`. Snapshot builds retain
 mutable and follows the most recently published non-SNAPSHOT version, so release
 older versions only when you intend to move `latest` backward.
 
-On Compose images that include generated-password support, first start creates a viewer
-password in memory and prints it once to the attached console. If the output is missed,
-the guide documents a stopped-app password reset command. The published `0.0.2` image
-predates this feature and does not support the file-free startup flow; no compatible
-published version is claimed here.
+On compatible Compose images, first start creates an administrator password in memory
+and prints it once to the attached console. Sign in with `admin`; **Manage access** lets
+you configure viewer accounts, machines, stable instance IDs, and scoped ingestion
+tokens without editing runtime files. Newly issued token values are shown once. If the
+password output is missed, the guide documents a stopped-app reset. The published
+`0.0.2` image predates this file-free startup flow; no compatible published version is
+claimed here.
 
 ## Project links
 
