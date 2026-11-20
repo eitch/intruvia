@@ -9,6 +9,8 @@ work=$(mktemp -d "$root/target/unified-release-test.XXXXXXXX")
 trap 'rm -rf -- "$work"' EXIT
 real_git=$(command -v git)
 release_options=()
+release_confirmation=
+release_confirmation_eof=false
 bin="$work/bin"
 mkdir -p "$bin"
 
@@ -159,7 +161,7 @@ setup_project() {
 	<version>$version</version>
 </project>
 EOF
-	printf '/target/\n' > "$project/.gitignore"
+	printf 'target/\n' > "$project/.gitignore"
 	for module in intruvia-core intruvia-rest intruvia-web intruvia-app; do
 		mkdir -p "$project/$module"
 		cat > "$project/$module/pom.xml" <<EOF
@@ -211,6 +213,7 @@ EOF
 	"$real_git" -C "$project" remote add origin "$bare"
 	"$real_git" -C "$project" push --quiet --set-upstream origin main
 	"$real_git" --git-dir="$bare" symbolic-ref HEAD refs/heads/main
+	initial_commit=$("$real_git" -C "$project" rev-parse HEAD)
 	: > "$log"
 }
 
@@ -226,8 +229,12 @@ invoke_release() (
 	export RELEASE_TEST_FAIL="${test_fail:-}"
 	export RELEASE_TEST_IMAGE_EXISTS="${image_exists:-}"
 	export RELEASE_TEST_EXISTING_RELEASES="${existing_releases:-}"
-	printf '%s\n' "$release_type" "${gate_confirmation:-yes}" "${tag_approval:-$expected_tag}" | \
-		"$project/scripts/release.sh" "${release_options[@]}"
+	if [[ $release_confirmation_eof == true ]]; then
+		printf '%s\n' "$release_type" | "$project/scripts/release.sh" "${release_options[@]}"
+	else
+		printf '%s\n' "$release_type" "$release_confirmation" | \
+			"$project/scripts/release.sh" "${release_options[@]}"
+	fi
 )
 
 expect_failure() {
@@ -241,6 +248,24 @@ expect_failure() {
 		fail "failure did not report: $expected"
 	}
 	[[ $result == *'Manual recovery:'* ]] || fail 'failure omitted manual recovery guidance'
+}
+
+assert_release_unchanged() {
+	local original_version=$1 tag=$2
+	[[ $(python3 "$project/scripts/update-maven-reactor-version.py" check "$project") == "$original_version" ]] ||
+		fail 'unapproved release modified the Maven POM versions'
+	if "$real_git" -C "$project" show-ref --verify --quiet "refs/tags/$tag"; then
+		fail "unapproved release created local tag $tag"
+	fi
+	[[ -z $("$real_git" -C "$project" ls-remote --tags --refs origin "refs/tags/$tag") ]] ||
+		fail "unapproved release published remote tag $tag"
+	[[ -z $("$real_git" -C "$project" status --porcelain=v1 --untracked-files=all) ]] ||
+		fail 'unapproved release modified the Git worktree'
+	[[ $("$real_git" -C "$project" rev-parse HEAD) == "$initial_commit" ]] ||
+		fail 'unapproved release modified the local branch ref'
+	[[ $("$real_git" --git-dir="$bare" rev-parse refs/heads/main) == "$initial_commit" ]] ||
+		fail 'unapproved release modified the remote branch ref'
+	[[ ! -s $log ]] || fail 'unapproved release performed release actions'
 }
 
 assert_success() {
@@ -270,6 +295,14 @@ assert_success() {
 		[[ $(<"$output") == *'Maven build: clean package -DskipTests (tests skipped)'* ]] ||
 			fail 'release plan did not identify the default package-only build'
 	fi
+	[[ $(<"$output") == *"Commit release versions, create annotated tag $tag, and push the release branch and tag"* ]] ||
+		fail 'release plan did not describe the Git branch and tag publication'
+	[[ $(<"$output") == *"Push Docker image tags: repo.strolch.li/intruvia:${release_version%%.*}, repo.strolch.li/intruvia:${release_version%.*}, repo.strolch.li/intruvia:$release_version, repo.strolch.li/intruvia:latest"* ]] ||
+		fail 'release plan did not describe all Docker image pushes'
+	[[ $(<"$output") == *"Create GitHub release $tag with intruvia-deployment-$release_version.tar.gz and its checksum"* ]] ||
+		fail 'release plan did not describe the GitHub release assets'
+	[[ $(<"$output") == *"Commit and push the next development version $next_version"* ]] ||
+		fail 'release plan did not describe the next SNAPSHOT transition'
 	printf '%s\n' \
 		"$build_step" \
 		"image-build repo.strolch.li/intruvia:$release_version" \
@@ -295,8 +328,10 @@ release_type=major
 expected_release=2.0.0
 expected_tag=v2.0.0
 release_options=()
+release_confirmation=yes
 setup_project major 1.2.3
 assert_success 2.0.0 2.0.1-SNAPSHOT v2.0.0
+release_confirmation=
 
 release_options=(--invalid)
 setup_project invalid-option 1.2.3
@@ -326,9 +361,19 @@ setup_project patch 1.2.3
 assert_success 1.2.4 1.2.5-SNAPSHOT v1.2.4
 
 release_type=patch
+expected_release=1.2.3
+expected_tag=v1.2.3
+setup_project snapshot 1.2.3-SNAPSHOT
+assert_success 1.2.3 1.2.4-SNAPSHOT v1.2.3
+
+release_type=patch
+expected_release=1.2.3
+expected_tag=v1.2.3
+setup_project consecutive-patches 1.2.3-SNAPSHOT
+assert_success 1.2.3 1.2.4-SNAPSHOT v1.2.3
 expected_release=1.2.4
 expected_tag=v1.2.4
-setup_project snapshot 1.2.3-SNAPSHOT
+: > "$log"
 assert_success 1.2.4 1.2.5-SNAPSHOT v1.2.4
 
 release_type=patch
@@ -339,11 +384,20 @@ printf '%s\n' 'uncommitted fixture change' > "$project/dirty.txt"
 expect_failure 'Working tree is not clean'
 [[ ! -s $log ]] || fail 'dirty worktree performed release actions'
 
-setup_project wrong-approval 1.2.3
-tag_approval=v9.9.9
-expect_failure 'Release approval must exactly match v1.2.4'
-[[ ! -s $log ]] || fail 'wrong approval performed release actions'
-tag_approval=
+setup_project rejected-release 1.2.3
+release_confirmation=no
+expect_failure 'Release cancelled by user'
+assert_release_unchanged 1.2.3 v1.2.4
+release_confirmation=invalid
+setup_project invalid-confirmation 1.2.3
+expect_failure 'Invalid release confirmation'
+assert_release_unchanged 1.2.3 v1.2.4
+release_confirmation_eof=true
+setup_project missing-confirmation 1.2.3
+expect_failure 'Release confirmation was not provided'
+assert_release_unchanged 1.2.3 v1.2.4
+release_confirmation_eof=false
+release_confirmation=
 
 setup_project invalid-version 1.2.3-SNAPSHOT
 release_type=unknown

@@ -47,13 +47,15 @@ match = re.fullmatch(r"([0-9]+)\.([0-9]+)\.([0-9]+)(?:-SNAPSHOT)?", sys.argv[1])
 if match is None:
     raise SystemExit("Maven version must be MAJOR.MINOR.PATCH with an optional -SNAPSHOT suffix")
 major, minor, patch = (int(value) for value in match.groups())
+is_snapshot = sys.argv[1].endswith("-SNAPSHOT")
 kind = sys.argv[2]
 if kind == "major":
     major, minor, patch = major + 1, 0, 0
 elif kind == "minor":
     minor, patch = minor + 1, 0
 elif kind == "patch":
-    patch += 1
+    if not is_snapshot:
+        patch += 1
 else:
     raise SystemExit("Unsupported release type")
 release = f"{major}.{minor}.{patch}"
@@ -100,14 +102,18 @@ if [[ $with_tests == true ]]; then
 else
 	release_build_mode='clean package -DskipTests (tests skipped)'
 fi
-printf '\nRelease plan:\n  Version: %s -> %s\n  Git tag: %s\n  Docker tags: %s\n  GitHub assets: %s and %s\n  Maven build: %s\n  Next Maven version: %s\n' \
+printf '\nRelease plan:\n  Version: %s -> %s\n  Git tag: %s\n  Docker tags: %s\n  GitHub assets: %s and %s\n  Maven build: %s\n  Next Maven version: %s\n  Actions:\n    1. Set all five reactor POMs to %s and run the selected Maven build.\n    2. Build the versioned Docker image and administrator bundle.\n    3. Commit release versions, create annotated tag %s, and push the release branch and tag.\n    4. Push Docker image tags: %s.\n    5. Create GitHub release %s with %s and its checksum.\n    6. Commit and push the next development version %s.\n' \
 	"$current_version" "$release_version" "$tag" "$image_tag_list" "$archive_name" "$checksum_name" \
-	"$release_build_mode" "$next_snapshot_version"
-read -r -p 'Have you reviewed the release gates and acceptance evidence? Type yes to continue: ' gates_approved ||
-	fail 'Release-gate confirmation was not provided'
-[[ $gates_approved == yes ]] || fail 'Release gates were not confirmed'
-read -r -p "Type $tag to approve this release: " approved_tag || fail 'Release approval was not provided'
-[[ $approved_tag == "$tag" ]] || fail "Release approval must exactly match $tag"
+	"$release_build_mode" "$next_snapshot_version" "$release_version" "$tag" "$image_tag_list" "$tag" \
+	"$archive_name" "$next_snapshot_version"
+if ! read -r -p 'Confirm the release gates passed and proceed? [Y/n] ' release_confirmation; then
+	fail 'Release confirmation was not provided'
+fi
+case ${release_confirmation,,} in
+	''|y|yes) ;;
+	n|no) fail 'Release cancelled by user' ;;
+	*) fail 'Invalid release confirmation; enter yes or no' ;;
+esac
 
 worktree_status=$(git -C "$root" status --porcelain=v1 --untracked-files=all) || fail 'Unable to inspect Git worktree'
 [[ -z $worktree_status ]] || fail 'Working tree is not clean; commit or remove all changes before releasing'
