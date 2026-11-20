@@ -48,7 +48,7 @@ const assert = require('node:assert/strict');
 			assert.equal(await page.locator('#username').innerText(), username);
 		}
 		const user = () => page.locator('#admin-users > li').filter({hasText: 'browser-viewer'});
-		const machine = () => page.locator('#admin-machines > li').filter({hasText: 'browser-machine'});
+		const machine = (username = 'browser-machine') => page.locator('#admin-machines > li').filter({hasText: username});
 		await page.goto(origin);
 		await signIn('admin', 'admin-test-password');
 		await page.locator('#manage:not([hidden])').waitFor();
@@ -75,12 +75,33 @@ const assert = require('node:assert/strict');
 		await page.waitForFunction(() => [...document.querySelectorAll('#admin-users > li')]
 			.some((item) => item.textContent.includes('browser-viewer') && item.textContent.includes('ENABLED')));
 
+		await page.locator('#create-machine-form [name=machineId]').fill('browser-default');
+		await page.locator('#create-machine-form [name=validDays]').fill('400');
+		await page.getByRole('button', {name: 'Add machine', exact: true}).click();
+		const defaultMachine = machine('browser-default');
+		await defaultMachine.waitFor();
+		const defaultDetails = await defaultMachine.innerText();
+		assert.ok(defaultDetails.includes('browser-default · ENABLED · browser-default'));
+		assert.ok(defaultDetails.includes('browser-default · expires'));
+		assert.equal(await page.locator('#create-machine-form [name=machineId]').inputValue(), '');
+		assert.equal(await page.locator('#create-machine-form details').getAttribute('open'), null);
+
+		await page.locator('#create-machine-form [name=machineId]').fill('browser-source');
+		await page.locator('#create-machine-form details summary').click();
 		await page.locator('#create-machine-form [name=username]').fill('browser-machine');
 		await page.locator('#create-machine-form [name=instanceId]').fill('browser-server');
 		await page.locator('#create-machine-form [name=tokenName]').fill('fail2ban');
 		await page.locator('#create-machine-form [name=validDays]').fill('30');
 		await page.getByRole('button', {name: 'Add machine', exact: true}).click();
 		await machine().waitFor();
+		const overriddenDetails = await machine().innerText();
+		assert.ok(overriddenDetails.includes('browser-machine · ENABLED · browser-server'));
+		assert.ok(overriddenDetails.includes('fail2ban · expires'));
+		assert.equal(await page.locator('#create-machine-form [name=machineId]').inputValue(), '');
+		assert.equal(await page.locator('#create-machine-form [name=username]').inputValue(), '');
+		assert.equal(await page.locator('#create-machine-form [name=instanceId]').inputValue(), '');
+		assert.equal(await page.locator('#create-machine-form [name=tokenName]').inputValue(), '');
+		assert.equal(await page.locator('#create-machine-form details').getAttribute('open'), null);
 		await page.getByText('Machine browser-machine is ready. Copy its token now; it cannot be shown again.',
 			{exact: true}).waitFor();
 		const firstToken = await page.locator('#issued-token').inputValue();
@@ -113,10 +134,11 @@ const assert = require('node:assert/strict');
 			throw new Error('Machine identity was not updated in the management list');
 
 		await machine().getByLabel('New token name for browser-machine').fill('rotation');
-		await machine().getByLabel('New token validity in days for browser-machine').fill('30');
+		await machine().getByLabel('New token validity in days for browser-machine').fill('0');
 		await machine().getByRole('button', {name: 'Create another token', exact: true}).click();
 		await page.getByText('New token for browser-machine created. Copy it now; it cannot be shown again.',
 			{exact: true}).waitFor();
+		assert.ok((await machine().innerText()).includes('practically does not expire (through 9999-12-31 UTC)'));
 		const rotatedToken = await page.locator('#issued-token').inputValue();
 		if (!rotatedToken.includes(':') || rotatedToken.length < 40 || rotatedToken === firstToken)
 			throw new Error('Token rotation did not issue a distinct one-time secret');
@@ -154,7 +176,14 @@ const assert = require('node:assert/strict');
 		await page.getByText('Token rotation revoked.', {exact: true}).waitFor();
 		await machine().getByRole('button', {name: 'Remove machine', exact: true}).click();
 		await page.getByText('Machine browser-machine removed.', {exact: true}).waitFor();
-		if (await machine().count() !== 0) throw new Error('Machine removal did not update the management list');
+		await defaultMachine.locator('ul > li').filter({hasText: 'browser-default'})
+			.getByRole('button', {name: 'Revoke token', exact: true}).click();
+		await page.getByText('Token browser-default revoked.', {exact: true}).waitFor();
+		await defaultMachine.getByRole('button', {name: 'Remove machine', exact: true}).click();
+		await page.getByText('Machine browser-default removed.', {exact: true}).waitFor();
+		if (await page.locator('#admin-machines > li').count() !== 1 ||
+			(await page.locator('#admin-machines > li').first().innerText()) !== 'No machines have been configured.')
+			throw new Error('Machine removal did not update the management list');
 
 		await page.getByRole('button', {name: 'Back to events', exact: true}).click();
 		await page.locator('#viewer:not([hidden])').waitFor();
@@ -185,7 +214,8 @@ const assert = require('node:assert/strict');
 		const report = JSON.stringify({browser: browser.version(), result: 'PASS', checks: [
 			'Admin login and browser-only access management; viewer role cannot access the UI',
 			'Create viewer, change password, disable, enable, sign in with updated password, and delete',
-			'Create machine and scoped token, update live instance identity, rotate and revoke tokens, remove machine',
+			'Default machine ID mapping/token name, optional username/instance/token overrides, and form reset after creation',
+			'Create a 400-day token, rotate to practical non-expiry, update live instance identity, and revoke both tokens',
 			'Copy HTTPS installation command, refuse HTTP, download self-contained installer with real scoped PAT',
 			'Token shown only in the one-time field and cleared when leaving administration',
 			'CSRF header on every browser mutation; no JavaScript errors or external requests'

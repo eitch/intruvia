@@ -4,7 +4,9 @@
   "checks": [
     "Admin login and browser-only access management; viewer role cannot access the UI",
     "Create viewer, change password, disable, enable, sign in with updated password, and delete",
-    "Create machine and scoped token, update live instance identity, rotate and revoke tokens, remove machine",
+    "Default machine ID mapping/token name, optional username/instance/token overrides, and form reset after creation",
+    "Create a 400-day token, rotate to practical non-expiry, update live instance identity, and revoke both tokens",
+    "Copy HTTPS installation command, refuse HTTP, download self-contained installer with real scoped PAT",
     "Token shown only in the one-time field and cleared when leaving administration",
     "CSRF header on every browser mutation; no JavaScript errors or external requests"
   ]
