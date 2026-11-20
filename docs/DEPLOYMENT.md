@@ -6,7 +6,7 @@ Developers preparing a release should use the [release procedure](RELEASE.md).
 **Choose your installation path:**
 
 - **Administrator:** [install a supplied Compose bundle](#compose-deployment); no Java, Maven or PostgreSQL installation is needed on the host.
-  - For later changes, jump to [public-origin changes](#change-the-public-origin), [offline users and PATs](#offline-users-and-pats), [backup and restore](#backup-and-restore), or [failed-start recovery](#recover-a-failed-first-start).
+  - For later changes, jump to [access management](#manage-viewer-users-machines-and-tokens), [public-origin changes](#change-the-public-origin), [backup and restore](#backup-and-restore), or [failed-start recovery](#recover-a-failed-first-start).
 - **Standalone operator:** continue to [standalone installation](#standalone-installation).
 
 ## Compose deployment
@@ -16,11 +16,11 @@ detects transfer errors; it does not authenticate the publisher. Release scripts
 `repo.strolch.li/intruvia` and the root POM version, but registry publication, image pull
 and public-CA validation are not assumed to have passed.
 
-**Credential compatibility:** the published `0.0.2` image predates generated viewer
-passwords and still uses the old password-file behavior. Do not use that image with the
-file-free startup instructions below or create a plaintext viewer-password file as a
-workaround. Use this workflow only with a versioned bundle and image that support
-in-memory password generation and the reset command; no such release is claimed here.
+**Credential compatibility:** the published `0.0.2` image predates generated initial
+administrator passwords and still uses the old password-file behavior. Do not use that
+image with the file-free startup instructions below or create a plaintext viewer-password
+file as a workaround. Use this workflow only with a versioned bundle and image that
+support in-memory password generation and the reset command; no such release is claimed here.
 Existing installations and legacy files are preserved when upgraded, and the new
 application does not read or delete a legacy file.
 This change applies to the Compose lifecycle; the standalone JAR entrypoint and its
@@ -98,14 +98,16 @@ Do these three steps in order:
    docker compose run --rm --no-deps -T app
    ```
 
-   Keep the first `docker compose run` attached: the generated 256-bit viewer password
+   Keep the first `docker compose run` attached: the generated 256-bit administrator password
    is printed once to the attached console only after initialization succeeds.
    Save it in a protected password manager before leaving the terminal. The app uses
    Docker's `none` logging driver, so Docker does not retain this output; do not expect
    `docker compose logs` to recover it or any other app stdout/stderr. Protect the
    terminal and any recording or monitoring system that could capture its output. The
    application stores only Strolch's password
-   hash, and restarts do not regenerate or redisplay the password. After saving it,
+   hash, and restarts do not regenerate or redisplay the password. The initial `admin`
+   account can view events and manage user accounts, machines and ingestion tokens.
+   After saving the password,
    press Ctrl+C to stop the attached one-off app, then start the app and proxy in the background:
 
    ```bash
@@ -115,10 +117,20 @@ Do these three steps in order:
    PostgreSQL readiness authenticates to the `db` service over the private network with
    the application role, and gates app startup; app readiness gates Caddy. Sign in at
    the configured origin and verify WebSocket connectivity (`wss://` for HTTPS, `ws://`
-   for HTTP). No producer mapping or token operator is provisioned by default. Editing
-    `.env` does not rotate existing users or passwords stored in an initialized database;
-    if the DB healthcheck fails after a credential change, preserve `state/postgres` and follow
+   for HTTP). Choose **Manage access** to create viewer accounts, add machines and stable
+   instance IDs, issue scoped ingestion tokens, and rotate or revoke them. The account
+   and mapping changes take effect immediately; the plaintext value of each newly issued
+   token is shown only once. Editing `.env` does not rotate existing users or passwords
+   stored in an initialized database; if the DB healthcheck fails after a credential
+   change, preserve `state/postgres` and follow
    [database credential recovery](deployment/compose-initialization-recovery.md#repair-a-database-credential-mismatch).
+
+No additional runtime file edits are needed for viewer or machine setup. Existing
+initialized installations retain their current users, roles and machine mappings; an
+upgrade never promotes an existing viewer to administrator. Do not copy fresh privilege
+templates over an initialized runtime. For existing installs that need an administrator,
+use the documented, stopped-runtime Strolch administration procedure rather than editing
+the active database or replacing configuration.
 
 ### After startup
 
@@ -147,11 +159,11 @@ docker compose run --rm --no-deps -T --entrypoint sh app -c \
   'cat /var/log/intruvia/startup-failures.log'
 ```
 
-The generated viewer password is emitted only after successful initialization to the
+The generated administrator password is emitted only after successful initialization to the
 attached console; it is not written to this failure log. Keep the initialized runtime
 and database intact while investigating a failure; follow [failed-start recovery](#recover-a-failed-first-start).
 
-#### Recover a missed initial viewer password
+#### Recover a missed initial administrator password
 
 The initial password cannot be recovered from the initialized runtime or Docker logs.
 Stop the app before resetting it; the reset command takes the same runtime lock and
@@ -164,10 +176,12 @@ docker compose run --rm --no-deps -T --entrypoint /usr/local/bin/intruvia-reset-
 docker compose up -d app caddy
 ```
 
-The script replaces only the existing `viewer` password hash atomically and prints the
-replacement once. The previous password stops working. A missing or ambiguous viewer
-record is rejected; do not edit or delete the runtime marker to bypass that failure.
-This command requires an image with generated viewer-password support and is not
+The reset tool atomically replaces the initial login account's password hash and prints
+the replacement once. On a new installation that account is `admin`; on an older runtime
+without the initial `Admin` role, the historical `viewer` account is selected instead.
+The previous password stops working. A missing or ambiguous account is rejected; do not
+edit or delete the runtime marker to bypass that failure. This command requires an image
+with generated administrator-password support and is not
 available in the published `0.0.2` image. A legacy `secrets/viewer-password` file from an older deployment is not
 read or removed by the new application; keep it protected and remove it manually under
 your secret-handling policy once it is no longer needed.
@@ -209,65 +223,47 @@ paused until the new origin is verified.
 
 This does not rotate existing users or credentials.
 
-#### Offline users and PATs
+#### Manage viewer users, machines, and tokens
 
-Before offline commands or runtime edits:
+For fresh installations, use **Manage access** in the browser. Create viewer accounts,
+set or reset their passwords, enable or disable accounts, and remove accounts that are
+no longer needed. Add each machine with a unique username and stable instance ID; the
+application creates an ingestion-only Strolch user and issues a token limited to
+`event:ingest`. The instance mapping is saved immediately, so no runtime file edit or
+restart is required. Rotate tokens before expiry, securely transfer each newly displayed
+token to its producer, and revoke old tokens after the producer has switched. Plaintext
+PAT values are shown only once and are never included in the machine list.
 
-1. Pause ingress, stop the app, and confirm no app, editor, or privilege writer uses
-   the runtime. The container locks the runtime for offline commands; manual edits
-   also require all writers stopped.
-2. Back up the matching database and runtime.
-3. Use separate owner-only password files in `secrets/`, owned by `10001:10001`.
-   Never put passwords in command arguments or environment variables. Output files
-   must not already exist.
+The browser administration endpoints require the initial administrator session and
+the same exact-origin/CSRF checks as other session-changing requests. Viewer-only
+accounts cannot manage users, machines, or tokens. The `admin` account created on a
+fresh install also has viewer access, so it can immediately sign in to the map.
 
-Generate a password hash for a new operator or producer:
+#### Offline credential recovery (advanced)
 
-```bash
-docker compose run --rm --no-deps app offline hash /run/secrets/new-password /run/secrets/new-password.hash
-```
+Use the protected offline commands only for break-glass recovery or an explicitly
+planned maintenance operation; routine user, machine, mapping, and token changes belong
+in the UI. Before an offline command, pause ingress, stop the app, back up the matching
+database and runtime, and use an owner-only password file in `secrets/` (owned by
+`10001:10001`). Never put passwords in command arguments or environment variables. The
+initial administrator has the `TokenOperator` role; do not add roles or users by editing
+the initialized privilege files.
 
-The initial `viewer` cannot administer tokens. Follow the [standalone role/user
-procedure](#provision-the-external-runtime-while-stopped), adapting paths to the
-`state/runtime` directory. While stopped:
-
-1. Provision an authorized `token-admin` and one ingestion-only user per producer.
-2. Preserve the existing viewer, SYSTEM agent, generated secrets, and other users;
-   never copy fresh templates over them. Add the `Producer` and `TokenOperator` roles
-   and use the generated hashes as password attributes.
-3. Set stable username-to-instance mappings in `machine-identities.conf`, for example:
-
-   ```text
-   producer-a=server-a
-   ```
-
-Keep the runtime owned by UID/GID `10001:10001`, with owner-only files and private
-directories. The source-mode tool is not in the JAR-only Compose image; use the
-container's offline commands. The source tool and architecture files may only be in
-the source/Java distribution, not in the bundle.
-
-Create a separate protected `secrets/operator-password` for the operator. Replace the
-example UTC validity dates with the current validity window in your policy:
+For example, with a protected password file for an enabled token operator, issue a
+scoped token into a new protected file and revoke by token ID (the portion before `:`):
 
 ```bash
-docker compose run --rm --no-deps app offline issue token-admin /run/secrets/operator-password \
-  producer-a initial 2026-11-12T00:00:00Z 2026-12-12T00:00:00Z /run/secrets/producer.pat
+docker compose run --rm --no-deps app offline issue admin /run/secrets/admin-password \
+  producer-a fail2ban 2026-11-19T00:00:00Z 2026-12-19T00:00:00Z /run/secrets/producer.pat
+docker compose run --rm --no-deps app offline revoke admin /run/secrets/admin-password OLD_TOKEN_ID
 ```
 
-Issuing writes a one-time `tokenId:tokenValue` to a new mode-0600 file and persists a
-scoped `event:ingest` token. Transfer the PAT securely to the reporting host as a
-root-owned mode-0600 file; never expose its contents in commands or logs. Revoke by
-the old token ID (before `:`), never by the secret:
-
-```bash
-docker compose run --rm --no-deps app offline revoke token-admin /run/secrets/operator-password OLD_TOKEN_ID
-```
-
-For rotation, issue a second token for the same owner, restart, replace the producer
-file securely, and verify delivery. Stop the app, revoke the old ID, then restart.
-Remove temporary password, hash, and PAT files when no longer needed. A failed issue
-may persist an orphan token before output fails; inspect/revoke it with authorized Strolch
-tooling before retrying. Never erase privilege files.
+Use the dates required by your policy. The issuance output is a one-time `tokenId:tokenValue`;
+transfer the value securely and never expose it in commands or logs. A failed issue may
+persist an orphan token before output fails; inspect/revoke it through authorized Strolch
+tooling before retrying. Offline token commands do not configure a machine mapping; use
+the UI for that. Never copy fresh templates over an initialized runtime or erase
+privilege files.
 
 #### Backup and restore
 
@@ -353,8 +349,8 @@ Bootstrap values apply only to a new PostgreSQL data directory; editing `.env` d
    docker compose up -d
    ```
 
-Manage viewer passwords, users, and PATs through protected Strolch procedures, not
-bootstrap environment values.
+Manage viewer passwords, users, machines, and PATs through the browser administration
+panel or a protected offline Strolch procedure, not bootstrap environment values.
 
 #### Upgrade the application image
 
