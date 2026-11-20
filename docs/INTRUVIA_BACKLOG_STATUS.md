@@ -1,6 +1,6 @@
 # Intruvia — backlog status
 
-Updated: 2026-11-20 · Task 029 downloadable Fail2ban onboarding complete
+Updated: 2026-11-20 · Task 030 machine-first provisioning and token validity
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
@@ -8,7 +8,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 
 - Current task: **None — all numbered tasks are complete**.
 - Next task: **None — backlog complete**.
-- Completed: **29 / 29**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Completed: **30 / 30**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
 - Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance originally passed against a local framework snapshot; the published 2.8.0-1 release now contains the verified PAT persistence fixes. Historical custom-token results remain superseded. Tasks 001–027 retain completion evidence; task 028's initial completion, documentation follow-ups and simplified release-onboarding implementation are recorded in the execution log. Task 023's first-install administration follow-up also passes Maven/PostgreSQL and browser acceptance. Task 027 publishes `latest` only for non-SNAPSHOT image versions. Task 024's unified release packages with tests skipped by default and offers PostgreSQL-backed verification through `--with-tests`.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence was originally verified with a local snapshot override and the full PostgreSQL suite was revalidated against published Strolch 2.8.0-1 during task 023; the ingestion HTTP endpoint, viewer sessions, snapshot/history reads and ordered WebSocket stream are verified; snapshot viewer and live highlighting are verified; browser reconnect/resync is verified; deployment/recovery and release review are verified.
@@ -50,8 +50,23 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 027 | Publish version-qualified Docker tags | 023, 024 | DONE | Both workflows publish major, minor and full-version tags, plus mutable `latest` only for non-SNAPSHOT versions; SNAPSHOT suffix detection is case-insensitive. Stable/SNAPSHOT/qualified versions and tag/push failures are covered. Prior and follow-up evidence is retained below. |
 | 028 | Simplify deployment onboarding and Fail2ban setup | 018, 021 | DONE | Release-bundle setup sequence, attached first-start exit/password behavior, subsequent Compose startup, PostgreSQL integration and packaged Compose checks passed; no release was published; see execution log. |
 | 029 | Downloadable Fail2ban onboarding | 018, 023, 028 | DONE | Authenticated packaged installer, token-free UI command, isolated Fail2ban, TLS command and browser/download checks passed; see execution log. |
+| 030 | Machine-first provisioning and long-lived tokens | 005, 023, 029 | DONE | Machine-ID defaults, optional overrides, 3650-day/practical non-expiring PAT issuance and rotation, browser flows, and PostgreSQL restart/revocation lifecycle passed; see execution log. |
 
 ## Execution log
+
+### 2026-11-20 — task 030 started
+
+- Agent: Junie. Transition: TODO → IN_PROGRESS. Dependencies 005, 023 and 029 are DONE; no other task is active. Scope: derive the Strolch username, stable instance ID and default token label from a required machine ID while allowing optional overrides; support 1–3650-day and practical non-expiring tokens on creation and rotation. Preserve existing mappings and API field contracts. The practical non-expiry uses Strolch's required non-null expiry, 9999-12-31 UTC, and must be documented as finite and revocable.
+- Verification: pending.
+
+### 2026-11-20 — task 030 completed
+
+- Agent: Junie. Transition: IN_PROGRESS → DONE after all acceptance criteria passed. Dependencies 005, 023 and 029 remain DONE. Counts: DONE 30 / 30, TODO 0, IN_PROGRESS 0, BLOCKED 0; current and next task none.
+- Changes: the admin UI now requires only a stable human-readable machine ID, defaulting the username and instance ID to that value and the token label to its first 64 characters. Optional overrides remain independent and reset after success. Both creation and rotation accept 1–3650 days or `0`, using Strolch's required `9999-12-31 23:59:59 UTC` expiry sentinel; the UI clearly marks it as practical, finite non-expiry. The existing API request fields and mappings remain unchanged. README, deployment guide and specification describe identity stability and the security/revocation implications.
+- Toolchain: SDKMAN-initialized `java -version` reported OpenJDK 25.0.5; `mvn -version` reported Maven 3.10.0.
+- PostgreSQL lifecycle: `scripts/verify-postgresql.sh -pl intruvia-app -am -Dit.test=ViewerSessionIT` exited 0; all five reactor modules built, all 4 `ViewerSessionIT` tests and all 20 app unit tests passed. Assertions cover the accepted 3650-day boundary, rejection of 3651 days, scoped PAT metadata/authentication, the exact practical-expiry timestamp surviving restart, and token revocation after restart.
+- Browser/package: `bash docs/verification/023-run-admin-browser.sh` exited 0; all five modules packaged successfully, app unit tests passed (20, no failures/errors), and Chromium 157.0.8103.79 passed all seven checks recorded in [browser evidence](verification/023-admin-browser.txt): machine defaults, all three overrides, form reset, 400-day token creation, practical non-expiry rotation, live mapping, token lifecycle and existing installer/CSRF checks. An initial run failed only because the test expected zero list items instead of the UI's one empty-state row; the assertion was corrected and the rerun passed.
+- IDE build completed successfully with no build problems. Inspections showed existing warnings including an unused `HexFormat` import and `SameParameterValue`; they did not affect compilation or tests. Full Maven `verify` and the broader integration suite were not run; focused PostgreSQL-backed lifecycle tests and the existing full admin browser/package flow were run instead.
 
 ### 2026-11-20 — task 029 completed
 

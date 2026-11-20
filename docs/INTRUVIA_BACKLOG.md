@@ -308,3 +308,13 @@ The foundational product and stack decisions are already captured in the specifi
 **Acceptance criteria:** A scoped, mapped, active producer PAT can download the packaged installer; missing, invalid, insufficient and revoked credentials are rejected. The UI provides a copyable command without embedding the token, which prompts securely and downloads over verified HTTPS. The installer configures a standard jail without overwriting existing files or firewall actions, protects the token, validates and reloads Fail2ban, and reports failures safely. Cover endpoint authorization, bundled resources, command presentation, successful setup and failure/rollback paths. Record exact checks and unrun checks in the ledger.
 
 **Completion evidence:** Focused HTTP, installer, UI and packaging checks and exact results in the status ledger.
+
+## 030 — Machine-first provisioning and long-lived tokens
+
+**Dependencies:** 005, 023, 029
+
+**Scope:** Simplify machine creation to a required, administrator-chosen machine ID, defaulting the Strolch username and instance ID to that stable value and the token name to its first 64 characters. Keep optional overrides for all three derived values. Allow token issuance and rotation for 1–3650 days or explicit practical non-expiry, without changing existing API field names or mappings.
+
+**Acceptance criteria:** The admin form needs only a valid machine ID by default; advanced optional overrides can be changed independently, retain entered values, and reset after successful creation. A human-readable machine ID is used as the default stable instance ID; it is not randomly regenerated and changing an existing mapping remains an explicit operation. Both token creation paths reject malformed/out-of-range values, accept 1–3650 days, and treat 0 as practical non-expiry using the documented 9999-12-31 UTC sentinel required by Strolch. Token listings clearly distinguish this sentinel from ordinary expiries. Tests verify default and override behavior, token metadata, authentication, persistence across restart, and revocation. Documentation explains stability, the sentinel's finite end date, and the increased exposure risk and continued revocability of long-lived tokens.
+
+**Completion evidence:** Exact admin browser and PostgreSQL-backed token lifecycle checks, build/lint results, documentation checks, and any unrun checks in the status ledger.
