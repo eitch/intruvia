@@ -85,6 +85,40 @@ and nonstandard configurations. For the command and custom-action or dedicated-u
 alternatives, see the [Fail2ban integration guide](../integrations/fail2ban/README.md).
 Notifications are best-effort and have no offline queue.
 
+#### Test ingestion connectivity
+
+After creating the machine in **Manage access**, run this Bash example on a host with
+Python 3 and curl. Replace the example origin with the exact configured public origin
+(no path prefix or trailing slash). Paste the machine's one-time `tokenId:tokenValue`
+when prompted; it is read silently and passed to curl through its config input, not a
+command argument or shell history. Keep shell tracing disabled, and do not use `curl -k`:
+curl must verify the server's TLS certificate.
+
+```bash
+(
+  set +x
+  INTRUVIA_ORIGIN=https://intruvia.example.org
+  read -r -s -p 'Machine token (tokenId:tokenValue): ' INTRUVIA_TOKEN
+  printf '\n'
+  EVENT_ID=$(python3 -c 'import uuid; print(uuid.uuid4())')
+  OCCURRED_AT=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
+  PAYLOAD=$(printf '{"schemaVersion":1,"eventId":"%s","occurredAt":"%s","action":"ban","ip":"203.0.113.42","jail":"intruvia-connectivity-test"}' "$EVENT_ID" "$OCCURRED_AT")
+  printf 'header = "Authorization: Bearer %s"\n' "$INTRUVIA_TOKEN" |
+    curl --config - --silent --show-error --fail-with-body \
+      --header 'Content-Type: application/json' \
+      --data-binary "$PAYLOAD" \
+      --write-out '\nHTTP %{http_code}\n' \
+      "$INTRUVIA_ORIGIN/api/v1/fail2ban/events"
+)
+```
+
+A successful new event returns `201` and its event ID and sequence. Each run generates a
+new UUID, so it creates another persistent event that may appear in the viewer. The
+reserved `203.0.113.42` documentation address should not produce a real map location.
+Intruvia attributes the event to the machine ID mapped to the token, not to an identity
+in the request. Keep the host clock synchronized: timestamps more than five minutes in
+the future or seven days old are rejected.
+
 ### Persistent data
 
 The bundle includes these persistent, bundle-relative directories before first start:
