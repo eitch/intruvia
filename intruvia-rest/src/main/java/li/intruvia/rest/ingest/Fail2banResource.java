@@ -6,8 +6,8 @@ import java.io.InputStream;
 import java.time.Clock;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.Context;
@@ -28,21 +28,21 @@ public final class Fail2banResource {
 	private final MachineIdentities identities;
 	private final IngestionLimits limits;
 	private final Fail2banRequestParser parser;
-	private final Map<String, TokenBucket> buckets;
+	private final Map<String, TokenBucket> buckets = new ConcurrentHashMap<>();
 
 	public Fail2banResource(Supplier<ServiceHandler> services, MachineIdentities identities, IngestionLimits limits) {
 		this.services = services;
 		this.identities = identities;
 		this.limits = limits;
 		this.parser = new Fail2banRequestParser(limits.bodyBytes());
-		this.buckets = identities.instances().values().stream().collect(Collectors.toUnmodifiableMap(value -> value,
-				value -> new TokenBucket(limits.eventsPerSecond(), limits.burst())));
+		identities.instances().values().forEach(instance -> this.buckets.put(instance,
+				new TokenBucket(limits.eventsPerSecond(), limits.burst())));
 	}
 
 	@POST
 	public Response ingest(InputStream input, @Context SecurityContext security, @Context HttpHeaders headers) {
 		Identity identity = (Identity) security.getUserPrincipal();
-		int retry = this.buckets.get(identity.instanceId()).acquire();
+		int retry = bucket(identity.instanceId()).acquire();
 		if (retry > 0)
 			return IngestHttp.limited(retry);
 		var media = headers.getMediaType();
@@ -80,4 +80,15 @@ public final class Fail2banResource {
 	}
 
 	private record DuplicateResponse(UUID id, String sequence, boolean duplicate) {}
+
+	private TokenBucket bucket(String instanceId) {
+		TokenBucket bucket = this.buckets.get(instanceId);
+		if (bucket != null) return bucket;
+		synchronized (this.buckets) {
+			var active = new java.util.HashSet<>(this.identities.instances().values());
+			this.buckets.keySet().removeIf(value -> !active.contains(value));
+			return this.buckets.computeIfAbsent(instanceId,
+					ignored -> new TokenBucket(this.limits.eventsPerSecond(), this.limits.burst()));
+		}
+	}
 }
