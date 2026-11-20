@@ -2,7 +2,7 @@
 <p align="center"><strong>A clear, live view of Fail2ban activity across your servers.</strong></p>
 <p align="center">
   Intruvia brings ban notifications together in an authenticated map and recent-events timeline.<br>
-  Self-host it and keep your event history and optional GeoIP data under your control.
+  Deploy Intruvia on your own infrastructure and keep event history and optional GeoIP data under your control.
 </p>
 <p align="center">
   <a href="docs/DEPLOYMENT.md"><img src="https://img.shields.io/badge/Self--hosted-Deployment%20guide-0f766e?style=flat-square" alt="Self-hosted deployment guide"></a>
@@ -10,7 +10,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0--only-7c3aed?style=flat-square" alt="AGPL-3.0-only license"></a>
 </p>
 <p align="center">
-  <a href="docs/DEPLOYMENT.md"><strong>Get started with deployment →</strong></a>
+  <a href="docs/DEPLOYMENT.md"><strong>Deploy Intruvia →</strong></a>
   &nbsp;·&nbsp;
   <a href="integrations/fail2ban/README.md">Connect Fail2ban</a>
 </p>
@@ -42,28 +42,11 @@ Map assets are bundled, so the viewer does not require an external tile service,
 
 ## Get started
 
-The [installation and recovery guide](docs/DEPLOYMENT.md) covers the Compose and
-standalone deployment paths, prerequisites, credentials, upgrades, backups, and
-recovery. To connect a server, follow the [Fail2ban integration guide](integrations/fail2ban/README.md)
-and add its notification action alongside the existing firewall action.
-
-Compose bundles include protected local directories for database, runtime, logs and
-proxy state instead of Docker named volumes. Existing named-volume installations need
-the explicit offline migration in the [recovery guide](docs/deployment/compose-initialization-recovery.md#migrate-an-existing-named-volume-installation).
-
-Docker releases use major, major.minor, and full patch-version tags; versions
-without a `-SNAPSHOT` suffix also publish as `latest`. Snapshot builds retain
-`-SNAPSHOT` on each version tag and never publish `latest`. The `latest` tag is
-mutable and follows the most recently published non-SNAPSHOT version, so release
-older versions only when you intend to move `latest` backward.
-
-On compatible Compose images, first start creates an administrator password in memory
-and prints it once to the attached console. Sign in with `admin`; **Manage access** lets
-you configure viewer accounts, machines, stable instance IDs, and scoped ingestion
-tokens without editing runtime files. Newly issued token values are shown once. If the
-password output is missed, the guide documents a stopped-app reset. The published
-`0.0.2` image predates this file-free startup flow; no compatible published version is
-claimed here.
+Follow the [deployment guide](docs/DEPLOYMENT.md) to build and start Intruvia with Compose.
+After the first administrator login, use **Manage access** to create a machine and issue
+its one-time, `event:ingest` token, then follow the [Fail2ban integration guide](integrations/fail2ban/README.md)
+to install its additive notification action. Never replace the jail's existing firewall
+action or put the token in a command argument or URL.
 
 ## Project links
 

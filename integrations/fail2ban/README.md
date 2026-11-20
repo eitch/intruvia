@@ -11,13 +11,48 @@ additive action template; its `ban()` callback is the Python equivalent of
 `actionban`. It does not use a shell or substitute `<matches>` or other values
 into a shell command. Start, stop, unban, reban and restored bans do not notify.
 
-## Install on each reporting server
+## Quick setup for a standard jail
 
-First provision an ingestion-only Strolch technical user/PAT and a stable server
-mapping on Intruvia as described in the
-[administrator guide](../../docs/DEPLOYMENT.md#provision-the-external-runtime-while-stopped).
-Use one user per reporting
-server; do not add an instance ID to the notification payload.
+1. In Intruvia **Manage access**, create a machine for this reporting host with a
+   stable instance ID and issue a token limited to `event:ingest`. Copy its
+   `tokenId:tokenValue` once using a protected channel. Use a separate machine/token
+   for each reporting host.
+2. Transfer this `integrations/fail2ban/` directory from the source checkout or deployment
+   bundle to the Fail2ban host. The named jail must already be enabled and
+   use the standard `%(action_)s` firewall action; this setup does not enable jails,
+   change filters, or alter ban/unban behavior.
+3. Create the private token file interactively on the Fail2ban host. This default
+   assumes the Fail2ban service runs as root; `noclobber` prevents replacing an
+   existing token file:
+
+   ```sh
+   sudo bash -c 'set -euo pipefail; umask 077; set -o noclobber; read -r -s -p "Paste the one-time token: " token; printf "\n"; printf "%s\n" "$token" > /etc/fail2ban/intruvia.pat; unset token'
+   ```
+
+4. Run this one command from the transferred bundle/source root, substituting the
+   exact HTTPS host and enabled jail name:
+
+   ```sh
+   sudo python3 integrations/fail2ban/install.py --jail sshd --endpoint https://intruvia.example.org/api/v1/fail2ban/events --confirm-default-action
+   ```
+
+The installer refuses custom actions, existing target files and unsafe paths; it appends
+the notification after the existing firewall action, validates and reloads Fail2ban, and
+rolls back only newly created files if validation fails. It never reads or prints the PAT
+value. For a dedicated Fail2ban service account, create the mode-`0600` PAT file owned by
+that account (`sudo chown ACCOUNT /etc/fail2ban/intruvia.pat`) and add
+`--service-user ACCOUNT` to the installer command. The default uses system TLS trust;
+private CA configuration or custom jail actions require the manual procedure below.
+
+Confirm that both actions are active with `sudo fail2ban-client get sshd actions`. Test
+only in a disposable jail; do not ban a real administrator. See the [deployment guide](../../docs/DEPLOYMENT.md#connect-a-fail2ban-host)
+for the surrounding deployment setup.
+
+## Manual/custom configuration
+
+Use the manual path when a jail has a custom action list, a non-default firewall action,
+or needs private CA configuration. First provision a scoped PAT and stable server
+mapping through Intruvia **Manage access**.
 
 From this directory (also shipped under `intruvia/integrations/fail2ban/`), install:
 
