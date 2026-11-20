@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Uses the existing real-service fixture and locally installed Playwright only.
 const {chromium} = require(process.env.PLAYWRIGHT_MODULE);
-const {spawn} = require('node:child_process');
+const {spawn, spawnSync} = require('node:child_process');
 const fs = require('node:fs');
 const path = require('node:path');
 const assert = require('node:assert/strict');
@@ -85,8 +85,26 @@ const assert = require('node:assert/strict');
 			{exact: true}).waitFor();
 		const firstToken = await page.locator('#issued-token').inputValue();
 		if (!firstToken.includes(':') || firstToken.length < 40) throw new Error('Machine token was not shown in the one-time field');
+		if (!(await page.locator('#install-command-container').isHidden()) ||
+			!(await page.locator('#install-unavailable').isVisible()))
+			throw new Error('HTTP administration must not offer an insecure installer command');
 		if (!(await machine().innerText()).includes('event:ingest'))
 			throw new Error('Machine token list does not show the restricted ingestion scope');
+
+		// Exercise the HTTPS-only UI against the local HTTP fixture without altering server networking.
+		await page.route('**/js/pages/AdminPage.js', async (route) => {
+			const response = await route.fetch();
+			const body = (await response.text()).replace('fail2banInstallCommand(window.location.origin)',
+				"fail2banInstallCommand('https://intruvia.example.org')");
+			await route.fulfill({response, body});
+		});
+		await page.addInitScript(() => {
+			Object.defineProperty(navigator, 'clipboard', {value: {writeText: async (value) => { window.copiedText = value; }}});
+		});
+		await page.reload();
+		await page.locator('#manage:not([hidden])').waitFor();
+		await page.getByRole('button', {name: 'Manage access', exact: true}).click();
+		await machine().waitFor();
 
 		await machine().getByLabel('Instance ID for browser-machine').fill('browser-server-updated');
 		await machine().getByRole('button', {name: 'Save machine identity', exact: true}).click();
@@ -102,6 +120,28 @@ const assert = require('node:assert/strict');
 		const rotatedToken = await page.locator('#issued-token').inputValue();
 		if (!rotatedToken.includes(':') || rotatedToken.length < 40 || rotatedToken === firstToken)
 			throw new Error('Token rotation did not issue a distinct one-time secret');
+		const tokenCheck = spawnSync('python3', ['-c',
+			"import runpy,sys; runpy.run_path('integrations/fail2ban/download-install.py')['read_token'](sys.stdin)"],
+			{cwd: root, input: rotatedToken + '\n', encoding: 'utf8'});
+		if (tokenCheck.status !== 0) throw new Error('Installer rejected a real issued machine token');
+		const download = await page.request.get(`${origin}/api/v1/fail2ban/install.py`,
+			{headers: {Authorization: `Bearer ${rotatedToken}`}});
+		assert.equal(download.status(), 200);
+		assert.equal(download.headers()['cache-control'], 'no-store');
+		const script = await download.text();
+		assert.ok(script.startsWith('#!/usr/bin/env python3') && !script.includes('__INTRUVIA_') && !script.includes(rotatedToken));
+		const compile = spawnSync('python3', ['-c', "import sys; compile(sys.stdin.read(), '<download>', 'exec')"],
+			{input: script, encoding: 'utf8'});
+		if (compile.status !== 0) throw new Error('Downloaded installer is not valid Python');
+		const deniedDownload = await page.request.get(`${origin}/api/v1/fail2ban/install.py`,
+			{headers: {Authorization: 'Bearer invalid'}});
+		assert.equal(deniedDownload.status(), 401);
+		const installCommand = await page.locator('#install-command').inputValue();
+		assert.ok(await page.locator('#install-command-container').isVisible());
+		assert.ok(installCommand.includes('https://intruvia.example.org/api/v1/fail2ban/install.py'));
+		assert.ok(!installCommand.includes(firstToken) && !installCommand.includes(rotatedToken));
+		await page.getByRole('button', {name: 'Copy installation command', exact: true}).click();
+		assert.equal(await page.evaluate(() => window.copiedText), installCommand);
 		const visibleMachine = await machine().innerText();
 		if (visibleMachine.includes(firstToken) || visibleMachine.includes(rotatedToken))
 			throw new Error('A plaintext token was included in the machine list');
@@ -146,10 +186,11 @@ const assert = require('node:assert/strict');
 			'Admin login and browser-only access management; viewer role cannot access the UI',
 			'Create viewer, change password, disable, enable, sign in with updated password, and delete',
 			'Create machine and scoped token, update live instance identity, rotate and revoke tokens, remove machine',
+			'Copy HTTPS installation command, refuse HTTP, download self-contained installer with real scoped PAT',
 			'Token shown only in the one-time field and cleared when leaving administration',
 			'CSRF header on every browser mutation; no JavaScript errors or external requests'
 		]}, null, 2) + '\n';
-		fs.writeFileSync(path.join(root, 'docs/verification/023-admin-browser.txt'), report);
+		if (!process.env.INTRUVIA_BROWSER_NO_REPORT) fs.writeFileSync(path.join(root, 'docs/verification/023-admin-browser.txt'), report);
 		console.log(report);
 	} finally {
 		await browser?.close();
