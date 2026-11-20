@@ -3,6 +3,7 @@ package li.intruvia.rest;
 
 import li.intruvia.core.auth.MachineIdentities;
 import li.intruvia.rest.auth.MachineAuthenticationFilter;
+import li.intruvia.rest.ingest.Fail2banInstallResource;
 import li.intruvia.rest.ingest.Fail2banResource;
 import li.intruvia.rest.ingest.GlobalAdmissionFilter;
 import li.intruvia.rest.ingest.IngestExceptionMapper;
@@ -40,6 +41,7 @@ public class IntruviaRestApplication extends ResourceConfig {
 		this(handler, identities);
 		register(new GlobalAdmissionFilter(globalAdmission));
 		register(new Fail2banResource(services, identities, limits));
+		register(new Fail2banInstallResource());
 		register(new EventsResource(services));
 		register(IngestExceptionMapper.class);
 	}

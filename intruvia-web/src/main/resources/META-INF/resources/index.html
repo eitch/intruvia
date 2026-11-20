@@ -60,6 +60,12 @@
 				<h3 id="secret-title">New ingestion token</h3><p>Copy this token now. It cannot be shown again.</p>
 				<textarea id="issued-token" readonly rows="3" aria-label="New token, shown once"></textarea>
 				<button id="copy-token" type="button">Copy token</button>
+				<h4>Install on the Fail2ban host</h4>
+				<p>On the host, use Bash, curl, Python 3 and sudo. The jail must already be enabled and use the standard firewall action.
+					Run this command, paste the token when prompted, then enter the jail name and confirm its action.</p>
+				<p id="install-unavailable" hidden>Connect to Intruvia using HTTPS to generate a secure installation command.</p>
+				<div id="install-command-container" hidden><textarea id="install-command" readonly rows="4" aria-label="Fail2ban installation command"></textarea>
+					<button id="copy-install-command" type="button">Copy installation command</button></div>
 			</section>
 		</section>
 	</main>

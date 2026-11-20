@@ -40,4 +40,22 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>../integrations/fail2ban</directory>
+				<targetPath>li/intruvia/rest/ingest/fail2ban</targetPath>
+				<filtering>false</filtering>
+				<includes>
+					<include>download-install.py</include>
+					<include>install.py</include>
+					<include>intruvia.py</include>
+					<include>intruvia_notify.py</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
 </project>

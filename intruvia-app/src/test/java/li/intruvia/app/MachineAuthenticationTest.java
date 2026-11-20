@@ -10,6 +10,7 @@ import li.intruvia.core.auth.MachineIdentities;
 import li.intruvia.rest.IntruviaRestApplication;
 import li.intruvia.rest.auth.MachineAuthenticationFilter.Identity;
 import li.intruvia.rest.auth.MachineIngest;
+import li.intruvia.rest.ingest.IngestionLimits;
 import li.strolch.privilege.handler.DefaultEncryptionHandler;
 import li.strolch.privilege.handler.PrivilegeHandler;
 import li.strolch.privilege.helper.PrivilegeInitializer;
@@ -32,6 +33,7 @@ import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.time.ZonedDateTime;
+import java.util.Base64;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
@@ -184,6 +186,67 @@ public class MachineAuthenticationTest {
 	}
 
 	@Test
+	public void installerDownloadRequiresMappedScopedActivePat() throws Exception {
+		String token = issue(this.owner, Set.of("event:ingest"), -1, 60);
+		String denied = issue(this.owner, Set.of("event:read"), -1, 60);
+		String broad = issue(this.owner, Set.of(), -1, 60);
+		String expired = issue(this.owner, Set.of("event:ingest"), -2, -1);
+		String future = issue(this.owner, Set.of("event:ingest"), 1, 2);
+		String second = issue(this.handler.authenticate("second", "probe-password".toCharArray(), false),
+				Set.of("event:ingest"), -1, 60);
+		String unmapped = issue(this.handler.authenticate("unmapped", "probe-password".toCharArray(), false),
+				Set.of("event:ingest"), -1, 60);
+		var mapping = new MachineIdentities(Map.of("producer", "server-a", "second", "server-b"));
+		Server server = new Server();
+		ServerConnector connector = new ServerConnector(server);
+		connector.setHost("127.0.0.1");
+		connector.setPort(0);
+		server.addConnector(connector);
+		var context = new ServletContextHandler();
+		context.setContextPath("/");
+		var app = new IntruviaRestApplication(() -> this.handler, mapping, () -> null,
+				IngestionLimits.load(this.runtime.resolve("missing-limits.properties")));
+		context.addServlet(new ServletHolder(new ServletContainer(app)), "/*");
+		server.setHandler(context);
+		try {
+			server.start();
+			URI uri = URI.create("http://127.0.0.1:" + connector.getLocalPort() + "/fail2ban/install.py");
+			try (HttpClient client = HttpClient.newHttpClient()) {
+				check(client, uri, null, 401, null);
+				check(client, uri, "Bearer invalid", 401, null);
+				check(client, uri, "Bearer " + expired, 401, null);
+				check(client, uri, "Bearer " + future, 401, null);
+				check(client, uri, "Bearer " + denied, 403, null);
+				check(client, uri, "Bearer " + broad, 403, null);
+				check(client, uri, "Bearer " + unmapped, 403, null);
+				var request = HttpRequest.newBuilder(uri).header("Authorization", "Bearer " + token).GET().build();
+				var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+				assertEquals(response.body(), 200, response.statusCode());
+				assertEquals("no-store", response.headers().firstValue("Cache-Control").orElseThrow());
+				assertEquals("nosniff", response.headers().firstValue("X-Content-Type-Options").orElseThrow());
+				assertTrue(response.headers().firstValue("Content-Type").orElseThrow().startsWith("text/x-python"));
+				assertFalse(response.body().contains("__INTRUVIA_"));
+				var session = HttpRequest.newBuilder(uri).header("Cookie", "JSESSIONID=" + this.owner.getSessionId()).build();
+				assertEquals(401, client.send(session, HttpResponse.BodyHandlers.ofString()).statusCode());
+				this.handler.setUserState(this.owner, "second", UserState.DISABLED);
+				check(client, uri, "Bearer " + second, 401, null);
+				for (String name : new String[]{"install.py", "intruvia.py", "intruvia_notify.py"}) {
+					try (var input = li.intruvia.rest.ingest.Fail2banInstallResource.class
+							.getResourceAsStream("/li/intruvia/rest/ingest/fail2ban/" + name)) {
+						assertNotNull(input);
+						assertTrue(response.body().contains(Base64.getEncoder().encodeToString(input.readAllBytes())));
+					}
+				}
+				this.handler.removePersonalAccessToken(this.owner, token.split(":", 2)[0]);
+				check(client, uri, "Bearer " + token, 401, null);
+			}
+		} finally {
+			server.stop();
+			server.destroy();
+		}
+	}
+
+	@Test
 	public void validatesProtectedIdentityMapping() throws Exception {
 		var file = this.runtime.resolve("machine-identities.conf");
 		assertTrue(MachineIdentities.load(file).instances().isEmpty());
@@ -216,6 +279,8 @@ public class MachineAuthenticationTest {
 		if (identity != null)
 			assertEquals(identity, response.body());
 		else {
+			assertEquals("no-store", response.headers().firstValue("Cache-Control").orElseThrow());
+			assertEquals("nosniff", response.headers().firstValue("X-Content-Type-Options").orElseThrow());
 			assertTrue(response.body().contains("requestId"));
 			assertFalse(response.body().contains("Exception"));
 			var error = JsonParser.parseString(response.body()).getAsJsonObject().getAsJsonObject("error");

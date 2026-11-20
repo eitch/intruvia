@@ -11,6 +11,7 @@ public final class IngestHttp {
 
 	public static Response json(int status, Object value) {
 		return Response.status(status).type(MediaType.APPLICATION_JSON_TYPE).header("Cache-Control", "no-store")
+				.header("X-Content-Type-Options", "nosniff")
 				.entity(EventJson.write(value)).build();
 	}
 

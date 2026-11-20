@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 import * as api from '../api/viewer.js';
+import {fail2banInstallCommand} from './fail2banInstall.js';
 
 export default class AdminPage {
 	constructor(root, username, sessionEnded) {
@@ -12,11 +13,16 @@ export default class AdminPage {
 		this.machines = root.querySelector('#admin-machines');
 		this.secret = root.querySelector('#issued-secret');
 		this.secretValue = root.querySelector('#issued-token');
+		this.installCommand = root.querySelector('#install-command');
+		this.installContainer = root.querySelector('#install-command-container');
+		this.installUnavailable = root.querySelector('#install-unavailable');
 		root.querySelector('#create-user-form').addEventListener('submit', (event) => this.createUser(event),
 			{signal: this.controller.signal});
 		root.querySelector('#create-machine-form').addEventListener('submit', (event) => this.createMachine(event),
 			{signal: this.controller.signal});
 		root.querySelector('#copy-token').addEventListener('click', () => this.copyToken(), {signal: this.controller.signal});
+		root.querySelector('#copy-install-command').addEventListener('click', () => this.copyInstallCommand(),
+			{signal: this.controller.signal});
 	}
 
 	async load(message = null) {
@@ -231,6 +237,10 @@ export default class AdminPage {
 
 	revealToken(token) {
 		this.secretValue.value = token;
+		const command = fail2banInstallCommand(window.location.origin);
+		this.installCommand.value = command ?? '';
+		this.installContainer.hidden = !command;
+		this.installUnavailable.hidden = !!command;
 		this.secret.hidden = false;
 		this.secretValue.focus();
 		this.secretValue.select();
@@ -238,7 +248,19 @@ export default class AdminPage {
 
 	hideSecret() {
 		this.secretValue.value = '';
+		this.installCommand.value = '';
 		this.secret.hidden = true;
+	}
+
+	async copyInstallCommand() {
+		try {
+			await navigator.clipboard.writeText(this.installCommand.value);
+			this.status.textContent = 'Installation command copied. Run it on the Fail2ban host.';
+		} catch {
+			this.installCommand.focus();
+			this.installCommand.select();
+			this.status.textContent = 'Select and copy the installation command.';
+		}
 	}
 
 	async copyToken() {
