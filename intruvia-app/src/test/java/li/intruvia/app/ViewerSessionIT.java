@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.net.URI;
 import java.net.http.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.*;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
@@ -21,6 +22,7 @@ import static org.junit.Assert.*;
 public class ViewerSessionIT {
 	private static final String ORIGIN = "https://intruvia.example.org";
 	private static final String LOGIN = "{\"username\":\"viewer\",\"password\":\"viewer-test-password\"}";
+	private static final String ADMIN_PASSWORD = "admin-test-password";
 
 	@Test(timeout = 60000)
 	public void cookiesCsrfAuthorizationAndLogoutUseFrameworkSession() throws Exception {
@@ -110,6 +112,88 @@ public class ViewerSessionIT {
 		}
 	}
 
+	@Test(timeout = 120000)
+	public void administratorManagesViewersMachinesScopedTokensAndLiveMappings() throws Exception {
+		try (var database = database(ORIGIN); var client = HttpClient.newHttpClient()) {
+			addAdministrator(database);
+			String machineToken;
+			String replacementToken;
+			String machineTokenId;
+			try (var app = new IntruviaApplication(database.runtime, 0)) {
+				app.start();
+				String viewerCookie = cookie(check(send(client, app, "POST", LOGIN, headers()), 200));
+				check(adminSend(client, app, "GET", "/admin/users", "", Map.of("Cookie", viewerCookie)), 403);
+				check(adminSend(client, app, "GET", "/admin/users", "", Map.of()), 401);
+				check(adminSend(client, app, "POST", "/admin/users", "{}", Map.of("Cookie", viewerCookie,
+						"Content-Type", "application/json")), 403);
+
+				String adminCookie = cookie(check(send(client, app, "POST",
+						"{\"username\":\"admin\",\"password\":\"" + ADMIN_PASSWORD + "\"}", headers()), 200));
+				var createViewer = adminSend(client, app, "POST", "/admin/users",
+						"{\"username\":\"viewer.new\",\"firstName\":\"New\",\"lastName\":\"Viewer\"," +
+						"\"password\":\"new-viewer-test-password\",\"kind\":\"viewer\"}", headers("Cookie", adminCookie));
+				check(createViewer, 201);
+				assertFalse(createViewer.body().contains("new-viewer-test-password"));
+				check(adminSend(client, app, "PUT", "/admin/users/viewer.new/password",
+						"{\"password\":\"configured-viewer-test-password\"}", headers("Cookie", adminCookie)), 200);
+				check(send(client, app, "POST", "{\"username\":\"viewer.new\",\"password\":" +
+						"\"configured-viewer-test-password\"}", headers()), 200);
+
+				var createMachine = check(adminSend(client, app, "POST", "/admin/machines",
+						"{\"username\":\"ingest.east\",\"instanceId\":\"edge-east\",\"tokenName\":\"fail2ban-east\",\"validDays\":30}",
+						headers("Cookie", adminCookie)), 201);
+				var machine = JsonParser.parseString(createMachine.body()).getAsJsonObject();
+				machineToken = machine.get("token").getAsString();
+				machineTokenId = machine.get("tokenId").getAsString();
+				var handler = app.agent().getPrivilegeHandler().getPrivilegeHandler();
+				var machineCertificate = handler.authenticatePersonalAccessToken(machineToken, "intruvia-ingest");
+				assertEquals("ingest.east", machineCertificate.getUsername());
+				assertEquals(Set.of("event:ingest"), handler.validate(machineCertificate).getPrivileges().keySet());
+				var machineList = check(adminSend(client, app, "GET", "/admin/machines", "", headers("Cookie", adminCookie)), 200);
+				assertFalse(machineList.body().contains(machineToken));
+				assertTrue(machineList.body().contains("edge-east"));
+				check(adminSend(client, app, "PUT", "/admin/machines/ingest.east", "{\"instanceId\":\"edge-west\"}",
+						headers("Cookie", adminCookie)), 200);
+				assertEquals("ingest.east=edge-west\n", Files.readString(database.runtime.resolve("config/machine-identities.conf")));
+				assertEquals(Set.of(java.nio.file.attribute.PosixFilePermission.OWNER_READ,
+						java.nio.file.attribute.PosixFilePermission.OWNER_WRITE),
+						Files.getPosixFilePermissions(database.runtime.resolve("config/machine-identities.conf")));
+				check(ingest(client, app, machineToken), 400);
+
+				Map<String, String> noCsrf = Map.of("Cookie", adminCookie, "Content-Type", "application/json");
+				check(adminSend(client, app, "POST", "/admin/machines/ingest.east/tokens",
+						"{\"name\":\"rotation-east\",\"validDays\":30}", noCsrf), 403);
+				var rotate = check(adminSend(client, app, "POST", "/admin/machines/ingest.east/tokens",
+						"{\"name\":\"rotation-east\",\"validDays\":30}", headers("Cookie", adminCookie)), 201);
+				replacementToken = JsonParser.parseString(rotate.body()).getAsJsonObject().get("token").getAsString();
+				var replacementCertificate = handler.authenticatePersonalAccessToken(replacementToken, "intruvia-ingest");
+				assertEquals(Set.of("event:ingest"), handler.validate(replacementCertificate).getPrivileges().keySet());
+				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east/tokens/" + machineTokenId, "",
+						headers("Cookie", adminCookie)), 204);
+				check(ingest(client, app, machineToken), 401);
+				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east", "", headers("Cookie", adminCookie)), 409);
+			}
+
+			try (var app = new IntruviaApplication(database.runtime, 0)) {
+				app.start();
+				String adminCookie = cookie(check(send(client, app, "POST",
+						"{\"username\":\"admin\",\"password\":\"" + ADMIN_PASSWORD + "\"}", headers()), 200));
+				var machines = check(adminSend(client, app, "GET", "/admin/machines", "", headers("Cookie", adminCookie)), 200);
+				assertTrue(machines.body().contains("edge-west"));
+				assertFalse(machines.body().contains(replacementToken));
+				check(ingest(client, app, replacementToken), 400);
+				var machine = JsonParser.parseString(machines.body()).getAsJsonObject().getAsJsonArray("machines")
+						.get(0).getAsJsonObject();
+				String tokenId = machine.getAsJsonArray("tokens").get(0).getAsJsonObject().get("tokenId").getAsString();
+				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east/tokens/" + tokenId, "",
+						headers("Cookie", adminCookie)), 204);
+				check(adminSend(client, app, "DELETE", "/admin/machines/ingest.east", "", headers("Cookie", adminCookie)), 204);
+				assertEquals("", Files.readString(database.runtime.resolve("config/machine-identities.conf")));
+				check(adminSend(client, app, "DELETE", "/admin/users/viewer.new", "", headers("Cookie", adminCookie)), 204);
+			}
+		}
+	}
+
 	@Test(timeout = 60000)
 	public void expiryInvalidatesHttpAndSharedSocketValidator() throws Exception {
 		String httpOrigin = "http://intruvia.example.org:8080";
@@ -180,6 +264,17 @@ public class ViewerSessionIT {
 		return database;
 	}
 
+	static void addAdministrator(DatabaseFixture database) throws Exception {
+		var encryption = new DefaultEncryptionHandler();
+		encryption.initialize(Map.of("hashAlgorithm", "PBKDF2WithHmacSHA512", "hashIterations", "10000", "hashKeyLength", "256"));
+		String hash = encryption.hashPassword(ADMIN_PASSWORD.toCharArray(), encryption.nextSalt()).toString();
+		Path users = database.runtime.resolve("config/PrivilegeUsers.xml");
+		Files.writeString(users, Files.readString(users).replace("</Users>", """
+				<User userId="admin" username="admin" password="%s"><Firstname>Test</Firstname><Lastname>Administrator</Lastname>
+				<Locale>en-GB</Locale><State>ENABLED</State><Roles><Role>Viewer</Role><Role>Admin</Role><Role>TokenOperator</Role></Roles></User></Users>
+				""".formatted(hash)));
+	}
+
 	private static String base(IntruviaApplication app) { return "http://127.0.0.1:" + app.port() + "/api/v1"; }
 	private static String cookie(HttpResponse<String> response) {
 		return response.headers().firstValue("Set-Cookie").orElseThrow().split(";", 2)[0];
@@ -196,6 +291,22 @@ public class ViewerSessionIT {
 		var request = HttpRequest.newBuilder(URI.create(base(app) + "/session")).timeout(Duration.ofSeconds(10));
 		headers.forEach(request::header);
 		return client.send(request.method(method, HttpRequest.BodyPublishers.ofString(body)).build(), HttpResponse.BodyHandlers.ofString());
+	}
+
+	private static HttpResponse<String> adminSend(HttpClient client, IntruviaApplication app, String method, String path,
+			String body, Map<String, String> headers) throws Exception {
+		var request = HttpRequest.newBuilder(URI.create(base(app) + path)).timeout(Duration.ofSeconds(10));
+		headers.forEach(request::header);
+		var publisher = (method.equals("GET") || method.equals("DELETE")) && body.isEmpty() ?
+				HttpRequest.BodyPublishers.noBody() : HttpRequest.BodyPublishers.ofString(body);
+		return client.send(request.method(method, publisher).build(), HttpResponse.BodyHandlers.ofString());
+	}
+
+	private static HttpResponse<String> ingest(HttpClient client, IntruviaApplication app, String token) throws Exception {
+		var request = HttpRequest.newBuilder(URI.create(base(app) + "/fail2ban/events"))
+				.header("Authorization", "Bearer " + token).header("Content-Type", "application/json")
+				.POST(HttpRequest.BodyPublishers.ofString("{}")).build();
+		return client.send(request, HttpResponse.BodyHandlers.ofString());
 	}
 
 	private static HttpResponse<String> check(HttpResponse<String> response, int status) {

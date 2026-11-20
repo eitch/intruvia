@@ -44,16 +44,16 @@ public final class DeploymentEntrypoint {
 			if (args[3].equals("serve") && args.length == 4) {
 				char[] password = FirstStartProvisioner.ensureInitialized(lock, runtime, templates,
 						environment.get("INTRUVIA_PUBLIC_ORIGIN"), environment, jar);
-				if (password != null) displayPassword("Initial viewer password (shown once; save it now):", password);
+				if (password != null) displayPassword("Initial administrator password (shown once; save it now):", password);
 				IntruviaApplication.main(new String[]{runtime.toString(), Integer.toString(port)});
 				return 0;
 			}
 			if (!args[3].equals("offline")) throw ProvisioningFiles.failure();
 			FirstStartProvisioner.validateExisting(lock, runtime);
 			List<String> command = Arrays.asList(Arrays.copyOfRange(args, 4, args.length));
-			if (command.equals(List.of("reset-viewer-password"))) {
-				char[] password = FirstStartProvisioner.resetViewerPassword(lock, runtime, jar);
-				displayPassword("Replacement viewer password (shown once; save it now):", password);
+			if (command.equals(List.of("reset-initial-password")) || command.equals(List.of("reset-viewer-password"))) {
+				char[] password = FirstStartProvisioner.resetInitialAccountPassword(lock, runtime, jar);
+				displayPassword("Replacement account password (shown once; save it now):", password);
 				return 0;
 			}
 			validateOffline(command);

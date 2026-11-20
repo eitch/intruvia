@@ -31,9 +31,9 @@ public class FirstStartProvisionerIT {
 	private static final String ORIGIN = "https://intruvia.example.org";
 	private static final Pattern STARTED = Pattern.compile("Intruvia started on 127\\.0\\.0\\.1:(\\d+)");
 	private static final Pattern INITIAL_PASSWORD = Pattern.compile(
-			"Initial viewer password \\(shown once; save it now\\):\\R([0-9a-f]{64})\\R");
+			"Initial administrator password \\(shown once; save it now\\):\\R([0-9a-f]{64})\\R");
 	private static final Pattern REPLACEMENT_PASSWORD = Pattern.compile(
-			"Replacement viewer password \\(shown once; save it now\\):\\R([0-9a-f]{64})\\R");
+			"Replacement account password \\(shown once; save it now\\):\\R([0-9a-f]{64})\\R");
 	@Rule public TemporaryFolder temporary = new TemporaryFolder();
 	private int logNumber;
 
@@ -72,15 +72,22 @@ public class FirstStartProvisionerIT {
 				String users = Files.readString(config.resolve("PrivilegeUsers.xml"));
 				assertFalse(users.contains(PASSWORD));
 				assertFalse(users.contains(initialPassword));
-				assertTrue(users.contains("username=\"viewer\""));
+				assertTrue(users.contains("username=\"admin\""));
 				assertTrue(users.contains("<State>ENABLED</State>"));
 				assertTrue(users.contains("<Role>Viewer</Role>"));
+				assertTrue(users.contains("<Role>Admin</Role>"));
+				assertTrue(users.contains("<Role>TokenOperator</Role>"));
 				assertRuntimeDoesNotContain(runtime, initialPassword);
 				assertFalse(Files.readString(Path.of("/proc", Long.toString(app.pid()), "cmdline"), StandardCharsets.UTF_8)
 						.contains(initialPassword));
 				assertFalse(Files.readString(Path.of("/proc", Long.toString(app.pid()), "environ"), StandardCharsets.UTF_8)
 						.contains(initialPassword));
-				login(port, initialPassword);
+				try {
+					login(port, initialPassword);
+				} catch (AssertionError e) {
+					throw new AssertionError("Initial administrator login failed:\n" +
+							safeLog(firstLog, runtime, database.environment()), e);
+				}
 				database.execute("CREATE TABLE public.provisioning_test (value integer)");
 				database.execute("INSERT INTO public.provisioning_test VALUES (42)");
 				Path offlinePassword = privateFile(secrets.resolve("offline-password"), PASSWORD);
@@ -95,7 +102,7 @@ public class FirstStartProvisionerIT {
 				byte[] usersBeforeBlockedReset = Files.readAllBytes(config.resolve("PrivilegeUsers.xml"));
 				Path blockedResetLog = log();
 				Process blockedReset = launch(runtime, logs, blockedResetLog, database.environment(),
-						"offline", "reset-viewer-password");
+					"offline", "reset-initial-password");
 				assertTrue(blockedReset.waitFor(30, TimeUnit.SECONDS));
 				assertNotEquals(0, blockedReset.exitValue());
 				assertArrayEquals(usersBeforeBlockedReset, Files.readAllBytes(config.resolve("PrivilegeUsers.xml")));
@@ -143,7 +150,7 @@ public class FirstStartProvisionerIT {
 			Path usersFile = runtime.resolve("config/PrivilegeUsers.xml");
 			byte[] usersBeforeReset = Files.readAllBytes(usersFile);
 			Path resetLog = log();
-			Process reset = launch(runtime, logs, resetLog, database.environment(), "offline", "reset-viewer-password");
+			Process reset = launch(runtime, logs, resetLog, database.environment(), "offline", "reset-initial-password");
 			assertTrue(reset.waitFor(60, TimeUnit.SECONDS));
 			assertEquals(safeLog(resetLog, runtime, database.environment()), 0, reset.exitValue());
 			String replacementPassword = password(resetLog, REPLACEMENT_PASSWORD);
@@ -276,8 +283,8 @@ public class FirstStartProvisionerIT {
 					text += "\n" + Files.readString(file);
 			}
 		}
-		text = INITIAL_PASSWORD.matcher(text).replaceAll("Initial viewer password: [redacted]");
-		text = REPLACEMENT_PASSWORD.matcher(text).replaceAll("Replacement viewer password: [redacted]");
+		text = INITIAL_PASSWORD.matcher(text).replaceAll("Initial administrator password: [redacted]");
+		text = REPLACEMENT_PASSWORD.matcher(text).replaceAll("Replacement account password: [redacted]");
 		text = text.replace(PASSWORD, "[redacted]").replace(database.get("DB_PASSWORD"), "[redacted]")
 				.replace(database.get("DB_URL"), "[redacted]");
 		Path config = runtime.resolve("config/PrivilegeConfig.xml");
@@ -287,14 +294,27 @@ public class FirstStartProvisionerIT {
 	}
 
 	private static void login(int port, String password) throws Exception {
-		assertEquals(200, loginStatus(port, password));
+		try (var client = HttpClient.newHttpClient()) {
+			var login = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + "/api/v1/session"))
+					.header("Origin", ORIGIN).header("X-Intruvia-CSRF", "1").header("Content-Type", "application/json")
+					.POST(HttpRequest.BodyPublishers.ofString("{\"username\":\"admin\",\"password\":\"" + password + "\"}"))
+					.build();
+			var response = client.send(login, HttpResponse.BodyHandlers.ofString());
+			assertEquals(200, response.statusCode());
+			String cookie = response.headers().firstValue("Set-Cookie").orElseThrow().split(";", 2)[0];
+			var users = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + "/api/v1/admin/users"))
+					.header("Cookie", cookie).GET().build();
+			var admin = client.send(users, HttpResponse.BodyHandlers.ofString());
+			assertEquals(admin.body(), 200, admin.statusCode());
+			assertTrue(admin.body().contains("\"username\":\"admin\""));
+		}
 	}
 
 	private static int loginStatus(int port, String password) throws Exception {
 		try (var client = HttpClient.newHttpClient()) {
 			var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + "/api/v1/session"))
 					.header("Origin", ORIGIN).header("X-Intruvia-CSRF", "1").header("Content-Type", "application/json")
-					.POST(HttpRequest.BodyPublishers.ofString("{\"username\":\"viewer\",\"password\":\"" + password + "\"}"))
+					.POST(HttpRequest.BodyPublishers.ofString("{\"username\":\"admin\",\"password\":\"" + password + "\"}"))
 					.build();
 			return client.send(request, HttpResponse.BodyHandlers.ofString()).statusCode();
 		}

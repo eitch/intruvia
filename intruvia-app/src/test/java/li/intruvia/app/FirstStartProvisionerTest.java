@@ -68,7 +68,7 @@ public class FirstStartProvisionerTest {
 		assertEquals(CANARY, Files.readString(password));
 		var invalid = assertThrows(ConfigurationFailure.class, () -> FirstStartProvisioner.validateOrigin("https://example.org/path"));
 		assertTrue(invalid.getMessage().contains("HTTP or HTTPS"));
-		char[] generated = FirstStartProvisioner.generateViewerPassword();
+		char[] generated = FirstStartProvisioner.generateInitialPassword();
 		try {
 			assertEquals(64, generated.length);
 			assertTrue(new String(generated).matches("[0-9a-f]{64}"));

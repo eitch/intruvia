@@ -110,4 +110,24 @@
 			<AllAllowed>true</AllAllowed>
 		</Privilege>
 	</Role>
+	<Role name="Viewer">
+		<Privilege name="event:read" policy="DefaultPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+	</Role>
+	<Role name="Admin">
+		<Privilege name="intruvia:admin" policy="DefaultPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegeGetUser" policy="UserAccessPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegeAddUser" policy="UserAccessPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegeModifyUser" policy="UserAccessPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegeRemoveUser" policy="UserAccessPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegeSetUserState" policy="UserAccessPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegeSetUserPassword" policy="UserAccessPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+	</Role>
+	<Role name="TokenOperator">
+		<Privilege name="PrivilegePersonalAccessToken" policy="DefaultPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegePersonalAccessTokenUser" policy="UserAccessPrivilege"><AllAllowed>true</AllAllowed></Privilege>
+		<Privilege name="PrivilegeAction" policy="DefaultPrivilege"><Allow>Persist</Allow></Privilege>
+	</Role>
+	<Role name="Producer">
+		<Privilege name="event:ingest" policy="DefaultPrivilege"><Allow>event:ingest</Allow></Privilege>
+	</Role>
 </Roles>

@@ -92,7 +92,7 @@ public final class IntruviaApplication implements AutoCloseable {
 		var api = new IntruviaRestApplication(() -> this.agent.getPrivilegeHandler().getPrivilegeHandler(), identities,
 				() -> this.agent.getContainer().getComponent(ServiceHandler.class), limits, admission);
 		this.viewers = new ViewerSessions(() -> this.agent.getContainer().getComponent(StrolchSessionHandler.class), viewer, clock);
-		api.viewers(this.viewers);
+		api.viewers(this.viewers, () -> this.agent.getPrivilegeHandler().getPrivilegeHandler(), identities);
 		api.register(new li.intruvia.rest.ops.DiagnosticsResource(this.viewers, this::diagnosticSnapshot));
 		JakartaWebSocketServletContainerInitializer.configure(context,
 				(servletContext, container) -> {});

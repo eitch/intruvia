@@ -59,7 +59,7 @@ final class FirstStartProvisioner {
 			stage = "runtime template staging";
 			Path staging = runtime.resolve(".intruvia-staging");
 			ProvisioningFiles.directory(staging);
-			password = generateViewerPassword();
+			password = generateInitialPassword();
 			stage = "runtime template provisioning";
 			stageRuntime(staging, templates, password, origin, applicationJar);
 			for (String name : List.of("config", "data", "temp"))
@@ -94,8 +94,8 @@ final class FirstStartProvisioner {
 		}
 	}
 
-	static char[] resetViewerPassword(RuntimeLock lock, Path runtime, Path applicationJar) throws Exception {
-		char[] password = generateViewerPassword();
+	static char[] resetInitialAccountPassword(RuntimeLock lock, Path runtime, Path applicationJar) throws Exception {
+		char[] password = generateInitialPassword();
 		boolean updated = false;
 		try {
 			runtime = runtime.toAbsolutePath().normalize();
@@ -107,7 +107,7 @@ final class FirstStartProvisioner {
 			byte[] current = Files.readAllBytes(users);
 			byte[] replacement;
 			try {
-				replacement = replaceViewerPassword(current, hash);
+				replacement = replaceInitialPassword(current, hash);
 			} finally {
 				Arrays.fill(current, (byte) 0);
 			}
@@ -153,12 +153,12 @@ final class FirstStartProvisioner {
 		ProvisioningFiles.writeNew(config.resolve("StrolchConfiguration.xml"), strolch);
 		ProvisioningFiles.writeNew(config.resolve("PrivilegeConfig.xml"), privilegeConfig(templates));
 		byte[] roles = ProvisioningFiles.template(templates, "PrivilegeRoles.xml.example");
-		validateViewerRole(roles);
+		validateAdministrationRoles(roles);
 		ProvisioningFiles.writeNew(config.resolve("PrivilegeRoles.xml"), roles);
 		Path users = config.resolve("PrivilegeUsers.xml");
 		ProvisioningFiles.writeNew(users, ProvisioningFiles.template(templates, "PrivilegeUsers.xml.example"));
 		String hash = PrivilegeToolRunner.hash(applicationJar, config, password, stage);
-		ProvisioningFiles.replaceStaged(users, viewerUser(Files.readAllBytes(users), hash));
+		ProvisioningFiles.replaceStaged(users, initialAdministrator(Files.readAllBytes(users), hash));
 		ProvisioningFiles.writeNew(config.resolve("viewer.properties"), ("origin=" + origin + "\n").getBytes(StandardCharsets.UTF_8));
 		ProvisioningFiles.writeNew(config.resolve("ingestion.properties"), ProvisioningFiles.template(templates, "ingestion.properties.example"));
 		ProvisioningFiles.writeNew(config.resolve("machine-identities.conf"), new byte[0]);
@@ -195,7 +195,7 @@ final class FirstStartProvisioner {
 		}
 	}
 
-	static char[] generateViewerPassword() {
+	static char[] generateInitialPassword() {
 		byte[] bytes = new byte[32];
 		char[] password = new char[bytes.length * 2];
 		char[] hex = "0123456789abcdef".toCharArray();
@@ -213,57 +213,82 @@ final class FirstStartProvisioner {
 		}
 	}
 
-	private static void validateViewerRole(byte[] bytes) throws Exception {
+	private static void validateAdministrationRoles(byte[] bytes) throws Exception {
 		var roles = ProvisioningFiles.xml(bytes).getElementsByTagName("Role");
-		int viewers = 0;
+		Set<String> required = new java.util.HashSet<>(Set.of("Viewer", "Admin", "TokenOperator", "Producer"));
 		for (int i = 0; i < roles.getLength(); i++)
-			if (((Element) roles.item(i)).getAttribute("name").equals("Viewer")) viewers++;
-		if (viewers != 1) throw ProvisioningFiles.failure();
+			required.remove(((Element) roles.item(i)).getAttribute("name"));
+		if (!required.isEmpty()) throw ProvisioningFiles.failure();
 	}
 
-	private static byte[] viewerUser(byte[] bytes, String hash) throws Exception {
+	private static byte[] initialAdministrator(byte[] bytes, String hash) throws Exception {
 		Document document = ProvisioningFiles.xml(bytes);
 		Element root = document.getDocumentElement();
 		if (!root.getTagName().equals("Users")) throw ProvisioningFiles.failure();
 		var users = document.getElementsByTagName("User");
 		for (int i = 0; i < users.getLength(); i++) {
 			Element user = (Element) users.item(i);
-			if (user.getAttribute("username").equals("viewer") || user.getAttribute("userId").equals("viewer"))
+			if (user.getAttribute("username").equals("admin") || user.getAttribute("userId").equals("admin"))
 				throw ProvisioningFiles.failure();
 		}
 		Element user = document.createElement("User");
-		user.setAttribute("userId", "viewer");
-		user.setAttribute("username", "viewer");
+		user.setAttribute("userId", "admin");
+		user.setAttribute("username", "admin");
 		user.setAttribute("password", hash);
 		append(document, user, "Firstname", "Intruvia");
-		append(document, user, "Lastname", "Viewer");
+		append(document, user, "Lastname", "Administrator");
 		append(document, user, "Locale", "en-GB");
 		append(document, user, "State", "ENABLED");
 		Element roles = document.createElement("Roles");
 		append(document, roles, "Role", "Viewer");
+		append(document, roles, "Role", "Admin");
+		append(document, roles, "Role", "TokenOperator");
 		user.appendChild(roles);
 		root.appendChild(user);
 		return ProvisioningFiles.xml(document);
 	}
 
 	static byte[] replaceViewerPassword(byte[] bytes, String hash) throws Exception {
+		return replaceUserPassword(bytes, "viewer", hash);
+	}
+
+	private static byte[] replaceInitialPassword(byte[] bytes, String hash) throws Exception {
+		String username = hasRole(bytes, "admin", "Admin") ? "admin" : "viewer";
+		return replaceUserPassword(bytes, username, hash);
+	}
+
+	private static boolean hasRole(byte[] bytes, String username, String roleName) throws Exception {
+		Document document = ProvisioningFiles.xml(bytes);
+		var users = document.getElementsByTagName("User");
+		for (int i = 0; i < users.getLength(); i++) {
+			Element user = (Element) users.item(i);
+			if (!user.getAttribute("username").equals(username) || !user.getAttribute("userId").equals(username))
+				continue;
+			var roles = user.getElementsByTagName("Role");
+			for (int j = 0; j < roles.getLength(); j++)
+				if (roles.item(j).getTextContent().strip().equals(roleName)) return true;
+		}
+		return false;
+	}
+
+	private static byte[] replaceUserPassword(byte[] bytes, String username, String hash) throws Exception {
 		if (hash == null || hash.isBlank()) throw ProvisioningFiles.failure();
 		Document document = ProvisioningFiles.xml(bytes);
 		Element root = document.getDocumentElement();
 		if (!root.getTagName().equals("Users")) throw ProvisioningFiles.failure();
 		var users = document.getElementsByTagName("User");
-		Element viewer = null;
+		Element account = null;
 		for (int i = 0; i < users.getLength(); i++) {
 			Element user = (Element) users.item(i);
-			boolean viewerId = user.getAttribute("userId").equals("viewer");
-			boolean viewerName = user.getAttribute("username").equals("viewer");
-			if (!viewerId && !viewerName) continue;
-			if (!viewerId || !viewerName || viewer != null) throw ProvisioningFiles.failure();
-			viewer = user;
+			boolean matchingId = user.getAttribute("userId").equals(username);
+			boolean matchingName = user.getAttribute("username").equals(username);
+			if (!matchingId && !matchingName) continue;
+			if (!matchingId || !matchingName || account != null) throw ProvisioningFiles.failure();
+			account = user;
 		}
-		if (viewer == null || !viewer.hasAttribute("password") || viewer.getAttribute("password").isBlank())
+		if (account == null || !account.hasAttribute("password") || account.getAttribute("password").isBlank())
 			throw ProvisioningFiles.failure();
-		viewer.setAttribute("password", hash);
+		account.setAttribute("password", hash);
 		return ProvisioningFiles.xml(document);
 	}
 
