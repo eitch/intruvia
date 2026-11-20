@@ -44,9 +44,10 @@ Map assets are bundled, so the viewer does not require an external tile service,
 
 Follow the [deployment guide](docs/DEPLOYMENT.md) to download and start the release bundle with Compose.
 After the first administrator login, use **Manage access** to create a machine and issue
-its one-time, `event:ingest` token, then follow the [Fail2ban integration guide](integrations/fail2ban/README.md)
-to install its additive notification action. Never replace the jail's existing firewall
-action or put the token in a command argument or URL.
+its one-time, `event:ingest` token. Copy the displayed installation command and run it on
+the Fail2ban host, then paste the token at the prompt. See the [Fail2ban integration guide](integrations/fail2ban/README.md)
+for custom configurations. Never replace the jail's existing firewall action or put the
+token in a command argument or URL.
 
 ## Project links
 
