@@ -9,6 +9,7 @@ import li.intruvia.rest.ingest.IngestExceptionMapper;
 import li.intruvia.rest.ingest.IngestionLimits;
 import li.intruvia.rest.read.EventsResource;
 import li.intruvia.rest.session.SessionResource;
+import li.intruvia.rest.session.AdministrationResource;
 import li.intruvia.rest.session.ViewerAuthenticationFilter;
 import li.intruvia.rest.session.ViewerException;
 import li.intruvia.rest.session.ViewerSessions;
@@ -47,6 +48,12 @@ public class IntruviaRestApplication extends ResourceConfig {
 		register(new SessionResource(sessions));
 		register(new ViewerAuthenticationFilter(sessions));
 		register(ViewerException.Mapper.class);
+		return this;
+	}
+
+	public IntruviaRestApplication viewers(ViewerSessions sessions, Supplier<PrivilegeHandler> handler, MachineIdentities identities) {
+		viewers(sessions);
+		register(new AdministrationResource(sessions, handler, identities));
 		return this;
 	}
 }
