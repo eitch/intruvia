@@ -172,7 +172,7 @@ copy_file "$root/README.md" "$bundle/README.md"
 copy_file "$root/docs/DEPLOYMENT.md" "$bundle/docs/DEPLOYMENT.md"
 copy_file "$root/docs/RELEASE.md" "$bundle/docs/RELEASE.md"
 copy_file "$root/docs/deployment/compose-initialization-recovery.md" "$bundle/docs/deployment/compose-initialization-recovery.md"
-for file in README.md intruvia.py intruvia_notify.py jail.local.example; do
+for file in README.md install.py intruvia.py intruvia_notify.py jail.local.example; do
 	copy_file "$root/integrations/fail2ban/$file" "$bundle/integrations/fail2ban/$file"
 done
 

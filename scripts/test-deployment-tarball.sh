@@ -39,6 +39,7 @@ printf '%s\n' \
 	'./integrations/' \
 	'./integrations/fail2ban/' \
 	'./integrations/fail2ban/README.md' \
+	'./integrations/fail2ban/install.py' \
 	'./integrations/fail2ban/intruvia.py' \
 	'./integrations/fail2ban/intruvia_notify.py' \
 	'./integrations/fail2ban/jail.local.example' \
@@ -101,7 +102,7 @@ for file in StrolchConfiguration.xml PrivilegeConfig.xml.example PrivilegeRoles.
 		ingestion.properties.example; do
 	compare_file "intruvia-app/src/main/runtime/config/$file" "runtime-templates/config/$file"
 done
-for file in README.md intruvia.py intruvia_notify.py jail.local.example; do
+for file in README.md install.py intruvia.py intruvia_notify.py jail.local.example; do
 	compare_file "integrations/fail2ban/$file" "integrations/fail2ban/$file"
 done
 
@@ -155,7 +156,7 @@ for file in StrolchConfiguration.xml PrivilegeConfig.xml.example PrivilegeRoles.
 		ingestion.properties.example; do
 	cp -p "$root/intruvia-app/src/main/runtime/config/$file" "$fixture/intruvia-app/src/main/runtime/config/"
 done
-for file in README.md intruvia.py intruvia_notify.py jail.local.example; do
+for file in README.md install.py intruvia.py intruvia_notify.py jail.local.example; do
 	cp -p "$root/integrations/fail2ban/$file" "$fixture/integrations/fail2ban/"
 done
 fixture_builder=$fixture/scripts/build-deployment-tarball.sh
