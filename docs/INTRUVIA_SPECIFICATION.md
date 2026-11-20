@@ -119,6 +119,8 @@ Default per-instance token-bucket limit: 10 events/second, burst 100; tune durin
 
 Ship a small Python 3 standard-library helper and action template. Add the notification action alongside the host's existing ban action; preserve its firewall behavior. Only `actionban` notifies. Pass documented Fail2ban values as arguments without shell evaluation; encode JSON with a serializer. Keep token in a root-readable file, never in action arguments, URLs or source control. Verify TLS certificates and set finite connect/read timeouts.
 
+Offer a copyable, token-free installation command alongside each newly issued machine token in the administrator UI. The command prompts for the token and fetches a self-contained installer from the Intruvia host over verified HTTPS using the scoped machine credential. The installer prompts for an existing standard-action jail, preserves its firewall action and refuses unsafe or existing targets. Keep manual instructions for custom installations; never offer the download command over plain HTTP.
+
 Generate eventId and timestamp once per invocation; reuse the exact payload for every retry. Retry network failures, `429`, and `5xx` at most three total attempts with jitter and an overall 15-second deadline; respect Retry-After within that deadline. Do not retry other `4xx`. Notification failure must not prevent the normal ban action. Log a concise local failure. A persistent offline queue and guaranteed delivery through long outages are deferred: events can be lost after bounded retries. Document this limitation prominently.
 
 ## 5. MaxMind enrichment

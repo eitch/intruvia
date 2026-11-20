@@ -1,6 +1,6 @@
 # Intruvia — backlog status
 
-Updated: 2026-11-20 · Task 028 simplified release deployment complete
+Updated: 2026-11-20 · Task 029 downloadable Fail2ban onboarding complete
 
 Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA_BACKLOG.md)
 
@@ -8,7 +8,7 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 
 - Current task: **None — all numbered tasks are complete**.
 - Next task: **None — backlog complete**.
-- Completed: **28 / 28**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
+- Completed: **29 / 29**. TODO: **0**. IN_PROGRESS: **0**. BLOCKED: **0**.
 - Strolch PAT integration replaces the custom verifier. Revised task 005 acceptance originally passed against a local framework snapshot; the published 2.8.0-1 release now contains the verified PAT persistence fixes. Historical custom-token results remain superseded. Tasks 001–027 retain completion evidence; task 028's initial completion, documentation follow-ups and simplified release-onboarding implementation are recorded in the execution log. Task 023's first-install administration follow-up also passes Maven/PostgreSQL and browser acceptance. Task 027 publishes `latest` only for non-SNAPSHOT image versions. Task 024's unified release packages with tests skipped by default and offers PostgreSQL-backed verification through `--with-tests`.
 - Foundational decisions specified: MVP boundary; Strolch/Java/JAX-RS/embedded Jetty/Vanilla JS stack; module boundaries; generic model; local MaxMind enrichment; authenticated ingestion/viewing; durable replay; map highlighting. These are design inputs, not completed implementation tasks.
 - Exact dependency versions and integration conventions are verified by task 001; the task 002 application skeleton and task 003 model contracts are verified; task 004 persistence was originally verified with a local snapshot override and the full PostgreSQL suite was revalidated against published Strolch 2.8.0-1 during task 023; the ingestion HTTP endpoint, viewer sessions, snapshot/history reads and ordered WebSocket stream are verified; snapshot viewer and live highlighting are verified; browser reconnect/resync is verified; deployment/recovery and release review are verified.
@@ -49,8 +49,23 @@ Links: [specification](INTRUVIA_SPECIFICATION.md) · [numbered backlog](INTRUVIA
 | 026 | Allow HTTP origins and persist actionable startup diagnostics | 023, 025 | DONE | HTTP/HTTPS origin and cookie tests, safe persistent startup diagnostics, packaged-entrypoint failure checks, PostgreSQL-backed Maven verify and HTTP Compose/Caddy configuration checks passed; see execution log below. |
 | 027 | Publish version-qualified Docker tags | 023, 024 | DONE | Both workflows publish major, minor and full-version tags, plus mutable `latest` only for non-SNAPSHOT versions; SNAPSHOT suffix detection is case-insensitive. Stable/SNAPSHOT/qualified versions and tag/push failures are covered. Prior and follow-up evidence is retained below. |
 | 028 | Simplify deployment onboarding and Fail2ban setup | 018, 021 | DONE | Release-bundle setup sequence, attached first-start exit/password behavior, subsequent Compose startup, PostgreSQL integration and packaged Compose checks passed; no release was published; see execution log. |
+| 029 | Downloadable Fail2ban onboarding | 018, 023, 028 | DONE | Authenticated packaged installer, token-free UI command, isolated Fail2ban, TLS command and browser/download checks passed; see execution log. |
 
 ## Execution log
+
+### 2026-11-20 — task 029 completed
+
+- Agent: Junie. Transition: IN_PROGRESS → DONE. Registered a scoped machine-PAT-authenticated download that embeds the exact integration files, and added a secure HTTPS-only command beside newly issued UI tokens. The bootstrap prompts for a standard enabled jail, uses the guarded installer, protects the PAT and retains it if rollback is uncertain. Updated the operator guides and specification.
+- `INTRUVIA_BROWSER_NO_REPORT=1 bash docs/verification/023-run-admin-browser.sh` passed with Java 25.0.5 and Maven 3.10.0: Maven package/unit tests and the Chromium/PostgreSQL admin flow passed; actual issued PAT accepted by bootstrap, actual packaged endpoint returns rendered valid Python and rejects an invalid PAT, and simulated HTTPS UI command copy / HTTP refusal passed. The fixture itself uses loopback HTTP; it does not exercise a live HTTPS deployment.
+- `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s integrations/fail2ban/tests -v` passed 32 tests; the first combined run failed 8 and errored 1 because the checkout's group-writable home ancestor was outside the fixture, then passed after isolating that external permission while retaining sandbox safety checks.
+- `/home/eitch/.nvm/versions/node/v26.13.0/bin/node --test intruvia-web/src/test/fail2ban-install.test.mjs` passed 3 tests, including real curl with verified local TLS, untrusted certificate rejection, token stdin and cleanup/failure handling; the TLS test substitutes sudo and a harmless downloaded script rather than changing the host. `bash scripts/test-deployment-tarball.sh`, IDE build/error lint, six-document local link/anchor/shell validation, and staged/unstaged `git diff --check` passed.
+- Unrun: live installer/action smoke and live HTTPS Intruvia-to-Fail2ban deployment; `fail2ban-client` is not installed. No host configuration was changed and no release/image was published.
+
+### 2026-11-20 — task 029 started
+
+- Agent: Junie. Transition: TODO → IN_PROGRESS. Dependencies 018, 023 and 028 are DONE; no other task is active.
+- Scope: authenticated, self-contained Fail2ban installer download and a secure copyable command alongside newly issued machine tokens, with documentation and focused verification.
+- Existing working tree was clean. Acceptance checks are pending.
 
 2026-09-28 (UTC) — Task 001, Codex: TODO → IN_PROGRESS. Verified the ledger has no active or blocked task; task 001 has no dependencies. Read project and Strolch guidelines (including Vanilla JavaScript), specification, backlog and status. Initial `git status --short` was clean. Scope: baseline decision and isolated compatibility probe only.
 

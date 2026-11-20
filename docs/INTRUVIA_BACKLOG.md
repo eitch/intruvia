@@ -298,3 +298,13 @@ The foundational product and stack decisions are already captured in the specifi
 **Acceptance criteria:** Deployment documentation follows the user's release flow in order: download the versioned bundle and checksum, verify and unpack it, generate distinct PostgreSQL passwords with the simple documented OpenSSL commands, set `INTRUVIA_PUBLIC_ORIGIN`, pull the release image, run `docker compose up -d --wait db`, run `docker compose run --rm --no-deps -T app` to initialize and capture the one-time administrator password, and then run `docker compose up -d`. No build, Python setup script, or extra first-start command is required. The first-start app command exits zero only after successful provisioning and password output, releasing its runtime lock; initialized runs continue to serve normally and do not print another password. Tests verify first-run exit, one-time password, successful subsequent service startup/login, persisted state and recovery behavior. HTTPS and secret-handling cautions remain beside setup; existing Fail2ban guidance/installer, standalone deployment, backup/restore, operational exceptions and troubleshooting remain documented. The guarded Fail2ban setup preserves the default firewall action and refuses unsafe/pre-existing configuration without overwriting files or leaking secrets. Record exact checks and unrun checks in the status ledger.
 
 **Completion evidence:** Exact first-start and PostgreSQL/Compose acceptance checks, Fail2ban tests and package/archive checks, documentation/link/shell-syntax checks, and confirmation that normal setup precedes troubleshooting and recovery guidance in the status ledger.
+
+## 029 — Downloadable Fail2ban onboarding
+
+**Dependencies:** 018, 023, 028
+
+**Scope:** Serve a self-contained Fail2ban setup from the Intruvia host, authenticated by the machine's ingestion token, and show an installation command next to newly issued tokens in the administration UI. Document the same flow and retain manual setup for custom configurations.
+
+**Acceptance criteria:** A scoped, mapped, active producer PAT can download the packaged installer; missing, invalid, insufficient and revoked credentials are rejected. The UI provides a copyable command without embedding the token, which prompts securely and downloads over verified HTTPS. The installer configures a standard jail without overwriting existing files or firewall actions, protects the token, validates and reloads Fail2ban, and reports failures safely. Cover endpoint authorization, bundled resources, command presentation, successful setup and failure/rollback paths. Record exact checks and unrun checks in the ledger.
+
+**Completion evidence:** Focused HTTP, installer, UI and packaging checks and exact results in the status ledger.
