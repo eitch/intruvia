@@ -7,9 +7,10 @@ against unrelated clients.
 
 The runtime directory must be empty and owned by the container user (`10001:10001`) with mode `0700`. The application
 generates the initial viewer password in memory, stores only the configured Strolch hash, and displays the password once
-after successful initialization. Start the app with an attached `docker compose run --rm --no-deps -T app` after the
-database is ready; the Docker app logging driver is `none`, so Docker logs cannot recover the output. A later restart
-neither changes the viewer nor redisplays the password.
+after successful initialization. After the database is ready, run `docker compose run --rm --no-deps -T app` attached
+to the terminal; it exits successfully after initialization and password output, releasing the runtime lock. Then start
+the deployment with `docker compose up -d`. An initialized app start serves normally and never changes the viewer or
+redisplays the password. The Docker app logging driver is `none`, so Docker logs cannot recover the output.
 
 `INTRUVIA_PUBLIC_ORIGIN` accepts an exact HTTP or HTTPS origin with an optional port and no credentials, path, query,
 fragment or trailing slash. Use `http://localhost` for certificate-free local testing; HTTPS is recommended for exposed
@@ -113,8 +114,8 @@ still authenticates to `db` and will fail startup until the mismatch is repaired
 the bootstrap use of `INTRUVIA_DB_*` initialize a **new** `state/postgres` directory only; `INTRUVIA_DB_*` still configure app and
 healthcheck connections. Editing `INTRUVIA_DB_PASSWORD` does not change the role password in an existing
 database directory. Do not remove or recreate it to clear an authentication failure.
-Already extracted bundles and published or cached images are not changed by this source update. The corrected healthcheck
-requires the updated Compose file, and the actionable app diagnostic requires an image built with this code.
+Use the Compose file and application image from the same deployment release. Do not mix files or images from different
+releases when repairing a credential mismatch.
 
 If the value was changed accidentally, restore the existing password from the protected credential record. To
 intentionally set a new application-role password, stop app writers and connect as an authorized PostgreSQL administrator:
