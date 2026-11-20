@@ -13,36 +13,27 @@ into a shell command. Start, stop, unban, reban and restored bans do not notify.
 
 ## Quick setup for a standard jail
 
-1. In Intruvia **Manage access**, create a machine for this reporting host with a
-   stable instance ID and issue a token limited to `event:ingest`. Copy its
-   `tokenId:tokenValue` once using a protected channel. Use a separate machine/token
-   for each reporting host.
-2. Transfer this `integrations/fail2ban/` directory from the source checkout or deployment
-   bundle to the Fail2ban host. The named jail must already be enabled and
-   use the standard `%(action_)s` firewall action; this setup does not enable jails,
-   change filters, or alter ban/unban behavior.
-3. Create the private token file interactively on the Fail2ban host. This default
-   assumes the Fail2ban service runs as root; `noclobber` prevents replacing an
-   existing token file:
+1. In Intruvia **Manage access**, create a machine with a stable instance ID. Copy the
+   displayed command and one-time `event:ingest` token via a protected channel; use a
+   separate machine/token for each reporting host.
+2. On the Fail2ban host, run the command in Bash. Paste the token when prompted, enter
+   the enabled jail name, and confirm its effective action is the standard `%(action_)s`.
+   This requires Bash, curl, Python 3, sudo and a trusted HTTPS connection to Intruvia.
 
-   ```sh
-   sudo bash -c 'set -euo pipefail; umask 077; set -o noclobber; read -r -s -p "Paste the one-time token: " token; printf "\n"; printf "%s\n" "$token" > /etc/fail2ban/intruvia.pat; unset token'
-   ```
+The UI fills in your Intruvia origin. For example, replace `https://intruvia.example.org`
+in both places below with your exact HTTPS origin:
 
-4. Run this one command from the transferred bundle/source root, substituting the
-   exact HTTPS host and enabled jail name:
-
-   ```sh
-   sudo python3 integrations/fail2ban/install.py --jail sshd --endpoint https://intruvia.example.org/api/v1/fail2ban/events --confirm-default-action
-   ```
+```bash
+(set +x; umask 077; unset TOKEN; read -r -s -p 'Bearer token: ' TOKEN && printf '\n' && tmp=$(mktemp) && trap 'rm -f -- "$tmp"' EXIT && status=$(printf 'Authorization: Bearer %s\n' "$TOKEN" | curl -q --proto '=https' --fail --silent --show-error --max-time 60 --header @- --output "$tmp" --write-out '%{http_code}' 'https://intruvia.example.org/api/v1/fail2ban/install.py') && [ "$status" = 200 ] && printf '%s\n' "$TOKEN" | sudo python3 "$tmp" 'https://intruvia.example.org'; result=$?; unset TOKEN; exit "$result")
+```
 
 The installer refuses custom actions, existing target files and unsafe paths; it appends
 the notification after the existing firewall action, validates and reloads Fail2ban, and
-rolls back only newly created files if validation fails. It never reads or prints the PAT
-value. For a dedicated Fail2ban service account, create the mode-`0600` PAT file owned by
-that account (`sudo chown ACCOUNT /etc/fail2ban/intruvia.pat`) and add
-`--service-user ACCOUNT` to the installer command. The default uses system TLS trust;
-private CA configuration or custom jail actions require the manual procedure below.
+rolls back newly created files on failure when safe. If reload or rollback cannot be
+confirmed, it retains the token and tells you to inspect the installation before retrying.
+The token is stored in a root-only file, not in the command, arguments, URL or jail
+configuration. A dedicated Fail2ban service account, private CA or custom jail action
+requires the manual procedure below.
 
 Confirm that both actions are active with `sudo fail2ban-client get sshd actions`. Test
 only in a disposable jail; do not ban a real administrator. See the [deployment guide](../../docs/DEPLOYMENT.md#connect-a-fail2ban-host)
