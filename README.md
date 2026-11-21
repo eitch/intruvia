@@ -43,6 +43,8 @@ Map assets are bundled, so the viewer does not require an external tile service,
 ## Get started
 
 Follow the [deployment guide](docs/DEPLOYMENT.md) to download and start the release bundle with Compose.
+Compose administrators can select a non-root application UID/GID in `.env`; both default to `10001`. Changing the
+identity for an initialized bundle requires a stopped, backed-up ownership migration described in the deployment guide.
 After the first administrator login, use **Manage access** to create a machine and issue
 its one-time, `event:ingest` token. Enter a stable machine ID; it defaults the username and
 instance ID, with optional advanced overrides. Tokens may last up to 3650 days; `0` uses

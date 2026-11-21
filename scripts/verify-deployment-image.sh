@@ -28,7 +28,7 @@ if output=$(docker run --rm "$image" 2>&1); then
 	printf 'Container unexpectedly started without provisioning inputs\n' >&2
 	exit 1
 fi
-[[ "$output" == *'Initialization failed; preserve the runtime and database and follow recovery instructions'* ]]
+[[ "$output" == *'INTRUVIA_PUBLIC_ORIGIN is required'* ]]
 docker run --rm --entrypoint sh "$image" -c '
 	set -eu
 	test "$(id -u)" = 10001
@@ -42,11 +42,19 @@ docker run --rm --entrypoint sh "$image" -c '
 		case "$path" in *.jar) ;; *) exit 1 ;; esac
 	done
 '
+docker run --rm --user 23456:34567 --entrypoint sh "$image" -c '
+	set -eu
+	test "$(id -u):$(id -g)" = 23456:34567
+	test -r /opt/intruvia/intruvia-app.jar
+	test ! -w /opt/intruvia/intruvia-app.jar
+	test ! -r /var/lib/intruvia/runtime
+	for library in /opt/intruvia/lib/*.jar; do test -r "$library" && test ! -w "$library"; done
+'
 if output=$(docker run --rm --entrypoint java "$image" -cp '/opt/intruvia/intruvia-app.jar:/opt/intruvia/lib/*' PrivilegeTool 2>&1); then
 	printf 'PrivilegeTool unexpectedly accepted missing arguments\n' >&2
 	exit 1
 fi
-[[ "$output" == *'Usage: config-dir hash password-file output-file'* ]]
+[[ "$output" == *'Invalid privilege operation'* ]]
 
 umask 077
 test_data=$(mktemp -d "$root/intruvia-app/target/image-smoke.XXXXXXXX")

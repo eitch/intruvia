@@ -8,10 +8,13 @@ work=$(mktemp -d "$root/target/compose-startup-test.XXXXXXXX")
 project="intruvia-test-$$-${RANDOM}${RANDOM}"
 image="intruvia-compose-check-$$-${RANDOM}${RANDOM}:0.0.1"
 bundle="$work/bundle"
+application_uid=${INTRUVIA_UID:-10001}
+application_gid=${INTRUVIA_GID:-10001}
 image_created=false
 compose_created=false
 unset INTRUVIA_IMAGE INTRUVIA_PUBLIC_ORIGIN POSTGRES_ADMIN_USERNAME POSTGRES_ADMIN_PASSWORD \
-	INTRUVIA_DB_NAME INTRUVIA_DB_USERNAME INTRUVIA_DB_PASSWORD COMPOSE_FILE COMPOSE_PROJECT_NAME COMPOSE_PROFILES COMPOSE_ENV_FILES
+	INTRUVIA_DB_NAME INTRUVIA_DB_USERNAME INTRUVIA_DB_PASSWORD INTRUVIA_UID INTRUVIA_GID \
+	COMPOSE_FILE COMPOSE_PROJECT_NAME COMPOSE_PROFILES COMPOSE_ENV_FILES
 
 compose() {
 	docker compose --project-name "$project" --project-directory "$bundle" --file "$bundle/compose.yaml" \
@@ -65,17 +68,32 @@ printf 'services:\n  db:\n    healthcheck:\n      interval: 1s\n      timeout: 2
 sed -i -e 's|^INTRUVIA_PUBLIC_ORIGIN=$|INTRUVIA_PUBLIC_ORIGIN=https://intruvia.example.org|' \
 	-e 's|^POSTGRES_ADMIN_PASSWORD=$|POSTGRES_ADMIN_PASSWORD=compose_admin_test_password_0123456789|' \
 	-e 's|^INTRUVIA_DB_PASSWORD=$|INTRUVIA_DB_PASSWORD=compose_app_test_password_9876543210|' "$bundle/.env"
+INTRUVIA_UID="$application_uid" INTRUVIA_GID="$application_gid" python3 - "$bundle/.env" <<'PY'
+import os
+import sys
+from pathlib import Path
+
+env_file = Path(sys.argv[1])
+lines = env_file.read_text().splitlines()
+values = {"INTRUVIA_UID": os.environ["INTRUVIA_UID"], "INTRUVIA_GID": os.environ["INTRUVIA_GID"]}
+for index, line in enumerate(lines):
+    key, separator, _ = line.partition("=")
+    if separator and key in values:
+        lines[index] = f"{key}={values[key]}"
+env_file.write_text("\n".join(lines) + "\n")
+PY
 chmod 0600 "$bundle/.env"
 umask 077
 compose config --quiet
 compose config --format json > "$work/compose.json" || failure 'Compose configuration could not be resolved'
-python3 - "$work/compose.json" "$bundle" <<'PY'
+python3 - "$work/compose.json" "$bundle" "$application_uid" "$application_gid" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 configuration = json.loads(Path(sys.argv[1]).read_text())
 bundle = Path(sys.argv[2]).resolve()
+expected_user = f"{sys.argv[3]}:{sys.argv[4]}"
 state = bundle / "state"
 expected = {
     "prepare-state": {
@@ -102,6 +120,18 @@ expected = {
 }
 if configuration.get("volumes"):
     raise SystemExit("Compose still declares named volumes")
+prepare_state = configuration["services"]["prepare-state"]
+if prepare_state.get("user") != "0:0":
+    raise SystemExit("prepare-state must remain a root-only one-shot service")
+if not {"CHOWN", "DAC_OVERRIDE", "FOWNER"}.issubset(set(prepare_state.get("cap_add", []))):
+    raise SystemExit("prepare-state capabilities differ")
+if configuration["services"]["app"].get("user") != expected_user:
+    raise SystemExit("application UID/GID did not resolve from configuration")
+if configuration["services"]["app"].get("cap_drop") != ["ALL"]:
+    raise SystemExit("application capabilities are not dropped")
+if configuration["services"]["prepare-state"].get("environment", {}).get("INTRUVIA_UID") != sys.argv[3] or \
+        configuration["services"]["prepare-state"].get("environment", {}).get("INTRUVIA_GID") != sys.argv[4]:
+    raise SystemExit("prepare-state identity environment differs from the app identity")
 for service, expected_mounts in expected.items():
     actual_mounts = set()
     for mount in configuration["services"][service].get("volumes", []):
@@ -111,6 +141,44 @@ for service, expected_mounts in expected.items():
     if actual_mounts != {(target, source.resolve()) for target, source in expected_mounts}:
         raise SystemExit(f"{service} bind mounts differ: {actual_mounts!r}")
 PY
+set_env_value() {
+	local key=$1 value=$2
+	KEY="$key" VALUE="$value" python3 - "$bundle/.env" <<'PY'
+import os
+import sys
+from pathlib import Path
+
+env_file = Path(sys.argv[1])
+key = os.environ["KEY"]
+lines = env_file.read_text().splitlines()
+for index, line in enumerate(lines):
+    if line.startswith(f"{key}="):
+        lines[index] = f"{key}={os.environ['VALUE']}"
+        break
+else:
+    raise SystemExit(f"missing {key} in .env")
+env_file.write_text("\n".join(lines) + "\n")
+PY
+}
+expect_invalid_identity() {
+	local key=$1 value=$2
+	set_env_value "$key" "$value"
+	if compose run --rm --no-deps -T prepare-state > "$work/invalid-$key.log" 2>&1; then
+		failure "$key accepted invalid input"
+	fi
+	grep -F "$key must be a non-zero decimal integer" "$work/invalid-$key.log" >/dev/null ||
+		failure "$key invalid input did not produce the expected diagnostic"
+	[[ ! -e $bundle/state/runtime/uid-injection ]] || failure "$key was interpreted as shell syntax"
+}
+expect_invalid_identity INTRUVIA_UID 'not-numeric; touch /var/lib/intruvia/runtime/uid-injection'
+set_env_value INTRUVIA_UID "$application_uid"
+expect_invalid_identity INTRUVIA_UID 0
+set_env_value INTRUVIA_UID "$application_uid"
+expect_invalid_identity INTRUVIA_GID not-numeric
+set_env_value INTRUVIA_GID "$application_gid"
+expect_invalid_identity INTRUVIA_GID 0
+set_env_value INTRUVIA_UID "$application_uid"
+set_env_value INTRUVIA_GID "$application_gid"
 [[ -z $(compose ps --all -q) ]] || { printf 'Test project already exists\n' >&2; exit 1; }
 for name in proxy database; do
 	if docker network inspect "${project}_$name" >/dev/null 2>&1; then printf 'Test network already exists\n' >&2; exit 1; fi
@@ -132,7 +200,7 @@ startup_password=${BASH_REMATCH[1]}
 without_password=${startup_output//"$startup_password"/}
 [[ $((${#startup_output} - ${#without_password})) == 64 ]] || failure 'initial password was not printed exactly once'
 unset startup_output startup_password without_password
-compose up -d || failure 'services could not be started after attached first start'
+compose up -d app || failure 'application could not be started after attached first start'
 app=$(compose ps -q app)
 db=$(compose ps -q db)
 [[ -n "$app" && -n "$db" && -z $(docker port "$app") && -z $(docker port "$db") ]] || failure 'application or database port is published'
@@ -143,6 +211,8 @@ for _ in {1..120}; do
 	sleep 1
 done
 [[ "$healthy" == true ]] || failure 'application did not become ready after attached first start'
+[[ $(docker inspect --format '{{.Config.User}}' "$app") == "$application_uid:$application_gid" ]] ||
+	failure 'application did not run as the selected UID/GID'
 db_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$db")" +%s%N)
 delay_finished=$(compose exec -T db sh -c 'cat "$PGDATA/.intruvia-delay-finished"')
 app_started=$(date -d "$(docker inspect --format '{{.State.StartedAt}}' "$app")" +%s%N)
@@ -154,13 +224,17 @@ compose exec -T app sh -c '
 	test -f /var/lib/intruvia/runtime/.intruvia-initialized
 	test ! -e /var/lib/intruvia/runtime/.intruvia-initializing
 	for path in /var/lib/intruvia/runtime /var/log/intruvia /run/secrets; do
-		test "$(stat -c %u:%g "$path")" = 10001:10001
+		test "$(stat -c %u:%g "$path")" = "$1:$2"
 		test "$(stat -c %a "$path")" = 700
+	done
+	for path in /var/lib/intruvia/runtime/config/PrivilegeConfig.xml /var/lib/intruvia/runtime/config/PrivilegeUsers.xml; do
+		test "$(stat -c %u:%g "$path")" = "$1:$2"
+		test "$(stat -c %a "$path")" = 600
 	done
 	for flag in allowSchemaCreation allowSchemaMigration allowSchemaDrop runMigrationsOnStart pollMigrations; do
 		grep -Fq "<$flag>false</$flag>" /var/lib/intruvia/runtime/config/StrolchConfiguration.xml
 	done
-' || failure 'runtime initialization or schema flags'
+' sh "$application_uid" "$application_gid" || failure 'runtime initialization, ownership/modes or schema flags'
 role=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT NOT r.rolsuper AND NOT r.rolcreatedb AND NOT r.rolcreaterole AND d.datdba = r.oid FROM pg_roles r JOIN pg_database d ON d.datname = current_database() WHERE r.rolname = current_user"')
 [[ "$role" == t ]] || failure 'database role'
 before=$(compose exec -T app sha256sum /var/lib/intruvia/runtime/config/PrivilegeConfig.xml /var/lib/intruvia/runtime/config/PrivilegeUsers.xml)
@@ -172,6 +246,8 @@ for _ in {1..120}; do
 	sleep 1
 done
 [[ "$healthy" == true ]] || failure 'application did not become ready after restart'
+[[ $(docker inspect --format '{{.Config.User}}' "$app") == "$application_uid:$application_gid" ]] ||
+	failure 'application identity changed during restart'
 after=$(compose exec -T app sha256sum /var/lib/intruvia/runtime/config/PrivilegeConfig.xml /var/lib/intruvia/runtime/config/PrivilegeUsers.xml)
 [[ "$before" == "$after" ]] || failure 'privilege files changed during restart'
 value=$(compose exec -T db sh -c 'PGPASSWORD="$INTRUVIA_DB_PASSWORD" psql -X -h db -U "$INTRUVIA_DB_USERNAME" -d "$POSTGRES_DB" -tAc "SELECT value FROM public.compose_test"')

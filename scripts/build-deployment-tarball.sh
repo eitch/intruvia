@@ -131,6 +131,8 @@ awk '
 		if (++seen[key] != 1) exit 1
 		if (key == "INTRUVIA_IMAGE") {
 			if (value != "") exit 1
+		} else if (key == "INTRUVIA_UID" || key == "INTRUVIA_GID") {
+			if (value != "10001") exit 1
 		} else if (key == "INTRUVIA_PUBLIC_ORIGIN" || key == "POSTGRES_ADMIN_PASSWORD" || key == "INTRUVIA_DB_PASSWORD") {
 			if (value != "") exit 1
 		} else if (key == "POSTGRES_ADMIN_USERNAME" || key == "INTRUVIA_DB_NAME" || key == "INTRUVIA_DB_USERNAME") {
@@ -138,12 +140,13 @@ awk '
 		} else exit 1
 	}
 	END {
-		if (seen["INTRUVIA_IMAGE"] != 1 || seen["INTRUVIA_PUBLIC_ORIGIN"] != 1 || seen["POSTGRES_ADMIN_PASSWORD"] != 1 ||
+		if (seen["INTRUVIA_IMAGE"] != 1 || seen["INTRUVIA_UID"] != 1 || seen["INTRUVIA_GID"] != 1 ||
+				seen["INTRUVIA_PUBLIC_ORIGIN"] != 1 || seen["POSTGRES_ADMIN_PASSWORD"] != 1 ||
 				seen["INTRUVIA_DB_PASSWORD"] != 1 || seen["POSTGRES_ADMIN_USERNAME"] != 1 ||
 				seen["INTRUVIA_DB_NAME"] != 1 || seen["INTRUVIA_DB_USERNAME"] != 1) exit 1
 	}
 ' "$stage/env.example" || { printf 'Unsafe or unexpected deployment environment template\n' >&2; exit 1; }
-matches_baseline "$stage/env.example" 1ca01b4907c0a4dee1c63ca59ce1bc6aa13a8ae0c62326c2c46eab9453842ba2 || {
+matches_baseline "$stage/env.example" de4465905d62b055329436a0c83ad71a4bab6862bff305afaa417b87abda2eef || {
 	printf 'Unsafe or unexpected deployment environment template\n' >&2
 	exit 1
 }

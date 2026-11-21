@@ -5,9 +5,10 @@ have administrative, replication or row-security-bypass privileges, or membershi
 database writers stopped during initialization: the emptiness check is a point-in-time check, not a database-wide lock
 against unrelated clients.
 
-The runtime directory must be empty and owned by the container user (`10001:10001`) with mode `0700`. The application
-generates the initial viewer password in memory, stores only the configured Strolch hash, and displays the password once
-after successful initialization. After the database is ready, run `docker compose run --rm --no-deps -T app` attached
+The runtime directory must be empty and owned by the configured application UID/GID (defaults to `10001:10001`) with
+mode `0700`. `INTRUVIA_UID` and `INTRUVIA_GID` in `.env` must be non-zero decimal IDs. The application generates the
+initial viewer password in memory, stores only the configured Strolch hash, and displays the password once after
+successful initialization. After the database is ready, run `docker compose run --rm --no-deps -T app` attached
 to the terminal; it exits successfully after initialization and password output, releasing the runtime lock. Then start
 the deployment with `docker compose up -d`. An initialized app start serves normally and never changes the viewer or
 redisplays the password. The Docker app logging driver is `none`, so Docker logs cannot recover the output.
@@ -29,6 +30,41 @@ handling policy when no longer needed.
 The application holds `.intruvia.lock` for its entire lifetime and offline privilege operations take the same lock. Do
 not edit the privilege files or run another writer while either is active. The normal runtime keeps schema creation,
 migration and drop disabled; a separate protected temporary runtime is used for the one-time schema bootstrap.
+
+### Change the application UID and GID
+
+For a fresh bundle, set `INTRUVIA_UID` and `INTRUVIA_GID` in `.env` before starting Compose; the default is
+`10001:10001`. The one-shot `prepare-state` service sets ownership and mode `0700` on the runtime, app-log and secrets
+directory roots only. It never recursively changes existing files. PostgreSQL and proxy identities are independent.
+
+Changing identity on an initialized bundle requires an explicit offline migration. Do not start the app with the new IDs
+until the existing app files have the matching numeric owner:
+
+1. Pause ingress, stop the app and every offline privilege-file writer, and make and verify a coordinated database and
+   runtime backup. Keep the backup private and do not modify it.
+2. Set both non-zero decimal IDs in `.env`, then from the bundle root run `chown` on only the application-owned paths.
+   Replace the example numbers with the exact values from `.env`; `chown` preserves file modes:
+
+   ```bash
+   INTRUVIA_UID=23456
+   INTRUVIA_GID=34567
+   sudo chown -R -- "$INTRUVIA_UID:$INTRUVIA_GID" state/runtime state/app-logs secrets
+   ```
+
+   Do not change ownership under `state/postgres`, `state/caddy-data` or `state/caddy-config`; those services use
+   different identities. On rootless Docker or a host with user-namespace remapping, apply the equivalent ownership in
+   the mapped host IDs.
+3. Start the database and wait for it to become healthy; this also prepares the three application directory roots.
+   Then start the app and proxy and verify readiness, login, offline operations, and that sensitive files remain mode
+   `0600` inside mode-`0700` directories:
+
+   ```bash
+   docker compose up -d --wait db
+   docker compose up -d --wait app caddy
+   ```
+
+If the backup, current owners, or host UID mapping are uncertain, stop and resolve that before starting the application.
+Changing `.env` alone is not an ownership migration and never triggers recursive ownership changes.
 
 ### Migrate an existing named-volume installation
 

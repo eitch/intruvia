@@ -83,6 +83,9 @@ cmp "$work/expected-env" "$bundle/.env" || fail 'environment changed beyond the 
 for key in POSTGRES_ADMIN_PASSWORD INTRUVIA_DB_PASSWORD INTRUVIA_PUBLIC_ORIGIN; do
 	grep -Fx "$key=" "$bundle/.env" >/dev/null || fail "$key must be empty"
 done
+for key in INTRUVIA_UID INTRUVIA_GID; do
+	grep -Fx "$key=10001" "$bundle/.env" >/dev/null || fail "$key must default to 10001"
+done
 
 compare_file() {
 	local source=$1 destination=$2

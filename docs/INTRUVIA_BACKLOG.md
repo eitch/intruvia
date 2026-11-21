@@ -245,6 +245,10 @@ The foundational product and stack decisions are already captured in the specifi
 
 **Completion evidence:** Exact test/build/rehearsal commands and outputs, image identity, sanitized archive/checksum audit, and explicit release blockers or unrun checks in the status ledger.
 
+**Arbitrary application UID/GID follow-up:** Allow the Compose deployer to select the application container's numeric UID and GID through the reviewed `.env` template, retaining `10001:10001` as the default. Keep PostgreSQL and proxy identities unchanged. The application image must allow arbitrary non-root users to read and traverse immutable application files while runtime state and sensitive files remain private. A root-only, one-shot preparation service may set ownership for fresh application bind-mount roots using validated numeric UID/GID values; invalid values must fail clearly and must not be interpreted through shell expansion. Changing `.env` must never recursively rewrite existing runtime ownership: document a stopped, backed-up, explicit ownership migration and leave existing data untouched automatically. Preserve standalone deployment. Extend archive-template validation, image checks, and Compose fresh-start/restart/offline-operation checks to cover default and custom identities, invalid values, and private state.
+
+**Completion evidence:** Exact script syntax/tarball regression results, Java/Maven toolchain and build results, resolved Compose/invalid-value checks, default/custom identity image and startup/restart/offline-operation results, ownership/mode evidence, documentation checks, and explicit unavailable or unrun checks in the status ledger.
+
 ## 024 — Automate GitHub source releases and announcements
 
 **Dependencies:** 022

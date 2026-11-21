@@ -31,6 +31,12 @@ do not rerun them or use them on an existing deployment. Keep `.env` private. Do
 extract over existing data; see [backup and restore](#backup-and-restore) before replacing
 or migrating a deployment.
 
+Compose runs the application as a non-root numeric user. Set `INTRUVIA_UID` and
+`INTRUVIA_GID` in `.env` before starting services; both default to `10001` and must be
+non-zero decimal IDs. PostgreSQL and proxy identities are unchanged. For an initialized
+bundle, follow the [offline ownership migration](deployment/compose-initialization-recovery.md#change-the-application-uid-and-gid)
+before starting with a different identity; startup never recursively changes existing files.
+
 Edit the existing `INTRUVIA_PUBLIC_ORIGIN=` line in `.env` to the exact origin, such as
 `https://intruvia.example.org` (public service) or `http://localhost` (local use). Use no
 credentials, path, trailing slash, query or fragment. For public HTTPS, point DNS at this
@@ -124,8 +130,9 @@ the future or seven days old are rejected.
 Compose does not include a database. Obtain your own licensed GeoLite2 City or GeoIP2
 City MMDB. After first start, stop the app and place it at
 `state/runtime/geoip/GeoLite2-City.mmdb` on the host. Ensure the directory and file are
-accessible to app UID `10001`; the app needs write access to the directory for staged
-updates. In `state/runtime/config/StrolchConfiguration.xml`, set the `GeoIp` component's
+accessible to the configured app UID (`INTRUVIA_UID`, default `10001`); the app needs
+write access to the directory for staged updates. In
+`state/runtime/config/StrolchConfiguration.xml`, set the `GeoIp` component's
 `databasePath` to its container path and restart the app:
 
 ```xml
@@ -143,9 +150,11 @@ The bundle includes these persistent, bundle-relative directories before first s
 `state/caddy-config`. Compose uses bind mounts only; it does not create Docker named
 volumes. Keep the whole bundle directory on protected storage and include these paths
 in backups. The one-shot `prepare-state` service sets `state/runtime`, `state/app-logs`
-and `secrets/` to owner `10001:10001` and mode `0700` before PostgreSQL starts; it
-changes only the directories themselves, not their contents. PostgreSQL prepares its
-own data directory. Do not move or delete the bundle while services use it.
+and `secrets/` to the configured app UID/GID (default `10001:10001`) and mode `0700`
+before PostgreSQL starts; it changes only those directory roots, not their contents.
+Existing files therefore keep their owners and modes unless an administrator deliberately
+migrates them offline. PostgreSQL prepares its own data directory. Do not move or delete
+the bundle while services use it.
 
 ### Operate the Compose deployment
 
@@ -172,8 +181,8 @@ paused until the new origin is verified.
    INTRUVIA_PUBLIC_ORIGIN=https://intruvia.example.org
    ```
 
-   Preserve runtime file owner `10001:10001`, mode `0600`, private directory modes,
-   and `.env` mode `0600`.
+   Preserve runtime file ownership for the configured app UID/GID, mode `0600`, private
+   directory modes, and `.env` mode `0600`.
 3. Coordinate DNS, certificates, and proxy configuration. The browser Origin and the
    configured value must match exactly, including any port.
 4. Recreate services and verify HTTPS, viewer login, and WSS before reopening ingress:
@@ -248,8 +257,9 @@ docker compose up -d db
 ```
 
 Wait for the database health check. Confirm the new `state/runtime` directory is empty
-and owned by `10001:10001`. Restore the whole dump as the application role into its empty
-database, then extract the matching runtime. Run each command separately; stop if one fails:
+and owned by the configured app UID/GID. Restore the whole dump as the application role
+into its empty database, then extract the matching runtime. Run each command separately;
+stop if one fails:
 
 ```bash
 docker compose exec -T db sh -c 'export PGPASSWORD="$INTRUVIA_DB_PASSWORD"; \
@@ -702,7 +712,7 @@ rotate initialized roles. Preserve `state/postgres` and use the bundled
 Use offline commands only for break-glass recovery or planned maintenance; routine user,
 machine, mapping and token changes belong in **Manage access**. Pause ingress, stop the
 app, back up the matching database and runtime, and use an owner-only password file in
-`secrets/` owned by `10001:10001`. Never put passwords in command arguments or environment
+`secrets/` owned by the configured app UID/GID. Never put passwords in command arguments or environment
 variables. Do not edit initialized privilege files; the initial administrator has the
 `TokenOperator` role.
 
