@@ -12,7 +12,7 @@
 		<module>intruvia-web</module>
 		<module>intruvia-app</module>
 	</modules>
-	<version>0.0.16-SNAPSHOT</version>
+	<version>0.0.16</version>
 	<properties>
 		<maven.compiler.release>25</maven.compiler.release>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
